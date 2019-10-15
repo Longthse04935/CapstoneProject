@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import './css/chatbox.css';
+import io from "socket.io-client";
+
 class Chatbox extends Component {
   constructor(props){
     super(props);
@@ -16,7 +18,7 @@ class Chatbox extends Component {
             },
         ],
     };
-
+    // this.socket = io('localhost:3002');
     this.handleChange = this.handleChange.bind(this);
   }
 
@@ -27,6 +29,10 @@ class Chatbox extends Component {
   handleSend = async (e) => {
     e.stopPropagation();
     e.preventDefault();
+  //   this.socket.emit('SEND_MESSAGE', {
+  //     author: this.state.username,
+  //     message: this.state.message
+  // });
     let { chatData, chatText,index } = this.state;
     index ++;
     chatData.push({

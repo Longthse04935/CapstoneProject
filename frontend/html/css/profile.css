@@ -2,11 +2,7 @@
     margin:0;
     padding: 0;
 }
-@font-face {
-  font-family: "HKGroteskBold";
-  src: url("../fonts/hkgrotesk-bold.ttf");
-  src: url("../fonts/HKGrotesk-Bold.woff") format("woff");
-}
+
 body{
     font-family: Helvetica,Arial Black,Arial,Sans-Serif;
     color:#4a4a4a;

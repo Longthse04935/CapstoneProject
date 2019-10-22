@@ -6,7 +6,10 @@ body {
   background-color: #edeff2;
   font-family: "Calibri", "Roboto", sans-serif;
 }
-
+.ChatRoom{
+  position: relative;
+  height: 966px;
+}
 .chat_window {
   position: absolute;
   width: calc(100% - 20px);
@@ -14,7 +17,7 @@ body {
   height: 800px;
   background-color: #fff;
   left: 50%;
-  top: 50%;
+  top: 52%;
   transform: translateX(-50%) translateY(-50%);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
   background-color: #f8f8f8;

@@ -468,3 +468,37 @@
 .viewNumberTravel a{
   color:#6fbe44;
 }
+.react-datepicker-popper {
+  z-index: 2;
+}
+.react-datepicker__input-container {
+  margin-left: 20px;
+}
+
+.react-datepicker-wrapper{
+  width: 100%;
+  line-height: calc(2.5rem - 2px);
+  padding: 0 1rem 0 .5rem;
+  border-radius: 2px;
+  border: 1px solid #eaeaea;
+  margin: 0;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+}
+.DateSelector-2OYxm{
+  position: relative;
+}
+
+.DateSelector-2OYxm i{
+  position: absolute;
+  font-size: 16px;
+  top: 10px;
+  left: 10px;
+  opacity: 0.2;
+}
+.react-datepicker__input-container input{
+  width: 100%;
+  border: none;
+  cursor: pointer;
+}

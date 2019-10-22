@@ -1,0 +1,221 @@
+
+
+
+/* Menubar CSS */
+
+.navbar{
+    width: 100%;
+    height: 80px;
+    border-bottom: solid 1px #EAEAEA;
+    position: fixed;
+    top: 0;
+    background: #fff;
+    z-index:5;
+    padding: 0 !important;
+}
+
+.navbar .menubar{
+    width: 97%;
+    margin: 0 auto;
+    height: 100%;
+    position: relative;
+}
+
+.navbar .menubar .logoContainer{
+    display: inline-block;
+    padding-top: 12px;
+}
+
+ .navbar .menubar .search{
+    display: inline-block;
+    position: relative;
+    left: 1%;
+    bottom: 15px;
+}
+
+.logoContainer .fa{
+    font-size: 50px;
+    color:#6fbe44;
+}
+.navbarRightContent{
+    display: inline-block;
+    line-height: 80px;
+    float: right;
+}
+
+.navbarRightContent::after{
+    clear: both;
+}
+
+.navbarRightContent ul li{
+    list-style-type: none;
+    display: inline-block ;
+    width: 110px;
+    text-align: center;
+    font-size: 16px;
+    color: #4A4A4A;
+    
+}
+.navbarRightContent ul li a{
+    text-decoration: none;
+    color:#4A4A4A;
+}
+.navbarRightContent ul li .signup{
+  border: solid 1px;
+  padding: 12px 15px;
+  color: #6fbe44;
+  border-radius: 43px;
+}
+
+
+.search label {
+    position: relative;
+  }
+  
+.search label:before {
+    content: "";
+    position: absolute;
+    left: 7px;
+    top: -3px;
+    bottom: 0;
+    width: 20px;
+    -webkit-mask: url(../img/searchIcon.svg) center center no-repeat;
+    mask: url(../img/searchIcon.svg) center center no-repeat;
+    background-color: #4A4A4A;
+    webkit-box-sizing: initial !important;
+    box-sizing: initial !important;
+  }
+  
+  input[name="search"] {
+    padding: 23px 39px;
+    border: 1px solid #eaeaea;
+    font-size: 18px;
+    height: 20px;
+    width: 380px;
+    color: #757575;
+    box-shadow: 0 2px 8px 2px rgba(0,0,0,.07);
+  }
+
+  input[name="search"]:hover , input[name="search"]:visited{
+    box-shadow: 0 2px 8px 2px rgba(0,0,0,.1);
+  }
+
+  .fillter{
+    width: 378px;
+    height: 340px;
+    position: absolute;
+    top: 48px;
+    overflow-y: scroll;
+    box-sizing: border-box;
+    box-shadow: 0 2px 8px 2px rgba(0,0,0,.1);
+    left: 1px;
+    background-color: #ffffff;
+  }
+
+ #popularLabel,.explore{
+    line-height: 16px;
+    color: #4a4a4a;
+    font-size: 16px;
+  }
+ 
+  .fillter .filter-Content{
+      margin:16px 32px 0;
+      min-height: 328px;
+  }
+  
+  .filter-Content .popularDestination ul li{
+      list-style-type: none;
+  }
+
+  .button-group button{
+    color: #4a4a4a;
+    background: #fff;
+     border: 1px solid rgba(0,0,0,0.3); 
+    border-radius: 2px;
+    margin: 0 1rem 20px 0;
+    padding: 8px;
+  }
+
+  .button-group button.active{
+    color: #fff;
+    background: #6fbe44;
+    border:none;
+  }
+
+  .popularDestination{
+      margin-top: 20px;
+  }
+
+  .localsOrExperience{
+    border-bottom: .5px solid #eaeaea;
+  }
+
+  
+  .popularDestination ul li {
+    line-height: 16px;
+    margin:10px 0;
+    font-size: 14px;
+    color: #4A4A4A;
+    position: relative;
+    padding-left:15px;
+  }
+  .popularDestination ul li i{
+    display: inline-block;
+    position: absolute;
+    top:2px;
+    left:0px;
+    font-size: 12px;
+
+  }
+  .search .fillter{
+    display: none;
+  }
+/* End menubar  */
+
+/* logged */
+.navbarRightContent .logged .avatarLogged .dropContent{
+  /* display: none; */
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 250px;
+  right: 20px;
+  padding: 0 20px 0 20px;
+  height: 400px;
+  overflow-y: scroll;
+  box-shadow: 0 2px 64px 0 hsla(0,0%,61.2%,.5);
+  border-radius: 10px 0 0 10px;
+  
+}
+.navbarRightContent .avatarLogged img{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.logged .avatarLogged{
+  position: relative;
+}
+
+.avatarLogged .dropContent li{
+  width: 100%;
+  border-bottom: 1px solid #9a9696;
+  height: 50px;
+  line-height: 50px;
+  position: relative;
+  text-align: left;
+}
+
+.navbarRightContent .logged > li:hover > a{
+  color:#6fbe44;
+}
+
+.avatarLogged .dropContent li i{
+  position: absolute;
+  top: 8px;
+  right:4px;
+  font-size: 28px;
+}
+
+.avatarLogged .dropContent li:hover{
+  color: #6fbe44;
+}

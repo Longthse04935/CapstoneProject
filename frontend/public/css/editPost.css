@@ -1,5 +1,5 @@
 .container{
-    margin-top:2%;
+    margin-top:5%;
 }
 
 .text-lg-center{
@@ -21,7 +21,7 @@
     margin: 0 auto;
     margin-bottom: 2%;
     margin-top: 2%;
-    margin-right: 10%;
+    margin-right: 8%;
 }
 
 .coverContent{
@@ -31,20 +31,20 @@
 }
 .coverContent .brief,.detail{
     margin-bottom: 15px;
-    margin-left: 10px;
+    margin-left: 6px;
 }
 
 .coverContent .brief input{
-    width: 82%;
-    margin-left: 33px;
+    width: 85%;
+    margin-left: 13px;
     height: calc(1.5em + .75rem + 2px);
     border: 1px solid #ced4da;
     border-radius: .25rem;
 }
 
 .coverContent textarea{
-    width: 80%;
-    margin-left: 24px;
+    width: 84%;
+    margin-left: 0px;
     border: 1px solid #ced4da;
     border-radius: .25rem;
     position: absolute;

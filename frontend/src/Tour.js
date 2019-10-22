@@ -12,10 +12,20 @@ class Tour extends Component {
         adult: 1,
         children: 0
       },
-      tourDate: new Date()
-    };
+      tourDate: new Date(),
+      slideShow: [
+        '/img/natural1.jpg',
+        '/img/nature2.jpg',
+        '/img/nature3.jpg',
+        '/img/nature4.jpg',
+        '/img/nature5.jpg',
+        '/img/nature6.jpg',
+      ],
+      currentIndex: 0,
+      intervalId: null
+    }
   }
-    componentDidMount(){
+    componentDidMount() {
         $("head").append('<link href="/css/tour.css" rel="stylesheet"/>');
         $("head").append('<link href="/css/profile.css" rel="stylesheet"/>');
         
@@ -47,6 +57,18 @@ class Tour extends Component {
                 $(".viewNumberTravel").hide();
                 }
             });
+
+            this.setupInterval();
+    }
+
+    timer = () => {
+      // setState method is used to update the state
+      this.commonNext();
+   }
+
+    setupInterval = () => {
+      var intervalId = setInterval(this.timer, 3000);
+      this.setState({ intervalId: intervalId });
     }
 
     changeNumber = (age, minusPlus) => {
@@ -83,6 +105,39 @@ class Tour extends Component {
       });
     };
   
+    commonNext  = () => {
+      let { currentIndex, slideShow } = this.state;
+      currentIndex++;
+      if(currentIndex >= slideShow.length) {
+        currentIndex = 0;
+      }
+      this.setState({ currentIndex });
+    }
+
+
+    handleNext = () => {
+      clearInterval(this.state.intervalId);
+      this.commonNext();
+      this.setupInterval();
+    }
+
+    handlePrev = () => {
+      clearInterval(this.state.intervalId);
+      let { currentIndex, slideShow } = this.state;
+      currentIndex--;
+      if(currentIndex < 0) {
+        currentIndex = slideShow.length - 1;
+      }
+      this.setState({ currentIndex });
+      this.setupInterval();
+    }
+
+    handleChoose = (index) => {
+      clearInterval(this.state.intervalId);
+      this.setState({ currentIndex: index });
+      this.setupInterval();
+    }
+
     render() {
       const {numberInjoy } = this.state;
         return (
@@ -104,7 +159,7 @@ class Tour extends Component {
         </div>
         <div>
           <div className="DateSelector-2OYxm">
-          <i class="fa fa-calendar-o" aria-hidden="true"></i>
+          <i className="fa fa-calendar-o" aria-hidden="true"></i>
             <DatePicker
                   selected={this.state.tourDate}
                   onChange={this.dateChange}
@@ -256,7 +311,7 @@ class Tour extends Component {
             <span>Ha Noi</span>
           </li>
           <li>
-            <i class="fa fa-cutlery" aria-hidden="true"></i>
+            <i className="fa fa-cutlery" aria-hidden="true"></i>
             <span>Food tour</span>
           </li>
           <li>
@@ -264,7 +319,7 @@ class Tour extends Component {
             <span>3 hours</span>
           </li>
           <li>
-            <i class="fa fa-bicycle" aria-hidden="true"></i>
+            <i className="fa fa-bicycle" aria-hidden="true"></i>
             <span>Walking tour</span>
           </li>
           <li>
@@ -311,10 +366,13 @@ class Tour extends Component {
       <div className="slideshow">
         <div className="slideshow-container">
           <h2>What you can expect</h2>
-          <div className="mySlides fade">
-            <img src="/img/natural1.jpg" />
-          </div>
-          <div className="mySlides fade">
+          {this.state.slideShow.map((link, i) => (
+            <div className={`mySlides${i === this.state.currentIndex ? ' active' : ''}`} key={i}>
+              <img src={link} />
+            </div>
+          ))}
+
+          {/* <div className="mySlides fade">
             <img src="/img/nature2.jpg" />
           </div>
           <div className="mySlides fade">
@@ -328,11 +386,11 @@ class Tour extends Component {
           </div>
           <div className="mySlides fade">
             <img src="/img/nature6.jpg" />
-          </div>
-          <a className="prev" onclick="plusSlides(-1)">
+          </div> */}
+          <a className="prev" onClick={this.handlePrev}>
             ❮
           </a>
-          <a className="next" onclick="plusSlides(1)">
+          <a className="next" onClick={this.handleNext}>
             ❯
           </a>
         </div>
@@ -341,12 +399,9 @@ class Tour extends Component {
           className="navigation"
           style={{ textAlign: "center", marginBottom: 30 }}
         >
-          <span className="dot" onclick="currentSlide(1)" />
-          <span className="dot" onclick="currentSlide(2)" />
-          <span className="dot" onclick="currentSlide(3)" />
-          <span className="dot" onclick="currentSlide(4)" />
-          <span className="dot" onclick="currentSlide(5)" />
-          <span className="dot" onclick="currentSlide(6)" />
+        {this.state.slideShow.map((link, i) => (
+          <span className={`dot${i === this.state.currentIndex ? ' active' : ''}`} key={i} onClick={() => this.handleChoose(i)} />
+        ))}
         </div>
         <div className="readMoreText expect">
           <div id="section">

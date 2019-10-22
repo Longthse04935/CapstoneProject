@@ -245,7 +245,7 @@
     font-weight: 800;
 }
 .mySlides {
-    display: none
+    /* display: none */
 }
 .mySlides img {
     vertical-align: middle;
@@ -501,4 +501,14 @@
   width: 100%;
   border: none;
   cursor: pointer;
+}
+
+.mySlides {
+  display: none;
+}
+.mySlides.active {
+  display: block;
+}
+.dot.active {
+  background: blue;
 }

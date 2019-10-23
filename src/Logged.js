@@ -12,6 +12,21 @@ class Logged extends Component {
     componentDidMount(){
         $("head").append('<link href="/css/login.css" rel="stylesheet"/>');
         $("head").append('<link href="/css/navbar.css" rel="stylesheet"/>');
+        $('.button-group > button').on('click', function() {
+            $('.button-group > button').removeClass('active');
+            $(this).addClass('active');
+        });
+        $('input[name=search]').focus(function () {
+                $('.search .fillter').show();
+            
+        });
+        $(document).mouseup(function (e) {
+            if (!$('.search').is(e.target) && !$('.fillter').is(e.target)
+            && $('.search').has(e.target).length === 0
+            && $('.fillter').has(e.target).length === 0) {
+                $('.fillter').hide();
+            }
+        });
     }
 
     disableLoggedChoice = ()=>{
@@ -117,7 +132,7 @@ class Logged extends Component {
                             </li>
                             <li className="avatarLogged" onClick={this.disableLoggedChoice}>
                             <a href="#">
-                                <img src="./img/2.jpg"/>
+                                <img src="/img/2.jpg"/>
                                 <ul className="dropContent" style={this.state.disable ? {display: 'none'} : { display: 'block' }}>
                                     <li><a href="/">Edit profile</a><i className="fa fa-user" aria-hidden="true"></i></li>
                                     <li><a href="">Become a host</a><i className="fa fa-user" aria-hidden="true"></i></li>

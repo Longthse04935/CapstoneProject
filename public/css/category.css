@@ -1,0 +1,45 @@
+.categoryTour {
+    margin: 7% auto;
+    width: 70%;
+}
+
+.categoryTour h1{
+    font-size: 2rem;
+    line-height: 2.5rem;
+    font-weight: 800;
+}
+
+.categoryTour h2{
+    font-size: 1.25rem;
+}
+
+.tourDetail li{
+    list-style-type: none;
+    display: inline-block;
+    margin-right: 24px;
+    border-radius: 7px;
+    box-shadow: 0 6px 16px 0 rgba(0,0,0,.15);
+    cursor: pointer;
+}
+
+.tourDetail li:last-child{
+  margin-right: 0px;
+}
+
+.tourDetail li img{
+    width: 200px;
+    height: 140px;
+    border-radius: 7px 7px 0 0;
+}
+
+.tourDetail li a{
+    display: block;
+    margin: 10px ;
+    font-weight:800;
+    color:#777474
+}
+
+.tourDetail li:hover{
+    box-shadow: 0 6px 16px 0 rgba(0,0,0,.35);
+    color:#e71575;
+}

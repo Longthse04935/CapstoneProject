@@ -228,7 +228,9 @@ body{
 .bookOffers ul li .sheet:hover{
   box-shadow: 0 10px 16px 0 rgba(0,0,0,.3);
 }
-
+.sheet .like{
+  top:7px;
+}
 .like , .unlike{
   position: absolute;
   top:10px;
@@ -262,7 +264,7 @@ body{
   display: inline-block;
 }
 .experienceCard-bottomDetails {
-  font-size:10px;
+  font-size:13px;
   margin-top: 10px;
 }
 .experienceCard-bottomDetails .rating{
@@ -278,8 +280,8 @@ body{
 }
 
 .experienceCard-details  .price{
-  opacity: 0.8;
-  font-size: 12px;
+  opacity: 0.9;
+  font-size: 13px;
 }
 .experienceCard-details{
   position: relative;
@@ -312,8 +314,8 @@ body{
 
 .experienceAvatarCardContainer .localAvailable{
   position: relative;
-    top: -20px;
-    left: 10px;
+    top: 10px;
+    left: 15px;
     color: white;
     background: #6fbe44;
     padding: 5px 20px;
@@ -337,6 +339,7 @@ body{
 
 .experienceCard-details h3{
   padding: 6px 0 15px;
+  font-weight: 600;
 }
 
 .requestForOffers{
@@ -388,13 +391,14 @@ body{
 }
 
 .reviewContainer .defaultLogo{
-  box-shadow: 0 6px 16px 0 rgba(0,0,0,.15);
+  box-shadow: 0 6px 16px 0 rgba(0,0,0,.2);
   border-radius: 50%;
   position: absolute;
+  width: 60px;
 }
 
 .reviewContainer .reviewInfo{
-  margin-left: 70px;
+  margin-left: 75px;
 }
 .reviewInfo {
   margin-bottom: 20px;
@@ -432,9 +436,6 @@ body{
   margin-bottom: 30px!important;
 }
 
-.listReview li{ 
-  display:none;
-}
 #loadMore {
     color:#6fbe44;
     cursor:pointer;

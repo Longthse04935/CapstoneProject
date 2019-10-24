@@ -4,12 +4,11 @@ import EditPost from "./EditPost";
 import ProfileGuiders from "./ProfileGuiders";
 import Tour from "./Tour";
 import ProfileTravaller from './ProfileTraveller';
-import Home from './Home';
+import GuiderAllPost from './GuiderAllPost';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Navbar from './Navbar';
 import Footer from './Footer';
 import Logged from './Logged';
-import Cookies from 'js-cookie'
 
 class App extends Component {
 	constructor(props) {
@@ -22,9 +21,6 @@ class App extends Component {
 		this.setState({logedIn: !this.state.logedIn});
 	}
 
-	sample = () => {
-		return 1+1;
-	}
 
 	render() {
 	
@@ -36,25 +32,27 @@ class App extends Component {
 
 
 				{present}
-				<Router>
+			
 
 
 
 					{/* <Switch>
+
               <Route exact path='/chatbox' component={Chatbox} />
               <Route path='/editpost' component={EditPost} />
               <Route path='/profileguiders' component={ProfileGuiders} />
               <Route path='/tour' component={Tour} />
               <Route path='/profiletraveller' component={ProfileTravaller} />
-              <Route exact path={"/"}><Home guiderId={4} /></Route>
-          </Switch> */}
 
+              <Route path='/abc' component={Home} />
+              <Route path={"/"}><GuiderAllPost guiderId={4} /></Route>
+					</Switch>*/}
+          <Footer />
+        </div>
 
-				</Router>
-				<Footer />
-			</div>
-		);
-	}
+    );
+  }
+
 }
 
 export default App;

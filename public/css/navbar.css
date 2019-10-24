@@ -50,7 +50,7 @@
 .navbarRightContent ul li{
     list-style-type: none;
     display: inline-block ;
-    width: 110px;
+    width: 130px;
     text-align: center;
     font-size: 16px;
     color: #4A4A4A;
@@ -59,6 +59,7 @@
 .navbarRightContent ul li a{
     text-decoration: none;
     color:#4A4A4A;
+    display: block;
 }
 .navbarRightContent ul li .signup{
   border: solid 1px;
@@ -216,6 +217,10 @@
   font-size: 28px;
 }
 
-.avatarLogged .dropContent li:hover{
+.avatarLogged .dropContent li:hover a{
+  color: #6fbe44;
+}
+
+.avatarLogged .dropContent li:hover i{
   color: #6fbe44;
 }

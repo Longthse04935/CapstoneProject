@@ -13,6 +13,21 @@ class Logged extends Component {
     componentDidMount() {
         $("head").append('<link href="/css/login.css" rel="stylesheet"/>');
         $("head").append('<link href="/css/navbar.css" rel="stylesheet"/>');
+        $('.button-group > button').on('click', function() {
+            $('.button-group > button').removeClass('active');
+            $(this).addClass('active');
+        });
+        $('input[name=search]').focus(function () {
+                $('.search .fillter').show();
+            
+        });
+        $(document).mouseup(function (e) {
+            if (!$('.search').is(e.target) && !$('.fillter').is(e.target)
+            && $('.search').has(e.target).length === 0
+            && $('.fillter').has(e.target).length === 0) {
+                $('.fillter').hide();
+            }
+        });
     }
 
     disableLoggedChoice = () => {
@@ -130,6 +145,7 @@ class Logged extends Component {
                                 </li>
                             </ul>
                         </div>
+
                     </div>
                 </nav>
                 {/* End MenuBar */}

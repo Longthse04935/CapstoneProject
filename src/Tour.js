@@ -1,10 +1,31 @@
 import React, { Component } from 'react';
 import "font-awesome/css/font-awesome.min.css";
 import $ from 'jquery';
-import Navbar from './Navbar';
-import Footer from './Footer';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 class Tour extends Component {
-    componentDidMount(){
+  constructor(props){
+    super(props);
+    this.state = {
+      numberInjoy: {
+        adult: 1,
+        children: 0
+      },
+      tourDate: new Date(),
+      slideShow: [
+        '/img/natural1.jpg',
+        '/img/nature2.jpg',
+        '/img/nature3.jpg',
+        '/img/nature4.jpg',
+        '/img/nature5.jpg',
+        '/img/nature6.jpg',
+      ],
+      currentIndex: 0,
+      intervalId: null
+    }
+  }
+    componentDidMount() {
         $("head").append('<link href="/css/tour.css" rel="stylesheet"/>');
         $("head").append('<link href="/css/profile.css" rel="stylesheet"/>');
         
@@ -36,9 +57,89 @@ class Tour extends Component {
                 $(".viewNumberTravel").hide();
                 }
             });
+
+            this.setupInterval();
+    }
+
+    timer = () => {
+      // setState method is used to update the state
+      this.commonNext();
+   }
+
+    setupInterval = () => {
+      var intervalId = setInterval(this.timer, 3000);
+      this.setState({ intervalId: intervalId });
+    }
+
+    changeNumber = (age, minusPlus) => {
+      const { numberInjoy } = this.state;
+      const min = 1;
+      const max = 8;
+      var currentPeople = numberInjoy.adult + numberInjoy.children;
+      if (age === "adult" && minusPlus === "minus") {
+       if(currentPeople > min && numberInjoy.adult > 1){
+        numberInjoy.adult--;
+        this.setState({ numberInjoy: numberInjoy });
+       }
+      } else if (age === "adult" && minusPlus === "plus") {
+        if(currentPeople < max){
+          numberInjoy.adult++;
+          this.setState({ numberInjoy: numberInjoy });
+        }
+      } else if (age === "child" && minusPlus === "minus") {
+        if(currentPeople > min && numberInjoy.children > 0){
+          numberInjoy.children--;
+          this.setState({ numberInjoy: numberInjoy });
+        }
+      } else if (age === "child" && minusPlus === "plus") {
+        if(currentPeople < max){
+          numberInjoy.children++;
+          this.setState({ numberInjoy: numberInjoy });
+        }
+      }
+    };
+
+    dateChange = date => {
+      this.setState({
+        tourDate: date
+      });
+    };
+  
+    commonNext  = () => {
+      let { currentIndex, slideShow } = this.state;
+      currentIndex++;
+      if(currentIndex >= slideShow.length) {
+        currentIndex = 0;
+      }
+      this.setState({ currentIndex });
+    }
+
+
+    handleNext = () => {
+      clearInterval(this.state.intervalId);
+      this.commonNext();
+      this.setupInterval();
+    }
+
+    handlePrev = () => {
+      clearInterval(this.state.intervalId);
+      let { currentIndex, slideShow } = this.state;
+      currentIndex--;
+      if(currentIndex < 0) {
+        currentIndex = slideShow.length - 1;
+      }
+      this.setState({ currentIndex });
+      this.setupInterval();
+    }
+
+    handleChoose = (index) => {
+      clearInterval(this.state.intervalId);
+      this.setState({ currentIndex: index });
+      this.setupInterval();
     }
 
     render() {
+      const {numberInjoy } = this.state;
         return (
             <div>
             
@@ -58,36 +159,11 @@ class Tour extends Component {
         </div>
         <div>
           <div className="DateSelector-2OYxm">
-            <button className="Button-1bHL5 DropdownButton-1gKqn">
-              <span className="CalendarIconContainer-2Gxrj">
-                <svg
-                  className="CalendarIcon-3Nhbh"
-                  width={16}
-                  height={20}
-                  viewBox="0 0 18 23"
-                >
-                  <g>
-                    <path d="M17,19.8657336 L17,4.63426638 C17,3.87033675 16.4003614,3.25 15.678604,3.25 L2.32139605,3.25 C1.59963862,3.25 1,3.87033675 1,4.63426638 L1,19.8657336 C1,20.6296633 1.59963862,21.25 2.32139605,21.25 L15.678604,21.25 C16.4003614,21.25 17,20.6296633 17,19.8657336 Z M18,19.8657336 C18,21.174497 16.9603822,22.25 15.678604,22.25 L2.32139605,22.25 C1.03961782,22.25 8.34368004e-16,21.174497 8.34368004e-16,19.8657336 L8.34368004e-16,4.63426638 C8.34368004e-16,3.32550299 1.03961782,2.25 2.32139605,2.25 L15.678604,2.25 C16.9603822,2.25 18,3.32550299 18,4.63426638 L18,19.8657336 Z"></path>
-                    <path d="M4,0.5 C4,0.223857625 4.22385763,-9.71445147e-16 4.5,-9.71445147e-16 C4.77614237,-9.71445147e-16 5,0.223857625 5,0.5 L5,5.5 C5,5.77614237 4.77614237,6 4.5,6 C4.22385763,6 4,5.77614237 4,5.5 L4,0.5 Z"></path>
-                    <path d="M13,0.5 C13,0.223857625 13.2238576,-3.1918912e-15 13.5,-3.1918912e-15 C13.7761424,-3.1918912e-15 14,0.223857625 14,0.5 L14,5.5 C14,5.77614237 13.7761424,6 13.5,6 C13.2238576,6 13,5.77614237 13,5.5 L13,0.5 Z"></path>
-                    <polygon points="0.5 9.25 0.5 8.25 17.5 8.25 17.5 9.25" />
-                  </g>
-                </svg>
-              </span>
-              <span id="btn-calendar" className="ButtonText-xoSvS">
-                {" "}
-                10-10-2019{" "}
-              </span>
-              <svg
-                className="ChevronIcon-1tmys"
-                width={9}
-                height={5}
-                viewBox="0 0 15 9"
-              >
-                <path d="M7.5,5.66602416 L2.43674491,0.431396522 C1.9082727,-0.114962532 1.01849523,-0.14659907 0.449371305,0.360734337 C-0.119752618,0.868067744 -0.15270734,1.72225426 0.375764875,2.26861331 L6.46950998,8.56860926 C7.02586699,9.14379691 7.97413301,9.14379691 8.53049002,8.56860926 L14.6242351,2.26861331 C15.1527073,1.72225426 15.1197526,0.868067744 14.5506287,0.360734337 C13.9815048,-0.14659907 13.0917273,-0.114962532 12.5632551,0.431396522 L7.5,5.66602416 Z"></path>
-              </svg>
-            </button>
-            <input type="text" id="text-calendar" className="calendar" />
+          <i className="fa fa-calendar-o" aria-hidden="true"></i>
+            <DatePicker
+                  selected={this.state.tourDate}
+                  onChange={this.dateChange}
+                ></DatePicker>
           </div>
           <div className="numberTravel">
             <span>
@@ -109,7 +185,8 @@ class Tour extends Component {
                       </g>
                     </svg>
                   </span>
-                  <span className="ButtonText-3rr6g">4 Adults</span>
+                  <span className="ButtonText-3rr6g">{numberInjoy.adult} Adults and {numberInjoy.children}{" "}
+                        children</span>
                   <svg
                     className="ChevronIcon-1tmys"
                     width={9}
@@ -126,18 +203,23 @@ class Tour extends Component {
                 {" "}
                 Adults
                 <div className="plusAndMinus">
-                  <i className="fa fa-minus-circle" />
-                  &nbsp;1&nbsp;
-                  <i className="fa fa-plus-circle" />
+                  <i 
+                  onClick={() => this.changeNumber("adult", "minus")}
+                  className="fa fa-minus-circle" />
+                  &nbsp;{numberInjoy.adult}&nbsp;
+                  <i onClick={() => this.changeNumber("adult", "plus")}
+                  className="fa fa-plus-circle" />
                 </div>
               </div>
               <div className="children">
                 {" "}
                 Children
                 <div className="plusAndMinus">
-                  <i className="fa fa-minus-circle" />
-                  &nbsp;1&nbsp;
-                  <i className="fa fa-plus-circle" />
+                  <i onClick={() => this.changeNumber("child", "minus")}
+                  className="fa fa-minus-circle" />
+                  &nbsp;{numberInjoy.children}&nbsp;
+                  <i onClick={() => this.changeNumber("child", "plus")}
+                  className="fa fa-plus-circle" />
                 </div>
               </div>
               <p>€223 per person</p>
@@ -225,11 +307,11 @@ class Tour extends Component {
       <div className="activities">
         <ul>
           <li>
-            <i className="fa fa-map-marker-alt" />
+            <i className="fa fa-map-marker" />
             <span>Ha Noi</span>
           </li>
           <li>
-            <i className="fa fa-pizza-slice" />
+            <i className="fa fa-cutlery" aria-hidden="true"></i>
             <span>Food tour</span>
           </li>
           <li>
@@ -237,7 +319,7 @@ class Tour extends Component {
             <span>3 hours</span>
           </li>
           <li>
-            <i className="fa fa-walking" />
+            <i className="fa fa-bicycle" aria-hidden="true"></i>
             <span>Walking tour</span>
           </li>
           <li>
@@ -284,10 +366,13 @@ class Tour extends Component {
       <div className="slideshow">
         <div className="slideshow-container">
           <h2>What you can expect</h2>
-          <div className="mySlides fade">
-            <img src="/img/natural1.jpg" />
-          </div>
-          <div className="mySlides fade">
+          {this.state.slideShow.map((link, i) => (
+            <div className={`mySlides${i === this.state.currentIndex ? ' active' : ''}`} key={i}>
+              <img src={link} />
+            </div>
+          ))}
+
+          {/* <div className="mySlides fade">
             <img src="/img/nature2.jpg" />
           </div>
           <div className="mySlides fade">
@@ -301,11 +386,11 @@ class Tour extends Component {
           </div>
           <div className="mySlides fade">
             <img src="/img/nature6.jpg" />
-          </div>
-          <a className="prev" onclick="plusSlides(-1)">
+          </div> */}
+          <a className="prev" onClick={this.handlePrev}>
             ❮
           </a>
-          <a className="next" onclick="plusSlides(1)">
+          <a className="next" onClick={this.handleNext}>
             ❯
           </a>
         </div>
@@ -314,12 +399,9 @@ class Tour extends Component {
           className="navigation"
           style={{ textAlign: "center", marginBottom: 30 }}
         >
-          <span className="dot" onclick="currentSlide(1)" />
-          <span className="dot" onclick="currentSlide(2)" />
-          <span className="dot" onclick="currentSlide(3)" />
-          <span className="dot" onclick="currentSlide(4)" />
-          <span className="dot" onclick="currentSlide(5)" />
-          <span className="dot" onclick="currentSlide(6)" />
+        {this.state.slideShow.map((link, i) => (
+          <span className={`dot${i === this.state.currentIndex ? ' active' : ''}`} key={i} onClick={() => this.handleChoose(i)} />
+        ))}
         </div>
         <div className="readMoreText expect">
           <div id="section">

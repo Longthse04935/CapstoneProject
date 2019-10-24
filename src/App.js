@@ -10,22 +10,23 @@ import Navbar from './Navbar';
 import Footer from './Footer';
 import Logged from './Logged';
 import Home from './Home';
+import PostTourDetail from './PostTourDetail';
 class App extends Component {
   render() {
     return (
         <Router>
         <div>
-        {/* <Logged /> */}
-        <Navbar />
+        <Logged />
+        {/* <Navbar /> */}
           <Switch>
               <Route exact path='/chatbox' component={Chatbox} />
               <Route path='/editpost' component={EditPost} />
-              <Route path='/profileguiders' component={ProfileGuiders} >
-              </Route>
+              <Route path='/profileguiders' component={ProfileGuiders} />
               <Route path='/tour' component={Tour} />
               <Route path='/profiletraveller' component={ProfileTravaller} />
-              <Route path='/abc' component={Home} />
-              <Route path={"/"}><GuiderAllPost guiderId={4} /></Route>
+              <Route path='/Home' component={Home} />
+              <Route path='/posttour/:id/:type' component={PostTourDetail} />
+              <Route path='/' ><GuiderAllPost guiderId={4} /></Route>
           </Switch>
           <Footer />
         </div>

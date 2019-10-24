@@ -171,10 +171,12 @@
     font-family: Arial;
     color: #4A4A4A;
 }
-.SpanLogin{
+
+.SpanLogin,.SpanSignUp{
     font-size: 13px;
     font-family: Arial;
     color: #E71575;
+    cursor: pointer;
 }
 
 /* button close sign up form */

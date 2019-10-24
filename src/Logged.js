@@ -40,7 +40,7 @@ class Logged extends Component {
             <nav className="navbar">
                 <div className="menubar">
                     <div className="logoContainer">
-                    <a href="/">
+                    <a href="/home">
                     <i className="fa fa-arrows" aria-hidden="true"/>
                     </a>
                     </div>
@@ -118,7 +118,7 @@ class Logged extends Component {
                     <div className="navbarRightContent">
                         <ul className="logged" >
                             <li>
-                            <a href="#">Bookings</a>
+                            <a href="/profiletraveller">Become a guider</a>
                             </li>
                             <li>
                             <a href="#" >
@@ -134,8 +134,8 @@ class Logged extends Component {
                             <a href="#">
                                 <img src="/img/2.jpg"/>
                                 <ul className="dropContent" style={this.state.disable ? {display: 'none'} : { display: 'block' }}>
-                                    <li><a href="/">Edit profile</a><i className="fa fa-user" aria-hidden="true"></i></li>
-                                    <li><a href="">Become a host</a><i className="fa fa-user" aria-hidden="true"></i></li>
+                                    <li><a href="/profiletraveller">Edit profile</a><i className="fa fa-user" aria-hidden="true"></i></li>
+                                    <li><a href="/editpost">Edit post</a><i className="fa fa-user" aria-hidden="true"></i></li>
                                     <li><a href="">Favorites</a><i className="fa fa-user" aria-hidden="true"></i></li>
                                     <li><a href="">Help</a><i className="fa fa-user" aria-hidden="true"></i></li>
                                     <li><a href="">Log out</a><i className="fa fa-user" aria-hidden="true"></i></li>

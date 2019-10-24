@@ -28,16 +28,22 @@ class Navbar extends Component {
          $('.signup').click(function () {
             $('.signUpForm').show();
         });
-    
+        $('.SpanSignUp').click(function () {
+            $('.signUpForm').show();
+            $('.loginForm').hide();
+        });
         $('.closeLogin').click(function () {
             $('.signUpForm,.loginForm').hide();
         });
         // click login and close login form
     
-        $('.login').click(function () {
+        $('.login,.SpanLogin').click(function () {
             $('.loginForm').show();
         });
-    
+        $('.SpanLogin').click(function () {
+            $('.signUpForm').hide();
+            $('.loginForm').show();
+        });
         //mouse click outside .content-login form
         $(document).mouseup(function(e) 
         {
@@ -178,10 +184,8 @@ class Navbar extends Component {
                             </button>
                             </div>
                             <div className="loginLinkContain">
-                            <button className="loginLink">
                                 <span className="SpanReady">I already have an account.</span>
                                 <span className="SpanLogin"> Log in</span>
-                            </button>
                             </div>
                         </form>
                         </div>
@@ -290,10 +294,10 @@ class Navbar extends Component {
                         </button>
                         </div>
                         <div className="loginLinkContain">
-                        <button className="loginLink">
+                       
                             <span className="SpanReady">No account?</span>
-                            <span className="SpanLogin"> Sign up</span>
-                        </button>
+                            <span className="SpanSignUp"> Sign up</span>
+                      
                         </div>
                     </form>
                     </div>
@@ -303,7 +307,7 @@ class Navbar extends Component {
             <nav className="navbar">
                 <div className="menubar">
                     <div className="logoContainer">
-                    <a href="/">
+                    <a href="/home">
                     <i className="fa fa-arrows" aria-hidden="true"/>
                     </a>
                     </div>

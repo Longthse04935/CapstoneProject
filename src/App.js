@@ -28,8 +28,6 @@ class App extends Component {
               <Route path='/profileguiders' component={ProfileGuiders} />
               <Route path='/tour' component={Tour} />
               <Route path='/profiletraveller' component={ProfileTravaller} />
-              
-              
               <Route path='/tour/:id' component={PostTourDetail} exact />
               <Route path='/posttour/:id/:type' component={PostTourDetail} />
           </Switch>

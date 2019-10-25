@@ -20,6 +20,7 @@ body{
   margin: 0 auto;
   display: flex;
   margin-top: 80px;
+  height: auto;
 }
 .content .content-left{
     width: 30%;
@@ -340,8 +341,12 @@ body{
 .experienceCard-details h3{
   padding: 6px 0 15px;
   font-weight: 600;
+  cursor: pointer;
+  color: #007BFF;
 }
-
+.experienceCard-details h3:hover{
+  text-decoration: underline;
+}
 .requestForOffers{
   width: 100%;
   height: 330px;

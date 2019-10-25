@@ -307,7 +307,7 @@ class Navbar extends Component {
             <nav className="navbar">
                 <div className="menubar">
                     <div className="logoContainer">
-                    <a href="/home">
+                    <a href="/">
                     <i className="fa fa-arrows" aria-hidden="true"/>
                     </a>
                     </div>

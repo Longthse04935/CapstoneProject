@@ -34,7 +34,7 @@ class PlanInPost extends React.Component {
             );
             return (
                   <div className="plan">
-                        <h2>This is plan</h2>
+                        <h2>This is plan 2</h2>
                         <p>Check out the plan below to see what you'll get up to with your local host.</p>
                         <p> Feel free to personalize this offer.</p>
                         {planList}

@@ -267,7 +267,7 @@ class EditPost extends Component {
                         Price
                     </label>
                     <div className="col-lg-8">
-                        <input onChange={this.inputOnChange} className="form-control" type="text" name="price"  />
+                        <input onChange={this.inputOnChange} className="form-control form-controllerEditPost" type="text" name="price"  />
                     </div>
                     </div>
                     <div className="form-group row">
@@ -275,7 +275,7 @@ class EditPost extends Component {
                         Title
                     </label>
                     <div className="col-lg-8">
-                        <input  onChange={this.inputOnChange} className="form-control" type="text" name="title"  />
+                        <input  onChange={this.inputOnChange} className="form-control form-controllerEditPost" type="text" name="title"  />
                     </div>
                     </div>
                     <div className="form-group row">
@@ -283,7 +283,7 @@ class EditPost extends Component {
                         Video
                     </label>
                     <div className="col-lg-8">
-                        <input onChange={this.inputOnChange} className="form-control" type="text"   name="video_link" />
+                        <input onChange={this.inputOnChange} className="form-control form-controllerEditPost" type="text"   name="video_link" />
                     </div>
                     </div>
                     <div className="form-group row">
@@ -304,7 +304,7 @@ class EditPost extends Component {
                         Total hour
                     </label>
                     <div className="col-lg-8">
-                        <input  onChange={this.inputOnChange} name="total_hour" className="form-control " type="text" />
+                        <input  onChange={this.inputOnChange} name="total_hour" className="form-control form-controllerEditPost" type="text" />
                     </div>
                     </div>
                     <div className="form-group row">
@@ -312,7 +312,7 @@ class EditPost extends Component {
                         Description
                     </label>
                     <div className="col-lg-8">
-                        <input onChange={this.inputOnChange} name="description" className="form-control" type="url" />
+                        <input onChange={this.inputOnChange} name="description" className="form-control form-controllerEditPost" type="url" />
                     </div>
                     </div>
                     <div className="form-group row">

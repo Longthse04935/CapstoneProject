@@ -26,8 +26,6 @@ class Tour extends Component {
     }
   }
     componentDidMount() {
-        $("head").append('<link href="/css/tour.css" rel="stylesheet"/>');
-        $("head").append('<link href="/css/profile.css" rel="stylesheet"/>');
         
         //read more and read less
         $('.moreless-button').click(function () {
@@ -434,7 +432,7 @@ class Tour extends Component {
       {/* end slideshow */}
       {/* plan */}
       <div className="plan">
-        <h2>This is plan</h2>
+        <h2>This is plan 3</h2>
         <p>
           Check out the plan below to see what you'll get up to with your local
           host.

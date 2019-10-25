@@ -20,7 +20,7 @@ class PostTourDetail extends Component {
           const dataPostOneCategory = await responsePosts.json();
     
           this.setState({ dataPostOneCategory});
-          console.log(this.state.dataPostOneCategory);
+          console.log(dataPostOneCategory);
         } catch (err) {
           console.log(err);
         }
@@ -32,9 +32,9 @@ class PostTourDetail extends Component {
                 <h2>All posts about {this.props.match.params.type} </h2>
                 <div className="contentTour">
                     {
-                        data.map((post) => {
+                        data.map((post,index) => {
                             return ( 
-                                <div className="contentTourDetail">
+                                <div className="contentTourDetail" key={index}>
                                     <video controls>
                                         <source src='/video/Food_Tour-1_m8apyj.webm' type="video/mp4" />
                                     </video>
@@ -50,7 +50,7 @@ class PostTourDetail extends Component {
                                         <i className="fa fa-star-half-o"></i>
                                         <i className="fa fa-star-half-o"></i>
                                     </div>
-                                    <Link to="/guiderallpost">Watch my post</Link>
+                                    <Link to={"/post/"+post.post_id}>Watch my post</Link>
                                 </div>
                             )
                             })

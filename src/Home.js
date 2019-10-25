@@ -21,21 +21,20 @@ class Home extends Component {
       const category = await responsePosts.json();
 
       this.setState({ category});
-      console.log(this.state.category);
     } catch (err) {
       console.log(err);
     }
   }
   render() {
-    let tour = this.state.category.map((tour) => {
+    let tour = this.state.category.map((tour,index) => {
       if(tour.category ==="Night tour"){
-        return ( <li>
+        return ( <li key={index}>
           <img src="/img/Nighttour.jpg"/>
           <a href={"/posttour/"+tour.category_id+"/"+tour.category}>{tour.category}</a>
           </li>
          )
       }
-       return ( <li>
+       return ( <li key={index}>
         <img src={`/img/${tour.category}.jpg`}/>
         <a href={"/posttour/"+tour.category_id+"/"+tour.category} >{tour.category} tour</a>
         </li>

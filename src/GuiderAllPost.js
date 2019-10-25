@@ -1,62 +1,41 @@
 import React, { Component } from "react";
 import "font-awesome/css/font-awesome.min.css";
-import $ from "jquery";
 import { Link, Route, Switch } from 'react-router-dom';
 import Rated from "./Rated";
-import PostDetail from './PostDetail';
 import GuiderInPost from './GuiderInPost';
-import GuiderDetail from './GuiderDetail';
 class GuiderAllPost extends Component {
   constructor(props) {
     super(props);
-    let initPosts = [
-      {
-        post_id: "",
-        title: "",
-        video_link: "",
-        picture_link: [],
-        total_hour: 1,
-        description: "",
-        including_service: [],
-        active: true,
-        location: "",
-        price: 0,
-        rated: 0,
-        reasons: null
-      }
-    ];
 
     this.state = {
-      posts: initPosts
+      posts: []
     };
   }
 
   async componentDidMount() {
     //add css with jquery
-    $("head").append('<link href="/css/tour.css" rel="stylesheet"/>');
-    $("head").append('<link href="/css/profile.css" rel="stylesheet"/>');
-    $("head").append('<link href="/css/login.css" rel="stylesheet"/>');
-   
-
+    
+    
+   const guider_id = this.props.match.params.guider_id;
     try {
       const responsePosts = await fetch(
-        "http://localhost:8080/guiderpost/postOfOneGuider?guider_id=" +
-          this.props.guiderId
+        "http://localhost:8080/guiderpost/postOfOneGuider?guider_id=" + guider_id
       );
 
       if (!responsePosts.ok) {
         throw Error(responsePosts.status + ": " + responsePosts.statusText);
       }
 
-      const post = await responsePosts.json();
+      const posts = await responsePosts.json();
 
-      this.setState({ posts: post });
+      this.setState({ posts});
     } catch (err) {
       console.log(err);
     }
   }
 
   render() {
+    const guider_id = this.props.match.params.guider_id;
     let posts = this.state.posts.map((post, index) => (
       <li key={index}>
         <div className="sheet">
@@ -118,11 +97,6 @@ class GuiderAllPost extends Component {
       </li>
     ));
 
-    const switches = this.state.posts.map((post, index) => (
-      <Route path={"/post/" + post.post_id} key={index}>
-        <PostDetail postId={post.post_id} />
-      </Route>
-    ));
 
     return (
       <div>
@@ -131,15 +105,9 @@ class GuiderAllPost extends Component {
             {/*  Content  */}
             <div className="content">
               <div className="content-left">
-              <GuiderInPost guiderId={this.props.guiderId} />
+              <GuiderInPost guiderId={guider_id} />
               </div>
               <div className="content-right">
-                <Switch>
-                  <Route path={"/guider"}>
-                    <GuiderDetail guiderId={this.props.guiderId} />
-                  </Route>
-                  {switches}
-                </Switch>
                 <div className="bookOffers">
                   <h2>Book one of my offers in Ha Noi</h2>
                   <ul>{posts}</ul>

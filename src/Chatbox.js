@@ -53,7 +53,6 @@ class Chatbox extends Component {
 
   componentDidMount() {
     this.scrollToBottom();
-    $("head").append('<link href="/css/chatbox.css" rel="stylesheet"/>');
   }
 
   componentDidUpdate() {
@@ -103,7 +102,7 @@ class Chatbox extends Component {
           {/* plan of tour */}
           <div className="plan">
             <div className="planContent">
-              <h2>This is plan</h2>
+              <h2>This is plan 1</h2>
               <p>
                 Check out the plan below to see what you'll get up to with your
                 local host.
@@ -233,7 +232,7 @@ class Chatbox extends Component {
                     </button>
                   </span>
                 </span>
-                <div className="viewNumberTravel">
+                <div className="viewNumberTravel viewNummberChat">
                   <div className="adult">
                     Adults
                     <div className="plusAndMinus">

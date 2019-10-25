@@ -287,7 +287,6 @@ body {
 .react-datepicker__input-container input{
   font-size: 18px;
   padding-left: 10px;
-  margin-left: 10px;
   cursor: pointer;
   border-radius: 3px;
   width: 270px;
@@ -378,4 +377,12 @@ body {
   background-color: #6fbe44;
   width: 100%;
 
+}
+
+.react-datepicker-wrapper{
+  width: 86% !important;
+}
+
+.viewNummberChat {
+  display: block !important;
 }

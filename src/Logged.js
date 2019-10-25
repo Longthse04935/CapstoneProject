@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
 import "font-awesome/css/font-awesome.min.css";
+import {Link} from 'react-router-dom';
 class Logged extends Component {
     constructor(props){
         super(props);
@@ -40,9 +41,9 @@ class Logged extends Component {
             <nav className="navbar">
                 <div className="menubar">
                     <div className="logoContainer">
-                    <a href="/home">
+                    <Link to="/">
                     <i className="fa fa-arrows" aria-hidden="true"/>
-                    </a>
+                    </Link>
                     </div>
                     <div className="search">
                     <label>
@@ -118,30 +119,28 @@ class Logged extends Component {
                     <div className="navbarRightContent">
                         <ul className="logged" >
                             <li>
-                            <a href="/profiletraveller">Become a guider</a>
+                            <Link to="/profiletraveller">Become a guider</Link>
                             </li>
                             <li>
-                            <a href="#" >
+                            <Link to="/">
                                 Messages
-                            </a>
+                            </Link>
                             </li>
                             <li>
-                            <a href="#">
+                            <Link to="/">
                                 Favorites
-                            </a>
+                                </Link>
                             </li>
                             <li className="avatarLogged" onClick={this.disableLoggedChoice}>
-                            <a href="#">
                                 <img src="/img/2.jpg"/>
                                 <ul className="dropContent" style={this.state.disable ? {display: 'none'} : { display: 'block' }}>
-                                    <li><a href="/profiletraveller">Edit profile</a><i className="fa fa-user" aria-hidden="true"></i></li>
-                                    <li><a href="/editpost">Edit post</a><i className="fa fa-user" aria-hidden="true"></i></li>
-                                    <li><a href="">Favorites</a><i className="fa fa-user" aria-hidden="true"></i></li>
-                                    <li><a href="">Help</a><i className="fa fa-user" aria-hidden="true"></i></li>
-                                    <li><a href="">Log out</a><i className="fa fa-user" aria-hidden="true"></i></li>
-                                    <li><a href="">Contact</a><i className="fa fa-user" aria-hidden="true"></i></li>
+                                    <li><Link to="/profiletraveller">Edit profile</Link><i className="fa fa-user" aria-hidden="true"></i></li>
+                                    <li><Link to="/editpost">Edit post</Link><i className="fa fa-user" aria-hidden="true"></i></li>
+                                    <li><Link to="">Favorites</Link><i className="fa fa-user" aria-hidden="true"></i></li>
+                                    <li><Link to="">Help</Link><i className="fa fa-user" aria-hidden="true"></i></li>
+                                    <li><Link to="">Log out</Link><i className="fa fa-user" aria-hidden="true"></i></li>
+                                    <li><Link to="">Contact</Link><i className="fa fa-user" aria-hidden="true"></i></li>
                                 </ul>
-                            </a>
                             </li>
                         </ul>
                     </div>

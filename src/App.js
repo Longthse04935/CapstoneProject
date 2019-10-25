@@ -11,6 +11,7 @@ import Footer from './Footer';
 import Logged from './Logged';
 import Home from './Home';
 import PostTourDetail from './PostTourDetail';
+import PostDetail from './PostDetail';
 class App extends Component {
   render() {
     return (
@@ -19,14 +20,18 @@ class App extends Component {
         <Logged />
         {/* <Navbar /> */}
           <Switch>
+              <Route path='/' component={Home} exact />
+              <Route path='/guider/:guider_id' component={GuiderAllPost} exact />
+              <Route path='/post/:post_id' component={PostDetail} exact />
               <Route exact path='/chatbox' component={Chatbox} />
               <Route path='/editpost' component={EditPost} />
               <Route path='/profileguiders' component={ProfileGuiders} />
               <Route path='/tour' component={Tour} />
               <Route path='/profiletraveller' component={ProfileTravaller} />
-              <Route path='/Home' component={Home} />
+              
+              
+              <Route path='/tour/:id' component={PostTourDetail} exact />
               <Route path='/posttour/:id/:type' component={PostTourDetail} />
-              <Route path='/' ><GuiderAllPost guiderId={4} /></Route>
           </Switch>
           <Footer />
         </div>

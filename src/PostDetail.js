@@ -9,7 +9,9 @@ import $ from 'jquery';
 class PostDetail extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { 
+		this.state = {  
+			currentPage: 1,
+			todosPerPage: 4, 
 			postInfo: [],
 			posts: [],
 			guider: {}
@@ -47,13 +49,48 @@ class PostDetail extends React.Component {
 		this.props.history.push('/post/' + post_id);
 		window.location.reload();
 	}
+
+	handleCurrentPage = (event) => {
+        this.setState({
+          currentPage: event.target.id
+        });
+	  }
+	  
 	render() {
 		const {postInfo} = this.state;
 		const post_id = this.props.match.params.post_id;
 		let guider_id = this.state.guider.guider_id;
 
+		//pagination
 
-		let posts = this.state.posts.map((post, index) => (
+		const data = this.state.posts;
+        const {currentPage, todosPerPage } = this.state;
+
+        // Logic for displaying todos
+        const indexOfLastTodo = currentPage * todosPerPage;
+        const indexOfFirstTodo = indexOfLastTodo - todosPerPage;
+        const currentdata = data.slice(indexOfFirstTodo, indexOfLastTodo);
+
+        // Logic for displaying page numbers
+        const pageNumbers = [];
+        for (let i = 1; i <= Math.ceil(data.length / todosPerPage); i++) {
+          pageNumbers.push(i);
+        }
+
+        const renderPageNumbers = pageNumbers.map(number => {
+            return (
+              <button
+                key={number}
+                id={number}
+                onClick={this.handleCurrentPage}
+                className={currentPage === number ? 'currentPage': ''}
+              >
+                {number}
+              </button>
+            );
+        });
+
+		let posts = currentdata.map((post, index) => (
 			<li key={index}>
 			  <div className="sheet">
 				<button className="unlike">
@@ -150,10 +187,18 @@ class PostDetail extends React.Component {
 						<PlanInPost postId={post_id} />
 						<button className="serve">How can I serve you!!</button>
 					</div>
+
 					<div className="bookOffers">
 						<h2>Book one of my offers in Ha Noi</h2>
 						<ul>{posts}</ul>
-						</div>
+					</div>
+
+					<div className="pagination">
+						<div className="paginationContent">
+						{renderPageNumbers}
+                  </div>
+				  
+                </div>
 					</div>
 					</div>
 				</div>

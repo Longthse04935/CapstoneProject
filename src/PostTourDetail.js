@@ -5,9 +5,12 @@ class PostTourDetail extends Component {
     constructor(props) {
         super(props);
         this.state = {
+          currentPage: 1,
+          todosPerPage: 4, 
           dataPostOneCategory: []
         };
       }
+
       async componentDidMount() {
         try {
           const responsePosts = await fetch(
@@ -20,19 +23,51 @@ class PostTourDetail extends Component {
           const dataPostOneCategory = await responsePosts.json();
     
           this.setState({ dataPostOneCategory});
-          console.log(dataPostOneCategory);
         } catch (err) {
           console.log(err);
         }
       }
+
+      handleCurrentPage = (event) => {
+        this.setState({
+          currentPage: event.target.id
+        });
+      }
+
     render() {
         const data = this.state.dataPostOneCategory;
+        const {currentPage, todosPerPage } = this.state;
+
+        // Logic for displaying todos
+        const indexOfLastTodo = currentPage * todosPerPage;
+        const indexOfFirstTodo = indexOfLastTodo - todosPerPage;
+        const currentdata = data.slice(indexOfFirstTodo, indexOfLastTodo);
+
+        // Logic for displaying page numbers
+        const pageNumbers = [];
+        for (let i = 1; i <= Math.ceil(data.length / todosPerPage); i++) {
+          pageNumbers.push(i);
+        }
+
+        const renderPageNumbers = pageNumbers.map(number => {
+            return (
+              <button
+                key={number}
+                id={number}
+                onClick={this.handleCurrentPage}
+                className={currentPage === number ? 'currentPage': ''}
+              >
+                {number}
+              </button>
+            );
+        });
+
         return (
             <div className='postInTour'>
                 <h2>All posts about {this.props.match.params.type} </h2>
                 <div className="contentTour">
                     {
-                        data.map((post,index) => {
+                      currentdata.map((post,index) => {
                             return ( 
                                 <div className="contentTourDetail" key={index}>
                                     <video controls>
@@ -55,7 +90,11 @@ class PostTourDetail extends Component {
                             )
                             })
                     }
-                   
+                </div>
+                <div className="pagination">
+                  <div className="paginationContent">
+                  {renderPageNumbers}
+                  </div>
                 </div>
             </div>
         );

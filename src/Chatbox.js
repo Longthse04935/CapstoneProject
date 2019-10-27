@@ -10,6 +10,7 @@ class Chatbox extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      //chatbox
       index: 1,
       chatText: "",
       chatData: [
@@ -20,11 +21,18 @@ class Chatbox extends Component {
           type: "you"
         }
       ],
+      //tour
       tourDate: new Date(),
+      hourBegin:'01',
+      minuteBegin:'00',
       numberInjoy: {
         adult: 1,
-        children: 0
-      }
+        children: 0,
+        price: 10,
+        totalPrice:10
+      },
+      //plan in tour
+      plan:[]
     };
   }
 
@@ -47,16 +55,48 @@ class Chatbox extends Component {
     this.setState({ chatData, chatText: "", index: index });
   };
 
-  scrollToBottom = () => {
-    this.messagesEnd.scrollIntoView({ behavior: "smooth" });
-  };
+  // scrollToBottom = () => {
+  //   this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+  // };
 
-  componentDidMount() {
-    this.scrollToBottom();
+  async componentDidMount() {
+    // this.scrollToBottom();
+    const post_id = this.props.match.params.post_id;
+    //price in tour
+    
+    let {numberInjoy} = this.state;
+    try {
+      const responsePosts = await fetch(
+        "http://localhost:8080/guiderpost/?post_id=" + post_id
+      );
+
+      if (!responsePosts.ok) {
+        throw Error(responsePosts.status + ": " + responsePosts.statusText);
+      }
+
+      const posts = await responsePosts.json();
+      numberInjoy.price = posts.price;
+      numberInjoy.totalPrice = numberInjoy.adult *posts.price;
+      this.setState({ numberInjoy});
+
+      //plan in tour
+        const responsePlan = await fetch(
+          "http://localhost:8080/activity/post/" + post_id
+        );
+  
+        if (!responsePlan.ok) {
+          throw Error(responsePlan.status + ": " + responsePlan.statusText);
+        }
+  
+        const plan = await responsePlan.json();
+        this.setState({ plan});
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   componentDidUpdate() {
-    this.scrollToBottom();
+    // this.scrollToBottom();
   }
 
   dateChange = date => {
@@ -65,122 +105,107 @@ class Chatbox extends Component {
     });
   };
 
+  handleChangeHour = e => {
+      this.setState({
+          hourBegin:e.target.value
+      });
+  }
+
+  handleChangeMinute = e => {
+      this.setState({
+          minuteBegin:e.target.value
+      });
+  }
+  bookNow= () => {
+    var data = this.state;
+    var today = data.tourDate;
+    var tourDetail = {
+      traveler_id:'',
+      post_id:'',
+      begin_date:'',
+      adult_quantity:'',
+      children_quantity:''
+    };
+    tourDetail.traveler_id = 1;
+    tourDetail.post_id = this.props.match.params.post_id;
+    tourDetail.begin_date = parseInt(today.getMonth()+1) + "/"+ today.getDate() +"/"+ today.getFullYear()+" "+data.hourBegin+":"+data.minuteBegin ;
+    tourDetail.adult_quantity = data.numberInjoy.adult;
+    tourDetail.children_quantity = data.numberInjoy.children;
+  }
+
   changeNumber = (age, minusPlus) => {
     const { numberInjoy } = this.state;
     const min = 1;
     const max = 8;
     var currentPeople = numberInjoy.adult + numberInjoy.children;
+    
     if (age === "adult" && minusPlus === "minus") {
      if(currentPeople > min && numberInjoy.adult > 1){
       numberInjoy.adult--;
-      this.setState({ numberInjoy: numberInjoy });
+    
      }
     } else if (age === "adult" && minusPlus === "plus") {
       if(currentPeople < max){
         numberInjoy.adult++;
-        this.setState({ numberInjoy: numberInjoy });
+        
       }
     } else if (age === "child" && minusPlus === "minus") {
       if(currentPeople > min && numberInjoy.children > 0){
         numberInjoy.children--;
-        this.setState({ numberInjoy: numberInjoy });
+
       }
     } else if (age === "child" && minusPlus === "plus") {
       if(currentPeople < max){
         numberInjoy.children++;
-        this.setState({ numberInjoy: numberInjoy });
       }
-    }
+    } 
+    numberInjoy.totalPrice = ((numberInjoy.adult * numberInjoy.price)+(numberInjoy.children * numberInjoy.price * 0.5));
+    this.setState({ numberInjoy: numberInjoy });
+
   };
 
   render() {
-    const { chatData, chatText, author, numberInjoy } = this.state;
+    const { chatData, chatText, author, numberInjoy,plan } = this.state;
+    let hour = [];
+        for (var i = 1; i < 25; i++) {
+          hour.push(i);
+        }
+
+    let selectHour = hour.map((value)=>{
+      if(value < 10){
+       return <option value={'0'+value}>0{value}</option> ;
+      }
+      return <option value={value}>{value}</option> ;
+    });
     return (
+   
       <div className="ChatRoom">
         {/* Chat form */}
         <div className="chat_window">
           {/* plan of tour */}
           <div className="plan">
             <div className="planContent">
-              <h2>This is plan 1</h2>
+              <h2>This is our plan</h2>
               <p>
                 Check out the plan below to see what you'll get up to with your
                 local host.
               </p>
               <p> Feel free to personalize this offer.</p>
               <div style={{ marginBottom: "30px" }} />
-              <div className="meetPoint">
-                <i className="fa fa-map-marker" aria-hidden="true"></i>
-                <div className="detailPlan">
-                  <h4>Meeting point</h4>
-                  <p>Curry 36 - Berlin</p>
-                </div>
-              </div>
+              {
+                plan.map(value => (
               <div className="detail">
                 <i className="fa fa-circle" />
-                <div className="detailPlan">
-                  <h4>Classic Currywurst</h4>
+                <div className="detailPlan detailPlanChatBox">
+                  <h4>{value.brief}</h4>
                   <p>
-                    Try it from a place with 35 years of tradition that became a
-                    culinary Berliner institution.
+                  {value.detail}
                   </p>
                 </div>
               </div>
-              <div className="detail">
-                <i className="fa fa-circle" />
-                <div className="detailPlan">
-                  <h4>Schaumkuss</h4>
-                  <p>Try a delicious sweet treat</p>
-                </div>
-              </div>
-              <div className="detail">
-                <i className="fa fa-circle" />
-                <div className="detailPlan">
-                  <h4>A sweet Berliner (Pfannkuchen)</h4>
-                  <p>A Withlocals favorite that you will not forget!</p>
-                </div>
-              </div>
-              <div className="detail">
-                <i className="fa fa-circle" />
-                <div className="detailPlan">
-                  <h4>Leberkäse mit Semmel</h4>
-                  <p>A hearty portion of a German specialty</p>
-                </div>
-              </div>
-              <div className="detail">
-                <i className="fa fa-circle" />
-                <div className="detailPlan">
-                  <h4>Kartoffelpuffer</h4>
-                  <p>
-                    Authentic German street-food, prepared for 30 years, daily,
-                    by the same chef.
-                  </p>
-                </div>
-              </div>
-              <div className="detail">
-                <i className="fa fa-circle" />
-                <div className="detailPlan">
-                  <h4>Original German Berlin beer</h4>
-                  <p>Time for a refreshment!</p>
-                </div>
-              </div>
-              <div className="detail">
-                <i className="fa fa-circle" />
-                <div className="detailPlan">
-                  <h4>Berlin-style Boulette</h4>
-                  <p>
-                    Taste a Berlin-style Boulette served by an imbiss run by
-                    locals.
-                  </p>
-                </div>
-              </div>
-              <div className="detail">
-                <i className="fa fa-circle" />
-                <div className="detailPlan">
-                  <h4>Baklava</h4>
-                  <p>Oriental sweets to enjoy the tour on a sweet note!</p>
-                </div>
-              </div>
+                ))
+              }
+         
             </div>
           </div>
 
@@ -199,11 +224,25 @@ class Chatbox extends Component {
               </div>
 
               <div className="pickdate">
-                Pick Date:
+                Pick Date Start:
                 <DatePicker
                   selected={this.state.tourDate}
                   onChange={this.dateChange}
                 />
+              </div>
+              <div className="selectTime">
+                <p>Pick Time Start:</p>
+                <div className="select-style">
+                <select  onChange={this.handleChangeHour}>
+                  {selectHour}
+                  </select>
+                </div>
+                <div className="select-style pickMinute">
+                  <select  onChange={this.handleChangeMinute} >
+                    <option value="00">00</option>
+                    <option value="30">30</option>
+                  </select>
+                </div>
               </div>
               <div className="numberTravel">
                 <span>
@@ -261,11 +300,10 @@ class Chatbox extends Component {
                       ></i>
                     </div>
                   </div>
-                  <p>€223 per person</p>
-                  <a href="">Apply</a>
+                  <p>${numberInjoy.totalPrice} per person</p>
                 </div>
 
-                <button className="bookNow">Book now</button>
+                <button className="bookNow" onClick={this.bookNow}>Book now</button>
               </div>
             </div>
           </div>

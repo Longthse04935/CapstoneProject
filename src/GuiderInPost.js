@@ -75,7 +75,7 @@ class GuiderInPost extends React.Component {
                         </span>
                         <span className="ListItemText">Response time</span>
                     </p>
-                    <Link to="/chatbox"><button className="BtnContact" href="/chatbox">Contact me</button></Link>
+                    <Link to={"/chatbox/"+ this.props.postId}><button className="BtnContact">Contact me</button></Link>
                   </div>
             );
       }

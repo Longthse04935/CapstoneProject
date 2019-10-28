@@ -419,3 +419,7 @@ body {
 .detail .detailPlanChatBox{
   margin-bottom: 0px!important;
 }
+
+.infoTraveller p{
+  margin-bottom: 0;
+}

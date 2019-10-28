@@ -1,0 +1,232 @@
+import React, { Component } from "react";
+import "font-awesome/css/font-awesome.min.css";
+import country from './json/country.json';
+class Pay extends Component {
+  constructor(props){
+    super(props);
+
+    this.state = {
+      country:[],
+      isDisabled:true
+    }
+  }
+
+  componentDidMount() {
+      this.setState({country});
+  }
+
+  genderOnChange = (e)=>{
+    if(e.target.name==='gender'){
+      if(e.target.value==='' || e.target.value===null ){
+        this.setState({
+          genderError:true
+        })
+      } else {
+        this.setState({
+          genderError:false,     
+          gender:e.target.value
+        })
+      }
+    }
+    
+  }
+
+  validateEmail(email){
+   const pattern = /[a-zA-Z0-9]+[\.]?([a-zA-Z0-9]+)?[\@][a-z]{3,9}[\.][a-z]{2,5}/g;
+   const result = pattern.test(email);
+   if(result === true){
+     this.setState({
+       emailError:false,
+       email:email
+     })
+   } else{
+     this.setState({
+       emailError:true
+     })
+   }
+ }
+
+  validatePhone(phone){
+    const pattern = /^\d{10}$/;
+    const result = pattern.test(phone);
+    if(result === true){
+      this.setState({
+        phoneError:false,
+        phone:phone
+      })
+    } else{
+      this.setState({
+        phoneError:true
+      })
+    }
+  }
+
+  
+  handleChange(e){
+    const target = e.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+    this.setState({
+      [name]: value
+    });
+    if(e.target.name==='firstname'){
+      if(e.target.value==='' || e.target.value===null ){
+        this.setState({
+          firstnameError:true
+        })
+      } else {
+        this.setState({
+          firstnameError:false,     
+          firstName:e.target.value
+        })
+      }
+    }
+    if(e.target.name==='lastname'){
+      if(e.target.value==='' || e.target.value===null){
+        this.setState({
+          lastnameError:true
+        })
+      } else {
+        this.setState({
+          lastnameError:false,
+          lastName:e.target.value
+        })
+      }
+    }
+    if(e.target.name==='email'){
+    this.validateEmail(e.target.value);
+    }
+    if(e.target.name==='phone'){
+      this.validatePhone(e.target.value);
+  }
+  if(this.state.firstnameError===false && this.state.lastnameError===false && 
+    this.state.emailError===false && this.state.genderError === false){
+      this.setState({
+        isDisabled:false
+      })
+      
+  }
+  }
+  submitForm = (e) => {
+    e.preventDefault();
+    const data = {
+    firstName: this.state.firstName,
+    lastName: this.state.lastName,
+    email: this.state.email,
+    phone:this.state.phone,
+    gender:this.state.gender
+    }
+    console.log(data);
+  }
+
+  render() {
+    let country_name = this.state.country.map((value) =>{
+      return <option value={value.name}>{value.name + "("+value.code +")"}</option>   
+    })
+
+    let country_phone = this.state.country.map((value) =>{
+      return <option value={value.dial_code}>{value.name + "("+value.dial_code+")"}</option>   
+    })
+
+    return (
+      <div className="payForm">
+      <div className="inputInfoPay">
+        <div className="paypal_pay">
+          <h2>Select payment</h2>
+          <hr/>
+          <div className="paypal_radio">
+            <input type="radio" name="paypal" defaultValue="female" /> <span>Paypal</span>
+            <img src="/img/paypal.png"/>
+          </div>
+        </div>
+        
+            <div className="gender" >
+              <p>Gender</p>
+              <input
+                type="radio"
+                className="gendermale"
+                name="gender"
+                value="male"
+                onChange={(e)=>this.genderOnChange(e)}
+              /> Male
+              <input type="radio" name="gender" value="female" onChange={(e)=>this.genderOnChange(e)}/> Female
+              <input type="radio" name="gender" value="other" onChange={(e)=>this.genderOnChange(e)}/> Other
+            </div>
+
+            <div className="infoTravellerPay">
+              <p>First name</p>
+              <input type="text" placeholder="Fisrt name" name="firstname" onChange={(e)=>{this.handleChange(e)}}/>
+              {this.state.firstnameError ? <p style={{color: "red"}} className="errorInput">Please enter your first name</p> : ''} 
+
+              <p>Last name</p>
+              <input type="text" placeholder="Last name" name="lastname" onChange={(e)=>{this.handleChange(e)}}/>
+              {this.state.lastnameError ? <p style={{color: "red"}} className="errorInput">Please enter your last name</p> : ''} 
+
+              <p>Email</p>
+              <input type="text" placeholder="Email" name="email" onChange={(e)=>{this.handleChange(e)}}/>
+              {this.state.emailError ? <p style={{color: "red"}} className="errorInput">Please enter your email</p> : ''} 
+              <p>Country of residence</p>
+              <select
+                style={{
+                  width: "100%",
+                  height: "40px",
+                  border: "1px solid #eaeaea"
+                }}
+              >
+                {country_name}
+              </select>
+
+              <p>Phone</p>
+              <select
+                style={{
+                  width: "40%",
+                  height: "42px",
+                  border: "1px solid #eaeaea"
+                }}
+              >
+                {country_phone}
+              </select>
+              <input
+                type="text"
+                placeholder="Phone"
+                className="phone_traveller"
+                name = "phone"
+                onChange={(e)=>{this.handleChange(e)}}
+              />
+               {this.state.phoneError ? <p style={{color: "red"}} className="errorInput">Phone must be have 10 digit</p> : ''} 
+
+              <input type="submit" value="Save" className="saveInfoTraveller" disabled={this.state.isDisabled} onClick={this.submitForm}/>
+            </div>
+        </div>
+        <div className="infoTourBook">
+          <div className="intro_tour">
+            <img src="/img/natural1.jpg" />
+            <h2>The Magic of Dubai at Night Private Tour</h2>
+           
+          </div>
+          <div className="info_tourDetail">
+            <hr />
+            <div className="tour_detailHour">
+              <i class="fa fa-calendar-o celander" aria-hidden="true">
+                <span>13 Nov</span>
+              </i>
+              <i class="fa fa-clock-o" aria-hidden="true">
+                <span>18:00</span>
+              </i>
+              <i class="fa fa-user" aria-hidden="true">
+                <span>4 people</span>
+              </i>
+            <hr />
+            <div className="total_priceBook">
+              Total
+              <span>39$</span>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
+export default Pay;

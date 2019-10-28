@@ -12,6 +12,7 @@ import Logged from './Logged';
 import Home from './Home';
 import PostTourDetail from './PostTourDetail';
 import PostDetail from './PostDetail';
+import Pay from './Pay';
 class App extends Component {
   render() {
     return (
@@ -30,6 +31,7 @@ class App extends Component {
               <Route path='/profiletraveller' component={ProfileTravaller} />
               <Route path='/tour/:id' component={PostTourDetail} exact />
               <Route path='/posttour/:id/:type' component={PostTourDetail} />
+              <Route path='/book' component={Pay} />
           </Switch>
           <Footer />
         </div>

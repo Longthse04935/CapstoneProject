@@ -553,7 +553,7 @@ class Tour extends Component {
             <div className="reviewContainer">
               <img
                 className="defaultLogo"
-                src="./img/defaultAvatarComment.webp"
+                src="/img/defaultAvatarComment.webp"
                 alt="logo"
               />
               <div className="reviewInfo">
@@ -587,7 +587,7 @@ class Tour extends Component {
             <div className="reviewContainer">
               <img
                 className="defaultLogo"
-                src="./img/defaultAvatarComment.webp"
+                src="/img/defaultAvatarComment.webp"
                 alt="logo"
               />
               <div className="reviewInfo">
@@ -621,7 +621,7 @@ class Tour extends Component {
             <div className="reviewContainer">
               <img
                 className="defaultLogo"
-                src="./img/defaultAvatarComment.webp"
+                src="/img/defaultAvatarComment.webp"
                 alt="logo"
               />
               <div className="reviewInfo">
@@ -655,7 +655,7 @@ class Tour extends Component {
             <div className="reviewContainer">
               <img
                 className="defaultLogo"
-                src="./img/defaultAvatarComment.webp"
+                src="/img/defaultAvatarComment.webp"
                 alt="logo"
               />
               <div className="reviewInfo">
@@ -689,7 +689,7 @@ class Tour extends Component {
             <div className="reviewContainer">
               <img
                 className="defaultLogo"
-                src="./img/defaultAvatarComment.webp"
+                src="/img/defaultAvatarComment.webp"
                 alt="logo"
               />
               <div className="reviewInfo">
@@ -723,7 +723,7 @@ class Tour extends Component {
             <div className="reviewContainer">
               <img
                 className="defaultLogo"
-                src="./img/defaultAvatarComment.webp"
+                src="/img/defaultAvatarComment.webp"
                 alt="logo"
               />
               <div className="reviewInfo">
@@ -757,7 +757,7 @@ class Tour extends Component {
             <div className="reviewContainer">
               <img
                 className="defaultLogo"
-                src="./img/defaultAvatarComment.webp"
+                src="/img/defaultAvatarComment.webp"
                 alt="logo"
               />
               <div className="reviewInfo">
@@ -791,7 +791,7 @@ class Tour extends Component {
             <div className="reviewContainer">
               <img
                 className="defaultLogo"
-                src="./img/defaultAvatarComment.webp"
+                src="/img/defaultAvatarComment.webp"
                 alt="logo"
               />
               <div className="reviewInfo">
@@ -841,15 +841,15 @@ class Tour extends Component {
             <i className="far fa-heart" />
           </button>
           <div className="imageFigure">
-            <img src="./img/1.jpg" alt="logo" width={42} height={42} />
+            <img src="/img/1.jpg" alt="logo" width={42} height={42} />
           </div>
           <div className="experienceCard-details">
             <div className="experienceAvatarCardContainer">
               <div className="experienceAvatarCard1">
-                <img src="./img/2.jpg" alt="logo" width={64} height={64} />
+                <img src="/img/2.jpg" alt="logo" width={64} height={64} />
               </div>
               <div className="experienceAvatarCard2">
-                <img src="./img/3.jpg" alt="logo" width={64} height={64} />
+                <img src="/img/3.jpg" alt="logo" width={64} height={64} />
               </div>
               <div className="localAvailable">7 others locals available</div>
             </div>
@@ -896,15 +896,15 @@ class Tour extends Component {
             <i className="far fa-heart" />
           </button>
           <div className="imageFigure">
-            <img src="./img/1.jpg" alt="logo" width={42} height={42} />
+            <img src="/img/1.jpg" alt="logo" width={42} height={42} />
           </div>
           <div className="experienceCard-details">
             <div className="experienceAvatarCardContainer">
               <div className="experienceAvatarCard1">
-                <img src="./img/2.jpg" alt="logo" width={64} height={64} />
+                <img src="/img/2.jpg" alt="logo" width={64} height={64} />
               </div>
               <div className="experienceAvatarCard2">
-                <img src="./img/3.jpg" alt="logo" width={64} height={64} />
+                <img src="/img/3.jpg" alt="logo" width={64} height={64} />
               </div>
               <div className="localAvailable">7 others locals available</div>
             </div>
@@ -951,15 +951,15 @@ class Tour extends Component {
             <i className="far fa-heart" />
           </button>
           <div className="imageFigure">
-            <img src="./img/1.jpg" alt="logo" width={42} height={42} />
+            <img src="/img/1.jpg" alt="logo" width={42} height={42} />
           </div>
           <div className="experienceCard-details">
             <div className="experienceAvatarCardContainer">
               <div className="experienceAvatarCard1">
-                <img src="./img/2.jpg" alt="logo" width={64} height={64} />
+                <img src="/img/2.jpg" alt="logo" width={64} height={64} />
               </div>
               <div className="experienceAvatarCard2">
-                <img src="./img/3.jpg" alt="logo" width={64} height={64} />
+                <img src="/img/3.jpg" alt="logo" width={64} height={64} />
               </div>
               <div className="localAvailable">7 others locals available</div>
             </div>

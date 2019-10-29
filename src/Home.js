@@ -21,6 +21,7 @@ class Home extends Component {
       const category = await responsePosts.json();
 
       this.setState({ category});
+      console.log(category);
     } catch (err) {
       console.log(err);
     }

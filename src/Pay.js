@@ -6,8 +6,10 @@ class Pay extends Component {
     super(props);
 
     this.state = {
+      tourDetail:{},
       country:[],
-      isDisabled:true
+      isDisabled:true,
+      isDisabledPay:true
     }
   }
 
@@ -116,6 +118,7 @@ class Pay extends Component {
     phone:this.state.phone,
     gender:this.state.gender
     }
+    this.setState({isDisabledPay:false});
     console.log(data);
   }
 
@@ -127,11 +130,12 @@ class Pay extends Component {
     let country_phone = this.state.country.map((value) =>{
       return <option value={value.dial_code}>{value.name + "("+value.dial_code+")"}</option>   
     })
-
+    var tourDetail = JSON.parse(localStorage.getItem('tourDetail'));
+    
     return (
       <div className="payForm">
       <div className="inputInfoPay">
-        <div className="paypal_pay">
+        <div className={this.state.isDisabledPay ? 'paypal_pay hidden' : ''} >
           <h2>Select payment</h2>
           <hr/>
           <div className="paypal_radio">
@@ -139,7 +143,7 @@ class Pay extends Component {
             <img src="/img/paypal.png"/>
           </div>
         </div>
-        
+        <div className={this.state.isDisabledPay ? '' : 'paypal_pay hidden'} >
             <div className="gender" >
               <p>Gender</p>
               <input
@@ -197,7 +201,11 @@ class Pay extends Component {
 
               <input type="submit" value="Save" className="saveInfoTraveller" disabled={this.state.isDisabled} onClick={this.submitForm}/>
             </div>
+        
         </div>
+        </div>
+
+        {/* infoTourBook */}
         <div className="infoTourBook">
           <div className="intro_tour">
             <img src="/img/natural1.jpg" />
@@ -208,18 +216,18 @@ class Pay extends Component {
             <hr />
             <div className="tour_detailHour">
               <i class="fa fa-calendar-o celander" aria-hidden="true">
-                <span>13 Nov</span>
+                <span>{tourDetail.dateForBook}</span>
               </i>
               <i class="fa fa-clock-o" aria-hidden="true">
-                <span>18:00</span>
+                <span>{tourDetail.hourForBook}</span>
               </i>
               <i class="fa fa-user" aria-hidden="true">
-                <span>4 people</span>
+                <span>{tourDetail.adult_quantity+tourDetail.children_quantity} people</span>
               </i>
             <hr />
             <div className="total_priceBook">
               Total
-              <span>39$</span>
+              <span>{tourDetail.price}$</span>
             </div>
             </div>
           </div>

@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import "font-awesome/css/font-awesome.min.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import $ from "jquery";
+import  { Redirect } from 'react-router-dom'
 // import io from "socket.io-client";
 
 class Chatbox extends Component {
@@ -124,13 +124,22 @@ class Chatbox extends Component {
       post_id:'',
       begin_date:'',
       adult_quantity:'',
-      children_quantity:''
+      children_quantity:'',
+      price:'',
+      dateForBook:'',
+      hourForBook:''
     };
     tourDetail.traveler_id = 1;
     tourDetail.post_id = this.props.match.params.post_id;
     tourDetail.begin_date = parseInt(today.getMonth()+1) + "/"+ today.getDate() +"/"+ today.getFullYear()+" "+data.hourBegin+":"+data.minuteBegin ;
     tourDetail.adult_quantity = data.numberInjoy.adult;
     tourDetail.children_quantity = data.numberInjoy.children;
+    tourDetail.price = data.numberInjoy.totalPrice; 
+    tourDetail.dateForBook = parseInt(today.getMonth()+1) + "/"+ today.getDate() +"/"+ today.getFullYear(); 
+    tourDetail.hourForBook = data.hourBegin+":"+data.minuteBegin; 
+    localStorage.setItem('tourDetail', JSON.stringify(tourDetail));
+    window.location.href = "/book";
+
   }
 
   changeNumber = (age, minusPlus) => {
@@ -171,11 +180,11 @@ class Chatbox extends Component {
           hour.push(i);
         }
 
-    let selectHour = hour.map((value)=>{
+    let selectHour = hour.map((value,index)=>{
       if(value < 10){
-       return <option value={'0'+value}>0{value}</option> ;
+       return <option key={index} value={'0'+value}>0{value}</option> ;
       }
-      return <option value={value}>{value}</option> ;
+      return <option key={index} value={value}>{value}</option> ;
     });
     return (
    

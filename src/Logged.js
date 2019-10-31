@@ -38,6 +38,7 @@ class Logged extends Component {
         return (
             <div>
                 {/* Menubar */}
+
                 <nav className="navbar">
                     <div className="menubar">
                         <div className="logoContainer">
@@ -128,8 +129,10 @@ class Logged extends Component {
                                     <Link to="/">Bookings</Link>
                                 </li>
                                 <li className="avatarLogged" onClick={this.disableLoggedChoice}>
+
                                     
                                         <img src="./img/2.jpg" />
+
                                         <ul className="dropContent" style={this.state.disable ? { display: 'none' } : { display: 'block' }}>
                                             <li><Link to="/profile">Profile</Link><i className="fa fa-user" aria-hidden="true"></i></li>
                                             <li><Link to="/edit">Edit Post</Link><i className="fa fa-user" aria-hidden="true"></i></li>

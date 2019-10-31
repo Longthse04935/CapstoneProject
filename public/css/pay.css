@@ -1,0 +1,132 @@
+.payForm{
+    width: 60%;
+    margin: 0 auto;
+    margin-top: 6%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    box-shadow: 0 7px 33px 0 hsla(0,0%,78%,1);
+    line-height: 2.5rem;
+    color: #4a4a4a;
+    font-weight: 600;
+    font-size: 17px;
+    border-radius: 10px;
+}
+
+.payForm .inputInfoPay{
+    width: 60%;
+    margin: 40px 0 30px 20px;
+    
+}
+
+.payForm .infoTourBook{
+    width: 33%;
+    height: 450px;
+    box-shadow: 0 7px 33px 0 hsla(0,0%,78%,1);
+    margin: 10px 10px 0 0;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+.gender .gendermale{
+    margin-left: 0px;
+}
+.gender input{
+    margin-left: 100px;
+}
+
+.infoTravellerPay input[type="text"]{
+width: 100%;
+border: 1px solid #eaeaea;
+padding-left: 10px;
+}
+
+.infoTravellerPay p{
+    margin-top: 15px;
+    margin-bottom: 0;
+}
+
+.gender .countryResidence select{
+    width: 100% !important;
+    height: 40px;
+    border: 1px solid #eaeaea;
+}
+
+.infoTravellerPay .phone_traveller{
+    width: 60% !important;
+}
+
+.infoTravellerPay .saveInfoTraveller{
+    width: 40%;
+    border:none;
+    border-radius: 20px;
+    font-weight: 700;
+    background-color: #a3d063;
+    margin-top: 20px;
+}
+
+.infoTourBook .intro_tour img{
+    width: 100%;
+    border-radius: 10px 10px 0 0;
+}
+
+.infoTourBook .intro_tour h2{
+    font-weight: 600;
+}
+.info_tourDetail {
+    padding: 0 10px;
+}
+.infoTourBook .tour_detailHour i{
+    font-size: 17px;
+    margin-left: 30px;
+    color: #676565;
+}
+
+.infoTourBook .tour_detailHour span{
+    font-weight: 600;
+    margin-left: 5px;
+    font-family:  Arial;
+}
+
+.infoTourBook .tour_detailHour .celander{
+    margin-left: 0px;
+}
+
+.info_tourDetail .total_priceBook{
+    font-size: 20px;
+    position: relative;
+    color: #676565;
+}
+
+.tour_detailHour .total_priceBook span{
+    position: absolute;
+    right: 20px;
+}
+
+.inputInfoPay  h2{
+    font-size: 35px;
+    font-weight: 800;
+}
+.inputInfoPay  .paypal_radio{
+    position: relative;
+}
+.inputInfoPay  .paypal_radio img{
+    height: 49px;
+    position: absolute;
+    right: 0px;
+}
+
+.inputInfoPay  .paypal_radio span{
+    font-size: 20px;
+}
+
+.infoTravellerPay .errorInput{
+    color: red;
+    margin-top: 0;
+    font-size: 13px;
+    font-weight: 100;
+}
+
+.inputInfoPay .hidden{
+    display: none;
+}

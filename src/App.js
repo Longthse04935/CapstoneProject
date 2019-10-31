@@ -9,8 +9,6 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Navbar from './Navbar';
 import Footer from './Footer';
 import Logged from './Logged';
-import PostDetail from "./PostDetail";
-import Cookies from 'js-cookie';
 import AddPost from "./AddPost";
 class App extends Component {
 	constructor(props) {
@@ -48,7 +46,7 @@ class App extends Component {
 				{/* <AddPost guiderId="3"/> */}
 				{/* <PostDetail postId="1"/> */}
 				
-				<Router>
+				<Switch>
 					{present}
 					{/* <Route exact path='/chatbox' component={Chatbox} />
 					<Route path='/editpost' component={EditPost} />
@@ -59,12 +57,13 @@ class App extends Component {
 					<Route exact path={"/add"}><AddPost guiderId={this.state.id} /></Route>
 					<Route exact path={"/edit"}><GuiderAllPost guiderId={this.state.userId} /></Route>
 					<Footer />
-				</Router>
+				</Switch>
 				
 			</div>
 
 		);
 	}
+
 
 }
 

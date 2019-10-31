@@ -4,25 +4,14 @@ import {Link} from 'react-router-dom';
 class GuiderInPost extends React.Component {
       constructor(props) {
             super(props);
-            let init = {
-                "guider_id":0,
-                "first_name":"",
-                "last_name":"",
-                "age":0,
-                "about_me":".",
-                "contribution_point":0,
-                "city":"",
-                "active":false,
-                "languages":[]
-            }
-            this.state = {guider:init};
+            this.state = {guider:[]};
       }
       async componentDidMount() {
             try {
                   const response = await fetch("http://localhost:8080/guider/" + this.props.guiderId);
                   if (!response.ok) { throw Error(response.status + ": " + response.statusText); }
                   const guider = await response.json();
-                  this.setState({guider:guider});
+                  this.setState({guider});
             } catch (err) {
                   console.log(err);
             }
@@ -63,7 +52,7 @@ class GuiderInPost extends React.Component {
                             <i className="fa fa-globe"></i>
                         </span>
                         <span className="ListItemText">
-                            I speak {guide.languages.join(", ")}
+                            I speak {guide.languages}
                         </span>
                     </p>
                     <p className="ListItem">
@@ -86,7 +75,7 @@ class GuiderInPost extends React.Component {
                         </span>
                         <span className="ListItemText">Response time</span>
                     </p>
-                    <Link to="/chatbox"><button className="BtnContact" href="/chatbox">Contact me</button></Link>
+                    <Link to={"/chatbox/"+ this.props.postId}><button className="BtnContact">Contact me</button></Link>
                   </div>
             );
       }

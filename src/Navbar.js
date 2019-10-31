@@ -10,7 +10,7 @@ class Navbar extends Component {
         super(props);
         this.signUp = this.signUp.bind(this);
         this.logIn = this.logIn.bind(this);
-      
+
     }
 
     async signUp(eve) {
@@ -25,24 +25,23 @@ class Navbar extends Component {
             bod.userName = dom.querySelector("input[name='sign-up-name']").value;
             bod.password = dom.querySelector("input[name='sign-up-password']").value;
             bod.role = dom.querySelector("select[class='sign-up-custom-select']").value;
-            
+
             console.log(bod);
             try {
                 const response = await fetch("http://localhost:8080/account/registrator",
                     {
                         method: "POST",
                         mode: "cors",
-                        headers: {          
+                        headers: {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify(bod)
                     }
                 );
                 if (!response.ok) { throw Error(response.status + ": " + response.statusText); }
-                const token = await response.text();
-                console.log(await token);
-                await Cookies.set("__session", token);
-                this.props.reload.call();
+                const user = await response.json();
+                // console.log(await user);
+                this.props.reload.call(this, await user);
             } catch (err) {
                 console.log(err);
             }
@@ -64,7 +63,7 @@ class Navbar extends Component {
             bod.userName = dom.querySelector("input[name='log-in-name']").value;
             bod.password = dom.querySelector("input[name='log-in-password']").value;
             bod.role = dom.querySelector("select[class='log-in-custom-select']").value;
-            
+
             console.log(bod);
             try {
                 const response = await fetch("http://localhost:8080/account/login",
@@ -74,15 +73,15 @@ class Navbar extends Component {
                         headers: {
                             'Content-Type': 'application/json',
                             // http://localhost:8080/account/login
-                            
+
                         },
-                         body: JSON.stringify(bod)
+                        body: JSON.stringify(bod)
                     }
                 );
-                
+
                 if (!response.ok) { throw Error(response.status + ": " + response.statusText); }
-                const user =  await response.json();
-                console.log(await user);
+                const user = await response.json();
+                // console.log(await user);
                 this.props.reload.call(this, await user);
             } catch (err) {
                 console.log(err);
@@ -252,7 +251,7 @@ class Navbar extends Component {
                                             type="password"
                                             name="sign-up-password"
                                             required
-                                  
+
                                         />
                                     </div>
                                 </div>
@@ -379,7 +378,7 @@ class Navbar extends Component {
                                                 type="password"
                                                 name="log-in-password"
                                                 required
-                                              
+
                                             />
                                             <i className="fa fa-eye" />
                                         </div>

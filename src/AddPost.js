@@ -4,13 +4,10 @@ import Navbar from './Navbar';
 import Footer from './Footer';
 import $ from "jquery";
 import ReactDOMServer from 'react-dom/server';
-
-class EditPost extends Component {
+class AddPost extends Component {
     constructor(props) {
         super(props);
-        let initPost = {
 
-        };
         let initLocation = [{
             location_id: 1,
             location: "Phu Quoc"
@@ -31,7 +28,6 @@ class EditPost extends Component {
             services: [""],
             reasons: [""],
             plan: initPlan,
-            "picture_link": "",
             "title": "",
             "video_link": "",
             "total_hour": 1,
@@ -52,8 +48,6 @@ class EditPost extends Component {
         this.removeReason = this.removeReason.bind(this);
 
     }
-
-    
 
     removeReason(eve) {
         const copy = this.state;
@@ -106,37 +100,22 @@ class EditPost extends Component {
 
     async componentDidMount() {
         $("head").append('<link href="/css/editPost.css" rel="stylesheet"/>');
-        const copy = Object.assign({},this.state);
+        const copy = this.state;
         try {
             const responseLocation = await fetch("http://localhost:8080/location/findAll");
             const responseCategory = await fetch("http://localhost:8080/category/findAll");
-            const post = await fetch("http://localhost:8080/guiderpost/" + this.props.postId);
+       
             if (!responseCategory.ok) { throw Error(responseCategory.status + ": " + responseCategory.statusText); }
             if (!responseLocation.ok) { throw Error(responseLocation.status + ": " + responseLocation.statusText); }
-            if (!post.ok) { throw Error(post.status + ": " + post.statusText); }
-            const edit = await post.json();
             const location = await responseLocation.json();
             const category = await responseCategory.json();
             copy.locations = location;
             copy.categories = category;
-            copy.title = edit.title;
-            copy.video_link = edit.video_link;
-            copy.picture_link = edit.picture_link;
-            copy.total_hour = edit.total_hour;
-            copy.description = edit.description;
-            copy.services = edit.including_service;
-            copy.location = edit.location;
-            copy.category = edit.category;
-            copy.price = edit.price;
-            copy.reason = edit.reasons;
-           
             this.setState(copy);
         } catch (err) {
             console.log(err);
         }
     }
-
-    find
 
     async submitForm(eve) {
         eve.preventDefault();
@@ -195,7 +174,7 @@ class EditPost extends Component {
             );
             if (!response.ok) { throw Error(response.status + ": " + response.statusText); }
             const id = await response.text();
-            console.log(id);
+            console.log( id);
             let plans = {
                 meeting_point: copy.meeting_point,
                 detail: plan,
@@ -419,19 +398,19 @@ class EditPost extends Component {
                                 <div className="form-group row">
                                     <label className="col-lg-3 col-form-label form-control-label">Price</label>
                                     <div className="col-lg-8">
-                                        <input onChange={this.inputOnChange} className="form-control" type="text" name="price" placeholder={this.state.price}/>
+                                        <input onChange={this.inputOnChange} className="form-control" type="text" name="price" />
                                     </div>
                                 </div>
                                 <div className="form-group row">
                                     <label className="col-lg-3 col-form-label form-control-label">Title</label>
                                     <div className="col-lg-8">
-                                        <input onChange={this.inputOnChange} className="form-control" type="text" name="title" placeholder={this.state.title}/>
+                                        <input onChange={this.inputOnChange} className="form-control" type="text" name="title" />
                                     </div>
                                 </div>
                                 <div className="form-group row">
                                     <label onChange={this.inputOnChange} className="col-lg-3 col-form-label form-control-label">Video</label>
                                     <div className="col-lg-8">
-                                        <input onChange={this.inputOnChange} className="form-control" type="url" name="video_link" placeholder={this.state.video_link}/>
+                                        <input onChange={this.inputOnChange} className="form-control" type="url" name="video_link" />
                                     </div>
                                 </div>
                                 <div className="form-group row pictures">
@@ -452,13 +431,13 @@ class EditPost extends Component {
                                 <div className="form-group row">
                                     <label className="col-lg-3 col-form-label form-control-label">Total hour</label>
                                     <div className="col-lg-8">
-                                        <input onChange={this.inputOnChange} name="total_hour" className="form-control " type="text" placeholder={this.state.total_hour}/>
+                                        <input onChange={this.inputOnChange} name="total_hour" className="form-control " type="text" />
                                     </div>
                                 </div>
                                 <div className="form-group row">
                                     <label className="col-lg-3 col-form-label form-control-label">Description</label>
                                     <div className="col-lg-8">
-                                        <input onChange={this.inputOnChange} name="description" className="form-control" type="text" placeholder={this.state.description}/>
+                                        <input onChange={this.inputOnChange} name="description" className="form-control" type="text" />
                                     </div>
                                 </div>
                                 <div className="form-group row">
@@ -520,4 +499,4 @@ class EditPost extends Component {
     }
 }
 
-export default EditPost;
+export default AddPost;

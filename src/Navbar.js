@@ -42,6 +42,7 @@ class Navbar extends Component {
                 const token = await response.text();
                 console.log(await token);
                 await Cookies.set("__session", token);
+                this.props.reload.call();
             } catch (err) {
                 console.log(err);
             }
@@ -78,12 +79,11 @@ class Navbar extends Component {
                          body: JSON.stringify(bod)
                     }
                 );
-                console.log(await response);
+                
                 if (!response.ok) { throw Error(response.status + ": " + response.statusText); }
-                const token = await response.text();
-                console.log(await token);
-                await Cookies.set("__session", token);
-                this.props.reload.call();
+                const user =  await response.json();
+                console.log(await user);
+                this.props.reload.call(this, await user);
             } catch (err) {
                 console.log(err);
             }

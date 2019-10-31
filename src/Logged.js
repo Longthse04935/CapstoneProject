@@ -119,29 +119,31 @@ class Logged extends Component {
                         <div className="navbarRightContent">
                             <ul className="logged" >
                                 <li>
-                                    <Link path="/">Message</Link>
+                                    <Link to="/">Message</Link>
                                 </li>
                                 <li>
-                                    <Link path="/">Bookings</Link>
+                                    <Link to="/">Bookings</Link>
                                 </li>
                                 <li>
-                                    <Link path="/">Bookings</Link>
+                                    <Link to="/">Bookings</Link>
                                 </li>
                                 <li className="avatarLogged" onClick={this.disableLoggedChoice}>
-                                    <a href="#">
+                                    
                                         <img src="./img/2.jpg" />
                                         <ul className="dropContent" style={this.state.disable ? { display: 'none' } : { display: 'block' }}>
-                                            <li><Link path="/">Profile</Link><i className="fa fa-user" aria-hidden="true"></i></li>
-                                            <li><Link path="/">Post</Link><i className="fa fa-user" aria-hidden="true"></i></li>
-                                            <li><Link path="/">Bookings</Link><i className="fa fa-user" aria-hidden="true"></i></li>
-                                            <li><Link path="/">Bookings</Link><i className="fa fa-user" aria-hidden="true"></i></li>
+                                            <li><Link to="/profile">Profile</Link><i className="fa fa-user" aria-hidden="true"></i></li>
+                                            <li><Link to="/edit">Edit Post</Link><i className="fa fa-user" aria-hidden="true"></i></li>
+                                            <li><Link to="/add">Add Post</Link><i className="fa fa-user" aria-hidden="true"></i></li>
+                                            <li><Link to="/">Bookings</Link><i className="fa fa-user" aria-hidden="true"></i></li>
                                             <li onClick={() => {
                                                 console.log("log out");
-                                                this.props.reload.call();
+                                                this.props.reload.call({userName: "Guest",
+                                                role: "GUEST",
+                                                id: 0});
                                             }}>Log out<i className="fa fa-user" aria-hidden="true"></i></li>
 
                                         </ul>
-                                    </a>
+
                                 </li>
                             </ul>
                         </div>

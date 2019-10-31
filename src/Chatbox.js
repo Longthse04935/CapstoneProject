@@ -5,6 +5,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import  { Redirect } from 'react-router-dom'
 // import io from "socket.io-client";
+import Notification from './Notification';
 
 class Chatbox extends Component {
   constructor(props) {
@@ -23,8 +24,7 @@ class Chatbox extends Component {
       ],
       //tour
       tourDate: new Date(),
-      hourBegin:'01',
-      minuteBegin:'00',
+      hourBegin:'',
       numberInjoy: {
         adult: 1,
         children: 0,
@@ -32,7 +32,11 @@ class Chatbox extends Component {
         totalPrice:10
       },
       //plan in tour
-      plan:[]
+      plan:[],
+      //time can book tour
+      timeAvailable:[],
+      message: '',
+      isError: false
     };
   }
 
@@ -60,6 +64,16 @@ class Chatbox extends Component {
   // };
 
   async componentDidMount() {
+
+    let flag = this.props.match.params.message === undefined ? '' : this.props.match.params.message;
+    let isError = (flag === "booking_success") ? false : true;
+
+    let message = '';
+    if(flag) {
+      message = (isError) ? 'Booking Failed' : 'Booking Success';
+    }
+    this.setState({ message, isError });
+
     // this.scrollToBottom();
     const post_id = this.props.match.params.post_id;
     //price in tour
@@ -90,6 +104,29 @@ class Chatbox extends Component {
   
         const plan = await responsePlan.json();
         this.setState({ plan});
+
+        //load time avilable
+        var date = this.state.tourDate;
+        var getDate = parseInt(date.getDate()) < 10 ? "0"+parseInt(date.getDate()) : parseInt(date.getDate());
+        var getMonth = parseInt(date.getMonth()+1) < 10 ? "0"+parseInt(date.getMonth()+1) : parseInt(date.getMonth()+1);
+        var data = {
+          "guider_id":"1",
+          "post_id": ""+this.props.match.params.post_id,
+          "begin_date":"" + getMonth + "/"+ getDate +"/"+ date.getFullYear()+" 00:00"
+        };
+
+        let options = {
+          method: 'POST',
+          headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        };
+        let response = await fetch('http://localhost:8080/Order/GetAvailableHours', options);
+        response = await response.json();
+        this.setState({timeAvailable:response});
+        this.setState({hourBegin:response[0]});
     } catch (err) {
       console.log(err);
     }
@@ -99,11 +136,32 @@ class Chatbox extends Component {
     // this.scrollToBottom();
   }
 
-  dateChange = date => {
+  dateChange = async date => {
+    var getDate = parseInt(date.getDate()) < 10 ? "0"+parseInt(date.getDate()) : parseInt(date.getDate());
+    var getMonth = parseInt(date.getMonth()+1) < 10 ? "0"+parseInt(date.getMonth()+1) : parseInt(date.getMonth()+1);
+    var data = {
+      "guider_id":"1",
+      "post_id": ""+this.props.match.params.post_id,
+      "begin_date":"" + getMonth + "/"+ getDate +"/"+ date.getFullYear()+" 00:00"
+    };
+
     this.setState({
       tourDate: date
     });
-  };
+
+    let options = {
+      method: 'POST',
+      headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
+    };
+    let response = await fetch('http://localhost:8080/Order/GetAvailableHours', options);
+    response = await response.json();
+    this.setState({timeAvailable:response});
+
+  }
 
   handleChangeHour = e => {
       this.setState({
@@ -111,14 +169,11 @@ class Chatbox extends Component {
       });
   }
 
-  handleChangeMinute = e => {
-      this.setState({
-          minuteBegin:e.target.value
-      });
-  }
   bookNow= () => {
     var data = this.state;
     var today = data.tourDate;
+    var getDate = parseInt(today.getDate()) < 10 ? "0"+parseInt(today.getDate()) : parseInt(today.getDate());
+    var getMonth = parseInt(today.getMonth()+1) < 10 ? "0"+parseInt(today.getMonth()+1) : parseInt(today.getMonth()+1);
     var tourDetail = {
       traveler_id:'',
       post_id:'',
@@ -129,14 +184,14 @@ class Chatbox extends Component {
       dateForBook:'',
       hourForBook:''
     };
-    tourDetail.traveler_id = 1;
-    tourDetail.post_id = this.props.match.params.post_id;
-    tourDetail.begin_date = parseInt(today.getMonth()+1) + "/"+ today.getDate() +"/"+ today.getFullYear()+" "+data.hourBegin+":"+data.minuteBegin ;
-    tourDetail.adult_quantity = data.numberInjoy.adult;
-    tourDetail.children_quantity = data.numberInjoy.children;
+    tourDetail.traveler_id = ""+1;
+    tourDetail.post_id = ""+this.props.match.params.post_id;
+    tourDetail.begin_date = getMonth + "/"+ getDate +"/"+ today.getFullYear()+" "+data.hourBegin;
+    tourDetail.adult_quantity = ""+data.numberInjoy.adult;
+    tourDetail.children_quantity = ""+data.numberInjoy.children;
     tourDetail.price = data.numberInjoy.totalPrice; 
-    tourDetail.dateForBook = parseInt(today.getMonth()+1) + "/"+ today.getDate() +"/"+ today.getFullYear(); 
-    tourDetail.hourForBook = data.hourBegin+":"+data.minuteBegin; 
+    tourDetail.dateForBook = getMonth + "/"+ getDate +"/"+ today.getFullYear(); 
+    tourDetail.hourForBook = data.hourBegin; 
     localStorage.setItem('tourDetail', JSON.stringify(tourDetail));
     window.location.href = "/book";
 
@@ -175,20 +230,15 @@ class Chatbox extends Component {
 
   render() {
     const { chatData, chatText, author, numberInjoy,plan } = this.state;
-    let hour = [];
-        for (var i = 1; i < 25; i++) {
-          hour.push(i);
-        }
 
-    let selectHour = hour.map((value,index)=>{
-      if(value < 10){
-       return <option key={index} value={'0'+value}>0{value}</option> ;
-      }
+    let selectHour = this.state.timeAvailable.map((value,index)=>{
       return <option key={index} value={value}>{value}</option> ;
     });
+
+
     return (
-   
       <div className="ChatRoom">
+        <Notification message={this.state.message} isError={this.state.isError}/>
         {/* Chat form */}
         <div className="chat_window">
           {/* plan of tour */}
@@ -244,12 +294,6 @@ class Chatbox extends Component {
                 <div className="select-style">
                 <select  onChange={this.handleChangeHour}>
                   {selectHour}
-                  </select>
-                </div>
-                <div className="select-style pickMinute">
-                  <select  onChange={this.handleChangeMinute} >
-                    <option value="00">00</option>
-                    <option value="30">30</option>
                   </select>
                 </div>
               </div>

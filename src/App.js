@@ -24,7 +24,8 @@ class App extends Component {
               <Route path='/' component={Home} exact />
               <Route path='/guider/:guider_id' component={GuiderAllPost} exact />
               <Route path='/post/:post_id' component={PostDetail} exact />
-              <Route path='/chatbox/:post_id' component={Chatbox} />
+              <Route exact path='/chatbox/:post_id' component={Chatbox} />
+              <Route exact path='/chatbox/:post_id/:message' component={Chatbox} />
               <Route path='/editpost' component={EditPost} />
               <Route path='/profileguiders' component={ProfileGuiders} />
               <Route path='/tour' component={Tour} />

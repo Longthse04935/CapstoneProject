@@ -224,3 +224,13 @@
 .avatarLogged .dropContent li:hover i{
   color: #6fbe44;
 }
+
+.alert{
+  position: fixed;
+  z-index: 100;
+  width: 50%;
+  margin-left: 25%;
+  top: 50px;
+  text-align: center;
+  font-size: 15px;
+}

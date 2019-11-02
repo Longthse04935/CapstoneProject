@@ -163,7 +163,7 @@ class PostDetail extends React.Component {
 					<div className="content-right">
 					<div className="PostDetail">
 						<div className="intro">
-							<video >
+							<video controls>
 								<source src={postInfo.video_link} type="video/mp4" />
 							</video>
 							<h2 className="titleTour">{postInfo.title}</h2>

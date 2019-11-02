@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "font-awesome/css/font-awesome.min.css";
 import country from './json/country.json';
+import $ from 'jquery';
 class Pay extends Component {
   constructor(props){
     super(props);
@@ -15,6 +16,30 @@ class Pay extends Component {
 
   componentDidMount() {
       this.setState({country});
+
+      //open loader to paypal
+      $('input[name="paypal"]').on('click', function(){
+        $('.coverLoader').show();
+     });
+
+  }
+  async goToPayPal(){
+    var data=JSON.parse(localStorage.getItem('tourDetail'));
+    delete data.price;
+    delete data.dateForBook;
+    delete data.hourForBook;
+    let options = {
+      method: 'POST',
+      headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
+    };
+    let response = await fetch('http://localhost:8080/Payment/Pay', options);
+    response = await response.text();
+    window.location.href = response;
+    console.log(response);
   }
 
   genderOnChange = (e)=>{
@@ -133,13 +158,17 @@ class Pay extends Component {
     var tourDetail = JSON.parse(localStorage.getItem('tourDetail'));
     
     return (
-      <div className="payForm">
+      <div>
+        <div className="coverLoader">
+          <div className="loader"></div>
+        </div>
+        <div className="payForm">
       <div className="inputInfoPay">
         <div className={this.state.isDisabledPay ? 'paypal_pay hidden' : ''} >
           <h2>Select payment</h2>
           <hr/>
           <div className="paypal_radio">
-            <input type="radio" name="paypal" defaultValue="female" /> <span>Paypal</span>
+            <input type="radio" name="paypal" defaultValue="female" onChange={this.goToPayPal}/> <span>Paypal</span>
             <img src="/img/paypal.png"/>
           </div>
         </div>
@@ -232,6 +261,7 @@ class Pay extends Component {
             </div>
           </div>
         </div>
+      </div>
       </div>
     );
   }

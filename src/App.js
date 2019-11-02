@@ -58,12 +58,6 @@ class App extends Component {
 
 		return (
 			<div>
-
-
-
-				{/* <EditPost guiderId="1" postId="4"/> */}
-				{/* <AddPost guiderId="3"/> */}
-				{/* <PostDetail postId="1"/> */}
 				{present}
 				<Switch>
 

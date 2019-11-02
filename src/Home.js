@@ -28,15 +28,9 @@ class Home extends Component {
   }
   render() {
     let tour = this.state.category.map((tour,index) => {
-      if(tour.category ==="Night tour"){
-        return ( <li key={index}>
-          <img src="/img/Nighttour.jpg"/>
-          <a href={"/posttour/"+tour.category_id+"/"+tour.category}>{tour.category}</a>
-          </li>
-         )
-      }
        return ( <li key={index}>
         <img src={`/img/${tour.category}.jpg`}/>
+        {console.log(tour)}
         <a href={"/posttour/"+tour.category_id+"/"+tour.category} >{tour.category} tour</a>
         </li>
        )

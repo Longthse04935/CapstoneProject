@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import "font-awesome/css/font-awesome.min.css";
 import $ from 'jquery';
-import { Link } from "react-router-dom";
-import Cookies from 'js-cookie';
+
 import ReactDOM from 'react-dom';
 
 class Navbar extends Component {
@@ -10,7 +9,7 @@ class Navbar extends Component {
         super(props);
         this.signUp = this.signUp.bind(this);
         this.logIn = this.logIn.bind(this);
-      
+
     }
 
     async signUp(eve) {
@@ -25,23 +24,24 @@ class Navbar extends Component {
             bod.userName = dom.querySelector("input[name='sign-up-name']").value;
             bod.password = dom.querySelector("input[name='sign-up-password']").value;
             bod.role = dom.querySelector("select[class='sign-up-custom-select']").value;
-            
+
             console.log(bod);
             try {
                 const response = await fetch("http://localhost:8080/account/registrator",
                     {
                         method: "POST",
                         mode: "cors",
-                        headers: {          
+                        credentials: "include",
+                        headers: {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify(bod)
                     }
                 );
                 if (!response.ok) { throw Error(response.status + ": " + response.statusText); }
-                const token = await response.text();
-                console.log(await token);
-                await Cookies.set("__session", token);
+                const user = await response.json();
+                // console.log(await user);
+                this.props.reload.call(this, await user);
             } catch (err) {
                 console.log(err);
             }
@@ -63,27 +63,27 @@ class Navbar extends Component {
             bod.userName = dom.querySelector("input[name='log-in-name']").value;
             bod.password = dom.querySelector("input[name='log-in-password']").value;
             bod.role = dom.querySelector("select[class='log-in-custom-select']").value;
-            
+
             console.log(bod);
             try {
                 const response = await fetch("http://localhost:8080/account/login",
                     {
                         method: "POST",
                         mode: "cors",
+                        credentials: "include",
                         headers: {
                             'Content-Type': 'application/json',
                             // http://localhost:8080/account/login
-                            
+
                         },
-                         body: JSON.stringify(bod)
+                        body: JSON.stringify(bod)
                     }
                 );
-                console.log(await response);
+
                 if (!response.ok) { throw Error(response.status + ": " + response.statusText); }
-                const token = await response.text();
-                console.log(await token);
-                await Cookies.set("__session", token);
-                this.props.reload.call();
+                const user = await response.json();
+                // console.log(await user);
+                this.props.reload.call(this, await user);
             } catch (err) {
                 console.log(err);
             }
@@ -117,18 +117,12 @@ class Navbar extends Component {
             $('.signUpForm').show();
         });
 
-
-
         $('.closeLogin').click(function () {
             $('.signUpForm,.loginForm').hide();
         });
         // click login and close login form
-    
-        $('.login,.SpanLogin').click(function () {
-            $('.loginForm').show();
-        });
-        $('.SpanLogin').click(function () {
-            $('.signUpForm').hide();
+
+        $('.login').click(function () {
             $('.loginForm').show();
         });
 
@@ -258,7 +252,7 @@ class Navbar extends Component {
                                             type="password"
                                             name="sign-up-password"
                                             required
-                                  
+
                                         />
                                     </div>
                                 </div>
@@ -280,7 +274,6 @@ class Navbar extends Component {
                                 </button>
                             </div>
                             <div className="loginLinkContain">
-
                                 <button className="loginLink">
                                     <span className="SpanReady">I already have an account.</span>
                                     <span className="SpanLogin"> Log in</span>
@@ -386,7 +379,7 @@ class Navbar extends Component {
                                                 type="password"
                                                 name="log-in-password"
                                                 required
-                                              
+
                                             />
                                             <i className="fa fa-eye" />
                                         </div>
@@ -396,8 +389,6 @@ class Navbar extends Component {
                             <div className="forgotPass">
                                 <a href="javascrip:void(0)">I forgot my password</a>
                             </div>
-                        
-                       
                             <div className="Submit-2es0L">
                                 <button type="submit" className="Button-2iSbC SubmitButton-3lXjw">
                                     <span className="SubmitText-sXv20">Login</span>

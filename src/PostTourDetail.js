@@ -14,7 +14,13 @@ class PostTourDetail extends Component {
       async componentDidMount() {
         try {
           const responsePosts = await fetch(
-            "http://localhost:8080/guiderpost/allPostOfOneCategory?category_id="+this.props.match.params.id);
+            "http://localhost:8080/guiderpost/allPostOfOneCategory?category_id="+this.props.match.params.id,
+            {
+              method: "GET",
+              mode: "cors",
+              credentials: "include",
+             
+          });
     
           if (!responsePosts.ok) {
             throw Error(responsePosts.status + ": " + responsePosts.statusText);
@@ -77,7 +83,7 @@ class PostTourDetail extends Component {
                                     <p>{post.description}</p>
                                     <p>Price:{post.price}$</p>
                                     <p>Location:{post.location}</p>
-                                    <div class="Rating">
+                                    <div className="Rating">
                                         Rated:
                                         <i className="fa fa-star-half-o"></i>
                                         <i className="fa fa-star-half-o"></i>

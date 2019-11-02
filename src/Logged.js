@@ -13,18 +13,18 @@ class Logged extends Component {
     componentDidMount() {
         $("head").append('<link href="/css/login.css" rel="stylesheet"/>');
         $("head").append('<link href="/css/navbar.css" rel="stylesheet"/>');
-        $('.button-group > button').on('click', function() {
+        $('.button-group > button').on('click', function () {
             $('.button-group > button').removeClass('active');
             $(this).addClass('active');
         });
         $('input[name=search]').focus(function () {
-                $('.search .fillter').show();
-            
+            $('.search .fillter').show();
+
         });
         $(document).mouseup(function (e) {
             if (!$('.search').is(e.target) && !$('.fillter').is(e.target)
-            && $('.search').has(e.target).length === 0
-            && $('.fillter').has(e.target).length === 0) {
+                && $('.search').has(e.target).length === 0
+                && $('.fillter').has(e.target).length === 0) {
                 $('.fillter').hide();
             }
         });
@@ -120,66 +120,40 @@ class Logged extends Component {
                         <div className="navbarRightContent">
                             <ul className="logged" >
                                 <li>
-                                    <Link path="/">Message</Link>
+                                    <Link to="/">Message</Link>
                                 </li>
                                 <li>
-                                    <Link path="/">Bookings</Link>
+                                    <Link to="/">Bookings</Link>
                                 </li>
                                 <li>
-                                    <Link path="/">Bookings</Link>
+                                    <Link to="/">Bookings</Link>
                                 </li>
                                 <li className="avatarLogged" onClick={this.disableLoggedChoice}>
-                                    <a href="#">
-                                        <img src="/img/2.jpg" />
-                                        <ul className="dropContent" style={this.state.disable ? { display: 'none' } : { display: 'block' }}>
-                                            <li><Link path="/">Profile</Link><i className="fa fa-user" aria-hidden="true"></i></li>
-                                            <li><Link path="/">Post</Link><i className="fa fa-user" aria-hidden="true"></i></li>
-                                            <li><Link path="/">Bookings</Link><i className="fa fa-user" aria-hidden="true"></i></li>
-                                            <li><Link path="/">Bookings</Link><i className="fa fa-user" aria-hidden="true"></i></li>
-                                            <li onClick={() => {
-                                                console.log("log out");
-                                                this.props.reload.call();
-                                            }}>Log out<i className="fa fa-user" aria-hidden="true"></i></li>
 
-                                        </ul>
-                                    </a>
+
+                                    <img src="/img/2.jpg" />
+
+                                    <ul className="dropContent" style={this.state.disable ? { display: 'none' } : { display: 'block' }}>
+                                        <li><Link to="/profile">Profile</Link><i className="fa fa-user" aria-hidden="true"></i></li>
+                                        <li><Link to="/edit">Edit Post</Link><i className="fa fa-user" aria-hidden="true"></i></li>
+                                        <li><Link to="/add">Add Post</Link><i className="fa fa-user" aria-hidden="true"></i></li>
+                                        <li><Link to="/">Bookings</Link><i className="fa fa-user" aria-hidden="true"></i></li>
+                                        <li onClick={() => {
+                                            console.log("log out");
+                                            const user = {
+                                                userName: "Guest",
+                                                role: "GUEST",
+                                                id: 0
+                                            };
+                                            this.props.reload.call(this, user);
+                                        }}>Log out<i className="fa fa-user" aria-hidden="true"></i></li>
+
+                                    </ul>
+
                                 </li>
                             </ul>
                         </div>
-{/* <<<<<<< HEAD
-                        </div>
-                    </div>
-                    </div>
-                    <div className="navbarRightContent">
-                        <ul className="logged" >
-                            <li>
-                            <Link to="/profiletraveller">Become a guider</Link>
-                            </li>
-                            <li>
-                            <Link to="/">
-                                Messages
-                            </Link>
-                            </li>
-                            <li>
-                            <Link to="/">
-                                Favorites
-                                </Link>
-                            </li>
-                            <li className="avatarLogged" onClick={this.disableLoggedChoice}>
-                                <img src="/img/2.jpg"/>
-                                <ul className="dropContent" style={this.state.disable ? {display: 'none'} : { display: 'block' }}>
-                                    <li><Link to="/profiletraveller">Edit profile</Link><i className="fa fa-user" aria-hidden="true"></i></li>
-                                    <li><Link to="/editpost">Edit post</Link><i className="fa fa-user" aria-hidden="true"></i></li>
-                                    <li><Link to="">Favorites</Link><i className="fa fa-user" aria-hidden="true"></i></li>
-                                    <li><Link to="">Help</Link><i className="fa fa-user" aria-hidden="true"></i></li>
-                                    <li><Link to="">Log out</Link><i className="fa fa-user" aria-hidden="true"></i></li>
-                                    <li><Link to="">Contact</Link><i className="fa fa-user" aria-hidden="true"></i></li>
-                                </ul>
-                            </li>
-                        </ul>
-=======
 
->>>>>>> f31ca4c8e47460c57dc3bb30cd2bf5b84223e031 */}
                     </div>
                 </nav>
                 {/* End MenuBar */}

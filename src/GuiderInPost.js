@@ -12,6 +12,7 @@ class GuiderInPost extends React.Component {
                   if (!response.ok) { throw Error(response.status + ": " + response.statusText); }
                   const guider = await response.json();
                   this.setState({guider});
+                  window.sessionStorage.setItem("guider_name", ""+guider.first_name);
             } catch (err) {
                   console.log(err);
             }

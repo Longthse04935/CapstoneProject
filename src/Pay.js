@@ -251,7 +251,7 @@ class Pay extends Component {
                 <span>{tourDetail.hourForBook}</span>
               </i>
               <i class="fa fa-user" aria-hidden="true">
-                <span>{tourDetail.adult_quantity+tourDetail.children_quantity} people</span>
+                <span>{parseInt(tourDetail.adult_quantity)+parseInt(tourDetail.children_quantity)} people</span>
               </i>
             <hr />
             <div className="total_priceBook">

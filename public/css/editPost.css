@@ -23,7 +23,9 @@
     margin-top: 2%;
     margin-right: 8%;
 }
-
+.actEditPost{
+    border-bottom: none !important;
+}
 .coverContent{
     width: 75%;
     margin: 0 auto;

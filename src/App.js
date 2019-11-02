@@ -26,7 +26,7 @@ class App extends Component {
               <Route path='/post/:post_id' component={PostDetail} exact />
               <Route exact path='/chatbox/:post_id' component={Chatbox} />
               <Route exact path='/chatbox/:post_id/:message' component={Chatbox} />
-              <Route path='/editpost' component={EditPost} />
+              <Route path='/editpost/:id' component={EditPost} />
               <Route path='/profileguiders' component={ProfileGuiders} />
               <Route path='/tour' component={Tour} />
               <Route path='/profiletraveller' component={ProfileTravaller} />

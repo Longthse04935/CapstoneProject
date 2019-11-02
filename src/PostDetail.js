@@ -32,7 +32,8 @@ class PostDetail extends React.Component {
 
 			const responsePosts = await fetch("http://localhost:8080/guiderpost/postOfOneGuider?guider_id=" + guider.guider_id);
 			 if (!responsePosts.ok) { throw Error(responsePosts.status + ": " + responsePosts.statusText); }
-
+			
+			 window.sessionStorage.setItem("guider_id", ""+guider.guider_id);
 			 
 
 			const postInfo = await response.json();

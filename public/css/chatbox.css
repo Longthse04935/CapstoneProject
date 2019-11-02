@@ -423,3 +423,8 @@ body {
 .infoTraveller p{
   margin-bottom: 0;
 }
+
+.selectTime .closest_EndDate{
+  font-size: 16px;
+  color:#e71575;
+}

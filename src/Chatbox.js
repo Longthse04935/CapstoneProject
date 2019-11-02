@@ -36,7 +36,8 @@ class Chatbox extends Component {
       //time can book tour
       timeAvailable:[],
       message: '',
-      isError: false
+      isError: false,
+      closest_EndDate:""
     };
   }
 
@@ -140,13 +141,14 @@ class Chatbox extends Component {
     var getDate = parseInt(date.getDate()) < 10 ? "0"+parseInt(date.getDate()) : parseInt(date.getDate());
     var getMonth = parseInt(date.getMonth()+1) < 10 ? "0"+parseInt(date.getMonth()+1) : parseInt(date.getMonth()+1);
     var data = {
-      "guider_id":"1",
+      "guider_id":""+window.sessionStorage.getItem("guider_id"),
       "post_id": ""+this.props.match.params.post_id,
       "begin_date":"" + getMonth + "/"+ getDate +"/"+ date.getFullYear()+" 00:00"
     };
 
     this.setState({
-      tourDate: date
+      tourDate: date,
+      closest_EndDate:""
     });
 
     let options = {
@@ -163,10 +165,31 @@ class Chatbox extends Component {
 
   }
 
-  handleChangeHour = e => {
+  async handleChangeHour (e) {
       this.setState({
           hourBegin:e.target.value
       });
+
+      var date = this.state.tourDate;
+      var getDate = parseInt(date.getDate()) < 10 ? "0"+parseInt(date.getDate()) : parseInt(date.getDate());
+      var getMonth = parseInt(date.getMonth()+1) < 10 ? "0"+parseInt(date.getMonth()+1) : parseInt(date.getMonth()+1);
+      var data = {};
+      data.guider_id = "" +window.sessionStorage.getItem("guider_id");
+      data.begin_date = "" + getMonth + "/"+ getDate +"/"+ date.getFullYear() +" " + e.target.value;
+      let options = {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+      };
+      let response = await fetch('http://localhost:8080/Order/GetClosestFinishDate', options);
+      var closest_EndDate = await response.text();
+      closest_EndDate = window.sessionStorage.getItem("guider_name")+"'s closest ended tour at "+closest_EndDate;
+      this.setState({closest_EndDate});
+      
+
   }
 
   bookNow= () => {
@@ -232,7 +255,7 @@ class Chatbox extends Component {
     const { chatData, chatText, author, numberInjoy,plan } = this.state;
 
     let selectHour = this.state.timeAvailable.map((value,index)=>{
-      return <option key={index} value={value}>{value}</option> ;
+       return <option key={index} value={value}>{value}</option> ;
     });
 
 
@@ -292,10 +315,11 @@ class Chatbox extends Component {
               <div className="selectTime">
                 <p>Pick Time Start:</p>
                 <div className="select-style">
-                <select  onChange={this.handleChangeHour}>
+                <select  onChange={(e) => this.handleChangeHour(e)}>
                   {selectHour}
                   </select>
                 </div>
+                <h5 className="closest_EndDate">{this.state.closest_EndDate}</h5>
               </div>
               <div className="numberTravel">
                 <span>

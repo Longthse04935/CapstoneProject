@@ -153,10 +153,10 @@ class AddPost extends Component {
             "including_service": copy.services,
             "active": true,
             "location": location,
-            "category": cate,
+            "category": cate,   
             "price": copy.price,
             "rated": 3,
-            "reason": ReactDOMServer.renderToString(this.reasonToHTML(copy.reasons))
+            "reasons": ReactDOMServer.renderToString(this.reasonToHTML(copy.reasons))
         };
         let plan = ReactDOMServer.renderToString(this.planToHTML(copy.activities));
         console.log(initPost);
@@ -166,6 +166,7 @@ class AddPost extends Component {
                 {
                     method: "POST",
                     mode: "cors",
+                    credentials: "include",
                     headers: {
                         'Content-Type': 'application/json'
                     },
@@ -175,7 +176,7 @@ class AddPost extends Component {
             if (!response.ok) { throw Error(response.status + ": " + response.statusText); }
             const id = await response.text();
             console.log( id);
-            let plans = {
+            let plans = await {
                 meeting_point: copy.meeting_point,
                 detail: plan,
                 post_id: id,
@@ -184,6 +185,7 @@ class AddPost extends Component {
                 {
                     method: "POST",
                     mode: "cors",
+                    credentials: "include",
                     headers: {
                         'Content-Type': 'application/json'
                     },

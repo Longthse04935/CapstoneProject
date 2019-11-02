@@ -13,18 +13,18 @@ class Logged extends Component {
     componentDidMount() {
         $("head").append('<link href="/css/login.css" rel="stylesheet"/>');
         $("head").append('<link href="/css/navbar.css" rel="stylesheet"/>');
-        $('.button-group > button').on('click', function() {
+        $('.button-group > button').on('click', function () {
             $('.button-group > button').removeClass('active');
             $(this).addClass('active');
         });
         $('input[name=search]').focus(function () {
-                $('.search .fillter').show();
-            
+            $('.search .fillter').show();
+
         });
         $(document).mouseup(function (e) {
             if (!$('.search').is(e.target) && !$('.fillter').is(e.target)
-            && $('.search').has(e.target).length === 0
-            && $('.fillter').has(e.target).length === 0) {
+                && $('.search').has(e.target).length === 0
+                && $('.fillter').has(e.target).length === 0) {
                 $('.fillter').hide();
             }
         });
@@ -130,22 +130,25 @@ class Logged extends Component {
                                 </li>
                                 <li className="avatarLogged" onClick={this.disableLoggedChoice}>
 
-                                    
-                                        <img src="./img/2.jpg" />
 
-                                        <ul className="dropContent" style={this.state.disable ? { display: 'none' } : { display: 'block' }}>
-                                            <li><Link to="/profile">Profile</Link><i className="fa fa-user" aria-hidden="true"></i></li>
-                                            <li><Link to="/edit">Edit Post</Link><i className="fa fa-user" aria-hidden="true"></i></li>
-                                            <li><Link to="/add">Add Post</Link><i className="fa fa-user" aria-hidden="true"></i></li>
-                                            <li><Link to="/">Bookings</Link><i className="fa fa-user" aria-hidden="true"></i></li>
-                                            <li onClick={() => {
-                                                console.log("log out");
-                                                this.props.reload.call({userName: "Guest",
+                                    <img src="./img/2.jpg" />
+
+                                    <ul className="dropContent" style={this.state.disable ? { display: 'none' } : { display: 'block' }}>
+                                        <li><Link to="/profile">Profile</Link><i className="fa fa-user" aria-hidden="true"></i></li>
+                                        <li><Link to="/edit">Edit Post</Link><i className="fa fa-user" aria-hidden="true"></i></li>
+                                        <li><Link to="/add">Add Post</Link><i className="fa fa-user" aria-hidden="true"></i></li>
+                                        <li><Link to="/">Bookings</Link><i className="fa fa-user" aria-hidden="true"></i></li>
+                                        <li onClick={() => {
+                                            console.log("log out");
+                                            const user = {
+                                                userName: "Guest",
                                                 role: "GUEST",
-                                                id: 0});
-                                            }}>Log out<i className="fa fa-user" aria-hidden="true"></i></li>
+                                                id: 0
+                                            };
+                                            this.props.reload.call(this, user);
+                                        }}>Log out<i className="fa fa-user" aria-hidden="true"></i></li>
 
-                                        </ul>
+                                    </ul>
 
                                 </li>
                             </ul>

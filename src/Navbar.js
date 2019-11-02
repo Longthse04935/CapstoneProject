@@ -32,6 +32,7 @@ class Navbar extends Component {
                     {
                         method: "POST",
                         mode: "cors",
+                        credentials: "include",
                         headers: {
                             'Content-Type': 'application/json'
                         },
@@ -70,6 +71,7 @@ class Navbar extends Component {
                     {
                         method: "POST",
                         mode: "cors",
+                        credentials: "include",
                         headers: {
                             'Content-Type': 'application/json',
                             // http://localhost:8080/account/login

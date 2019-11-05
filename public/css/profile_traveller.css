@@ -1,42 +1,44 @@
-body{
-    background-color: #f6f6f6;
-    font-family: Arial;
-}
 .content{
     margin: 0 auto;
     width: 60%;
     height: 2000px;
     margin-top: 90px;
 }
+
 .h1-profile{
     font-size: 32px;
     color: #000;
     margin-top: 20px; 
 }
+
 .content-profile{
     background-color: #fff;
     width: 100%;
     height: auto;
     border-radius: 10px;
 }
+
 .profile-image{   
     width: 90%;
     height: auto;
     margin: 0 auto;
     border-bottom: 1px #eaeaea solid;   
 }
+
 .h1-introduce{
     font-size: 32px;
     color: #000;
     padding: 20px;
     padding-left: 0px;
 }
+
 .profile-avatar{
     border-radius: 100%;
     border: 2px solid #6fbe44;
     margin-bottom: 20px;
     margin-left: 20px;
 }
+
 .btn-changepic{
     background: #6fbe44;
     color: #fff;
@@ -47,15 +49,18 @@ body{
     border: none;
     margin-bottom: 20px;
 }
+
 .profile-information{
     margin: 0 auto;
     width: 90%;
     border-bottom: 1px #eaeaea solid;   
 }
+
 .label-information{
     color: #555;
     margin: 15px 0;
 }
+
 .input-information{
     border-radius: 5px;
     border: 1px solid #ccc;
@@ -63,33 +68,43 @@ body{
     height: 35px;
     padding: 4px 10px;
 }
+
 .form-control{
     border: none;
-    border-bottom: 0.5px solid #ccc;
-    width: 85px;
+    border: 0.5px solid #ccc;
+    width: 100px;
     height: 33px;
 }
+
 .DOB{
     border: none;
     border-bottom: 0.5px solid #ccc;
     margin-right: 10px;
+    min-width: 80px;
 }
+
 .country{
-    width: 305px;
-    height: 25px;
+    width: 400px;
+    height: 35px;
     border-radius: 5px;
 }
+
 .input-something{
     width: 600px;
-    height: 100px;
+    height: 35px;
     border: none;
-    border-bottom: 1px #eaeaea solid; 
+    border: 1px #ccc solid;
+    padding-left: 10px;
+    border-radius: 5px;
 }
+
 .last-information{
     margin: 0 auto;
     width: 90%;
 }
+
 .btn-save{
+    margin-top: 20px;
     background: #6fbe44;
     color: #fff;
     font-size: 14px;
@@ -98,5 +113,13 @@ body{
     border-radius: 20px;
     border: none;
     margin-bottom: 40px;
+    cursor: pointer;
+}
+
+button:disabled,
+button[disabled]{
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
 }
 

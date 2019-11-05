@@ -19,7 +19,9 @@ class PostTourDetail extends Component {
               method: "GET",
               mode: "cors",
               credentials: "include",
-             
+              headers: {
+                'Accept': 'application/json'
+            },
           });
     
           if (!responsePosts.ok) {

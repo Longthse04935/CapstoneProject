@@ -74,7 +74,7 @@ class Pay extends Component {
  }
 
   validatePhone(phone){
-    const pattern = /^\d{10}$/;
+    const pattern = /^\d{10,11}$/;
     const result = pattern.test(phone);
     if(result === true){
       this.setState({
@@ -169,7 +169,7 @@ class Pay extends Component {
           <hr/>
           <div className="paypal_radio">
             <input type="radio" name="paypal" defaultValue="female" onChange={this.goToPayPal}/> <span>Paypal</span>
-            <img src="/img/paypal.png"/>
+            <img src="/img/paypal.png" alt="paypal"/>
           </div>
         </div>
         <div className={this.state.isDisabledPay ? '' : 'paypal_pay hidden'} >
@@ -237,7 +237,7 @@ class Pay extends Component {
         {/* infoTourBook */}
         <div className="infoTourBook">
           <div className="intro_tour">
-            <img src="/img/natural1.jpg" />
+            <img alt="natural" src="/img/natural1.jpg" />
             <h2>The Magic of Dubai at Night Private Tour</h2>
            
           </div>

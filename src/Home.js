@@ -21,7 +21,6 @@ class Home extends Component {
       const category = await responsePosts.json();
 
       this.setState({ category});
-      console.log(category);
     } catch (err) {
       console.log(err);
     }
@@ -30,7 +29,6 @@ class Home extends Component {
     let tour = this.state.category.map((tour,index) => {
        return ( <li key={index}>
         <img src={`/img/${tour.category}.jpg`}/>
-        {console.log(tour)}
         <a href={"/posttour/"+tour.category_id+"/"+tour.category} >{tour.category} tour</a>
         </li>
        )

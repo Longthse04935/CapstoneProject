@@ -3,8 +3,6 @@ import "bootstrap/dist/css/bootstrap.css";
 import "font-awesome/css/font-awesome.min.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import  { Redirect } from 'react-router-dom'
-// import io from "socket.io-client";
 import Notification from './Notification';
 
 class Chatbox extends Component {

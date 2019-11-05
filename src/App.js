@@ -62,22 +62,22 @@ class App extends Component {
 			<div>
 				{present}
 				<Switch>
-			  <Route path='/' component={Home} exact />
-              <Route path='/guider/:guider_id' component={GuiderAllPost} exact />
-              <Route path='/post/:post_id' component={PostDetail} exact />
-              <Route exact path='/chatbox/:post_id' component={Chatbox} />
-              <Route exact path='/chatbox/:post_id/:message' component={Chatbox} />
-              <Route path='/profileguiders' component={ProfileGuiders} />
-              <Route path='/tour' component={Tour} />
-              <Route path='/profiletraveller' component={ProfileTravaller} />
-              <Route path='/tour/:id' component={PostTourDetail} exact />
-              <Route path='/posttour/:id/:type' component={PostTourDetail} />
-              <Route path='/book' component={Pay} />
-			<Route exact path={"/edit"}>
-				<BrowserRouter>
-					<GuiderAllPost guiderId={this.state.id} />
-				</BrowserRouter>
-			</Route>
+				<Route path='/' component={Home} exact />
+				<Route path='/guider/:guider_id' component={GuiderAllPost} exact />
+				<Route path='/post/:post_id' component={PostDetail} exact />
+				<Route exact path='/chatbox/:post_id' component={Chatbox} />
+				<Route exact path='/chatbox/:post_id/:message' component={Chatbox} />
+				<Route path='/profileguiders' component={ProfileGuiders} />
+				<Route path='/tour' component={Tour} />
+				<Route path='/profiletraveller/:message' component={ProfileTravaller} />
+				<Route path='/tour/:id' component={PostTourDetail} exact />
+				<Route path='/posttour/:id/:type' component={PostTourDetail} />
+				<Route path='/book' component={Pay} />
+				<Route exact path={"/edit"}>
+					<BrowserRouter>
+						<GuiderAllPost guiderId={this.state.id} />
+					</BrowserRouter>
+				</Route>
 
 				</Switch>
 				<Footer />

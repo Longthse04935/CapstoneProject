@@ -3,6 +3,7 @@ import "font-awesome/css/font-awesome.min.css";
 import $ from "jquery";
 import country from './json/country.json';
 import Config from './Config';
+import SweetAlert from 'react-bootstrap-sweetalert';
 
 class ProfileTraveller extends Component {
   constructor(props){
@@ -11,7 +12,7 @@ class ProfileTraveller extends Component {
       countryList: country,
       isError: false,
       errors: {},
-      phone_code: '+84',
+      alert: null,
       data: {
         traveler_id:'',
         first_name: '',
@@ -19,7 +20,7 @@ class ProfileTraveller extends Component {
         phone: '',
         gender: '0',
         email: '',
-        date_of_birth:'',
+        date_of_birth:'1970-01-01',
         street:'',
         house_number:'',
         postal_code:'',
@@ -29,34 +30,45 @@ class ProfileTraveller extends Component {
         country: 'Vietnam',
         city:'',
         avatar_link:'',
-        day:'',
-        month:'',
-        year:'',
+        day:'01',
+        month:'01',
+        year:'1970',
       }
     }
   }
 
   async componentDidMount(){
     $("head").append('<link href="/css/profile_traveller.css" rel="stylesheet"/>');
+
     $("#avatar_trigger").click(function () {
       $("#avatar_link").trigger('click');
-  });
-  if(this.props.match.params.message === "update"){
-    const responseTraveller = await fetch(
-      Config.api_url + "Traveler/GetTraveler?traveler_id=4",
+     });
+     var user = JSON.parse(sessionStorage.getItem('user'));
+
+     const responseTraveller = await fetch(
+      Config.api_url + "Traveler/GetTraveler?traveler_id="+user.id,
       {
         method: "GET",
         mode: "cors",
         credentials: "include"
     });
-  
+
+ 
     if (!responseTraveller.ok) {
-      throw Error(responseTraveller.status + ": " + responseTraveller.statusText);
+      sessionStorage.setItem('errorAPI',responseTraveller.status);
     }
-  
+    
+    var data=JSON.parse(sessionStorage.getItem('errorAPI'));
+    if(data !== 404){
     const dataTraveller = await responseTraveller.json();
+    var str = dataTraveller.date_of_birth;
+    var res = str.split("-");
+    dataTraveller.year = res[0];
+    dataTraveller.month = res[1];
+    dataTraveller.day = res[2];
     this.setState({data:dataTraveller});
-  }
+    }
+    
   }
 
 
@@ -73,9 +85,8 @@ class ProfileTraveller extends Component {
 
     const { data } = this.state;
     data[name] = value;
-    if(name === 'country') {
-      let phone_code = $('#country > option:selected').data('code');
-      this.setState({ phone_code });
+    if(name ==="language"){
+      data[name] = [value];
     }
     this.setState({ data });
   }
@@ -119,21 +130,106 @@ class ProfileTraveller extends Component {
     return false;
   }
 
-  submitForm = (e) => {
+  hideAlert() {
+    this.setState({
+      alert: null
+    });
+    window.location.href = '/profiletraveller';
+  }
+
+  statusProfile(message){
+    const getAlert = () => (
+      <SweetAlert 
+        success 
+        title="Woot!" 
+        onConfirm={() => this.hideAlert()}
+      >
+        {message}
+      </SweetAlert>
+    );
+
+    this.setState({
+      alert: getAlert()
+    });
+  }
+
+  createComplete = ()=>{
+    var data = {
+            traveler_id:'',
+            first_name: '',
+            last_name: '',
+            phone: '',
+            gender: '0',
+            email: '',
+            date_of_birth:'1970-01-01',
+            street:'',
+            house_number:'',
+            postal_code:'',
+            slogan:'',
+            about_me:'',
+            language:["Vietnamese"], 
+            country: 'Vietnam',
+            city:'',
+            avatar_link:'',
+            day:'01',
+            month:'01',
+            year:'1970',
+          }
+    this.setState({data});
+    sessionStorage.setItem('errorAPI',1000);
+    this.statusProfile();
+   
+  }
+
+  async submitForm(e){
     e.preventDefault();
+    
     var user = JSON.parse(sessionStorage.getItem('user'));
     if(this.isValidate()) {
       return false;
     } 
+
+    var errorAPI = JSON.parse(sessionStorage.getItem('errorAPI'));
     var {data} = this.state;
     data.traveler_id = user.id;
     data.date_of_birth = data.year +"-"+ data.month +"-"+ data.day;
-    console.log(JSON.stringify(this.state.data));
+    
+    if(errorAPI !== 404){
+      let options = {
+        method: 'POST',
+        mode: "cors",
+        credentials: "include",
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+      };
+      let response = await fetch(Config.api_url +'Traveler/Update', options);
+      response = await response.text();
+      this.statusProfile('Update success!!');
+    }else if(errorAPI === 404){
+        let options = {
+          method: 'POST',
+          mode: "cors",
+          credentials: "include",
+          headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        };
+        let response = await fetch(Config.api_url+'Traveler/Create', options);
+        response = await response.text();  
+        if(response ==="true"){
+          this.createComplete('Create done!!');
+        }
+    }
   }
 
   render() {
 
-    const { isError, errors, data } = this.state;
+    const { errors, data } = this.state;
     var day = [];
     for (var i = 1; i <= 31; i++){
         day.push(i);
@@ -176,11 +272,12 @@ class ProfileTraveller extends Component {
     var message = this.props.match.params.message;
     return (
       <div>
+        {this.state.alert}
         <div className="content">
-          <h1 className="h1-profile">{message === 'update' ? 'Update your profile':'Create your profile'}</h1>
+          <h1 className="h1-profile">Your profile</h1>
           <div className="content-profile">
             <div className="profile-image">
-              <h1 className="h1-introduce">{message === 'update' ? 'Update your profile':'Introduce yourself'}</h1>
+              <h1 className="h1-introduce">Introduce yourself</h1>
               <img
                 alt="profile avatar"
                 height={150}

@@ -400,6 +400,7 @@ body{
   border-radius: 50%;
   position: absolute;
   width: 60px;
+  top:-25px;
 }
 
 .reviewContainer .reviewInfo{

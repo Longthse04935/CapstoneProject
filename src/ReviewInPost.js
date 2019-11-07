@@ -1,6 +1,6 @@
 import React from 'react';
 import Rated from './Rated';
-
+import Config from './Config';
 class ReviewInPost extends React.Component {
       constructor(props) {
             super(props);
@@ -18,7 +18,11 @@ class ReviewInPost extends React.Component {
       }
       async componentDidMount() {
             try {
-                  const response = await fetch("http://localhost:8080/review/reviewByPostId?post_id=" + this.props.postId );
+                  const response = await fetch(Config.api_url + "review/reviewByPostId?post_id=" + this.props.postId, {
+                        method: "GET",
+                        mode: "cors",
+                        credentials: "include"
+                    });
                   if (!response.ok) { throw Error(response.status + ": " + response.statusText); }
                   const review = await response.json();
                   this.setState({ reviews: review });

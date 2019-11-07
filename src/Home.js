@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import {Link} from 'react-router-dom';
+import Config from './Config';
 class Home extends Component {
 
   constructor(props) {
@@ -11,7 +12,7 @@ class Home extends Component {
   async componentDidMount() {
     try {
       const responsePosts = await fetch(
-        "http://localhost:8080/category/findAll"
+        Config.api_url + "category/findAll"
       );
 
       if (!responsePosts.ok) {

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Chatbox from "./Chatbox";
-import EditPost from "./EditPost";
 import ProfileGuiders from "./ProfileGuiders";
 import Home from "./Home";
 import ProfileTravaller from './ProfileTraveller';
@@ -69,7 +68,7 @@ class App extends Component {
 				<Route exact path='/chatbox/:post_id/:message' component={Chatbox} />
 				<Route path='/profileguiders' component={ProfileGuiders} />
 				<Route path='/tour' component={Tour} />
-				<Route path='/profiletraveller/:message' component={ProfileTravaller} />
+				<Route path='/profiletraveller' component={ProfileTravaller} />
 				<Route path='/tour/:id' component={PostTourDetail} exact />
 				<Route path='/posttour/:id/:type' component={PostTourDetail} />
 				<Route path='/book' component={Pay} />

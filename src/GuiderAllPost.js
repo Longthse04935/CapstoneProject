@@ -4,6 +4,7 @@ import { Link, Route, Switch } from 'react-router-dom';
 import Rated from "./Rated";
 import GuiderInPost from './GuiderInPost';
 import EditPost from './EditPost';
+import Config from './Config';
 class GuiderAllPost extends Component {
 	constructor(props) {
 		super(props);
@@ -18,7 +19,7 @@ class GuiderAllPost extends Component {
 	async componentDidMount() {
 		try {
 			const responsePosts = await fetch(
-				"http://localhost:8080/guiderpost/postOfOneGuider?guider_id=" + this.props.guiderId,
+				Config.api_url + "guiderpost/postOfOneGuider?guider_id=" + this.props.match.params.guider_id,
 				{
 					method: "GET",
 					mode: "cors",

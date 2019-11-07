@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 import "font-awesome/css/font-awesome.min.css";
+import Config from './Config';
+
 class PostTourDetail extends Component {
     constructor(props) {
         super(props);
@@ -14,7 +16,7 @@ class PostTourDetail extends Component {
       async componentDidMount() {
         try {
           const responsePosts = await fetch(
-            "http://localhost:8080/guiderpost/allPostOfOneCategory?category_id="+this.props.match.params.id,
+            Config.api_url + "guiderpost/allPostOfOneCategory?category_id="+this.props.match.params.id,
             {
               method: "GET",
               mode: "cors",

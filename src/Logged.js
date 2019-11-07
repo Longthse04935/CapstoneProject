@@ -35,6 +35,7 @@ class Logged extends Component {
     }
 
     render() {
+        var user = JSON.parse(sessionStorage.getItem('user'));
         return (
             <div>
                 {/* Menubar */}
@@ -125,9 +126,6 @@ class Logged extends Component {
                                 <li>
                                     <Link to="/">Bookings</Link>
                                 </li>
-                                <li>
-                                    <Link to="/">Bookings</Link>
-                                </li>
                                 <li className="avatarLogged" onClick={this.disableLoggedChoice}>
 
 
@@ -138,6 +136,12 @@ class Logged extends Component {
                                         <li><Link to="/edit">Edit Post</Link><i className="fa fa-user" aria-hidden="true"></i></li>
                                         <li><Link to="/add">Add Post</Link><i className="fa fa-user" aria-hidden="true"></i></li>
                                         <li><Link to="/">Bookings</Link><i className="fa fa-user" aria-hidden="true"></i></li>
+                                        <li><Link to="/profiletraveller">Profile traveller</Link><i className="fa fa-user" aria-hidden="true"></i></li>
+                                        {/* {
+                                            if(user.role ==="TRAVELER"){
+
+                                            }
+                                        } */}
                                         <li onClick={() => {
                                             console.log("log out");
                                             const user = {

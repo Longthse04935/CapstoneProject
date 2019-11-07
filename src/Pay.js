@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "font-awesome/css/font-awesome.min.css";
 import country from './json/country.json';
 import $ from 'jquery';
+import Config from './Config';
 class Pay extends Component {
   constructor(props){
     super(props);
@@ -24,19 +25,21 @@ class Pay extends Component {
 
   }
   async goToPayPal(){
-    var data=JSON.parse(localStorage.getItem('tourDetail'));
+    var data=JSON.parse(sessionStorage.getItem('tourDetail'));
     delete data.price;
     delete data.dateForBook;
     delete data.hourForBook;
     let options = {
       method: 'POST',
+      mode: "cors",
+      credentials: "include",
       headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
       },
       body: JSON.stringify(data)
     };
-    let response = await fetch('http://localhost:8080/Payment/Pay', options);
+    let response = await fetch(Config.api_url + "Payment/Pay", options);
     response = await response.text();
     window.location.href = response;
     console.log(response);
@@ -148,14 +151,14 @@ class Pay extends Component {
   }
 
   render() {
-    let country_name = this.state.country.map((value) =>{
-      return <option value={value.name}>{value.name + "("+value.code +")"}</option>   
+    let country_name = this.state.country.map((value,index) =>{
+      return <option key={index} value={value.name}>{value.name + "("+value.code +")"}</option>   
     })
 
-    let country_phone = this.state.country.map((value) =>{
-      return <option value={value.dial_code}>{value.name + "("+value.dial_code+")"}</option>   
+    let country_phone = this.state.country.map((value,index) =>{
+      return <option key={index} value={value.dial_code}>{value.name + "("+value.dial_code+")"}</option>   
     })
-    var tourDetail = JSON.parse(localStorage.getItem('tourDetail'));
+    var tourDetail = JSON.parse(sessionStorage.getItem('tourDetail'));
     
     return (
       <div>
@@ -244,13 +247,13 @@ class Pay extends Component {
           <div className="info_tourDetail">
             <hr />
             <div className="tour_detailHour">
-              <i class="fa fa-calendar-o celander" aria-hidden="true">
+              <i className="fa fa-calendar-o celander" aria-hidden="true">
                 <span>{tourDetail.dateForBook}</span>
               </i>
-              <i class="fa fa-clock-o" aria-hidden="true">
+              <i className="fa fa-clock-o" aria-hidden="true">
                 <span>{tourDetail.hourForBook}</span>
               </i>
-              <i class="fa fa-user" aria-hidden="true">
+              <i className="fa fa-user" aria-hidden="true">
                 <span>{parseInt(tourDetail.adult_quantity)+parseInt(tourDetail.children_quantity)} people</span>
               </i>
             <hr />

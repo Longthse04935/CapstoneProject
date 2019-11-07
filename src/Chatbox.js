@@ -4,7 +4,7 @@ import "font-awesome/css/font-awesome.min.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Notification from './Notification';
-
+import Config from './Config';
 class Chatbox extends Component {
   constructor(props) {
     super(props);
@@ -80,8 +80,11 @@ class Chatbox extends Component {
     let {numberInjoy} = this.state;
     try {
       const responsePosts = await fetch(
-        "http://localhost:8080/guiderpost/?post_id=" + post_id
-      );
+        Config.api_url + "guiderpost/?post_id=" + post_id,{
+          method: "GET",
+          mode: "cors",
+          credentials: "include"
+        });
 
       if (!responsePosts.ok) {
         throw Error(responsePosts.status + ": " + responsePosts.statusText);
@@ -94,8 +97,11 @@ class Chatbox extends Component {
 
       //plan in tour
         const responsePlan = await fetch(
-          "http://localhost:8080/activity/post/" + post_id
-        );
+          Config.api_url + "activity/post/" + post_id,{
+            method: "GET",
+            mode: "cors",
+            credentials: "include"
+          });
   
         if (!responsePlan.ok) {
           throw Error(responsePlan.status + ": " + responsePlan.statusText);
@@ -116,6 +122,8 @@ class Chatbox extends Component {
 
         let options = {
           method: 'POST',
+          mode: "cors",
+          credentials: "include",
           headers: {
               Accept: 'application/json',
               'Content-Type': 'application/json',
@@ -151,6 +159,8 @@ class Chatbox extends Component {
 
     let options = {
       method: 'POST',
+      mode: "cors",
+      credentials: "include",
       headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
@@ -176,6 +186,8 @@ class Chatbox extends Component {
       data.begin_date = "" + getMonth + "/"+ getDate +"/"+ date.getFullYear() +" " + e.target.value;
       let options = {
         method: 'POST',
+        mode: "cors",
+        credentials: "include",
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
@@ -213,7 +225,7 @@ class Chatbox extends Component {
     tourDetail.price = data.numberInjoy.totalPrice; 
     tourDetail.dateForBook = getMonth + "/"+ getDate +"/"+ today.getFullYear(); 
     tourDetail.hourForBook = data.hourBegin; 
-    localStorage.setItem('tourDetail', JSON.stringify(tourDetail));
+    sessionStorage.setItem('tourDetail', JSON.stringify(tourDetail));
     window.location.href = "/book";
 
   }

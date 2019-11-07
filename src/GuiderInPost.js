@@ -1,6 +1,7 @@
 import React from 'react';
 import "font-awesome/css/font-awesome.min.css";
 import {Link} from 'react-router-dom';
+import Config from './Config';
 class GuiderInPost extends React.Component {
       constructor(props) {
             super(props);
@@ -8,7 +9,11 @@ class GuiderInPost extends React.Component {
       }
       async componentDidMount() {
             try {
-                  const response = await fetch("http://localhost:8080/guider/" + this.props.guiderId);
+                  const response = await fetch(Config.api_url + "guider/" + this.props.guiderId,{
+                    method: "GET",
+                    mode: "cors",
+                    credentials: "include"
+                });
                   if (!response.ok) { throw Error(response.status + ": " + response.statusText); }
                   const guider = await response.json();
                   this.setState({guider});

@@ -481,26 +481,3 @@ body{
   height:310px;
 }
 
-.experienceInCity .localExperience{
-  position: absolute;
-  bottom: 10%;
-  left: 10%;
-  font-size: 64px;
-  font-weight: 800;
-  letter-spacing: -3px;
-  color: #fff;
-  text-align: center;
-}
-.experienceInCity button{
-  border: none;
-  background: #6fbe44;
-  color: white;
-  font-size: 16px;
-  font-weight: 700;
-  padding: 12px 29px;
-  border-radius: 25px;
-  display: block;
-  cursor: pointer;
-}
-
-

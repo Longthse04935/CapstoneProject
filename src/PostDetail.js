@@ -31,7 +31,7 @@ class PostDetail extends React.Component {
 			const guider = await response2.json();
 			this.setState({ guider});
 
-			const response = await fetch(Config.api_url + "guiderpost/?post_id=" + post_id, {
+			const response = await fetch(Config.api_url + "guiderpost/findSpecificPost?post_id=" + post_id, {
 				method: "GET",
 				mode: "cors",
 				credentials: "include"

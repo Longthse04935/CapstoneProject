@@ -5,6 +5,9 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Notification from './Notification';
 import Config from './Config';
+import SweetAlert from 'react-bootstrap-sweetalert';
+import $ from 'jquery';
+
 class Chatbox extends Component {
   constructor(props) {
     super(props);
@@ -35,7 +38,8 @@ class Chatbox extends Component {
       timeAvailable:[],
       message: '',
       isError: false,
-      closest_EndDate:""
+      closest_EndDate:"",
+      alert:null
     };
   }
 
@@ -58,10 +62,6 @@ class Chatbox extends Component {
     this.setState({ chatData, chatText: "", index: index });
   };
 
-  // scrollToBottom = () => {
-  //   this.messagesEnd.scrollIntoView({ behavior: "smooth" });
-  // };
-
   async componentDidMount() {
 
     let flag = this.props.match.params.message === undefined ? '' : this.props.match.params.message;
@@ -80,7 +80,7 @@ class Chatbox extends Component {
     let {numberInjoy} = this.state;
     try {
       const responsePosts = await fetch(
-        Config.api_url + "guiderpost/?post_id=" + post_id,{
+        Config.api_url + "guiderpost/findSpecificPost?post_id=" + post_id,{
           method: "GET",
           mode: "cors",
           credentials: "include"
@@ -95,20 +95,20 @@ class Chatbox extends Component {
       numberInjoy.totalPrice = numberInjoy.adult *posts.price;
       this.setState({ numberInjoy});
 
-      //plan in tour
-        const responsePlan = await fetch(
-          Config.api_url + "activity/post/" + post_id,{
-            method: "GET",
-            mode: "cors",
-            credentials: "include"
-          });
+      // //plan in tour
+      //   const responsePlan = await fetch(
+      //     Config.api_url + "activity/post/" + post_id,{
+      //       method: "GET",
+      //       mode: "cors",
+      //       credentials: "include"
+      //     });
   
-        if (!responsePlan.ok) {
-          throw Error(responsePlan.status + ": " + responsePlan.statusText);
-        }
+      //   if (!responsePlan.ok) {
+      //     throw Error(responsePlan.status + ": " + responsePlan.statusText);
+      //   }
   
-        const plan = await responsePlan.json();
-        this.setState({ plan});
+      //   const plan = await responsePlan.json();
+      //   this.setState({ plan});
 
         //load time avilable
         var date = this.state.tourDate;
@@ -137,10 +137,6 @@ class Chatbox extends Component {
     } catch (err) {
       console.log(err);
     }
-  }
-
-  componentDidUpdate() {
-    // this.scrollToBottom();
   }
 
   dateChange = async date => {
@@ -198,10 +194,40 @@ class Chatbox extends Component {
       var closest_EndDate = await response.text();
       closest_EndDate = window.sessionStorage.getItem("guider_name")+"'s closest ended tour at "+closest_EndDate;
       this.setState({closest_EndDate});
-      
-
   }
 
+  onCancel(){
+    this.setState({
+      alert: null
+    });
+  }
+
+  onLogin(){
+    this.setState({alert:null});
+    $('.loginForm').show();
+  }
+
+  alertAccount(){
+    const getAlert = () => (
+      <SweetAlert
+        warning
+        showCancel
+        confirmBtnText="Go to login ^-^"
+        confirmBtnBsStyle="danger"
+        title="Login notification"
+        onConfirm={()=>this.onLogin()}
+        onCancel={()=>this.onCancel()}
+        focusCancelBtn
+      >
+        You are not logged in. Please login or register to book this tour!!
+      </SweetAlert>
+    );
+
+    this.setState({
+      alert: getAlert()
+    });
+  }
+  
   bookNow= () => {
     var data = this.state;
     var today = data.tourDate;
@@ -225,8 +251,14 @@ class Chatbox extends Component {
     tourDetail.price = data.numberInjoy.totalPrice; 
     tourDetail.dateForBook = getMonth + "/"+ getDate +"/"+ today.getFullYear(); 
     tourDetail.hourForBook = data.hourBegin; 
-    sessionStorage.setItem('tourDetail', JSON.stringify(tourDetail));
-    window.location.href = "/book";
+    var user = JSON.parse(sessionStorage.getItem('user'));
+    if(user === null){
+      this.alertAccount();
+    }else if(user !== null){
+      sessionStorage.setItem('tourDetail', JSON.stringify(tourDetail));
+      window.location.href = "/book";
+    }
+    
 
   }
 
@@ -271,6 +303,7 @@ class Chatbox extends Component {
 
     return (
       <div className="ChatRoom">
+        {this.state.alert}
         <Notification message={this.state.message} isError={this.state.isError}/>
         {/* Chat form */}
         <div className="chat_window">
@@ -460,6 +493,7 @@ class Chatbox extends Component {
           </li>
         </div>
         {/*End  Chat form */}
+        
       </div>
     );
   }

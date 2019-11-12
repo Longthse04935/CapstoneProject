@@ -1,20 +1,44 @@
 import React, { Component } from "react";
-import {Link} from 'react-router-dom';
 import Config from './Config';
+import SweetAlert from 'react-bootstrap-sweetalert';
+
 class Home extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      category: []
+      category: [],
+      alert:null
     };
   }
+  onNotification(){
+    this.setState({alert:null});
+    sessionStorage.setItem('messagePay','');
+  }
+  notification(){
+    const getAlert = () => (
+      <SweetAlert
+        warning
+        confirmBtnText="This is notification for you"
+        confirmBtnBsStyle="danger"
+        title="Notification"
+        onConfirm={()=>this.onNotification()}
+      >
+        You are not logged in or book a tour . Please login or register to book this tour!!
+      </SweetAlert>
+    );
+
+    this.setState({
+      alert: getAlert()
+    });
+  }
+
   async componentDidMount() {
+    
     try {
       const responsePosts = await fetch(
         Config.api_url + "category/findAll"
       );
-
       if (!responsePosts.ok) {
         throw Error(responsePosts.status + ": " + responsePosts.statusText);
       }
@@ -25,6 +49,13 @@ class Home extends Component {
     } catch (err) {
       console.log(err);
     }
+    if(sessionStorage.getItem('messagePay')){
+      var messagePay = sessionStorage.getItem('messagePay');
+      if(messagePay ==='Error user or tour inf'){
+          this.notification();
+      }
+    }
+    
   }
   render() {
     let tour = this.state.category.map((tour,index) => {
@@ -36,6 +67,7 @@ class Home extends Component {
     });
 
     return (
+      
       <div className="categoryTour">
         <h1>Explore Withlocals</h1>
         <h2 className="sectionSubtitle">
@@ -48,6 +80,7 @@ class Home extends Component {
         <ul className="tourDetail">
         {tour}
         </ul>
+        {this.state.alert}
       </div>
     );
   }

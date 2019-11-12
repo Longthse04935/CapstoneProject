@@ -23,6 +23,7 @@ class Pay extends Component {
         $('.coverLoader').show();
      });
 
+    
   }
   async goToPayPal(){
     var data=JSON.parse(sessionStorage.getItem('tourDetail'));
@@ -159,6 +160,13 @@ class Pay extends Component {
       return <option key={index} value={value.dial_code}>{value.name + "("+value.dial_code+")"}</option>   
     })
     var tourDetail = JSON.parse(sessionStorage.getItem('tourDetail'));
+    var user = JSON.parse(sessionStorage.getItem('user'));
+    if(tourDetail === null || user === null){
+      window.location.href = "/";
+      sessionStorage.setItem('messagePay','Error user or tour inf');
+    }else{
+      sessionStorage.setItem('messagePay','');
+    }
     
     return (
       <div>

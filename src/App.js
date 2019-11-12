@@ -13,7 +13,7 @@ import PostDetail from './PostDetail';
 import Tour from './Tour';
 import PostTourDetail from './PostTourDetail';
 import Pay from './Pay';
-
+import TravellerManager from './TravellerManager';
 
 class App extends Component {
 	constructor(props) {
@@ -72,6 +72,7 @@ class App extends Component {
 				<Route path='/tour/:id' component={PostTourDetail} exact />
 				<Route path='/posttour/:id/:type' component={PostTourDetail} />
 				<Route path='/book' component={Pay} />
+				<Route path='/tvlManager' component={TravellerManager} />
 				<Route exact path={"/edit"}>
 					<BrowserRouter>
 						<GuiderAllPost guiderId={this.state.id} />

@@ -9,7 +9,10 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Navbar from './Navbar';
 import Footer from './Footer';
 import Logged from './Logged';
+import Schedule from './Schedule';
 import AddPost from "./AddPost";
+import Tour from './Tour';
+import GuiderBooks from './Books';
 import { BrowserRouter } from 'react-router-dom';
 
 class App extends Component {
@@ -58,21 +61,28 @@ class App extends Component {
 
 		return (
 			<div>
+				
 				{present}
 				<Switch>
 
-					{/* <Route exact path='/chatbox' component={Chatbox} />
-					<Route path='/editpost' component={EditPost} />
-					<Route path='/profileguiders' component={ProfileGuiders} />
-					<Route path='/tour' component={Tour} />
-					<Route path='/profiletraveller' component={ProfileTravaller} /> */}
-					<Route exact path="/"><Home /></Route>
+					
+					<Route exact path="/">
+						<BrowserRouter>
+							<Home />
+						</BrowserRouter>
+					</Route>
 					<Route exact path={"/add"}><AddPost guiderId={this.state.id} /></Route>
 					<Route exact path={"/edit"}>
 						<BrowserRouter>
 							<GuiderAllPost guiderId={this.state.id} />
-						</BrowserRouter></Route>
-
+						</BrowserRouter>
+					</Route>
+					<Route exact path='/Schedule' ><Schedule user={this.state}	/></Route>
+					<Route exact path='/chatbox' component={Chatbox} />
+					<Route exact path='/Books' ><GuiderBooks user={this.state}	/></Route>
+					<Route path='/profileguiders' component={ProfileGuiders} />
+					<Route path='/tour' component={Tour} />
+					<Route path='/profiletraveller' component={ProfileTravaller} />
 				</Switch>
 				<Footer />
 			</div>

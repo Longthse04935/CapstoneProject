@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import $ from 'jquery';
 import "font-awesome/css/font-awesome.min.css";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+
 class Logged extends Component {
     constructor(props) {
         super(props);
@@ -123,10 +124,10 @@ class Logged extends Component {
                                     <Link to="/">Message</Link>
                                 </li>
                                 <li>
-                                    <Link to="/">Bookings</Link>
+                                    <Link to="/Schedule">Schedule</Link>
                                 </li>
                                 <li>
-                                    <Link to="/">Bookings</Link>
+                                    <Link to="/Books">Bookings</Link>
                                 </li>
                                 <li className="avatarLogged" onClick={this.disableLoggedChoice}>
 

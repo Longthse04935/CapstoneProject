@@ -36,7 +36,18 @@ class ProfileTraveller extends Component {
       }
     }
   }
-
+  
+  componentWillMount(){
+		var user = JSON.parse(sessionStorage.getItem('user'));
+		if(user === null){
+			sessionStorage.setItem('messagePay','Error user or tour inf');
+			window.location.href = '/';
+		}else if(user.role === 'GUIDER'){
+			sessionStorage.setItem('messagePay','You are Guider');
+			window.location.href = '/';
+		}
+  }
+  
   async componentDidMount(){
     $("head").append('<link href="/css/profile_traveller.css" rel="stylesheet"/>');
 

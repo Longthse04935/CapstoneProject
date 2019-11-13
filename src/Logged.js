@@ -33,7 +33,7 @@ class Logged extends Component {
     disableLoggedChoice = () => {
         this.setState({ disable: !this.state.disable });
     }
-
+    
     render() {
         var user = JSON.parse(sessionStorage.getItem('user'));
         return (
@@ -132,11 +132,22 @@ class Logged extends Component {
                                     <img src="/img/2.jpg" />
 
                                     <ul className="dropContent" style={this.state.disable ? { display: 'none' } : { display: 'block' }}>
+                                        {user.role === 'GUIDER' ?
+                                        <span>
                                         <li><Link to="/profile">Profile</Link><i className="fa fa-user" aria-hidden="true"></i></li>
                                         <li><Link to="/edit">Edit Post</Link><i className="fa fa-user" aria-hidden="true"></i></li>
                                         <li><Link to="/add">Add Post</Link><i className="fa fa-user" aria-hidden="true"></i></li>
+                                        </span>
+                                        : ''
+                                        }
                                         <li><Link to="/">Bookings</Link><i className="fa fa-user" aria-hidden="true"></i></li>
+                                        {user.role === 'TRAVELER' ?
+                                        <span>
                                         <li><Link to="/profiletraveller">Profile traveller</Link><i className="fa fa-user" aria-hidden="true"></i></li>
+                                        <li><Link to="/tvlManager">Travel manager</Link><i className="fa fa-user" aria-hidden="true"></i></li>
+                                        </span>
+                                        : ''
+                                        }
                                         {/* {
                                             if(user.role ==="TRAVELER"){
 

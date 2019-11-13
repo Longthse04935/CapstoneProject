@@ -11,35 +11,48 @@ class TravellerManager extends Component {
 			isDisable:false,
 			isError:false,
 			errorRate:false,
+			hideAddComment:false,
 			comment:'',
 			info:{},
 			rated:0.0,
-			alert: null
+			alert: null,
+			cmtExist:[]
 		};
 	}
+	componentWillMount(){
+		var user = JSON.parse(sessionStorage.getItem('user'));
+		if(user === null){
+			sessionStorage.setItem('messagePay','Error user or tour inf');
+			window.location.href = '/';
+		}else if(user.role === 'GUIDER'){
+			sessionStorage.setItem('messagePay','You are Guider');
+			window.location.href = '/';
+		}
+	}
+
 	async componentDidMount() {
 		var user = JSON.parse(sessionStorage.getItem('user'));
-		try {
-			const orderResponse = await fetch(
-				"http://localhost:8080/Order/GetOrderByStatus?role=" + "TRAVELER" + "&id=" + user.id+ "&status=WAITING",
-				{
-					method: "GET",
-					mode: "cors",
-					credentials: "include",
-					headers: {
-						'Accept': 'application/json'
-					}
-				});
-
-			if (!orderResponse.ok) {
-				throw Error(orderResponse.status + ": " + orderResponse.statusText);
+			try {
+				const orderResponse = await fetch(
+					"http://localhost:8080/Order/GetOrderByStatus?role=" + "TRAVELER" + "&id=" + user.id+ "&status=UNCONFIRMED",
+					{
+						method: "GET",
+						mode: "cors",
+						credentials: "include",
+						headers: {
+							'Accept': 'application/json'
+						}
+					});
+	
+				if (!orderResponse.ok) {
+					throw Error(orderResponse.status + ": " + orderResponse.statusText);
+				}
+	
+				const order = await orderResponse.json();
+				this.setState({ orders:order });
+			} catch (err) {
+				console.log(err);
 			}
-
-			const order = await orderResponse.json();
-			this.setState({ orders:order });
-		} catch (err) {
-			console.log(err);
-		}
     }
 
     async sendReview(){
@@ -70,23 +83,40 @@ class TravellerManager extends Component {
 				  };
 				let response = await fetch(Config.api_url+'review/create', options);
 				response = await response.text();
-				this.setState({isDisable:false,isError:false});
+				this.setState({isDisable:false,isError:false,comment:''});
 				this.statusProfile('Comment Success');
 			}
 		}
 	}
 	
-	showReview(order_id,guider_id,post_id){
-		var {info} = this.state;
-		info.order_id = order_id;
-		info.guider_id = guider_id;
-		info.post_id = post_id;
-		this.setState({isDisable:true,info});
+	async showReview(order_id,guider_id,post_id){
+		let commentRespone = await fetch(
+			"http://localhost:8080/review/checkExist?order_id="+order_id,
+			{
+				method: "GET",
+				mode: "cors",
+				credentials: "include",
+				headers: {
+					'Accept': 'application/json'
+				}
+			});
+		if(commentRespone.status === 404){
+			
+			var {info} = this.state;
+			info.order_id = order_id;
+			info.guider_id = guider_id;
+			info.post_id = post_id;
+			this.setState({isDisable:true,info});
+		}else{
+			let comment = await commentRespone.json();
+			console.log(comment[0].rated);
+			this.setState({comment:comment[0].review,rated:comment[0].rated,isDisable:true,hideAddComment:true});
+		}
 	}
 
 
 	closeReview(){
-		this.setState({isDisable:false,isError:false,errorRate:false});
+		this.setState({isDisable:false,isError:false,errorRate:false,comment:'',hideAddComment:false});
 	}
 	
 
@@ -94,6 +124,7 @@ class TravellerManager extends Component {
 		var value = e.target.value;
 		this.setState({comment:value,isError:false});
 	}
+	
 	async tabList(status){
 		var user = JSON.parse(sessionStorage.getItem('user'));
 		try {
@@ -158,7 +189,7 @@ class TravellerManager extends Component {
 		var tab = arr.map((value,index) => 
 			<li key={index} onClick={()=>{this.tabList(value)}}>{value}</li>
 		);
-		var {isDisable,isError,errorRate} = this.state;
+		var {isDisable,isError,errorRate,hideAddComment,rated} = this.state;
 		
 		return (
 			<div>
@@ -170,21 +201,44 @@ class TravellerManager extends Component {
 						</div>
 						<div>
 						<div className="stars">
-								<input className="star star-5" id="star-5" type="radio" value="5" name="star" onClick={()=>{ this.setState({rated:5.0})}}/>
+								{rated === 5 ?
+								<input className="star star-5" id="star-5" type="radio" name="star"  defaultChecked onClick={()=>{ this.setState({rated:5.0})}}/>
+								: 
+								<input className="star star-5" id="star-5" type="radio" name="star"  onClick={()=>{ this.setState({rated:5.0})}}/> 
+								}
 								<label className="star star-5" htmlFor="star-5"></label>
-								<input className="star star-4" id="star-4" type="radio" value="4" name="star" onClick={()=>{ this.setState({rated:4.0})}}/>
+								
+								{ rated === 4 ?
+									<input className="star star-4" id="star-4" type="radio" name="star" defaultChecked onClick={()=>{ this.setState({rated:4.0})}}/>
+								:
+									<input className="star star-4" id="star-4" type="radio" name="star" onClick={()=>{ this.setState({rated:4.0})}}/>
+								}
 								<label className="star star-4" htmlFor="star-4"></label>
-								<input className="star star-3" id="star-3" type="radio" value="3" name="star" onClick={()=>{ this.setState({rated:3.0})}}/>
+								
+								{ rated === 3 ?
+									<input className="star star-3" id="star-3" type="radio" name="star" defaultChecked onClick={()=>{ this.setState({rated:3.0})}}/>
+								:
+									<input className="star star-3" id="star-3" type="radio" name="star" onClick={()=>{ this.setState({rated:3.0})}}/>
+								}
 								<label className="star star-3" htmlFor="star-3"></label>
-								<input className="star star-2" id="star-2" type="radio" value="2" name="star" onClick={()=>{ this.setState({rated:2.0})}}/>
+								{ rated === 2 ?
+									<input className="star star-2" id="star-2" type="radio" name="star" defaultChecked onClick={()=>{ this.setState({rated:2.0})}}/>
+								:
+									<input className="star star-2" id="star-2" type="radio" name="star" onClick={()=>{ this.setState({rated:2.0})}}/>
+								}
 								<label className="star star-2" htmlFor="star-2"></label>
-								<input className="star star-1" id="star-1" type="radio" value="1" name="star" onClick={()=>{ this.setState({rated:1.0})}}/>
+								{ rated === 1 ?
+									<input className="star star-1" id="star-1" type="radio" name="star" defaultChecked onClick={()=>{ this.setState({rated:1.0})}}/>
+								:
+									<input className="star star-1" id="star-1" type="radio" name="star" onClick={()=>{ this.setState({rated:1.0})}}/>
+								}
+								
 								<label className="star star-1" htmlFor="star-1"></label>
 						</div>
 						{isError ?<p style={{color:'red'}}>Comment before submit</p>:''}
 						{errorRate ?<p style={{color:'red'}}>Vote star before submit</p>:''}
 						<p></p>
-						<input type="submit" name="submit" value="Add Comment" onClick={() => this.sendReview()}/>
+						{hideAddComment ? '' : <input type="submit" name="submit" value="Add Comment" onClick={() => this.sendReview()}/>}
 						<input type="submit" name="submit" value="Close" onClick={()=>this.closeReview()}/>
 						</div>
 					</div>

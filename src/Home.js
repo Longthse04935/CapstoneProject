@@ -15,7 +15,8 @@ class Home extends Component {
     this.setState({alert:null});
     sessionStorage.setItem('messagePay','');
   }
-  notification(){
+
+  notification(notification){
     const getAlert = () => (
       <SweetAlert
         warning
@@ -24,7 +25,7 @@ class Home extends Component {
         title="Notification"
         onConfirm={()=>this.onNotification()}
       >
-        You are not logged in or book a tour . Please login or register to book this tour!!
+        {notification}
       </SweetAlert>
     );
 
@@ -52,7 +53,9 @@ class Home extends Component {
     if(sessionStorage.getItem('messagePay')){
       var messagePay = sessionStorage.getItem('messagePay');
       if(messagePay ==='Error user or tour inf'){
-          this.notification();
+        this.notification("You are not logged in. Please login or register to use service mywebsite!!");
+      }else if(messagePay === 'You are Guider'){
+        this.notification("You do not have access to here");
       }
     }
     

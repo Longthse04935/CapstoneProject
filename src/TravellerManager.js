@@ -47,8 +47,9 @@ class TravellerManager extends Component {
 				if (!orderResponse.ok) {
 					throw Error(orderResponse.status + ": " + orderResponse.statusText);
 				}
-	
+				
 				const order = await orderResponse.json();
+				console.log(order);
 				this.setState({ orders:order });
 			} catch (err) {
 				console.log(err);

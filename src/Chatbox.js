@@ -229,6 +229,7 @@ class Chatbox extends Component {
   }
   
   bookNow= () => {
+    var user = JSON.parse(sessionStorage.getItem('user'));
     var data = this.state;
     var today = data.tourDate;
     var getDate = parseInt(today.getDate()) < 10 ? "0"+parseInt(today.getDate()) : parseInt(today.getDate());
@@ -243,7 +244,8 @@ class Chatbox extends Component {
       dateForBook:'',
       hourForBook:''
     };
-    tourDetail.traveler_id = ""+1;
+
+    tourDetail.traveler_id = ""+user.id;
     tourDetail.post_id = ""+this.props.match.params.post_id;
     tourDetail.begin_date = getMonth + "/"+ getDate +"/"+ today.getFullYear()+" "+data.hourBegin;
     tourDetail.adult_quantity = ""+data.numberInjoy.adult;

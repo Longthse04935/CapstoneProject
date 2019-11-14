@@ -8,6 +8,7 @@ import ReactDOMServer from 'react-dom/server';
 class EditPost extends Component {
     constructor(props) {
         super(props);
+
         console.log("route work");
         let initPost = {};
         let initLocation = [{}];
@@ -35,10 +36,6 @@ class EditPost extends Component {
             "reason": "",
             "price": ""
         };
-        this.addService = this.addService.bind(this);
-        this.removeService = this.removeService.bind(this);
-        this.addActivity = this.addActivity.bind(this);
-        this.removeActivity = this.removeActivity.bind(this);
         this.formHandler = this.submitForm.bind(this);
         this.inputOnChange = this.inputOnChange.bind(this);
         this.addReason = this.addReason.bind(this);
@@ -98,6 +95,7 @@ class EditPost extends Component {
     }
 
     async componentDidMount() {
+
         $("head").append('<link href="/css/editPost.css" rel="stylesheet"/>');
         const copy = Object.assign({}, this.state);
         try {
@@ -140,20 +138,21 @@ class EditPost extends Component {
             copy.price = edit.price;
             copy.reason = this.parseReason(edit.reasons);
             const plan = await plans.json();
-            copy.meeting_point = plan.meeting_point;
+            console.log(await plan);
+            copy.meeting_point = await plan.meeting_point;
             copy.activities = this.parsePlan(plan.detail);
             this.setState(copy);
+
         } catch (err) {
             console.log(err);
         }
+
     }
 
     parseReason(html) {
         let detailRegex = /(<p>).+?(<\/p>)/g;
         let m;
         let reasons = [];
-     
-
         do {
             
             m = detailRegex.exec(html);
@@ -161,8 +160,6 @@ class EditPost extends Component {
                 reasons.push(m[0].replace("<p>", "").replace("</p>", ""));
             }
         } while (m);
-        
-        console.log(reasons);
         return reasons;
     }
 
@@ -187,7 +184,6 @@ class EditPost extends Component {
         for(let i = 0; i < briefs.length; i ++) {
             acts.push({brief: briefs[i], detail:details[i]});
         }
-        console.log(acts);
         return acts;
     }
 
@@ -232,6 +228,7 @@ class EditPost extends Component {
             "rated": 3,
             "reason": ReactDOMServer.renderToString(this.reasonToHTML(copy.reasons))
         };
+
         let plan = ReactDOMServer.renderToString(this.planToHTML(copy.activities));
         console.log(initPost);
         console.log(plan);
@@ -240,6 +237,7 @@ class EditPost extends Component {
                 {
                     method: "POST",
                     mode: "cors",
+                    credentials: "include",
                     headers: {
                         'Content-Type': 'application/json'
                     },
@@ -248,7 +246,6 @@ class EditPost extends Component {
             );
             if (!response.ok) { throw Error(response.status + ": " + response.statusText); }
             const id = await response.text();
-            console.log(id);
             let plans = {
                 meeting_point: copy.meeting_point,
                 detail: plan,
@@ -258,6 +255,7 @@ class EditPost extends Component {
                 {
                     method: "POST",
                     mode: "cors",
+                    credentials: "include",
                     headers: {
                         'Content-Type': 'application/json'
                     },
@@ -306,54 +304,6 @@ class EditPost extends Component {
         reader.onerror = error => reject(error);
     });
 
-    addService() {
-        const copy = this.state;
-
-        const dom = ReactDOM.findDOMNode(this);
-        if (dom instanceof HTMLElement) {
-            const acts = dom.querySelectorAll(".service");
-            let services = [];
-            for (let i = 0; i < acts.length; i++) {
-                services.push(acts[i].value);
-            }
-
-            services.push("");
-            copy.services = services;
-            // console.log(copy.services);
-            this.setState(copy);
-        } else {
-            console.log("find DOM do not work");
-        }
-    }
-
-    addActivity() {
-        const copy = this.state;
-
-        const dom = ReactDOM.findDOMNode(this);
-        //document.querySelectorAll(".coverContent")[0].querySelector("input[name='detail']").value
-        if (dom instanceof HTMLElement) {
-            const acts = dom.querySelectorAll(".coverContent");
-
-            let activities = [];
-            for (let i = 0; i < acts.length; i++) {
-                let brief = acts[i].querySelector("input[name='brief']").value;
-                let detail = acts[i].querySelector("textarea[name='detail']").value;
-                activities.push({
-                    brief: brief,
-                    detail: detail
-                });
-            }
-            activities.push({
-                brief: "",
-                detail: ""
-            });
-            copy.activities = activities;
-            //console.log(copy.activities);
-            this.setState(copy);
-        } else {
-            console.log("find DOM do not work");
-        }
-    }
     removeService(eve) {
         const copy = this.state;
 
@@ -369,14 +319,11 @@ class EditPost extends Component {
             for (let i = 0; i < services.length; i++) {
                 acts[i].value = services[i];
             }
-            //console.log(services);
             copy.services = services;
-            //console.log(eve.target.id);
             this.setState(copy);
         } else {
             console.log("find DOM do not work");
         }
-
     }
 
     removeActivity(eve) {
@@ -401,9 +348,7 @@ class EditPost extends Component {
                 acts[i].querySelector("input[name='brief']").value = activities[i].brief;
                 acts[i].querySelector("textarea[name='detail']").value = activities[i].detail;
             }
-
             copy.activities = activities;
-            // console.log(eve.target.id);
             this.setState(copy);
         } else {
             console.log("find DOM do not work");
@@ -449,6 +394,7 @@ class EditPost extends Component {
                         {/* edit form column */}
                         <div className="col-lg-4 text-lg-center">
                             <h2>Edit Post</h2>
+                            {/* {service} */}
                         </div>
                         <div className="col-lg-8"></div>
                         <div className="col-lg-7 push-lg-4 personal-info">
@@ -462,6 +408,7 @@ class EditPost extends Component {
                                     </div>
                                 </div>
                                 <div className="form-group row">
+
                                     <label className="col-lg-3 col-form-label form-control-label">Category</label>
                                     <div className="col-lg-8">
                                         <select className="custom-select" id="inputGroupSelect02" defaultValue ={this.state.category} >
@@ -470,6 +417,7 @@ class EditPost extends Component {
                                     </div>
                                 </div>
                                 <div className="form-group row">
+
                                     <label className="col-lg-3 col-form-label form-control-label">Price</label>
                                     <div className="col-lg-8">
                                         <input onChange={this.inputOnChange} className="form-control" type="text" name="price" defaultValue={this.state.price} />
@@ -494,6 +442,7 @@ class EditPost extends Component {
 
                                             className="filePicture"
                                             type="file"
+
                                             accept="image/png, image/jpeg. image/jpg"
 
                                             multiple
@@ -520,6 +469,7 @@ class EditPost extends Component {
                                     <button type="button" className="btn btn-info" id="includeService" onClick={this.addService}>Add</button>
                                 </div>
 
+
                                 <div className="include-service" >
                                     {serviceInput}
                                 </div>
@@ -531,14 +481,13 @@ class EditPost extends Component {
                                 </div>
                                 <div className="form-group row">
                                     <label className="col-lg-3 col-form-label form-control-label">Activities</label>
-
                                     <div className="col-lg-7"></div>
 
                                     <button type="button" className="btn btn-info" id="activitiesAdd" onClick={this.addActivity}>Add</button>
                                 </div>
 
                                 <div className="">
-                                    {actInput}
+                                    {/* {actInput} */}
                                 </div>
                                 <div className="form-group row">
                                     <label className="col-lg-3 col-form-label form-control-label">Why to pick you   </label>

@@ -2,9 +2,9 @@ import React from 'react';
 import ReviewInPost from './ReviewInPost';
 import PlanInPost from './PlanInPost';
 import GuiderInPost from './GuiderInPost';
-import {Link} from 'react-router-dom';
 import Rated from "./Rated";
 import $ from 'jquery';
+import Config from './Config';
 
 class PostDetail extends React.Component {
 	constructor(props) {
@@ -22,17 +22,30 @@ class PostDetail extends React.Component {
 		const post_id = this.props.match.params.post_id;
 
 		try {
-			const response2 = await fetch("http://localhost:8080/guider/guiderByPostId?post_id=" + post_id);
+			const response2 = await fetch(Config.api_url + "guider/guiderByPostId?post_id=" + post_id, {
+				method: "GET",
+				mode: "cors",
+				credentials: "include"
+			});
 			if (!response2.ok) { throw Error(response2.status + ": " + response2.statusText); }
 			const guider = await response2.json();
 			this.setState({ guider});
 
-			const response = await fetch("http://localhost:8080/guiderpost/?post_id=" + post_id);
+			const response = await fetch(Config.api_url + "guiderpost/findSpecificPost?post_id=" + post_id, {
+				method: "GET",
+				mode: "cors",
+				credentials: "include"
+			});
 			if (!response.ok) { throw Error(response.status + ": " + response.statusText); }
 
-			const responsePosts = await fetch("http://localhost:8080/guiderpost/postOfOneGuider?guider_id=" + guider.guider_id);
+			const responsePosts = await fetch(Config.api_url + "guiderpost/postOfOneGuider?guider_id=" + guider.guider_id, {
+				method: "GET",
+				mode: "cors",
+				credentials: "include"
+			});
 			 if (!responsePosts.ok) { throw Error(responsePosts.status + ": " + responsePosts.statusText); }
-
+			
+			 window.sessionStorage.setItem("guider_id", ""+guider.guider_id);
 			 
 
 			const postInfo = await response.json();

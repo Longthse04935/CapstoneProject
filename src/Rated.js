@@ -11,11 +11,7 @@ class Rated extends React.Component {
             let star = [];
             let i = this.props.number;
             while(i > 0) {
-                  if(i < 1 && i > 0) {
-                        star.push(<i key={i} className="fa fa-star"></i>);
-                  } else {
-                        star.push(<i key={i} className="fa fa-star-half-o"></i>);
-                  }
+                  star.push(<i key={i} className="fa fa-star"></i>);
                   i--;  
             }
             return (

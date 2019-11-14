@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import "font-awesome/css/font-awesome.min.css";
 import $ from 'jquery';
-import { Link } from "react-router-dom";
-import Cookies from 'js-cookie';
+import Config from './Config';
 import ReactDOM from 'react-dom';
 
 class Navbar extends Component {
@@ -28,7 +27,7 @@ class Navbar extends Component {
 
             console.log(bod);
             try {
-                const response = await fetch("http://localhost:8080/account/registrator",
+                const response = await fetch(Config.api_url + "account/registrator",
                     {
                         method: "POST",
                         mode: "cors",
@@ -64,10 +63,8 @@ class Navbar extends Component {
             bod.userName = dom.querySelector("input[name='log-in-name']").value;
             bod.password = dom.querySelector("input[name='log-in-password']").value;
             bod.role = dom.querySelector("select[class='log-in-custom-select']").value;
-
-            console.log(bod);
             try {
-                const response = await fetch("http://localhost:8080/account/login",
+                const response = await fetch(Config.api_url + "account/login",
                     {
                         method: "POST",
                         mode: "cors",

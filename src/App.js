@@ -1,19 +1,27 @@
 import React, { Component } from "react";
 import Chatbox from "./Chatbox";
-import EditPost from "./EditPost";
 import ProfileGuiders from "./ProfileGuiders";
 import Home from "./Home";
 import ProfileTravaller from './ProfileTraveller';
 import GuiderAllPost from './GuiderAllPost';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import {BrowserRouter} from "react-router-dom";
 import Navbar from './Navbar';
 import Footer from './Footer';
 import Logged from './Logged';
+
 import Schedule from './Schedule';
 import AddPost from "./AddPost";
 import Tour from './Tour';
 import GuiderBooks from './Books';
-import { BrowserRouter } from 'react-router-dom';
+
+
+import PostDetail from './PostDetail';
+
+import PostTourDetail from './PostTourDetail';
+import Pay from './Pay';
+import TravellerManager from './TravellerManager';
+
 
 class App extends Component {
 	constructor(props) {
@@ -24,11 +32,10 @@ class App extends Component {
 			id: 0,
 			logedIn: false
 		};
-		console.log(this.state.token);
+	
 	}
 
 	reload = (user) => {
-		console.log(user);
 		if (typeof (Storage) !== 'undefined') {
 			if (user.id === 0) window.sessionStorage.clear();
 			else window.sessionStorage.setItem('user', JSON.stringify(user));
@@ -55,7 +62,6 @@ class App extends Component {
 
 
 	render() {
-		console.log('app state ', this.state);
 		let present = this.state.logedIn ? <Logged reload={this.reload} /> : <Navbar reload={this.reload} />;
 
 
@@ -65,32 +71,31 @@ class App extends Component {
 				{present}
 				<Switch>
 
-					
-					<Route exact path="/">
-						<BrowserRouter>
-							<Home />
-						</BrowserRouter>
-					</Route>
-					<Route exact path={"/add"}><AddPost guiderId={this.state.id} /></Route>
-					<Route exact path={"/edit"}>
-						<BrowserRouter>
-							<GuiderAllPost guiderId={this.state.id} />
-						</BrowserRouter>
-					</Route>
-					<Route exact path='/Schedule' ><Schedule user={this.state}	/></Route>
+				<Route path='/' component={Home} exact />
+				<Route path='/guider/:guider_id' component={GuiderAllPost} exact />
+				<Route path='/post/:post_id' component={PostDetail} exact />
+				<Route exact path='/chatbox/:post_id' component={Chatbox} />
+				<Route exact path='/chatbox/:post_id/:message' component={Chatbox} />
+				<Route path='/profileguiders' component={ProfileGuiders} />
+				<Route path='/tour' component={Tour} />
+				<Route path='/profiletraveller' component={ProfileTravaller} />
+				<Route path='/tour/:id' component={PostTourDetail} exact />
+				<Route path='/posttour/:id/:type' component={PostTourDetail} />
+				<Route path='/book' component={Pay} />
+				<Route path='/tvlManager' component={TravellerManager} />
+				<Route exact path={"/edit"}>
+					<BrowserRouter>
+						<GuiderAllPost guiderId={this.state.id} />
+					</BrowserRouter>
+				</Route>
+				<Route exact path='/Schedule' ><Schedule user={this.state}	/></Route>
 					<Route exact path='/chatbox' component={Chatbox} />
-					<Route exact path='/Books' ><GuiderBooks user={this.state}	/></Route>
-					<Route path='/profileguiders' component={ProfileGuiders} />
-					<Route path='/tour' component={Tour} />
-					<Route path='/profiletraveller' component={ProfileTravaller} />
+					<Route exact path='/GuiderBooks' ><GuiderBooks user={this.state}	/></Route>
 				</Switch>
 				<Footer />
 			</div>
 
 		);
 	}
-
-
 }
-
 export default App;

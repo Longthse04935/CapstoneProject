@@ -4,6 +4,7 @@ import { Link, Route, Switch } from 'react-router-dom';
 import Rated from "./Rated";
 import GuiderInPost from './GuiderInPost';
 import EditPost from './EditPost';
+import Config from './Config';
 class GuiderAllPost extends Component {
 	constructor(props) {
 		super(props);
@@ -18,7 +19,7 @@ class GuiderAllPost extends Component {
 	async componentDidMount() {
 		try {
 			const responsePosts = await fetch(
-				"http://localhost:8080/guiderpost/postOfOneGuider?guider_id=" + this.props.guiderId,
+				Config.api_url + "guiderpost/postOfOneGuider?guider_id=" + this.props.match.params.guider_id,
 				{
 					method: "GET",
 					mode: "cors",
@@ -134,7 +135,32 @@ class GuiderAllPost extends Component {
 							<div className="content-right">
 								<div className="bookOffers">
 									<h2>Book one of my offers in Ha Noi</h2>
-									<ul>{posts}</ul>
+									<div className="contentTour">
+										{
+											this.state.posts.map((post, index) => {
+												return (
+													<div className="contentTourDetail" key={index}>
+														<video controls>
+															<source src='/video/Food_Tour-1_m8apyj.webm' type="video/mp4" />
+														</video>
+														<h2>{post.title}</h2>
+														<p>{post.description}</p>
+														<p>Price:{post.price}$</p>
+														<p>Location:{post.location}</p>
+														<div className="Rating">
+															Rated:
+                                        <i className="fa fa-star-half-o"></i>
+															<i className="fa fa-star-half-o"></i>
+															<i className="fa fa-star-half-o"></i>
+															<i className="fa fa-star-half-o"></i>
+															<i className="fa fa-star-half-o"></i>
+														</div>
+														<Link to={"/post/" + post.post_id}>Watch my post</Link>
+													</div>
+												)
+											})
+										}
+									</div>
 								</div>
 								{/* <div className="pagination">
                   <div className="paginationContent">

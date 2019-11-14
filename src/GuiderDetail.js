@@ -1,9 +1,5 @@
 import React from 'react';
-import PostDetail from './PostDetail';
-import Rated from './Rated';
-import { Link, Route, Switch } from 'react-router-dom';
-import Request from './Request';
-
+import Config from './Config';
 
 class GuiderDetail extends React.Component {
 	constructor(props) {
@@ -37,8 +33,8 @@ class GuiderDetail extends React.Component {
 	}
 	async componentDidMount() {
 		try {
-			const responsePosts = await fetch("http://localhost:8080/guiderpost/postOfOneGuider?guider_id=" + this.props.guiderId);
-			const responseGuider = await fetch("http://localhost:8080/guider/" + this.props.guiderId);
+			const responsePosts = await fetch(Config.api_url + "guiderpost/postOfOneGuider?guider_id=" + this.props.guiderId);
+			const responseGuider = await fetch(Config.api_url + "guider/" + this.props.guiderId);
 			if (!responsePosts.ok) { throw Error(responsePosts.status + ": " + responsePosts.statusText); }
 			if (!responseGuider.ok) { throw Error(responseGuider.status + ": " + responseGuider.statusText); }
 			const post = await responsePosts.json();

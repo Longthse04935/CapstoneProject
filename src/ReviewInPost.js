@@ -1,5 +1,6 @@
 import React from 'react';
 import Rated from './Rated';
+import Config from './Config';
 
 class ReviewInPost extends React.Component {
       constructor(props) {
@@ -9,25 +10,36 @@ class ReviewInPost extends React.Component {
                   "post_id": "",
                   "guider_id": "",
                   "review": "",
-                  "rated_star": 1,
-                  "date": ""
+                  "rated": 1,
+                  "post_date": ""
             }];
 
-            this.state = { reviews: obj };
+            this.state = { 
+                  reviews: obj,
+                  rating: 0,
+                  isDisable:true
+             };
 
       }
+
       async componentDidMount() {
             try {
-                  const response = await fetch("http://localhost:8080/review/reviewByPostId?post_id=" + this.props.postId );
+                  const response = await fetch(Config.api_url + "review/reviewByPostId?post_id=" + this.props.postId, {
+                        method: "GET",
+                        mode: "cors",
+                        credentials: "include"
+                    });
                   if (!response.ok) { throw Error(response.status + ": " + response.statusText); }
                   const review = await response.json();
+                  console.log(review);
                   this.setState({ reviews: review });
             } catch (err) {
                   console.log(err);
             }
-
       }
+          
       render() {
+            var notification = this.state.isDisable ? "" : <p style={{color:'red'}}>Vote star before comment</p>;
             const showReview = this.state.reviews.map((review, index) => 
                   <li key={index}>
                         <div className="review">
@@ -35,12 +47,14 @@ class ReviewInPost extends React.Component {
                                     <img className="defaultLogo" src="/img/defaultAvatarComment.webp" alt="logo" />
                                     <div className="reviewInfo">
                                           <div className="nickName">AnnaBanana</div>
-                                          <Rated number={review.rated_star}/>
-                                          <div className="dateComment">{review.date}</div>
+                                          <Rated number={review.rated}/>
+                                          <div className="dateComment">{review.post_date}</div>
                                     </div>
                                     <div className="commentDetails">{review.review}</div>
                                     <span className="reviewTitle">The Local!</span>
                               </div>
+                              
+                             
                         </div>
                   </li>
             );

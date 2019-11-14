@@ -1,5 +1,5 @@
 import React from 'react';
-
+import Config from './Config';
 
 class PlanInPost extends React.Component {
       constructor(props) {
@@ -13,7 +13,15 @@ class PlanInPost extends React.Component {
       }
       async componentDidMount() {
             try {
-                  const response = await fetch("http://localhost:8080/activity/post/"+this.props.postId);
+                  const response = await fetch(Config.api_url + "activity/post/"+this.props.postId,
+                  {
+                        method: "GET",
+                        mode: "cors",
+                        credentials: "include",
+                        headers: {
+                            'Accept': 'application/json'
+                        },
+                    });
                   if (!response.ok) { throw Error(response.status + ": " + response.statusText); }
                   const plan = await response.json();
                   this.setState({ plans: plan });

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "font-awesome/css/font-awesome.min.css";
 import country from './json/country.json';
 import $ from 'jquery';
+import Config from './Config';
 class Pay extends Component {
   constructor(props){
     super(props);
@@ -22,21 +23,24 @@ class Pay extends Component {
         $('.coverLoader').show();
      });
 
+    
   }
   async goToPayPal(){
-    var data=JSON.parse(localStorage.getItem('tourDetail'));
+    var data=JSON.parse(sessionStorage.getItem('tourDetail'));
     delete data.price;
     delete data.dateForBook;
     delete data.hourForBook;
     let options = {
       method: 'POST',
+      mode: "cors",
+      credentials: "include",
       headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
       },
       body: JSON.stringify(data)
     };
-    let response = await fetch('http://localhost:8080/Payment/Pay', options);
+    let response = await fetch(Config.api_url + "Payment/Pay", options);
     response = await response.text();
     window.location.href = response;
     console.log(response);
@@ -74,7 +78,7 @@ class Pay extends Component {
  }
 
   validatePhone(phone){
-    const pattern = /^\d{10}$/;
+    const pattern = /^\d{10,11}$/;
     const result = pattern.test(phone);
     if(result === true){
       this.setState({
@@ -148,14 +152,21 @@ class Pay extends Component {
   }
 
   render() {
-    let country_name = this.state.country.map((value) =>{
-      return <option value={value.name}>{value.name + "("+value.code +")"}</option>   
+    let country_name = this.state.country.map((value,index) =>{
+      return <option key={index} value={value.name}>{value.name + "("+value.code +")"}</option>   
     })
 
-    let country_phone = this.state.country.map((value) =>{
-      return <option value={value.dial_code}>{value.name + "("+value.dial_code+")"}</option>   
+    let country_phone = this.state.country.map((value,index) =>{
+      return <option key={index} value={value.dial_code}>{value.name + "("+value.dial_code+")"}</option>   
     })
-    var tourDetail = JSON.parse(localStorage.getItem('tourDetail'));
+    var tourDetail = JSON.parse(sessionStorage.getItem('tourDetail'));
+    var user = JSON.parse(sessionStorage.getItem('user'));
+    if(tourDetail === null || user === null){
+      window.location.href = "/";
+      sessionStorage.setItem('messagePay','Error user or tour inf');
+    }else{
+      sessionStorage.setItem('messagePay','');
+    }
     
     return (
       <div>
@@ -169,7 +180,7 @@ class Pay extends Component {
           <hr/>
           <div className="paypal_radio">
             <input type="radio" name="paypal" defaultValue="female" onChange={this.goToPayPal}/> <span>Paypal</span>
-            <img src="/img/paypal.png"/>
+            <img src="/img/paypal.png" alt="paypal"/>
           </div>
         </div>
         <div className={this.state.isDisabledPay ? '' : 'paypal_pay hidden'} >
@@ -228,7 +239,7 @@ class Pay extends Component {
               />
                {this.state.phoneError ? <p style={{color: "red"}} className="errorInput">Phone must be have 10 digit</p> : ''} 
 
-              <input type="submit" value="Save" className="saveInfoTraveller" disabled={this.state.isDisabled} onClick={this.submitForm}/>
+              <input type="submit" value="Save" className="saveInfoTraveller"  onClick={this.submitForm}/>
             </div>
         
         </div>
@@ -237,21 +248,21 @@ class Pay extends Component {
         {/* infoTourBook */}
         <div className="infoTourBook">
           <div className="intro_tour">
-            <img src="/img/natural1.jpg" />
+            <img alt="natural" src="/img/natural1.jpg" />
             <h2>The Magic of Dubai at Night Private Tour</h2>
            
           </div>
           <div className="info_tourDetail">
             <hr />
             <div className="tour_detailHour">
-              <i class="fa fa-calendar-o celander" aria-hidden="true">
+              <i className="fa fa-calendar-o celander" aria-hidden="true">
                 <span>{tourDetail.dateForBook}</span>
               </i>
-              <i class="fa fa-clock-o" aria-hidden="true">
+              <i className="fa fa-clock-o" aria-hidden="true">
                 <span>{tourDetail.hourForBook}</span>
               </i>
-              <i class="fa fa-user" aria-hidden="true">
-                <span>{tourDetail.adult_quantity+tourDetail.children_quantity} people</span>
+              <i className="fa fa-user" aria-hidden="true">
+                <span>{parseInt(tourDetail.adult_quantity)+parseInt(tourDetail.children_quantity)} people</span>
               </i>
             <hr />
             <div className="total_priceBook">

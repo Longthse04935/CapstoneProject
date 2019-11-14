@@ -3,9 +3,10 @@ import "bootstrap/dist/css/bootstrap.css";
 import "font-awesome/css/font-awesome.min.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import  { Redirect } from 'react-router-dom'
-// import io from "socket.io-client";
 import Notification from './Notification';
+import Config from './Config';
+import SweetAlert from 'react-bootstrap-sweetalert';
+import $ from 'jquery';
 
 class Chatbox extends Component {
   constructor(props) {
@@ -36,7 +37,9 @@ class Chatbox extends Component {
       //time can book tour
       timeAvailable:[],
       message: '',
-      isError: false
+      isError: false,
+      closest_EndDate:"",
+      alert:null
     };
   }
 
@@ -59,10 +62,6 @@ class Chatbox extends Component {
     this.setState({ chatData, chatText: "", index: index });
   };
 
-  // scrollToBottom = () => {
-  //   this.messagesEnd.scrollIntoView({ behavior: "smooth" });
-  // };
-
   async componentDidMount() {
 
     let flag = this.props.match.params.message === undefined ? '' : this.props.match.params.message;
@@ -81,8 +80,11 @@ class Chatbox extends Component {
     let {numberInjoy} = this.state;
     try {
       const responsePosts = await fetch(
-        "http://localhost:8080/guiderpost/?post_id=" + post_id
-      );
+        Config.api_url + "guiderpost/findSpecificPost?post_id=" + post_id,{
+          method: "GET",
+          mode: "cors",
+          credentials: "include"
+        });
 
       if (!responsePosts.ok) {
         throw Error(responsePosts.status + ": " + responsePosts.statusText);
@@ -93,17 +95,20 @@ class Chatbox extends Component {
       numberInjoy.totalPrice = numberInjoy.adult *posts.price;
       this.setState({ numberInjoy});
 
-      //plan in tour
-        const responsePlan = await fetch(
-          "http://localhost:8080/activity/post/" + post_id
-        );
+      // //plan in tour
+      //   const responsePlan = await fetch(
+      //     Config.api_url + "activity/post/" + post_id,{
+      //       method: "GET",
+      //       mode: "cors",
+      //       credentials: "include"
+      //     });
   
-        if (!responsePlan.ok) {
-          throw Error(responsePlan.status + ": " + responsePlan.statusText);
-        }
+      //   if (!responsePlan.ok) {
+      //     throw Error(responsePlan.status + ": " + responsePlan.statusText);
+      //   }
   
-        const plan = await responsePlan.json();
-        this.setState({ plan});
+      //   const plan = await responsePlan.json();
+      //   this.setState({ plan});
 
         //load time avilable
         var date = this.state.tourDate;
@@ -117,6 +122,8 @@ class Chatbox extends Component {
 
         let options = {
           method: 'POST',
+          mode: "cors",
+          credentials: "include",
           headers: {
               Accept: 'application/json',
               'Content-Type': 'application/json',
@@ -132,25 +139,24 @@ class Chatbox extends Component {
     }
   }
 
-  componentDidUpdate() {
-    // this.scrollToBottom();
-  }
-
   dateChange = async date => {
     var getDate = parseInt(date.getDate()) < 10 ? "0"+parseInt(date.getDate()) : parseInt(date.getDate());
     var getMonth = parseInt(date.getMonth()+1) < 10 ? "0"+parseInt(date.getMonth()+1) : parseInt(date.getMonth()+1);
     var data = {
-      "guider_id":"1",
+      "guider_id":""+window.sessionStorage.getItem("guider_id"),
       "post_id": ""+this.props.match.params.post_id,
       "begin_date":"" + getMonth + "/"+ getDate +"/"+ date.getFullYear()+" 00:00"
     };
 
     this.setState({
-      tourDate: date
+      tourDate: date,
+      closest_EndDate:""
     });
 
     let options = {
       method: 'POST',
+      mode: "cors",
+      credentials: "include",
       headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
@@ -163,12 +169,65 @@ class Chatbox extends Component {
 
   }
 
-  handleChangeHour = e => {
+  async handleChangeHour (e) {
       this.setState({
           hourBegin:e.target.value
       });
+
+      var date = this.state.tourDate;
+      var getDate = parseInt(date.getDate()) < 10 ? "0"+parseInt(date.getDate()) : parseInt(date.getDate());
+      var getMonth = parseInt(date.getMonth()+1) < 10 ? "0"+parseInt(date.getMonth()+1) : parseInt(date.getMonth()+1);
+      var data = {};
+      data.guider_id = "" +window.sessionStorage.getItem("guider_id");
+      data.begin_date = "" + getMonth + "/"+ getDate +"/"+ date.getFullYear() +" " + e.target.value;
+      let options = {
+        method: 'POST',
+        mode: "cors",
+        credentials: "include",
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+      };
+      let response = await fetch('http://localhost:8080/Order/GetClosestFinishDate', options);
+      var closest_EndDate = await response.text();
+      closest_EndDate = window.sessionStorage.getItem("guider_name")+"'s closest ended tour at "+closest_EndDate;
+      this.setState({closest_EndDate});
   }
 
+  onCancel(){
+    this.setState({
+      alert: null
+    });
+  }
+
+  onLogin(){
+    this.setState({alert:null});
+    $('.loginForm').show();
+  }
+
+  alertAccount(){
+    const getAlert = () => (
+      <SweetAlert
+        warning
+        showCancel
+        confirmBtnText="Go to login ^-^"
+        confirmBtnBsStyle="danger"
+        title="Login notification"
+        onConfirm={()=>this.onLogin()}
+        onCancel={()=>this.onCancel()}
+        focusCancelBtn
+      >
+        You are not logged in. Please login or register to book this tour!!
+      </SweetAlert>
+    );
+
+    this.setState({
+      alert: getAlert()
+    });
+  }
+  
   bookNow= () => {
     var data = this.state;
     var today = data.tourDate;
@@ -192,8 +251,14 @@ class Chatbox extends Component {
     tourDetail.price = data.numberInjoy.totalPrice; 
     tourDetail.dateForBook = getMonth + "/"+ getDate +"/"+ today.getFullYear(); 
     tourDetail.hourForBook = data.hourBegin; 
-    localStorage.setItem('tourDetail', JSON.stringify(tourDetail));
-    window.location.href = "/book";
+    var user = JSON.parse(sessionStorage.getItem('user'));
+    if(user === null){
+      this.alertAccount();
+    }else if(user !== null){
+      sessionStorage.setItem('tourDetail', JSON.stringify(tourDetail));
+      window.location.href = "/book";
+    }
+    
 
   }
 
@@ -232,12 +297,13 @@ class Chatbox extends Component {
     const { chatData, chatText, author, numberInjoy,plan } = this.state;
 
     let selectHour = this.state.timeAvailable.map((value,index)=>{
-      return <option key={index} value={value}>{value}</option> ;
+       return <option key={index} value={value}>{value}</option> ;
     });
 
 
     return (
       <div className="ChatRoom">
+        {this.state.alert}
         <Notification message={this.state.message} isError={this.state.isError}/>
         {/* Chat form */}
         <div className="chat_window">
@@ -292,10 +358,11 @@ class Chatbox extends Component {
               <div className="selectTime">
                 <p>Pick Time Start:</p>
                 <div className="select-style">
-                <select  onChange={this.handleChangeHour}>
+                <select  onChange={(e) => this.handleChangeHour(e)}>
                   {selectHour}
                   </select>
                 </div>
+                <h5 className="closest_EndDate">{this.state.closest_EndDate}</h5>
               </div>
               <div className="numberTravel">
                 <span>
@@ -426,6 +493,7 @@ class Chatbox extends Component {
           </li>
         </div>
         {/*End  Chat form */}
+        
       </div>
     );
   }

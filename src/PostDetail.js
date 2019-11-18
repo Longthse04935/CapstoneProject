@@ -171,7 +171,7 @@ class PostDetail extends React.Component {
 					{/*  Content  */}
 					<div className="content">
 					<div className="content-left">
-					{guider_id ? (<GuiderInPost guiderId={guider_id} postId={post_id} />) : null}
+					{guider_id ? (<GuiderInPost guiderId={guider_id} />) : null}
 					</div>
 					<div className="content-right">
 					<div className="PostDetail">

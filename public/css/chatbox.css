@@ -353,6 +353,11 @@ body {
   color:#e71575;
   margin: 20px 0;
 }
+
+.ratingChatbox{
+  position: relative;
+}
+
 .rating img {
   width: 80px;
  border-radius: 50%;
@@ -383,13 +388,29 @@ body {
   width: 86% !important;
 }
 
-.viewNummberChat {
+#viewNummberChat {
   display: block !important;
+  height: 240px;
+  padding: 20px 20px;
+  border: 1px solid #eaeaea;
+  border-radius: 10px;
+  width: 100%;
+  margin-top: 5px;
 }
 
 .selectTime {
   font-size: 18px;
   margin-top:20px;
+  position: relative;
+}
+
+.selectTime input[name='endTime']{
+    border: 1px solid #ccc;
+    width: 165px;
+    border-radius: 3px;
+    padding: 5px 8px;
+    position: absolute;
+    margin-left: 22px;
 }
 .select-style {
   border: 1px solid #ccc;
@@ -427,4 +448,22 @@ body {
 .selectTime .closest_EndDate{
   font-size: 16px;
   color:#e71575;
+}
+
+.tool-tip {
+  color: #4a4a4a;
+  position: absolute;
+  color: #4a4a4a;
+  position: absolute;
+  z-index: 1;
+  background: #fff;
+  top: 100px;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.25);
+  padding: 10px;
+  border-radius:5px;
+  display: none;
+}
+
+.tool-tip .tool-tipItem .tool-tipItemText {
+  margin-left:10px;
 }

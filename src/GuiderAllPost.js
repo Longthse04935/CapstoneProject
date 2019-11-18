@@ -11,13 +11,14 @@ class GuiderAllPost extends Component {
 
 		this.state = {
 			currentPage: 1,
-			todosPerPage: 4,
+			todosPerPage: 8,
 			posts: []
 		};
 	}
 
 	async componentDidMount() {
 		try {
+			let guider_id = this.props.match.params.guider_id;
 			const responsePosts = await fetch(
 				Config.api_url + "guiderpost/postOfOneGuider?guider_id=" + this.props.match.params.guider_id,
 				{
@@ -42,45 +43,41 @@ class GuiderAllPost extends Component {
 		}
 	}
 
-	// handleCurrentPage = (event) => {
-	//   this.setState({
-	//     currentPage: event.target.id
-	//   });
-	// }
+	handleCurrentPage = (event) => {
+	  this.setState({
+	    currentPage: event.target.id
+	  });
+	}
 
 	render() {
-		// const guider_id = this.props.userId;
+		let guider_id = this.props.match.params.guider_id;
+		let data = this.state.posts;
+		let { currentPage, todosPerPage } = this.state;
+		let user = sessionStorage.getItem('user');
+		// Logic for displaying todos
+		let indexOfLastTodo = currentPage * todosPerPage;
+		let indexOfFirstTodo = indexOfLastTodo - todosPerPage;
+		let currentdata = data.slice(indexOfFirstTodo, indexOfLastTodo);
 
-		// const data = this.state.posts;
-		// const { currentPage, todosPerPage } = this.state;
+		// Logic for displaying page numbers
+		let pageNumbers = [];
+		for (let i = 1; i <= Math.ceil(data.length / todosPerPage); i++) {
+		  pageNumbers.push(i);
+		}
 
-		// // Logic for displaying todos
-		// const indexOfLastTodo = currentPage * todosPerPage;
-		// const indexOfFirstTodo = indexOfLastTodo - todosPerPage;
-		// const currentdata = data.slice(indexOfFirstTodo, indexOfLastTodo);
-
-		// // Logic for displaying page numbers
-		// const pageNumbers = [];
-		// for (let i = 1; i <= Math.ceil(data.length / todosPerPage); i++) {
-		//   pageNumbers.push(i);
-		// }
-
-		// const renderPageNumbers = pageNumbers.map(number => {
-		//   return (
-		//     <button
-		//       key={number}
-		//       id={number}
-		//       onClick={this.handleCurrentPage}
-		//       className={currentPage === number ? 'currentPage' : ''}
-		//     >
-		//       {number}
-		//     </button>
-		//   );
-		// });
-		let edits = this.state.posts.map((post, index) =>
-			<Route exact path={"/alter/" + post.post_id} key={index}><EditPost guiderId={this.props.guiderId} postId={post.post_id} /></Route>
-		);
-		let posts = this.state.posts.map((post, index) => (
+		let renderPageNumbers = pageNumbers.map(number => {
+		  return (
+		    <button
+		      key={number}
+		      id={number}
+		      onClick={this.handleCurrentPage}
+		      className={currentPage === number ? 'currentPage' : ''}
+		    >
+		      {number}
+		    </button>
+		  );
+		});
+		let posts = currentdata.map((post, index) => (
 			<li key={index}>
 				<div className="sheet">
 					<button className="unlike">
@@ -97,7 +94,11 @@ class GuiderAllPost extends Component {
 							Enjoy <span className="withName">{post.post_id}</span>
 						</span>
 						<h3>
-							<Link to={"/alter/" + post.post_id}>{post.title}</Link>
+						{
+							user.role === "GUIDER" ?<Link to={"/alter/" + post.post_id}>{post.title}</Link> 
+							: post.title
+						}
+							
 						</h3>
 						<div className="price">
 							<span>${post.price}</span>
@@ -122,26 +123,29 @@ class GuiderAllPost extends Component {
 				</div>
 			</li>
 		));
-
+		
+		
 
 		return (
 			<div>
-				<Switch>{edits}</Switch>
 				<div>
 
 					<div id="reactContainer">
 						{/*  Content  */}
 						<div className="content">
+						<div className="content-left">
+							{guider_id ? (<GuiderInPost guiderId={guider_id} />) : null}
+						</div>
 							<div className="content-right">
 								<div className="bookOffers">
 									<h2>Book one of my offers in Ha Noi</h2>
 									<ul>{posts}</ul>
 								</div>
-								{/* <div className="pagination">
-                  <div className="paginationContent">
-                    {renderPageNumbers}
-                  </div>
-                </div> */}
+								<div className="pagination">
+						<div className="paginationContent">
+							{renderPageNumbers}
+						</div>
+                </div>
 							</div>
 						</div>
 					</div>

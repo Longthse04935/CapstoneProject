@@ -43,6 +43,7 @@ class Pay extends Component {
     let response = await fetch(Config.api_url + "Payment/Pay", options);
     response = await response.text();
     window.location.href = response;
+    sessionStorage.setItem('link',response);
   }
 
   genderOnChange = (e)=>{

@@ -30,7 +30,6 @@ class GuiderInPost extends React.Component {
                         <div className="pb-header header-stick">
                         <div className="header-pb">
                             <h1 className="TitlePb TileStickyPb">{guide.first_name + "" + guide.last_name}</h1>
-                            <h2 className="TitlePb TileStickyPb">The Life Lover</h2>
                             <div className="Rating">
                                 <i className="fa fa-star"></i>
                                 <i className="fa fa-star"></i>
@@ -77,9 +76,9 @@ class GuiderInPost extends React.Component {
                     </p>
                     <p className="ListItem">
                         <span className="ListItemIcon">
-                        <i className="fa fa-clock-o" aria-hidden="true"></i>
+                        <i className="fa fa-info-circle" aria-hidden="true"></i>
                         </span>
-                        <span className="ListItemText">Response time</span>
+                        <span className="ListItemText">About me:{guide.about_me}</span>
                     </p>
                     <Link to={"/chatbox/"+ this.props.postId}><button className="BtnContact">Contact me</button></Link>
                   </div>

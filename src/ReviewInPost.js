@@ -59,12 +59,10 @@ class ReviewInPost extends React.Component {
                   </li>
             );
             return (
-                  <div className="content-right">
                         <ul className="listReview">
                               <h2>Reviews</h2>
                               {showReview}
                         </ul>
-                  </div>
             );
       }
 }

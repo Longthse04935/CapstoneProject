@@ -166,12 +166,12 @@ body{
   display: none;
 }
 
-.content-right .intro video{
+.content-right .intro iframe{
   border-radius: 10px;
   margin-bottom: 24px;
   box-shadow: 0 6px 16px 0 rgba(0,0,0,.2);
   width: 100%;
-  height: auto;
+  height: 450px;
   border:none;
 }
 

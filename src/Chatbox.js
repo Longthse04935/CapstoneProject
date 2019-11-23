@@ -130,10 +130,10 @@ class Chatbox extends Component {
         let option = this.option(" "+response[0]);
         let endTime = await fetch(Config.api_url+'Order/GetExpectedTourEnd', option);
         endTime = await endTime.text();
-        this.setState({ message, isError,numberInjoy,timeAvailable:response,hourBegin:response[0],endTime:endTime.split(' ')[1]});
+        this.setState({ message, isError,numberInjoy,timeAvailable:response,hourBegin:response[0],endTime:endTime});
 
         //get profile guider
-        const responseGuider = await fetch(Config.api_url + "guider/" + sessionStorage.getItem('guider_id'),{
+        const responseGuider = await fetch(Config.api_url + "Guider/" + sessionStorage.getItem('guider_id'),{
           method: "GET",
           mode: "cors",
           credentials: "include"
@@ -167,7 +167,7 @@ class Chatbox extends Component {
      let option = this.option(" "+response[0]);
      let endTime = await fetch(Config.api_url+'Order/GetExpectedTourEnd', option);
      endTime = await endTime.text();
-    this.setState({timeAvailable:response,endTime:endTime.split(' ')[1],valueItem:response[0]});
+    this.setState({timeAvailable:response,endTime:endTime,valueItem:response[0]});
 
   }
 
@@ -184,8 +184,8 @@ class Chatbox extends Component {
 
       response = await fetch(Config.api_url+'Order/GetExpectedTourEnd', options);
       let endTime = await response.text();
-      closest_EndDate ="Closest ended tour at "+closest_EndDate;
-      this.setState({closest_EndDate,endTime:endTime.split(' ')[1]});
+      closest_EndDate ="Last tour ended at "+closest_EndDate;
+      this.setState({closest_EndDate,endTime:endTime});
   }
 
   onCancel(){
@@ -220,7 +220,7 @@ class Chatbox extends Component {
     });
   }
   
-  bookNow= () => {
+  bookNow= async () => {
     var user = JSON.parse(sessionStorage.getItem('user'));
    
     if(user === null){
@@ -230,6 +230,10 @@ class Chatbox extends Component {
       var today = data.tourDate;
       var getDate = parseInt(today.getDate()) < 10 ? "0"+parseInt(today.getDate()) : parseInt(today.getDate());
       var getMonth = parseInt(today.getMonth()+1) < 10 ? "0"+parseInt(today.getMonth()+1) : parseInt(today.getMonth()+1);
+
+      let options = this.option(" "+this.state.hourBegin);
+  
+
       var tourDetail = {
         traveler_id:'',
         post_id:'',
@@ -237,8 +241,9 @@ class Chatbox extends Component {
         adult_quantity:'',
         children_quantity:'',
         price:'',
-        dateForBook:'',
-        hourForBook:''
+        end_date:'',
+        guider_id:sessionStorage.getItem('guider_id'),
+        guider_name:sessionStorage.getItem('guider_name')
       };
   
       tourDetail.traveler_id = ""+user.id;
@@ -246,9 +251,8 @@ class Chatbox extends Component {
       tourDetail.begin_date = getMonth + "/"+ getDate +"/"+ today.getFullYear()+" "+data.hourBegin;
       tourDetail.adult_quantity = ""+data.numberInjoy.adult;
       tourDetail.children_quantity = ""+data.numberInjoy.children;
-      tourDetail.price = data.numberInjoy.totalPrice; 
-      tourDetail.dateForBook = getMonth + "/"+ getDate +"/"+ today.getFullYear(); 
-      tourDetail.hourForBook = data.hourBegin; 
+      tourDetail.price = data.numberInjoy.totalPrice;  
+      tourDetail.end_date = this.state.endTime;
       sessionStorage.setItem('tourDetail', JSON.stringify(tourDetail));
       window.location.href = "/book";  
     }
@@ -453,8 +457,8 @@ class Chatbox extends Component {
                       ></i>
                     </div>
                   </div>
-                  <p>Adults price:{" "}${numberInjoy.price} &emsp;&emsp;&nbsp;number:{" "+numberInjoy.adult}</p>
-                  <p>Children price:{" "}${numberInjoy.price*0.5} &emsp;&emsp;number:{" "+numberInjoy.children}</p>
+                  <p>Adults price:{" "}${numberInjoy.price}</p>
+                  <p>Children price:{" "}${numberInjoy.price*0.5}</p>
                   <p>Amount: ${numberInjoy.totalPrice}</p>
                 </div>
 

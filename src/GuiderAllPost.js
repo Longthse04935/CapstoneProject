@@ -95,7 +95,7 @@ class GuiderAllPost extends Component {
 						</span>
 						<h3>
 						{
-							user.role === "GUIDER" ?<Link to={"/alter/" + post.post_id}>{post.title}</Link> 
+							user.role === "GUIDER" ? <Link to={"/alter/" + post.post_id}>{post.title}</Link> 
 							: post.title
 						}
 							

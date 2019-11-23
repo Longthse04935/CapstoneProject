@@ -424,9 +424,8 @@ class Navbar extends Component {
                                     <div className="localsOrExperience">
                                         <h3 className="explore">Explore TravelWlocals</h3>
                                         <div className="button-group">
-                                            <button className="active">All</button>
-                                            <button>Locals</button>
-                                            <button>Experiences</button>
+                                            <button className="active">Guider</button>
+                                            <button>Location</button>
                                         </div>
                                     </div>
                                     <div className="popularDestination">

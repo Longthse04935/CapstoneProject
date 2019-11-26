@@ -22,11 +22,11 @@
 
 .payForm .infoTourBook{
     width: 33%;
-    height: 450px;
     box-shadow: 0 7px 33px 0 hsla(0,0%,78%,1);
     margin: 10px 10px 0 0;
     border-radius: 10px;
     margin-bottom: 20px;
+    position: relative;
 }
 .gender .gendermale{
     margin-left: 0px;
@@ -65,21 +65,40 @@ padding-left: 10px;
     margin-top: 20px;
 }
 
-.infoTourBook .intro_tour img{
+.infoTourBook .intro_tour .payImg{
     width: 100%;
     border-radius: 10px 10px 0 0;
 }
 
 .infoTourBook .intro_tour h2{
     font-weight: 600;
+    padding: 0 20px;
 }
+
+
 .info_tourDetail {
-    padding: 0 10px;
+    padding: 0 20px;
 }
 .infoTourBook .tour_detailHour i{
     font-size: 17px;
-    margin-left: 30px;
     color: #676565;
+}
+.infoTourBook .tour_detailHour i .tool_tipPeople{
+    width: 220px;
+    height: 60px;
+    line-height: 30px;
+    margin-top: 5px;
+    border-radius: 5px;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.25);
+    padding-left: 20px;
+    display: none;
+    background: #fff;
+    z-index: 1;
+    position: absolute;
+}
+
+.infoTourBook .tour_detailHour p{
+    margin-bottom: 0;
 }
 
 .infoTourBook .tour_detailHour span{
@@ -119,7 +138,11 @@ padding-left: 10px;
 .inputInfoPay  .paypal_radio span{
     font-size: 20px;
 }
-
+.inputInfoPay  .policy{
+    font-family: none;
+    font-weight: lighter;
+    font-style: italic
+}
 .infoTravellerPay .errorInput{
     color: red;
     margin-top: 0;
@@ -164,3 +187,103 @@ padding-left: 10px;
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
+
+  .infoTourBook .intro_tour .tool-tipPost{
+    width: 530px;
+    height: 490px;
+    position: absolute;
+    left: -30px;
+    overflow-y: scroll;
+    background: #fff;
+    z-index: 3;
+    font-size: 15px;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+}
+.intro_tour .tool-tipPost .intro iframe{
+    height: 240px;
+}
+  #reactContainer #contentPay{
+    width: 500px;
+    margin: 0 auto;
+    display: flex;
+    height: auto;
+    margin-top: 0;
+}
+
+#reactContainer #content-rightPay{
+    width: 500px;
+}
+
+#contentPay #content-rightPay h2{
+    padding: 0;
+}
+
+#contentPay #content-rightPay .PostDetail{
+    width: 480px;
+    margin-left: 15px;
+}
+
+#contentPay #content-rightPay .reviewContainer{
+    position: relative;
+    border-bottom: 1px solid #eaeaea;
+    margin: 0px 0 16px 0;
+    padding-bottom: 10px;
+}
+
+#contentPay #content-rightPay .reviewContainer .defaultLogo{
+    top: 0px;
+}
+
+#contentPay #content-rightPay .reviewContainer .reviewInfo > div {
+    height: 35px;
+}
+
+.infoTourBook .intro_tour .titleTourPay {
+    color:#e71575;
+}
+
+.infoTourBook .intro_tour .tool-tipPost{
+    display: none;
+}
+
+.infoTourBook .intro_tour .titleTourPay:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+.guiderNamePay {
+    color:#e71575;
+    cursor: pointer;
+}
+
+
+.info_tourDetail .tour_detailHour .tool_tipGuider{
+    margin-top: 10px;
+    position: absolute;
+    z-index: 1;
+    background: #fff;
+    top: 0;
+    left: 145px;
+    display: none;
+}
+
+.tour_detailHour .tool_tipGuider .content-left .profile-box{
+    margin-top: 0px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,.25);
+    width: 330px;
+    border-radius: .5rem;
+    padding: 2rem 1.5rem;
+}
+
+.tour_detailHour .tool_tipGuider .content-left .fa-star{
+    color: #e71575;
+}
+
+.tour_detailHour .tool_tipGuider .content-left .profile-box .ListItem{
+    margin-top: 10px;
+}
+
+.tour_detailHour .tool_tipGuider .content-left .profile-box .ListItemText{
+    margin-top: 0px;
+    font-weight: 100;
+}

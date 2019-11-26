@@ -369,22 +369,6 @@ class Tour extends Component {
               <img src={link} />
             </div>
           ))}
-
-          {/* <div className="mySlides fade">
-            <img src="/img/nature2.jpg" />
-          </div>
-          <div className="mySlides fade">
-            <img src="/img/nature3.jpg" />
-          </div>
-          <div className="mySlides fade">
-            <img src="/img/nature4.jpg" />
-          </div>
-          <div className="mySlides fade">
-            <img src="/img/nature5.jpg" />
-          </div>
-          <div className="mySlides fade">
-            <img src="/img/nature6.jpg" />
-          </div> */}
           <a className="prev" onClick={this.handlePrev}>
             ❮
           </a>

@@ -9,7 +9,7 @@ class GuiderInPost extends React.Component {
       }
       async componentDidMount() {
             try {
-                  const response = await fetch(Config.api_url + "guider/" + this.props.guiderId,{
+                  const response = await fetch(Config.api_url + "Guider/" + this.props.guiderId,{
                     method: "GET",
                     mode: "cors",
                     credentials: "include"
@@ -25,12 +25,12 @@ class GuiderInPost extends React.Component {
       }
       render() {
             let guide = this.state.guider;
+            let languages = guide.languages;
             return (
                   <div className="profile-box">
                         <div className="pb-header header-stick">
                         <div className="header-pb">
                             <h1 className="TitlePb TileStickyPb">{guide.first_name + "" + guide.last_name}</h1>
-                            <h2 className="TitlePb TileStickyPb">The Life Lover</h2>
                             <div className="Rating">
                                 <i className="fa fa-star"></i>
                                 <i className="fa fa-star"></i>
@@ -58,7 +58,7 @@ class GuiderInPost extends React.Component {
                             <i className="fa fa-globe"></i>
                         </span>
                         <span className="ListItemText">
-                            I speak {guide.languages}
+                            I speak {languages}
                         </span>
                     </p>
                     <p className="ListItem">
@@ -66,7 +66,7 @@ class GuiderInPost extends React.Component {
                             <i className="fa fa-heart"></i>
                         </span>
                         <span className="ListItemText">
-                            My passions are
+                            My passions are: {guide.passion}
                         </span>
                     </p>
                     <p className="ListItem">
@@ -77,11 +77,14 @@ class GuiderInPost extends React.Component {
                     </p>
                     <p className="ListItem">
                         <span className="ListItemIcon">
-                        <i className="fa fa-clock-o" aria-hidden="true"></i>
+                        <i className="fa fa-info-circle" aria-hidden="true"></i>
                         </span>
-                        <span className="ListItemText">Response time</span>
+                        <span className="ListItemText">About me:{guide.about_me}</span>
                     </p>
-                    <Link to={"/chatbox/"+ this.props.postId}><button className="BtnContact">Contact me</button></Link>
+                    {
+                        window.location.pathname === '/book' ? '' : <Link to={"/chatbox/"+this.props.postId}><button className="BtnContact">Contact with me</button></Link>
+                    }
+                        
                   </div>
             );
       }

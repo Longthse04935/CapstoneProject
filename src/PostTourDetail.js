@@ -33,6 +33,7 @@ class PostTourDetail extends Component {
           const dataPostOneCategory = await responsePosts.json();
     
           this.setState({ dataPostOneCategory});
+          console.log(dataPostOneCategory);
         } catch (err) {
           console.log(err);
         }

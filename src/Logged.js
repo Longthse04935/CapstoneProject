@@ -166,6 +166,7 @@ class Logged extends Component {
                                                 id: 0
                                             };
                                             this.props.reload.call(this, user);
+                                            window.location.href = '/';
                                         }}>Log out<i className="fa fa-user" aria-hidden="true"></i></li>
 
                                     </ul>

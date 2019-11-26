@@ -65,10 +65,11 @@ body{
 }
 
 .Rating i{
-  color:#6fbe44;
+  color:#e71575;
   font-size:13px;
   margin-right: 3px;
 }
+
 .header-pb button {
     overflow: visible;
     border: 0;
@@ -116,7 +117,7 @@ body{
 }
 .BtnContact{
     margin-top: 20px;
-    background: #6fbe44;
+    background:#e71575;
     font-size: 1rem;
     font-weight: 600;
     padding: 0 2rem;
@@ -166,12 +167,12 @@ body{
   display: none;
 }
 
-.content-right .intro video{
+.content-right .intro iframe{
   border-radius: 10px;
   margin-bottom: 24px;
   box-shadow: 0 6px 16px 0 rgba(0,0,0,.2);
   width: 100%;
-  height: auto;
+  height: 450px;
   border:none;
 }
 

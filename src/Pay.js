@@ -1,277 +1,534 @@
 import React, { Component } from "react";
 import "font-awesome/css/font-awesome.min.css";
-import country from './json/country.json';
-import $ from 'jquery';
-import Config from './Config';
+import country from "./json/country.json";
+import $ from "jquery";
+import Config from "./Config";
+import ReviewInPost from './ReviewInPost';
+import GuiderInPost from './GuiderInPost';
+
 class Pay extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
 
     this.state = {
-      tourDetail:{},
-      country:[],
-      isDisabled:true,
-      isDisabledPay:true
+      tourDetail: {},
+      country: [],
+      postInfo: [],
+      isDisabled: true,
+      isDisabledPay: true,
+      isDisabledCheckBox:true,
+      link_youtube:''
+    };
+  }
+
+  async componentDidMount() {
+    this.setState({ country });
+    //open loader to paypal
+    $('input[name="paypal"]').on("click", function() {
+      $(".coverLoader").show();
+    });
+
+    $("#amout_show").hover(function(){
+      $('.tool_tipPeople').show();
+    },function(){
+        $('.tool_tipPeople').hide();
+    })
+
+    $('.guiderNamePay').click(function () {
+      if($('.guiderNamePay').hasClass('showing') === false){
+        $('.tool_tipGuider').show();
+        $('.guiderNamePay').addClass('showing');
+      }else{
+        $('.tool_tipGuider').hide();
+        $('.guiderNamePay').removeClass('showing');
+      }
+    });
+
+    $('.titleTourPay').click(function () {
+      if($('.titleTourPay').hasClass('showing') === false){
+        $('.tool-tipPost').show();
+        $('.titleTourPay').addClass('showing');
+      }
+    });
+
+    $(document).mouseup(function (e) {
+      if (e.button === 0) {
+          var container = $(".tool-tipPost");
+          // if the target of the click isn't the container nor a descendant of the container
+          if (!container.is(e.target) && container.has(e.target).length === 0) {
+            $('.tool-tipPost').hide();
+            $('.titleTourPay').removeClass('showing');
+          }
+      }
+  });
+
+    //load post data
+    let tourDetail = JSON.parse(sessionStorage.getItem('tourDetail'));
+    let response = await fetch(
+      Config.api_url + "guiderpost/findSpecificPost?post_id=" + tourDetail.post_id,
+      {
+        method: "GET",
+        mode: "cors",
+        credentials: "include"
+      }
+    );
+    if (!response.ok) {
+      throw Error(response.status + ": " + response.statusText);
     }
+
+    const postInfo = await response.json();
+
+    let link_youtube = postInfo.video_link;
+      if(link_youtube.includes('youtu.be')){
+        link_youtube = link_youtube.replace("youtu.be","youtube.com/embed");
+        this.setState({link_youtube});
+      }else{
+        link_youtube = link_youtube.split("&");
+        this.setState({link_youtube:link_youtube[0].replace("watch?v=","embed/")});
+      }
+      this.setState({ postInfo});
+
   }
-
-  componentDidMount() {
-      this.setState({country});
-
-      //open loader to paypal
-      $('input[name="paypal"]').on('click', function(){
-        $('.coverLoader').show();
-     });
-
-    
-  }
-  async goToPayPal(){
-    var data=JSON.parse(sessionStorage.getItem('tourDetail'));
+  async goToPayPal() {
+    var data = JSON.parse(sessionStorage.getItem("tourDetail"));
     delete data.price;
     delete data.dateForBook;
     delete data.hourForBook;
     let options = {
-      method: 'POST',
+      method: "POST",
       mode: "cors",
       credentials: "include",
       headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json"
       },
       body: JSON.stringify(data)
     };
     let response = await fetch(Config.api_url + "Payment/Pay", options);
     response = await response.text();
     window.location.href = response;
+    sessionStorage.setItem("link", response);
   }
 
-  genderOnChange = (e)=>{
-    if(e.target.name==='gender'){
-      if(e.target.value==='' || e.target.value===null ){
+  genderOnChange = e => {
+    if (e.target.name === "gender") {
+      if (e.target.value === "" || e.target.value === null) {
         this.setState({
-          genderError:true
-        })
+          genderError: true
+        });
       } else {
         this.setState({
-          genderError:false,     
-          gender:e.target.value
-        })
+          genderError: false,
+          gender: e.target.value
+        });
       }
     }
-    
-  }
+  };
 
-  validateEmail(email){
-   const pattern = /[a-zA-Z0-9]+[\.]?([a-zA-Z0-9]+)?[\@][a-z]{3,9}[\.][a-z]{2,5}/g;
-   const result = pattern.test(email);
-   if(result === true){
-     this.setState({
-       emailError:false,
-       email:email
-     })
-   } else{
-     this.setState({
-       emailError:true
-     })
-   }
- }
-
-  validatePhone(phone){
-    const pattern = /^\d{10,11}$/;
-    const result = pattern.test(phone);
-    if(result === true){
+  validateEmail(email) {
+    const pattern = /[a-zA-Z0-9]+[\.]?([a-zA-Z0-9]+)?[\@][a-z]{3,9}[\.][a-z]{2,5}/g;
+    const result = pattern.test(email);
+    if (result === true) {
       this.setState({
-        phoneError:false,
-        phone:phone
-      })
-    } else{
+        emailError: false,
+        email: email
+      });
+    } else {
       this.setState({
-        phoneError:true
-      })
+        emailError: true
+      });
     }
   }
 
-  
-  handleChange(e){
+  validatePhone(phone) {
+    const pattern = /^\d{10,11}$/;
+    const result = pattern.test(phone);
+    if (result === true) {
+      this.setState({
+        phoneError: false,
+        phone: phone
+      });
+    } else {
+      this.setState({
+        phoneError: true
+      });
+    }
+  }
+
+  handleCheckBox = () =>{
+    this.setState({isDisabledCheckBox:!this.state.isDisabledCheckBox});
+  }
+
+  handleChange(e) {
     const target = e.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
     this.setState({
       [name]: value
     });
-    if(e.target.name==='firstname'){
-      if(e.target.value==='' || e.target.value===null ){
+    if (e.target.name === "firstname") {
+      if (e.target.value === "" || e.target.value === null) {
         this.setState({
-          firstnameError:true
-        })
+          firstnameError: true
+        });
       } else {
         this.setState({
-          firstnameError:false,     
-          firstName:e.target.value
-        })
+          firstnameError: false,
+          firstName: e.target.value
+        });
       }
     }
-    if(e.target.name==='lastname'){
-      if(e.target.value==='' || e.target.value===null){
+    if (e.target.name === "lastname") {
+      if (e.target.value === "" || e.target.value === null) {
         this.setState({
-          lastnameError:true
-        })
+          lastnameError: true
+        });
       } else {
         this.setState({
-          lastnameError:false,
-          lastName:e.target.value
-        })
+          lastnameError: false,
+          lastName: e.target.value
+        });
       }
     }
-    if(e.target.name==='email'){
-    this.validateEmail(e.target.value);
+    if (e.target.name === "email") {
+      this.validateEmail(e.target.value);
     }
-    if(e.target.name==='phone'){
+    if (e.target.name === "phone") {
       this.validatePhone(e.target.value);
-  }
-  if(this.state.firstnameError===false && this.state.lastnameError===false && 
-    this.state.emailError===false && this.state.genderError === false){
+    }
+    if (
+      this.state.firstnameError === false &&
+      this.state.lastnameError === false &&
+      this.state.emailError === false &&
+      this.state.genderError === false
+    ) {
       this.setState({
-        isDisabled:false
-      })
-      
+        isDisabled: false
+      });
+    }
   }
-  }
-  submitForm = (e) => {
+  submitForm = e => {
     e.preventDefault();
     const data = {
-    firstName: this.state.firstName,
-    lastName: this.state.lastName,
-    email: this.state.email,
-    phone:this.state.phone,
-    gender:this.state.gender
-    }
-    this.setState({isDisabledPay:false});
-    console.log(data);
-  }
+      firstName: this.state.firstName,
+      lastName: this.state.lastName,
+      email: this.state.email,
+      phone: this.state.phone,
+      gender: this.state.gender
+    };
+    this.setState({ isDisabledPay: false });
+
+  };
 
   render() {
-    let country_name = this.state.country.map((value,index) =>{
-      return <option key={index} value={value.name}>{value.name + "("+value.code +")"}</option>   
-    })
+    let country_name = this.state.country.map((value, index) => {
+      return (
+        <option key={index} value={value.name}>
+          {value.name + "(" + value.code + ")"}
+        </option>
+      );
+    });
 
-    let country_phone = this.state.country.map((value,index) =>{
-      return <option key={index} value={value.dial_code}>{value.name + "("+value.dial_code+")"}</option>   
-    })
-    var tourDetail = JSON.parse(sessionStorage.getItem('tourDetail'));
-    var user = JSON.parse(sessionStorage.getItem('user'));
-    if(tourDetail === null || user === null){
-      window.location.href = "/";
-      sessionStorage.setItem('messagePay','Error user or tour inf');
-    }else{
-      sessionStorage.setItem('messagePay','');
-    }
+    let country_phone = this.state.country.map((value, index) => {
+      return (
+        <option key={index} value={value.dial_code}>
+          {value.name + "(" + value.dial_code + ")"}
+        </option>
+      );
+    });
+    let {postInfo} = this.state;
     
+    let tourDetail = JSON.parse(sessionStorage.getItem("tourDetail"));
+    let begin_date = tourDetail.begin_date.split(" ");
+    let end_date = tourDetail.end_date.split(" ");
+    let user = JSON.parse(sessionStorage.getItem("user"));
+    if (tourDetail === null || user === null) {
+      window.location.href = "/";
+      sessionStorage.setItem("messagePay", "Error user or tour inf");
+    } else {
+      sessionStorage.setItem("messagePay", "");
+    }
+
     return (
       <div>
         <div className="coverLoader">
           <div className="loader"></div>
         </div>
         <div className="payForm">
-      <div className="inputInfoPay">
-        <div className={this.state.isDisabledPay ? 'paypal_pay hidden' : ''} >
-          <h2>Select payment</h2>
-          <hr/>
-          <div className="paypal_radio">
-            <input type="radio" name="paypal" defaultValue="female" onChange={this.goToPayPal}/> <span>Paypal</span>
-            <img src="/img/paypal.png" alt="paypal"/>
+          <div className="inputInfoPay">
+            <div
+              className={this.state.isDisabledPay ? "paypal_pay hidden" : ""}
+            >
+              <h2>Select payment</h2>
+              <hr />
+              <input type="checkbox" onClick={this.handleCheckBox}/> <span className="policy" >Chinh sach</span>
+              <div className="paypal_radio">
+                {
+                  this.state.isDisabledCheckBox ? '' 
+                  : <input
+                  type="radio"
+                  name="paypal"
+                  onChange={this.goToPayPal}
+                /> 
+                }{" "}
+                <span>Paypal</span>
+                <img src="/img/paypal.png" alt="paypal" />
+              </div>
+            </div>
+            <div
+              className={this.state.isDisabledPay ? "" : "paypal_pay hidden"}
+            >
+              <div className="gender">
+                <p>Gender</p>
+                <input
+                  type="radio"
+                  className="gendermale"
+                  name="gender"
+                  value="male"
+                  onChange={e => this.genderOnChange(e)}
+                />{" "}
+                Male
+                <input
+                  type="radio"
+                  name="gender"
+                  value="female"
+                  onChange={e => this.genderOnChange(e)}
+                />{" "}
+                Female
+                <input
+                  type="radio"
+                  name="gender"
+                  value="other"
+                  onChange={e => this.genderOnChange(e)}
+                />{" "}
+                Other
+              </div>
+
+              <div className="infoTravellerPay">
+                <p>First name</p>
+                <input
+                  type="text"
+                  placeholder="Fisrt name"
+                  name="firstname"
+                  onChange={e => {
+                    this.handleChange(e);
+                  }}
+                />
+                {this.state.firstnameError ? (
+                  <p style={{ color: "red" }} className="errorInput">
+                    Please enter your first name
+                  </p>
+                ) : (
+                  ""
+                )}
+
+                <p>Last name</p>
+                <input
+                  type="text"
+                  placeholder="Last name"
+                  name="lastname"
+                  onChange={e => {
+                    this.handleChange(e);
+                  }}
+                />
+                {this.state.lastnameError ? (
+                  <p style={{ color: "red" }} className="errorInput">
+                    Please enter your last name
+                  </p>
+                ) : (
+                  ""
+                )}
+
+                <p>Email</p>
+                <input
+                  type="text"
+                  placeholder="Email"
+                  name="email"
+                  onChange={e => {
+                    this.handleChange(e);
+                  }}
+                />
+                {this.state.emailError ? (
+                  <p style={{ color: "red" }} className="errorInput">
+                    Please enter your email
+                  </p>
+                ) : (
+                  ""
+                )}
+                <p>Country of residence</p>
+                <select
+                  style={{
+                    width: "100%",
+                    height: "40px",
+                    border: "1px solid #eaeaea"
+                  }}
+                >
+                  {country_name}
+                </select>
+
+                <p>Phone</p>
+                <select
+                  style={{
+                    width: "40%",
+                    height: "42px",
+                    border: "1px solid #eaeaea"
+                  }}
+                >
+                  {country_phone}
+                </select>
+                <input
+                  type="text"
+                  placeholder="Phone"
+                  className="phone_traveller"
+                  name="phone"
+                  onChange={e => {
+                    this.handleChange(e);
+                  }}
+                />
+                {this.state.phoneError ? (
+                  <p style={{ color: "red" }} className="errorInput">
+                    Phone must be have 10 digit
+                  </p>
+                ) : (
+                  ""
+                )}
+
+
+                <input
+                  type="submit"
+                  value="Save"
+                  className="saveInfoTraveller"
+                  disabled={this.state.isDisabled}
+                  onClick={this.submitForm}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* infoTourBook */}
+          <div className="infoTourBook">
+            <div className="intro_tour">
+              <img className="payImg" alt="natural" src="/img/natural1.jpg" />
+              <h2 className="titleTourPay">The Magic of Dubai at Night Private Tour</h2>
+              <div className="tool-tipPost">
+                  {/* Post */}
+                  <div id="reactContainer">
+                  {/*  Content  */}
+                  <div className="content " id="contentPay">
+                    <div className="content-right " id="content-rightPay">
+                      <div className="PostDetail">
+                        <div className="intro">
+                        <iframe
+                          src={this.state.link_youtube}
+                          frameBorder="0"
+                          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen 
+                        ></iframe>
+                          <h2 className="titleTour">{postInfo.title}</h2>
+                          <p className="introduceTour">{postInfo.description}</p>
+                        </div>
+                        <div className="activities">
+                          <ul>
+                            <li>
+                              <i className="fa fa-map-marker"></i>
+                              <span>{postInfo.location}</span>
+                            </li>
+                            <li>
+                              <i className="fa fa-hourglass-end" />
+                              <span>{postInfo.total_hour} hours</span>
+                            </li>
+                            <li>
+                              <i className="fa fa-users" />
+                              <span>Private tour. Only you and your host</span>
+                            </li>
+                          </ul>
+                          <i className="fa fa-sticky-note" />
+                          <span>
+                            <strong>Including:</strong>
+                            {postInfo.including_service}
+                          </span>
+                        </div>
+
+                        <ReviewInPost postId={tourDetail.post_id} />
+
+                        {/* <PlanInPost postId={tourDetail.post_id} /> */}
+                        
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                  {/* End Post */}
+              </div>
+            </div>
+            <div className="info_tourDetail">
+              <hr />
+              <div className="tour_detailHour">
+                <i className="fa fa-calendar-o celander" aria-hidden="true">
+                  <span>Begin date: {begin_date[0]}</span>
+                </i>
+                <i className="fa fa-clock-o" aria-hidden="true">
+                  <span>Begin time: {begin_date[1]}</span>
+                </i>
+                <p></p>
+                <i className="fa fa-calendar-o celander" aria-hidden="true">
+                  <span>End date: {end_date[0]}</span>
+                </i>
+                <p></p>
+                <i className="fa fa-clock-o" aria-hidden="true">
+                  <span>End time: {end_date[1]}</span>
+                </i>
+                <p></p>
+                <i className="fa fa-clock-o" aria-hidden="true">
+                  <span>Tour duration: {postInfo.total_hour} hour</span>
+                </i>
+                <p></p>
+                <i className="fa fa-user" aria-hidden="true" style={{position:'relative'}}>
+                  <span >
+                    Guider: <span className="guiderNamePay">{tourDetail.guider_name}</span>
+                  </span>
+                  <div className="tool_tipGuider">
+                    <div className="content-left">
+                        <GuiderInPost
+                          guiderId={tourDetail.guider_id}
+                          postId={tourDetail.post_id}
+                        />
+                    </div>
+                  </div>
+                </i>
+                <p></p>
+                <i className="fa fa-user" aria-hidden="true">
+                  <span >
+                    Amount people:
+                    <span style={{color:"#e71575",position:'relative',cursor:'pointer'}} id="amout_show">
+                    {" "}{parseInt(tourDetail.adult_quantity) +
+                      parseInt(tourDetail.children_quantity)}
+                      </span>
+                      {" "}people
+                  </span>
+                  <div className="tool_tipPeople">
+                    <i className="fa fa-user" aria-hidden="true">
+                      <span>
+                        Adult:{" "+tourDetail.adult_quantity}
+                      </span>
+                    </i>
+                    <p></p>
+                    <i className="fa fa-user" aria-hidden="true">
+                      <span>
+                      Children:{" "+ tourDetail.children_quantity}
+                      </span>
+                    </i>
+                    <p></p>
+                  </div>
+                </i>
+                <hr />
+                <div className="total_priceBook">
+                  Fee tour:
+                  <span>{tourDetail.price}$</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div className={this.state.isDisabledPay ? '' : 'paypal_pay hidden'} >
-            <div className="gender" >
-              <p>Gender</p>
-              <input
-                type="radio"
-                className="gendermale"
-                name="gender"
-                value="male"
-                onChange={(e)=>this.genderOnChange(e)}
-              /> Male
-              <input type="radio" name="gender" value="female" onChange={(e)=>this.genderOnChange(e)}/> Female
-              <input type="radio" name="gender" value="other" onChange={(e)=>this.genderOnChange(e)}/> Other
-            </div>
-
-            <div className="infoTravellerPay">
-              <p>First name</p>
-              <input type="text" placeholder="Fisrt name" name="firstname" onChange={(e)=>{this.handleChange(e)}}/>
-              {this.state.firstnameError ? <p style={{color: "red"}} className="errorInput">Please enter your first name</p> : ''} 
-
-              <p>Last name</p>
-              <input type="text" placeholder="Last name" name="lastname" onChange={(e)=>{this.handleChange(e)}}/>
-              {this.state.lastnameError ? <p style={{color: "red"}} className="errorInput">Please enter your last name</p> : ''} 
-
-              <p>Email</p>
-              <input type="text" placeholder="Email" name="email" onChange={(e)=>{this.handleChange(e)}}/>
-              {this.state.emailError ? <p style={{color: "red"}} className="errorInput">Please enter your email</p> : ''} 
-              <p>Country of residence</p>
-              <select
-                style={{
-                  width: "100%",
-                  height: "40px",
-                  border: "1px solid #eaeaea"
-                }}
-              >
-                {country_name}
-              </select>
-
-              <p>Phone</p>
-              <select
-                style={{
-                  width: "40%",
-                  height: "42px",
-                  border: "1px solid #eaeaea"
-                }}
-              >
-                {country_phone}
-              </select>
-              <input
-                type="text"
-                placeholder="Phone"
-                className="phone_traveller"
-                name = "phone"
-                onChange={(e)=>{this.handleChange(e)}}
-              />
-               {this.state.phoneError ? <p style={{color: "red"}} className="errorInput">Phone must be have 10 digit</p> : ''} 
-
-              <input type="submit" value="Save" className="saveInfoTraveller"  onClick={this.submitForm}/>
-            </div>
-        
-        </div>
-        </div>
-
-        {/* infoTourBook */}
-        <div className="infoTourBook">
-          <div className="intro_tour">
-            <img alt="natural" src="/img/natural1.jpg" />
-            <h2>The Magic of Dubai at Night Private Tour</h2>
-           
-          </div>
-          <div className="info_tourDetail">
-            <hr />
-            <div className="tour_detailHour">
-              <i className="fa fa-calendar-o celander" aria-hidden="true">
-                <span>{tourDetail.dateForBook}</span>
-              </i>
-              <i className="fa fa-clock-o" aria-hidden="true">
-                <span>{tourDetail.hourForBook}</span>
-              </i>
-              <i className="fa fa-user" aria-hidden="true">
-                <span>{parseInt(tourDetail.adult_quantity)+parseInt(tourDetail.children_quantity)} people</span>
-              </i>
-            <hr />
-            <div className="total_priceBook">
-              Total
-              <span>{tourDetail.price}$</span>
-            </div>
-            </div>
-          </div>
-        </div>
-      </div>
       </div>
     );
   }

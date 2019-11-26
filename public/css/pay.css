@@ -200,7 +200,9 @@ padding-left: 10px;
     box-shadow: 0 10px 10px rgba(0, 0, 0, 0.25);
     border-radius: 10px;
 }
-
+.intro_tour .tool-tipPost .intro iframe{
+    height: 240px;
+}
   #reactContainer #contentPay{
     width: 500px;
     margin: 0 auto;

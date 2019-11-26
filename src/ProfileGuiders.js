@@ -191,12 +191,6 @@ class ProfileGuiders extends Component {
                             <ul>
                             <li>
                                 <div className="sheet">
-                                <button className="unlike">
-                                    <i className="fa fa-heart" />
-                                </button>
-                                <button className="like">
-                                    <i className="far fa-heart" />
-                                </button>
                                 <div className="imageFigure">
                                     <img src="./img/1.jpg" alt="logo" width={42} height={42} />
                                 </div>

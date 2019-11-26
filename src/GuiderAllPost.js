@@ -80,12 +80,6 @@ class GuiderAllPost extends Component {
 		let posts = currentdata.map((post, index) => (
 			<li key={index}>
 				<div className="sheet">
-					<button className="unlike">
-						<i className="fa fa-heart"></i>
-					</button>
-					<button className="like">
-						<i className="fa fa-heart-o"></i>
-					</button>
 					<div className="imageFigure">
 						<img src={post.picture_link[0]} alt="logo" width="42" height="42" />
 					</div>
@@ -94,11 +88,7 @@ class GuiderAllPost extends Component {
 							Enjoy <span className="withName">{post.post_id}</span>
 						</span>
 						<h3>
-						{
-							user.role === "GUIDER" ? <Link to={"/alter/" + post.post_id}>{post.title}</Link> 
-							: post.title
-						}
-							
+						 <Link to={"/post/" + post.post_id}>{post.title}</Link> 
 						</h3>
 						<div className="price">
 							<span>${post.price}</span>

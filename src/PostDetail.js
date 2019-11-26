@@ -70,8 +70,14 @@ class PostDetail extends React.Component {
       const posts = await responsePosts.json();
       this.setState({ posts });
       let link_youtube = postInfo.video_link;
-      link_youtube = link_youtube.split("&");
-      this.setState({link_youtube:link_youtube[0].replace("watch?v=","embed/")});
+      if(link_youtube.includes('youtu.be')){
+        link_youtube = link_youtube.replace("youtu.be","youtube.com/embed");
+        this.setState({link_youtube});
+      }else{
+        link_youtube = link_youtube.split("&");
+        this.setState({link_youtube:link_youtube[0].replace("watch?v=","embed/")});
+      }
+      
 
     } catch (err) {
       console.log(err);
@@ -126,12 +132,6 @@ class PostDetail extends React.Component {
     let posts = currentdata.map((post, index) => (
       <li key={index}>
         <div className="sheet">
-          <button className="unlike">
-            <i className="fa fa-heart"></i>
-          </button>
-          <button className="like">
-            <i className="fa fa-heart-o"></i>
-          </button>
           <div className="imageFigure">
             <img src="/img/1.jpg" alt="logo" width="42" height="42" />
           </div>

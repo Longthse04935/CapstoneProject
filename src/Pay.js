@@ -17,6 +17,7 @@ class Pay extends Component {
       isDisabled: true,
       isDisabledPay: true,
       isDisabledCheckBox:true,
+      link_youtube:''
     };
   }
 
@@ -76,7 +77,16 @@ class Pay extends Component {
     }
 
     const postInfo = await response.json();
-      this.setState({ postInfo });
+
+    let link_youtube = postInfo.video_link;
+      if(link_youtube.includes('youtu.be')){
+        link_youtube = link_youtube.replace("youtu.be","youtube.com/embed");
+        this.setState({link_youtube});
+      }else{
+        link_youtube = link_youtube.split("&");
+        this.setState({link_youtube:link_youtube[0].replace("watch?v=","embed/")});
+      }
+      this.setState({ postInfo});
 
   }
   async goToPayPal() {
@@ -227,6 +237,7 @@ class Pay extends Component {
       );
     });
     let {postInfo} = this.state;
+    
     let tourDetail = JSON.parse(sessionStorage.getItem("tourDetail"));
     let begin_date = tourDetail.begin_date.split(" ");
     let end_date = tourDetail.end_date.split(" ");
@@ -406,9 +417,12 @@ class Pay extends Component {
                     <div className="content-right " id="content-rightPay">
                       <div className="PostDetail">
                         <div className="intro">
-                          <video controls>
-                            <source src={postInfo.video_link} type="video/mp4" />
-                          </video>
+                        <iframe
+                          src={this.state.link_youtube}
+                          frameBorder="0"
+                          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen 
+                        ></iframe>
                           <h2 className="titleTour">{postInfo.title}</h2>
                           <p className="introduceTour">{postInfo.description}</p>
                         </div>

@@ -5,7 +5,7 @@
     background: rgba(0, 0, 0, 0.6);
     top:0;
     z-index: 10;
-    padding-top: 5%;
+    padding-top: 10%;
     display: none;
 }
 
@@ -102,13 +102,14 @@
     width: 35%;
 }
 .SubTitle-230L- {    
-    font-size: 16px;
-    font-weight: 400;
+    font-size: 30px;
+    font-weight: 600;
     line-height: 1rem;
     width: 100%;
     text-align: center;
     color: #4a4a4a;
     padding-bottom: 15px;
+    margin-top: 30px;
 }
 .SignupForm-20HPb {
     -webkit-box-flex: 0;
@@ -222,4 +223,17 @@
 .loginForm .forgotPass a:hover{
     color:#E71575;
     text-decoration: underline;
+}
+
+.log-in-custom-select,.sign-up-custom-select {
+    height: 30px;
+    width: 100px;
+    margin-bottom: 15px;
+    border: 1px solid #eaeaea;
+    border-radius: 3px;
+}
+
+.SignIn {
+    color:#e71575;
+    font-size: 13px;
 }

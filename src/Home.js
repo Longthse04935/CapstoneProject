@@ -14,7 +14,17 @@ class Home extends Component {
       alert:null,
       posts:[],
       postsContribute:[],
-      tours:[]
+      tours:[],
+      slideShow: [
+        'images/hoguom.jpg',
+        'images/danang.jpg',
+        'images/buncha.jpg',
+        'images/dinhdoclap.jpg',
+        'images/hanoi.jpg',
+        'images/hoguom.jpg',
+        'images/phobo.jpg'
+      ],
+      currentIndex:0
     };
   }
 
@@ -87,10 +97,17 @@ class Home extends Component {
   }
 
   async componentDidMount() {
-    setTimeout(function() {
-      window.loadSlideshow();
-    }, 1000);
-    
+    $('.search-4ul6i').focus(function () {
+      $('.fillter-4ul6i').show();
+
+  });
+  $(document).mouseup(function (e) {
+      if (!$('.Search-3ul6i').is(e.target) && !$('.fillter-4ul6i').is(e.target)
+          && $('.Search-3ul6i').has(e.target).length === 0
+          && $('.fillter-4ul6i').has(e.target).length === 0) {
+          $('.fillter-4ul6i').hide();
+      }
+  });
 
     try {
       const responsePosts = await fetch(
@@ -114,164 +131,162 @@ class Home extends Component {
         this.notification("You do not have access to here");
       }
     }
+
+    this.setupInterval();
+
+  }
+
+  setupInterval = () => {
+    let intervalId = setInterval(this.commonNext, 5000);
+    this.setState({ intervalId: intervalId });
     
   }
+
+  componentWillUnmount() {
+    clearInterval(this.state.intervalId);
+ }
+
+  commonNext  = () => {
+    let { currentIndex, slideShow } = this.state;
+    currentIndex++;
+    if(currentIndex >= slideShow.length) {
+      currentIndex = 0;
+    }
+    this.setState({ currentIndex });
+  }
+
   render() {
+    let {currentIndex, slideShow} = this.state;
+    let src = Config.api_url+slideShow[currentIndex];
     let tour = this.state.category.map((tour,index) => {
        return ( <li key={index}>
         <img src={`/img/${tour.category}.jpg`}/>
-        <a href={"/posttour/"+tour.category_id+"/"+tour.category} >{tour.category} tour</a>
+        <Link to={"/posttour/"+tour.category_id+"/"+tour.category}><button className="categoriesTour">{tour.category} tour</button></Link>
         </li>
        )
     });
 
     let guiderByRate = this.state.posts.map((post,index) => (
-      <div className="profile-box" key={index}>
-                        <div className="pb-header header-stick">
-                        <div className="header-pb">
-                            <h1 className="TitlePb TileStickyPb">{post.first_name + "" + post.last_name}</h1>
-                            <Rated number={post.rated}/>
-                        </div>
-                        <div>
-                            <img className="pf-avatar"
-                                src="https://withlocals-com-res.cloudinary.com/image/upload/w_80,h_80,c_thumb,q_auto,dpr_1.0,f_auto/956bda712df856f552fa7bfebbbcce8f"/>
-                        </div>
-                    </div>
-                    <p className="ListItem">
-                        <span className="ListItemIcon">
-                            <i className="fa fa-map-marker"></i>
-                        </span>
-                        <span className="ListItemText">
-                            I live in {post.city}
-                        </span>
-                    </p>
-                    <p className="ListItem">
-                        <span className="ListItemIcon">
-                            <i className="fa fa-globe"></i>
-                        </span>
-                        <span className="ListItemText">
-                            I speak {post.languages}
-                        </span>
-                    </p>
-                    <p className="ListItem">
-                        <span className="ListItemIcon">
-                            <i className="fa fa-heart"></i>
-                        </span>
-                        <span className="ListItemText">
-                            My passions are: {post.passion}
-                        </span>
-                    </p>
-                    <p className="ListItem">
-                        <span className="ListItemIcon">
-                            <i className="fa fa-address-card" aria-hidden="true"></i>
-                        </span>
-                        <span className="ListItemText">
-                            Age: {post.age}
-                        </span>
-                    </p>
-                    <p className="ListItem">
-                        <span className="ListItemIcon">
-                            <i className="fa fa-ravelry" aria-hidden="true"></i>
-                        </span>
-                        <span className="ListItemText">
-                            Contribution: {post.contribution}
-                        </span>
-                    </p>
-                    <p className="ListItem">
-                        <span className="ListItemIcon">
-                        <i className="fa fa-shield" aria-hidden="true"></i>
-                        </span>
-                        <span className="ListItemText">Verified</span>
-                    </p>
-                    <p className="ListItem">
-                        <span className="ListItemIcon">
-                        <i className="fa fa-info-circle" aria-hidden="true"></i>
-                        </span>
-                        <span className="ListItemText">About me:{post.about_me}</span>
-                    </p>
-                        <Link to={"/guider/"+post.guider_id}><button className="BtnContact">Watch all my tour</button></Link>
-                  </div>
+      <div className="profile-box" key={index} >
+            <div className="pb-header header-stick">
+            <div className="header-pb">
+                <h1 className="TitlePb TileStickyPb">{post.first_name + "" + post.last_name}</h1>
+              
+            </div>
+
+        </div>
+            <Rated number={post.rated} />
+            <Link to={"/guider/"+post.guider_id}><button className="contactMe">About me</button></Link>
+      </div>
     ));
 
     let guiderByContribute = this.state.postsContribute.map((post,index) => (
-      <div className="profile-box" key={index}>
+      <div className="profile-box" key={index} >
                         <div className="pb-header header-stick">
                         <div className="header-pb">
                             <h1 className="TitlePb TileStickyPb">{post.first_name + "" + post.last_name}</h1>
-                            <Rated number={post.rated} />
+                          
                         </div>
-                        <div>
-                            <img className="pf-avatar"
-                                src="https://withlocals-com-res.cloudinary.com/image/upload/w_80,h_80,c_thumb,q_auto,dpr_1.0,f_auto/956bda712df856f552fa7bfebbbcce8f"/>
-                        </div>
+
                     </div>
-                    <p className="ListItem">
-                        <span className="ListItemIcon">
-                            <i className="fa fa-map-marker"></i>
-                        </span>
-                        <span className="ListItemText">
-                            I live in {post.city}
-                        </span>
-                    </p>
-                    <p className="ListItem">
-                        <span className="ListItemIcon">
-                            <i className="fa fa-globe"></i>
-                        </span>
-                        <span className="ListItemText">
-                            I speak {post.languages}
-                        </span>
-                    </p>
-                    <p className="ListItem">
-                        <span className="ListItemIcon">
-                            <i className="fa fa-heart"></i>
-                        </span>
-                        <span className="ListItemText">
-                            My passions are: {post.passion}
-                        </span>
-                    </p>
-                    <p className="ListItem">
-                        <span className="ListItemIcon">
-                            <i className="fa fa-address-card" aria-hidden="true"></i>
-                        </span>
-                        <span className="ListItemText">
-                            Age: {post.age}
-                        </span>
-                    </p>
-                    <p className="ListItem">
-                        <span className="ListItemIcon">
-                            <i className="fa fa-ravelry" aria-hidden="true"></i>
-                        </span>
-                        <span className="ListItemText">
-                            Contribution: {post.contribution}
-                        </span>
-                    </p>
-                    <p className="ListItem">
-                        <span className="ListItemIcon">
-                        <i className="fa fa-shield" aria-hidden="true"></i>
-                        </span>
-                        <span className="ListItemText">Verified</span>
-                    </p>
-                    <p className="ListItem">
-                        <span className="ListItemIcon">
-                        <i className="fa fa-info-circle" aria-hidden="true"></i>
-                        </span>
-                        <span className="ListItemText">About me:{post.about_me}</span>
-                    </p>
-                        <Link to={"/guider/"+post.guider_id}><button className="BtnContact">Watch all my tour</button></Link>
+                        <Rated number={post.rated} />
+                        <Link to={"/guider/"+post.guider_id}><button className="contactMe">About me</button></Link>
                   </div>
     ));
       let slide = this.state.tours.map((value,index)=>(
-        <div className="item" key={index}>
+        <div className="slideContent" key={index}>
           <h2>Enjoy our {value.title}</h2>
           <img src="/img/Night.jpg"/>
           <Link to={"/post/"+value.post_id}><button>Explore</button></Link>
         </div>
       ));
-     
 
     return (
       
-      <div className="categoryTour">
+    <div>
+        <div className="homeSlide">
+          <img src={src}/>
+          <div className="Title-e9h41">
+            <h1>Book unique private tours and activities with locals worldwide</h1>
+            <div className="Search-2ul6i">
+            <div className="Search-3ul6i">
+                            <label>
+                                <input
+                                    type="text"
+                                    placeholder="Welcome to my website"
+                                    name="search"
+                                    autoComplete="off"
+                                    className="search-4ul6i"
+                                />
+                                
+                            </label>
+                            <div className="fillter fillter-4ul6i">
+                                <div className="filter-Content">
+                                    <div className="localsOrExperience">
+                                        <h3 className="explore">Explore TravelWlocals</h3>
+                                        <div className="button-group">
+                                            <button className="active">Guider</button>
+                                            <button>Location</button>
+                                        </div>
+                                    </div>
+                                    <div className="popularDestination">
+                                        <h3 id="popularLabel">Popular Destinations</h3>
+                                        <ul>
+                                            <li>
+                                                <i className="fa fa-map-marker" aria-hidden="true"></i>
+                                                <a>Ha Noi</a>
+                                            </li>
+                                            <li>
+                                                <i className="fa fa-map-marker" aria-hidden="true"></i>
+                                                <a>Ho Chi Minh</a>
+                                            </li>
+                                            <li>
+                                                <i className="fa fa-map-marker" aria-hidden="true"></i>
+                                                <a>Da Nang</a>
+                                            </li>
+                                            <li>
+                                                <i className="fa fa-map-marker" aria-hidden="true"></i>
+                                                <a>Bac Ninh</a>
+                                            </li>
+                                            <li>
+                                                <i className="fa fa-map-marker" aria-hidden="true"></i>
+                                                <a>Da Lat</a>
+                                            </li>
+                                            <li>
+                                                <i className="fa fa-map-marker" aria-hidden="true"></i>
+                                                <a>Hue</a>
+                                            </li>
+                                            <li>
+                                                <i className="fa fa-map-marker" aria-hidden="true"></i>
+                                                <a>Vung Tau</a>
+                                            </li>
+                                            <li>
+                                                <i className="fa fa-map-marker" aria-hidden="true"></i>
+                                                <a>Hai Phong</a>
+                                            </li>
+                                            <li>
+                                                <i className="fa fa-map-marker" aria-hidden="true"></i>
+                                                <a>Phu Quoc</a>
+                                            </li>
+                                            <li>
+                                                <i className="fa fa-map-marker" aria-hidden="true"></i>
+                                                <a>Sapa</a>
+                                            </li>
+                                            <li>
+                                                <i className="fa fa-map-marker" aria-hidden="true"></i>
+                                                <a>Ca Mau</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+              <button className="Button-2i">Search</button>
+            </div>
+          </div>
+        </div>
+
+        <div className="categoryTour">  
         <h1>Explore Withlocals</h1>
         <h2 className="sectionSubtitle">
           <span data-translatekey="Homepage.Categories.subTitle">
@@ -284,20 +299,10 @@ class Home extends Component {
         {tour}
         </ul>
         {this.state.alert}
-        <h1 style={{marginTop:'30px'}}>The travel is most appreciated</h1>
-        <div className="coverTopTour" style={{position:'relative'}}>
-          {/* <button className="arrow_left"><i className="fa fa-arrow-left" aria-hidden="true"></i></button>
-          <button className="arrow_right"><i className="fa fa-arrow-right" aria-hidden="true"></i></button> */}
-        
-          <div className="owl-carousel owl-theme">
+        <h1 style={{marginTop:'30px',fontSize:'30px'}}>The travel is most appreciated</h1>
+        <div className="coverTopTour">
           {slide}
-          </div>
         </div>
-
-
-        
-        
-
         <div className="topGuider">
           <div className="topGuiderByRate">
             <h1>Top guider by Rate</h1>
@@ -313,6 +318,8 @@ class Home extends Component {
           </div>
         </div>
       </div>
+    
+    </div>
     );
   }
 }

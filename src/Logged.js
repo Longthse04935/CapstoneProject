@@ -17,17 +17,21 @@ class Logged extends Component {
             $('.button-group > button').removeClass('active');
             $(this).addClass('active');
         });
-        $('input[name=search]').focus(function () {
-            $('.search .fillter').show();
-
-        });
-        $(document).mouseup(function (e) {
-            if (!$('.search').is(e.target) && !$('.fillter').is(e.target)
-                && $('.search').has(e.target).length === 0
-                && $('.fillter').has(e.target).length === 0) {
-                $('.fillter').hide();
-            }
-        });
+     
+        let pathname = window.location.pathname;
+        if(pathname !== '/'){
+            $('input[name=search]').focus(function () {
+                $('.search .fillter').show();
+    
+            });
+            $(document).mouseup(function (e) {
+                if (!$('.search').is(e.target) && !$('.fillter').is(e.target)
+                    && $('.search').has(e.target).length === 0
+                    && $('.fillter').has(e.target).length === 0) {
+                    $('.fillter').hide();
+                }
+            });
+        }
     }
 
     disableLoggedChoice = () => {
@@ -36,6 +40,7 @@ class Logged extends Component {
     
     render() {
         var user = JSON.parse(sessionStorage.getItem('user'));
+        var guider_id = JSON.parse(sessionStorage.getItem('guider_id'));
         return (
             <div>
                 {/* Menubar */}
@@ -124,7 +129,7 @@ class Logged extends Component {
                                     <Link to="/">Message</Link>
                                 </li>
                                 <li>
-                                    <Link to="/">Bookings</Link>
+                                    <Link to={"/guier"+guider_id}>Bookings</Link>
                                 </li>
                                 <li className="avatarLogged" onClick={this.disableLoggedChoice}>
 
@@ -134,17 +139,16 @@ class Logged extends Component {
                                     <ul className="dropContent" style={this.state.disable ? { display: 'none' } : { display: 'block' }}>
                                         {user.role === 'GUIDER' ?
                                         <span>
-                                        <li><Link to="/profile">Profile</Link><i className="fa fa-user" aria-hidden="true"></i></li>
-                                        <li><Link to="/edit">Edit Post</Link><i className="fa fa-user" aria-hidden="true"></i></li>
+                                        <li><Link to="/profile">Profile</Link><i className="fa fa-address-card-o" aria-hidden="true"></i></li>
+                                        <li><Link to="/edit">Edit Post</Link><i className="fa fa-pencil" aria-hidden="true"></i></li>
                                         <li><Link to="/add">Add Post</Link><i className="fa fa-user" aria-hidden="true"></i></li>
                                         </span>
                                         : ''
                                         }
-                                        <li><Link to="/">Bookings</Link><i className="fa fa-user" aria-hidden="true"></i></li>
                                         {user.role === 'TRAVELER' ?
                                         <span>
-                                        <li><Link to="/profiletraveller">Profile traveller</Link><i className="fa fa-user" aria-hidden="true"></i></li>
-                                        <li><Link to="/tvlManager">Travel manager</Link><i className="fa fa-user" aria-hidden="true"></i></li>
+                                        <li><Link to="/profiletraveller">Profile traveller</Link><i className="fa fa-address-card-o" aria-hidden="true"></i></li>
+                                        <li><Link to="/tvlManager">Travel manager</Link><i className="fa fa-file-text-o" aria-hidden="true"></i></li>
                                         </span>
                                         : ''
                                         }
@@ -162,7 +166,7 @@ class Logged extends Component {
                                             };
                                             this.props.reload.call(this, user);
                                             window.location.href = '/';
-                                        }}>Log out<i className="fa fa-user" aria-hidden="true"></i></li>
+                                        }}>Log out<i className="fa fa-sign-out" aria-hidden="true"></i></li>
 
                                     </ul>
 

@@ -93,6 +93,10 @@ class ProfileTraveller extends Component {
   handleChange=(e)=>{
     const value = e.target.value;
     const name = e.target.name;
+    let {errors} = this.state;
+    if(value !== ''){
+      errors[name] = '';
+  }
 
     const { data } = this.state;
     data[name] = value;

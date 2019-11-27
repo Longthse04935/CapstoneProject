@@ -14,6 +14,7 @@ import Tour from './Tour';
 import PostTourDetail from './PostTourDetail';
 import Pay from './Pay';
 import TravellerManager from './TravellerManager';
+import GuiderContract from './GuiderContract';
 
 class App extends Component {
 	constructor(props) {
@@ -73,6 +74,7 @@ class App extends Component {
 				<Route path='/posttour/:id/:type' component={PostTourDetail} />
 				<Route path='/book' component={Pay} />
 				<Route path='/tvlManager' component={TravellerManager} />
+				<Route path='/contract' component={GuiderContract} />
 				<Route exact path={"/edit"}>
 					<BrowserRouter>
 						<GuiderAllPost guiderId={this.state.id} />

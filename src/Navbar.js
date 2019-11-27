@@ -98,17 +98,21 @@ class Navbar extends Component {
             $('.button-group > button').removeClass('active');
             $(this).addClass('active');
         });
-        $('input[name=search]').focus(function () {
-            $('.search .fillter').show();
 
-        });
-        $(document).mouseup(function (e) {
-            if (!$('.search').is(e.target) && !$('.fillter').is(e.target)
-                && $('.search').has(e.target).length === 0
-                && $('.fillter').has(e.target).length === 0) {
-                $('.fillter').hide();
-            }
-        });
+        let pathname = window.location.pathname;
+        if(pathname !== '/'){
+            $('input[name=search]').focus(function () {
+                $('.search .fillter').show();
+    
+            });
+            $(document).mouseup(function (e) {
+                if (!$('.search').is(e.target) && !$('.fillter').is(e.target)
+                    && $('.search').has(e.target).length === 0
+                    && $('.fillter').has(e.target).length === 0) {
+                    $('.fillter').hide();
+                }
+            });
+        }
 
         // click sign up and close sign up form
         $('.signup').click(function () {
@@ -122,6 +126,16 @@ class Navbar extends Component {
 
         $('.login').click(function () {
             $('.loginForm').show();
+        });
+
+        $('.SpanLogin').click(function () {
+            $('.loginForm').show();
+            $('.signUpForm').hide();
+        });
+
+        $('.SignIn').click(function () {
+            $('.signUpForm').show();
+            $('.loginForm').hide();
         });
 
         //mouse click outside .content-login form
@@ -150,60 +164,6 @@ class Navbar extends Component {
                         <button className="closeLogin">
                             <i className="fa fa-times" />
                         </button>
-                        <div className="facebook-button-container">
-                            <button className="facebook-button">
-                                <span className="IconContainer-3X91n">
-                                    <svg
-                                        className="facebook-icon"
-                                        width={7}
-                                        height={13}
-                                        viewBox="0 0 10 20"
-                                    >
-                                        <path
-                                            d="M6.66666667,6.66666667 L6.66666667,4.68229167 C6.66666667,3.78645833 6.86458333,3.3333333300000003 8.25520833,3.3333333300000003 L10,3.3333333300000003 L10,0 L7.08854167,0 C3.52083333,0 2.34375,1.6354166700000001 2.34375,4.44270833 L2.34375,6.66666667 L0,6.66666667 L0,10 L2.34375,10 L2.34375,20 L6.66666667,20 L6.66666667,10 L9.60416667,10 L10,6.66666667 L6.66666667,6.66666667 L6.66666667,6.66666667 Z"
-                                            id="Shape"
-                                            stroke="none"
-                                            fill="#FFFFFF"
-                                            fillRule="nonzero"
-                                        />
-                                    </svg>
-                                </span>
-                                <span className="FacebookText-eC-J-">Sign up with Facebook</span>
-                            </button>
-                        </div>
-                        <div className="google-button-container">
-                            <button className="google-button">
-                                <svg
-                                    width={15}
-                                    height={25}
-                                    viewBox="0 0 40 40"
-                                    style={{ marginLeft: 65 }}
-                                >
-                                    <g>
-                                        <path
-                                            d="M39.609375,16.082031 L38,16.082031 L38,16 L20,16 L20,24 L31.304688,24 C29.652344,28.65625 25.222656,32 20,32 C13.371094,32 8,26.628906 8,20 C8,13.371094 13.371094,8 20,8 C23.058594,8 25.84375,9.152344 27.960938,11.039063 L33.617188,5.382813 C30.046875,2.054688 25.269531,0 20,0 C8.953125,0 0,8.953125 0,20 C0,31.046875 8.953125,40 20,40 C31.046875,40 40,31.046875 40,20 C40,18.660156 39.863281,17.351563 39.609375,16.082031 Z"
-                                            fill="#FFC107"
-                                        />
-                                        <path
-                                            d="M2.304688,10.691406 L8.878906,15.511719 C10.65625,11.109375 14.960938,8 20,8 C23.058594,8 25.84375,9.152344 27.960938,11.039063 L33.617188,5.382813 C30.046875,2.054688 25.269531,0 20,0 C12.316406,0 5.65625,4.335938 2.304688,10.691406 Z"
-                                            fill="#FF3D00"
-                                        />
-                                        <path
-                                            d="M20,40 C25.164063,40 29.859375,38.023438 33.410156,34.808594 L27.21875,29.570313 C25.210938,31.089844 22.714844,32 20,32 C14.796875,32 10.382813,28.683594 8.71875,24.054688 L2.195313,29.078125 C5.503906,35.554688 12.226563,40 20,40 Z"
-                                            fill="#4CAF50"
-                                        />
-                                        <path
-                                            d="M39.609375,16.082031 L38,16.082031 L38,16 L20,16 L20,24 L31.304688,24 C30.511719,26.238281 29.070313,28.164063 27.214844,29.570313 C27.21875,29.570313 27.21875,29.570313 27.21875,29.570313 L33.410156,34.808594 C32.972656,35.203125 40,30 40,20 C40,18.660156 39.863281,17.351563 39.609375,16.082031 Z"
-                                            fill="#1976D2"
-                                        />
-                                    </g>
-                                </svg>
-                                <span className="Children-49JTf">Sign up with Google</span>
-                            </button>
-                        </div>
-                        <div className="SignupSeparator-zlqUF">
-                            <span className="SignupSeparatorText-2cxm-">or</span>
-                        </div>
                         <h3 className="SubTitle-230L-">Sign up </h3>
                         <form style={{ textAlign: "center" }} onSubmit={this.signUp}>
                             <div className="SignupForm-20HPb">
@@ -224,7 +184,7 @@ class Navbar extends Component {
                                         className="Input-1e6rU"
                                         type="text"
                                         name="sign-up-name"
-                                        placeholder="name"
+                                        placeholder="Name"
                                     />
                                 </div>
 
@@ -287,60 +247,6 @@ class Navbar extends Component {
                         <button className="closeLogin">
                             <i className="fa fa-times" />
                         </button>
-                        <div className="facebook-button-container">
-                            <button className="facebook-button">
-                                <span className="IconContainer-3X91n">
-                                    <svg
-                                        className="facebook-icon"
-                                        width={7}
-                                        height={13}
-                                        viewBox="0 0 10 20"
-                                    >
-                                        <path
-                                            d="M6.66666667,6.66666667 L6.66666667,4.68229167 C6.66666667,3.78645833 6.86458333,3.3333333300000003 8.25520833,3.3333333300000003 L10,3.3333333300000003 L10,0 L7.08854167,0 C3.52083333,0 2.34375,1.6354166700000001 2.34375,4.44270833 L2.34375,6.66666667 L0,6.66666667 L0,10 L2.34375,10 L2.34375,20 L6.66666667,20 L6.66666667,10 L9.60416667,10 L10,6.66666667 L6.66666667,6.66666667 L6.66666667,6.66666667 Z"
-                                            id="Shape"
-                                            stroke="none"
-                                            fill="#FFFFFF"
-                                            fillRule="nonzero"
-                                        />
-                                    </svg>
-                                </span>
-                                <span className="FacebookText-eC-J-">Sign up with Facebook</span>
-                            </button>
-                        </div>
-                        <div className="google-button-container">
-                            <button className="google-button">
-                                <svg
-                                    width={15}
-                                    height={25}
-                                    viewBox="0 0 40 40"
-                                    style={{ marginLeft: 65 }}
-                                >
-                                    <g>
-                                        <path
-                                            d="M39.609375,16.082031 L38,16.082031 L38,16 L20,16 L20,24 L31.304688,24 C29.652344,28.65625 25.222656,32 20,32 C13.371094,32 8,26.628906 8,20 C8,13.371094 13.371094,8 20,8 C23.058594,8 25.84375,9.152344 27.960938,11.039063 L33.617188,5.382813 C30.046875,2.054688 25.269531,0 20,0 C8.953125,0 0,8.953125 0,20 C0,31.046875 8.953125,40 20,40 C31.046875,40 40,31.046875 40,20 C40,18.660156 39.863281,17.351563 39.609375,16.082031 Z"
-                                            fill="#FFC107"
-                                        />
-                                        <path
-                                            d="M2.304688,10.691406 L8.878906,15.511719 C10.65625,11.109375 14.960938,8 20,8 C23.058594,8 25.84375,9.152344 27.960938,11.039063 L33.617188,5.382813 C30.046875,2.054688 25.269531,0 20,0 C12.316406,0 5.65625,4.335938 2.304688,10.691406 Z"
-                                            fill="#FF3D00"
-                                        />
-                                        <path
-                                            d="M20,40 C25.164063,40 29.859375,38.023438 33.410156,34.808594 L27.21875,29.570313 C25.210938,31.089844 22.714844,32 20,32 C14.796875,32 10.382813,28.683594 8.71875,24.054688 L2.195313,29.078125 C5.503906,35.554688 12.226563,40 20,40 Z"
-                                            fill="#4CAF50"
-                                        />
-                                        <path
-                                            d="M39.609375,16.082031 L38,16.082031 L38,16 L20,16 L20,24 L31.304688,24 C30.511719,26.238281 29.070313,28.164063 27.214844,29.570313 C27.21875,29.570313 27.21875,29.570313 27.21875,29.570313 L33.410156,34.808594 C32.972656,35.203125 40,30 40,20 C40,18.660156 39.863281,17.351563 39.609375,16.082031 Z"
-                                            fill="#1976D2"
-                                        />
-                                    </g>
-                                </svg>
-                                <span className="Children-49JTf">Sign up with Google</span>
-                            </button>
-                        </div>
-                        <div className="SignupSeparator-zlqUF">
-                            <span className="SignupSeparatorText-2cxm-">or</span>
-                        </div>
                         <h3 className="SubTitle-230L-">Log in</h3>
                         <form style={{ textAlign: "center" }} onSubmit={this.logIn}>
                             <div className="SignupForm-20HPb">
@@ -361,7 +267,7 @@ class Navbar extends Component {
                                         className="Input-1e6rU"
                                         type="text"
                                         name="log-in-name"
-                                        placeholder="name"
+                                        placeholder="Name"
                                     />
                                 </div>
                                 <div className="PasswordInput-1Qf5F">
@@ -395,7 +301,7 @@ class Navbar extends Component {
                             <div className="loginLinkContain">
                                 <button className="loginLink">
                                     <span className="SpanReady">No account?</span>
-                                    <span className="SpanLogin"> Log in</span>
+                                    <span className="SignIn"> Sign in</span>
                                 </button>
                             </div>
                         </form>

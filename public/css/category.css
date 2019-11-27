@@ -1,5 +1,104 @@
+.homeSlide {
+    width: 100%;
+    position: relative;
+}
+.homeSlide  .Title-e9h41{
+    position: absolute;
+    bottom: 30%;
+    left: 20%;
+    widows: 1080px;
+}
+.homeSlide  .Title-e9h41 h1{
+    font-size: 3em;
+    color:#fff;
+    font-weight: 800;
+    width: 850px;
+    margin-bottom: 30px;
+}
+.Search-3ul6i{
+    position: relative;
+    display: inline-block;
+}
+.navbar .menubar .search{
+    display: inline-block;
+    position: relative;
+    left: 1%;
+    bottom: 15px;
+}
+.Search-2ul6i{
+    background:#fff;
+    padding: 30px;
+    border-radius: 10px;
+}
+.Search-3ul6i label:before{
+    content: "";
+    position: absolute;
+    left: 7px;
+    top: -3px;
+    bottom: 0;
+    width: 30px;
+    -webkit-mask: url(../img/searchIcon.svg) center center no-repeat;
+    mask: url(../img/searchIcon.svg) center center no-repeat;
+    background-color: #4A4A4A;
+    webkit-box-sizing: initial !important;
+    box-sizing: initial !important;
+    height: 70px;
+}
+.Search-3ul6i input[name="search"] {
+    border: 1px solid grey;
+    font-weight: inherit;
+    padding: 0 1rem 0 3rem;
+    
+    width: 100%;
+    align-items: center;
+    background: #fff;
+    width: 460px;
+    font-size: 25px;
+    height: 62px;
+  }
+
+.Search-3ul6i input[name="search"]:hover{
+    box-shadow: 0 2px 8px 2px rgba(0,0,0,.2);
+  }
+
+.Search-3ul6i input[name="search"]:visited{
+    box-shadow: 0 2px 8px 2px rgba(0,0,0,.2);
+  }
+
+ .Button-2i{
+    font-size: 1rem;
+    border-radius: 2.5rem;
+    border: none;
+    background-color: #e71575;
+    color: #fff;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(90deg,#a21880,#e71575);
+    width: 232px;
+    height: 62px;
+    padding-top: 5px;
+    margin-left: 40px;
+
+  }
+.Search-2ul6i .Search-3ul6i .fillter{
+    width: 458px;
+    height: 340px;
+    position: absolute;
+    top: 62px;
+    overflow-y: scroll;
+    box-sizing: border-box;
+    box-shadow: 0 2px 8px 2px rgba(0,0,0,.1);
+    left: 1px;
+    background-color: #ffffff;
+    display: none;
+}
+.homeSlide img{
+    width: 100%;
+    height: 800px;
+}
+
 .categoryTour {
-    margin: 7% auto;
+    margin: 3% auto;
     width: 70%;
 }
 
@@ -12,14 +111,24 @@
 .categoryTour h2{
     font-size: 1.25rem;
 }
+.categoryTour .tourDetail{
+    overflow-y: hidden !important;
+    overflow-x: auto !important;
+    white-space: nowrap;
+    border:1px solid #eaeaea;
+    border-radius: 10px;
+}
 
 .tourDetail li{
     list-style-type: none;
     display: inline-block;
-    margin-right: 24px;
-    border-radius: 7px;
+   
+    border-radius: 20px;
     box-shadow: 0 6px 16px 0 rgba(0,0,0,.15);
-    cursor: pointer;
+    width: 540px;
+    height: 360px;
+    margin: 20px 30px;
+    position: relative;
 }
 
 .tourDetail li:last-child{
@@ -27,9 +136,9 @@
 }
 
 .tourDetail li img{
-    width: 200px;
-    height: 140px;
-    border-radius: 7px 7px 0 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
 }
 
 .tourDetail li a{
@@ -43,61 +152,13 @@
     box-shadow: 0 6px 16px 0 rgba(0,0,0,.35);
     color:#e71575;
 }
-
-.categoryTour .topGuider{
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    padding: 2%;
-}
-
-.categoryTour .topGuider .topGuiderByRate , .TopGuiderByContribute {
-    width: 45%;
-    border-radius: 10px;
-}
-
-.topGuider .topGuiderByRate .profile-box{
-    margin-top: 30px;
-    box-shadow: 0 10px 20px 0 rgba(0,0,0,.35);
-    width: 400px;
-    border-radius: .5rem;
-    padding: 2rem 1.5rem;
-    margin: 30px auto;
-}
-
-.topGuider .topGuiderByRate > h1{
-    margin-left: 15%;
-}
-
-.owl-item{
-    margin-right: 0 !important;
-}
-.item{
-    margin: 20px 20px 10px 20px;
-}
-.item h2{
+.tourDetail .categoriesTour{
     position: absolute;
-    display: inline-block;
-    color: white;
-    top: 40px;
-    left: 30px;
-    width: 170px;
-    white-space: normal;
-    font-size: 35px;
-    font-weight: 600;
-}
-.owl-carousel .item img{
-    width: 410px;
-    height: auto;
-    border-radius: 10px;
-
-}
-.item button{
+    bottom: 20px;
+    right:20px;
     border: 1px solid #fff;
-    border-radius: 1.5rem;
-    padding: 0 1rem;
+    border-radius: 3rem;
+    padding: 0.5em 1.5rem;
     line-height: 2rem;
     margin-top: 1rem;
     background: rgba(0,0,0,.3);
@@ -105,74 +166,152 @@
     font-weight: 600;
     order: 2;
     position: absolute;
-    color: white;
-    bottom: 50px;
-    right: 60px;
+    color: #fff;
+    font-size: 20px;
+}
+.tourDetail .categoriesTour:hover{
+    color:#e71575;
+    border:#e71575;
+}
+.topGuiderByRate{
+  
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+.ListItem .text_aboutMe{
+    min-height: 60px;
+    overflow-y: scroll;
+    overflow-x:hidden;
 }
 
-.item button:hover{
+.topGuiderByRate .content-left{
+    overflow-y: hidden !important;
+    overflow-x: auto !important;
+    white-space: nowrap;
+    border:1px solid #eaeaea;
+    border-radius: 10px;
+}
+
+.topGuider .topGuiderByRate .profile-box{
+    margin-top: 30px;
+    box-shadow: 0 10px 20px 0 rgba(0,0,0,.35);
+    width: 350px;
+    border-radius: .5rem;
+    padding: 2rem 1.5rem 2rem 10px;
+    margin: 30px;
+    display: inline-block;
+    background-image: url('http://localhost:8080/images/3.jpg');
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; 
+    color: white;
+    height: 450px;
+    font-size: 30px;
+    font-weight: 600;
+    position: relative;
+}
+.topGuiderByRate .content-left .ListItem{
+        margin-top: 20px;
+}
+
+.topGuiderByRate .content-left .header-stick{
+        border-bottom: none;
+        position: absolute;
+        bottom: 50px;
+}
+
+.topGuiderByRate .content-left .contactMe{
+    position: absolute;
+    bottom: 20px;
+    border: 1px solid #fff;
+    border-radius: 3rem;
+    padding: 0.5em 1.5rem;
+    line-height: 2rem;
+    margin-top: 1rem;
+    background: rgba(0,0,0,.3);
+    font-size: .875rem;
+    font-weight: 600;
+    order: 2;
+    position: absolute;
+    color: #fff;
+    font-size: 20px;
+}
+
+.topGuider .topGuiderByRate > h1{
+    font-size: 30px
+}
+
+.topGuiderByRate .content-left .Rating{
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+} 
+
+.topGuiderByRate .content-left .Rating i {
+    font-size: 20px;
+}
+
+.coverTopTour {
+    overflow-y: hidden !important;
+    overflow-x: auto !important;
+    white-space: nowrap;
+    border:1px solid #eaeaea;
+    border-radius: 10px;
+}
+
+.coverTopTour .slideContent{
+  display: inline-block;
+  position: relative;
+  margin-left:10px;
+}
+
+.coverTopTour .slideContent h2{
+    display: inline-block;
+    position: absolute;
+    font-size: 35px;
+    top: 20px;
+    left: 30px;
+    font-weight: 600;
+    width: 150px;
+    white-space: normal;
+    color:#fff;
+}
+
+.coverTopTour .slideContent button{
+    border: 1px solid #fff;
+    border-radius: 3rem;
+    padding: 0.5em 1.5rem;
+    line-height: 2rem;
+    margin-top: 1rem;
+    background: rgba(0,0,0,.3);
+    font-size: .875rem;
+    font-weight: 600;
+    order: 2;
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+    color: #fff;
+    font-size: 20px;
+}
+
+.coverTopTour .slideContent button:hover{
     color:#e71575;
     border-color: #e71575;
 }
 
-
-
-.coverTopTour .owl-prev,.owl-next{
-    width: 50px;
-    height: 50px;
-    border-radius: 100% !important;
-    overflow: hidden;
-    padding: 4px;
-    box-shadow: 2px 2px 4px rgba(0,0,0,.3);
-    font-size: 20px;
-    border: 1px solid #eaeaea;
-    transition: background-color .13s ease-in,box-shadow .13s ease-in;
-    
-}
-.coverTopTour .owl-prev{
-    position: absolute;
-    top: 140px;
-    left: -70px;
+.coverTopTour .slideContent img{
+    width: 540px;
+    height: 360px;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px 0 rgba(0,0,0,.25);
+    margin: 20px;
 }
 
-.coverTopTour .owl-next{
-    position: absolute;
-    top: 140px;
-    right: -70px;
-}
-
-.coverTopTour .owl-prev span{
-    font-size: 35px;
-}
-
-.coverTopTour .owl-next span{
-    font-size: 35px;
-}
-.owl-dots{
-    display: none;
-}
-.coverTopTour .owl-stage .active{
-    background-color: #fff;
-}
-.coverTopTour .fa-arrow-left {
-    font-size: 20px;
-}
-.coverTopTour .fa-arrow-right{
-    font-size: 20px;
-}
-.owl-carousel .owl-stage-outer {
-    overflow-y: hidden !important;
-    overflow-x: auto !important;
-    padding: 20px 0 0 20px;
-}
-.owl-carousel.owl-loaded {
-    position: relative;
-}
 
 ::-webkit-scrollbar {
     width: 12px;
     height: 12px;
 }
+
 ::-webkit-scrollbar-track {
     box-shadow: inset 0 0 1px grey; 
     border-radius: 7px;

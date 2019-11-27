@@ -26,6 +26,12 @@ class GuiderInPost extends React.Component {
       render() {
             let guide = this.state.guider;
             let languages = guide.languages;
+            let checkPath = window.location.pathname ;
+            if(checkPath.includes('post') ){
+                checkPath = <Link to={"/chatbox/"+this.props.postId}><button className="BtnContact">Contact with me</button></Link>;
+            }else{
+                checkPath = <Link to={"/"}><button className="BtnContact">Go home</button></Link>;
+            }
             return (
                   <div className="profile-box">
                         <div className="pb-header header-stick">
@@ -82,7 +88,7 @@ class GuiderInPost extends React.Component {
                         <span className="ListItemText">About me:{guide.about_me}</span>
                     </p>
                     {
-                        window.location.pathname === '/book' ? '' : <Link to={"/chatbox/"+this.props.postId}><button className="BtnContact">Contact with me</button></Link>
+                        checkPath
                     }
                         
                   </div>

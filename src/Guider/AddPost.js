@@ -100,7 +100,7 @@ class AddPost extends Component {
 
     async componentDidMount() {
         $("head").append('<link href="/css/editPost.css" rel="stylesheet"/>');
-        const copy = this.state;
+        const copy = Object.assign({},this.state);
         try {
             const responseLocation = await fetch("http://localhost:8080/location/findAll");
             const responseCategory = await fetch("http://localhost:8080/category/findAll");
@@ -109,8 +109,10 @@ class AddPost extends Component {
             if (!responseLocation.ok) { throw Error(responseLocation.status + ": " + responseLocation.statusText); }
             const location = await responseLocation.json();
             const category = await responseCategory.json();
+            console.log(location + category);   
             copy.locations = location;
             copy.categories = category;
+
             this.setState(copy);
         } catch (err) {
             console.log(err);
@@ -119,7 +121,7 @@ class AddPost extends Component {
 
     async submitForm(eve) {
         eve.preventDefault();
-        const copy = this.state;
+        const copy = Object.assign({},this.state);
         const dom = ReactDOM.findDOMNode(this);
 
         let image = [];
@@ -339,6 +341,7 @@ class AddPost extends Component {
     }
 
     render() {
+        console.log(this.props.guiderId);
         let locationOption = this.state.locations.map((location, index) =>
             <option value={location.location_id} key={index}>{location.location}</option>
         );

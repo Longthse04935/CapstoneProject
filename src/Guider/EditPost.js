@@ -101,7 +101,7 @@ class EditPost extends Component {
         try {
             const responseLocation = await fetch("http://localhost:8080/location/findAll");
             const responseCategory = await fetch("http://localhost:8080/category/findAll");
-            const post = await fetch("http://localhost:8080/guiderpost?post_id=" + this.props.postId,
+            const post = await fetch("http://localhost:8080/guiderpost?post_id=" + this.props.id,
                 {
                     method: "GET",
                     mode: "cors",
@@ -110,7 +110,7 @@ class EditPost extends Component {
                         'Accept': 'application/json'
                     },
                 });
-            const plans = await fetch("http://localhost:8080/plan/" + this.props.postId,
+            const plans = await fetch("http://localhost:8080/plan/" + this.props.id,
                 {
                     method: "GET",
                     mode: "cors",
@@ -214,7 +214,7 @@ class EditPost extends Component {
             console.log("find DOM do not work");
         }
         let initPost = await {
-
+            "guider_id": this.props.guiderId,
             "title": copy.title,
             "video_link": copy.video_link,
             "picture_link": image,
@@ -233,7 +233,7 @@ class EditPost extends Component {
         console.log(initPost);
         console.log(plan);
         try {
-            let response = await fetch("http://localhost:8080/guiderpost/add/post?guider_id=" + this.props.guiderId,
+            let response = await fetch("http://localhost:8080/guiderpost//update/post=",
                 {
                     method: "POST",
                     mode: "cors",
@@ -356,6 +356,7 @@ class EditPost extends Component {
     }
 
     render() {
+        console.log(this.props.guiderId);
         let locationOption = this.state.locations.map((location, index) =>
             <option value={location.location_id} key={index} >{location.location}</option>
         );

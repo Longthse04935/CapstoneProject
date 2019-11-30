@@ -16,8 +16,8 @@ import Pay from './Traveler/Pay';
 import TravellerManager from './Traveler/TravellerManager';
 import GuiderContract from './Guider/GuiderContract';
 import Chart from './Guider/Chart';
-import EditPost from './Guider/EditPost';
-
+import ManagePost from './Guider/ManagePost';
+import AddPost from './Guider/AddPost';
 class App extends Component {
 	constructor(props) {
 		super(props);
@@ -65,7 +65,7 @@ class App extends Component {
 				{present}
 				<Switch>
 				<Route path='/' component={Home} exact />
-				<Route path='/guider/:guider_id' component={GuiderAllPost} exact />
+				{/* <Route path='/guider/:guider_id' component={GuiderAllPost} exact /> */}
 				<Route path='/post/:post_id' component={PostDetail} exact />
 				<Route exact path='/chatbox/:post_id' component={Chatbox} />
 				<Route exact path='/chatbox/:post_id/:message' component={Chatbox} />
@@ -78,10 +78,10 @@ class App extends Component {
 				<Route path='/tvlManager' component={TravellerManager} />
 				<Route path='/contract' component={GuiderContract} />
 				<Route path='/chart' component={Chart} />
-				<Route path='/add' component={EditPost} />
+				<Route path='/add' ><AddPost guiderId={this.state.id} /></Route>
 				<Route exact path={"/edit"}>
 					<BrowserRouter>
-						<GuiderAllPost guiderId={this.state.id} />
+						<ManagePost guiderId={this.state.id} />
 					</BrowserRouter>
 				</Route>
 

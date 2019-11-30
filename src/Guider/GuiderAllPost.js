@@ -18,9 +18,9 @@ class GuiderAllPost extends Component {
 
 	async componentDidMount() {
 		try {
-			let guider_id = this.props.match.params.guider_id;
+			let guider_id = this.props.id;
 			const responsePosts = await fetch(
-				Config.api_url + "guiderpost/postOfOneGuider?guider_id=" + this.props.match.params.guider_id,
+				Config.api_url + "guiderpost/postOfOneGuider?guider_id=" + guider_id,
 				{
 					method: "GET",
 					mode: "cors",
@@ -50,7 +50,7 @@ class GuiderAllPost extends Component {
 	}
 
 	render() {
-		let guider_id = this.props.match.params.guider_id;
+		
 		let data = this.state.posts;
 		let { currentPage, todosPerPage } = this.state;
 		let user = sessionStorage.getItem('user');
@@ -124,7 +124,7 @@ class GuiderAllPost extends Component {
 						{/*  Content  */}
 						<div className="content">
 						<div className="content-left">
-							{guider_id ? (<GuiderInPost guiderId={guider_id} />) : null}
+							{this.props.id ? (<GuiderInPost guiderId={this.props.id} />) : null}
 						</div>
 							<div className="content-right">
 								<div className="bookOffers">

@@ -3,11 +3,10 @@ import "bootstrap/dist/css/bootstrap.css";
 import "font-awesome/css/font-awesome.min.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import Notification from './Notification';
+import Notification from './Traveler/Notification';
 import Config from './Config';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import $ from 'jquery';
-import Moment from 'react-moment';
 
 
 class Chatbox extends Component {

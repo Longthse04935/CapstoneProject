@@ -1,6 +1,6 @@
 import React from 'react';
-import Rated from './Rated';
-import Config from './Config';
+import Rated from '../Rated';
+import Config from '../Config';
 
 class ReviewInPost extends React.Component {
       constructor(props) {

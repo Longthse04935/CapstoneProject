@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import "font-awesome/css/font-awesome.min.css";
 import $ from "jquery";
-import country from './json/country.json';
-import Config from './Config';
+import country from '../json/country.json';
+import Config from '../Config';
 import SweetAlert from 'react-bootstrap-sweetalert';
 
 class ProfileTraveller extends Component {

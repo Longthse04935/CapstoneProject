@@ -1,10 +1,10 @@
 import React from "react";
-import ReviewInPost from "./ReviewInPost";
+import ReviewInPost from "../Guider/ReviewInPost";
 import PlanInPost from "./PlanInPost";
 import GuiderInPost from "./GuiderInPost";
-import Rated from "./Rated";
+import Rated from "../Rated";
 import $ from "jquery";
-import Config from "./Config";
+import Config from "../Config";
 
 class PostDetail extends React.Component {
   constructor(props) {

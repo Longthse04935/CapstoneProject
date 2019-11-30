@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import "font-awesome/css/font-awesome.min.css";
 import { Link, Route, Switch } from 'react-router-dom';
-import Rated from "./Rated";
+import Rated from "../Rated";
 import GuiderInPost from './GuiderInPost';
 import EditPost from './EditPost';
-import Config from './Config';
+import Config from '../Config';
 class GuiderAllPost extends Component {
 	constructor(props) {
 		super(props);

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import $ from 'jquery';
-import Config from './Config';
+import Config from '../Config';
 import SweetAlert from 'react-bootstrap-sweetalert';
 class TravellerManager extends Component {
 

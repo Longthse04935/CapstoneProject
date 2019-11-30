@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "font-awesome/css/font-awesome.min.css";
-import country from "./json/country.json";
+import country from "../json/country.json";
 
 class GuiderContract extends Component {
   constructor(props) {

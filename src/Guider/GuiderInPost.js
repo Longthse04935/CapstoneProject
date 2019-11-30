@@ -1,7 +1,7 @@
 import React from 'react';
 import "font-awesome/css/font-awesome.min.css";
 import {Link} from 'react-router-dom';
-import Config from './Config';
+import Config from '../Config';
 class GuiderInPost extends React.Component {
       constructor(props) {
             super(props);

@@ -1,5 +1,5 @@
 import React from 'react';
-import Config from './Config';
+import Config from '../Config';
 
 class PlanInPost extends React.Component {
       constructor(props) {

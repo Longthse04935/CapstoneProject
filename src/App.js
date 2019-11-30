@@ -1,22 +1,22 @@
 import React, { Component } from "react";
 import Chatbox from "./Chatbox";
-import ProfileGuiders from "./ProfileGuiders";
+import ProfileGuiders from "./Guider/ProfileGuiders";
 import Home from "./Home";
-import ProfileTravaller from './ProfileTraveller';
-import GuiderAllPost from './GuiderAllPost';
+import ProfileTravaller from './Traveler/ProfileTraveller';
+import GuiderAllPost from './Guider/GuiderAllPost';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import {BrowserRouter} from "react-router-dom";
-import Navbar from './Navbar';
+import Navbar from './Nav/Navbar';
 import Footer from './Footer';
-import Logged from './Logged';
-import PostDetail from './PostDetail';
+import Logged from './Nav/Logged';
+import PostDetail from './Guider/PostDetail';
 import Tour from './Tour';
 import PostTourDetail from './PostTourDetail';
-import Pay from './Pay';
-import TravellerManager from './TravellerManager';
-import GuiderContract from './GuiderContract';
-import Chart from './Chart';
-import EditPost from './EditPost';
+import Pay from './Traveler/Pay';
+import TravellerManager from './Traveler/TravellerManager';
+import GuiderContract from './Guider/GuiderContract';
+import Chart from './Guider/Chart';
+import EditPost from './Guider/EditPost';
 
 class App extends Component {
 	constructor(props) {

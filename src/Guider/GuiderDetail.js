@@ -1,5 +1,5 @@
 import React from 'react';
-import Config from './Config';
+import Config from '../Config/Config';
 
 class GuiderDetail extends React.Component {
 	constructor(props) {

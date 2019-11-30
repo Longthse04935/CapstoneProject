@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import "font-awesome/css/font-awesome.min.css";
-import country from "./json/country.json";
+import country from "../json/country.json";
 import $ from "jquery";
-import Config from "./Config";
-import ReviewInPost from './ReviewInPost';
-import GuiderInPost from './GuiderInPost';
+import Config from "../Config";
+import ReviewInPost from '../Guider/ReviewInPost';
+import GuiderInPost from '../Guider/GuiderInPost';
 
 
 class Pay extends Component {

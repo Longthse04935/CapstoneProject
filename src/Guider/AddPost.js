@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import Navbar from './Navbar';
-import Footer from './Footer';
+import Navbar from '../Nav/Navbar';
+import Footer from '../Footer';
 import $ from "jquery";
 import ReactDOMServer from 'react-dom/server';
 class AddPost extends Component {

@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import "font-awesome/css/font-awesome.min.css";
 import $ from 'jquery';
-import Navbar from './Navbar';
-import Footer from './Footer';
+
 class ProfileGuiders extends Component {
     componentDidMount(){
         //add css with jquery

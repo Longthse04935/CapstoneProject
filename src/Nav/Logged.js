@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import $ from 'jquery';
 import "font-awesome/css/font-awesome.min.css";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import Config from './Config';
+import Config from '../Config';
 
 class Logged extends Component {
     constructor(props) {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import "font-awesome/css/font-awesome.min.css";
 import $ from 'jquery';
-import Config from './Config';
+import Config from '../Config';
 import ReactDOM from 'react-dom';
 import SweetAlert from 'react-bootstrap-sweetalert';
 

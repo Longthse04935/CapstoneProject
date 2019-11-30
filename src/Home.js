@@ -98,16 +98,16 @@ class Home extends Component {
 
   async componentDidMount() {
     $('.search-4ul6i').focus(function () {
-      $('.fillter-4ul6i').show();
+        $('.fillter-4ul6i').show();
 
-  });
-  $(document).mouseup(function (e) {
-      if (!$('.Search-3ul6i').is(e.target) && !$('.fillter-4ul6i').is(e.target)
-          && $('.Search-3ul6i').has(e.target).length === 0
-          && $('.fillter-4ul6i').has(e.target).length === 0) {
-          $('.fillter-4ul6i').hide();
-      }
-  });
+    });
+    $(document).mouseup(function (e) {
+        if (!$('.Search-3ul6i').is(e.target) && !$('.fillter-4ul6i').is(e.target)
+            && $('.Search-3ul6i').has(e.target).length === 0
+            && $('.fillter-4ul6i').has(e.target).length === 0) {
+            $('.fillter-4ul6i').hide();
+        }
+    });
 
     try {
       const responsePosts = await fetch(
@@ -134,6 +134,13 @@ class Home extends Component {
 
     this.setupInterval();
 
+    window.onscroll = function() {
+      if(window.pageYOffset === 0) {
+        $( "#navbar" ).css({'background':'none','border-bottom':'none'});
+        $('.navbarRightContent ul li').css({'color':'black','font-size':'18px'});
+      }
+    };
+
   }
 
   setupInterval = () => {
@@ -144,6 +151,7 @@ class Home extends Component {
 
   componentWillUnmount() {
     clearInterval(this.state.intervalId);
+    window.onscroll = null;
  }
 
   commonNext  = () => {
@@ -155,13 +163,18 @@ class Home extends Component {
     this.setState({ currentIndex });
   }
 
+  handleChange = (category_name) =>{
+    window.sessionStorage.setItem('category_name',category_name);
+  }
+
   render() {
     let {currentIndex, slideShow} = this.state;
     let src = Config.api_url+slideShow[currentIndex];
     let tour = this.state.category.map((tour,index) => {
        return ( <li key={index}>
-        <img src={`/img/${tour.category}.jpg`}/>
-        <Link to={"/posttour/"+tour.category_id+"/"+tour.category}><button className="categoriesTour">{tour.category} tour</button></Link>
+        <img src={`${Config.api_url}images/${tour.category}.jpg`}/>
+        <Link to={"/posttour/"+tour.category_id} onClick={() => {this.handleChange(tour.category)}}><button className="categoriesTour">{tour.category} tour</button></Link>
+         
         </li>
        )
     });

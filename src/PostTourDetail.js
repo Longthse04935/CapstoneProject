@@ -72,10 +72,10 @@ class PostTourDetail extends Component {
               </button>
             );
         });
-
+        let category_name = window.sessionStorage.getItem('category_name');
         return (
             <div className='postInTour'>
-                <h2>All posts about {this.props.match.params.type} </h2>
+                <h2>All trips about {category_name} </h2>
                 <div className="contentTour">
                     {
                       currentdata.map((post,index) => {

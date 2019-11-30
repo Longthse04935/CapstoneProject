@@ -6,6 +6,7 @@ import Config from "./Config";
 import ReviewInPost from './ReviewInPost';
 import GuiderInPost from './GuiderInPost';
 
+
 class Pay extends Component {
   constructor(props) {
     super(props);
@@ -14,10 +15,21 @@ class Pay extends Component {
       tourDetail: {},
       country: [],
       postInfo: [],
-      isDisabled: true,
       isDisabledPay: true,
       isDisabledCheckBox:true,
-      link_youtube:''
+      link_youtube:'',
+      errors:[],
+      isError: false,
+      data:{
+        traveler_id:'',
+        first_name: '',
+        last_name: '',
+        email: '',
+        gender: 'male',
+        country_name:'Vietnam',
+        country_phone:'+84',
+        phone:''
+      }
     };
   }
 
@@ -89,6 +101,7 @@ class Pay extends Component {
       this.setState({ postInfo});
 
   }
+
   async goToPayPal() {
     var data = JSON.parse(sessionStorage.getItem("tourDetail"));
     delete data.price;
@@ -111,48 +124,21 @@ class Pay extends Component {
   }
 
   genderOnChange = e => {
-    if (e.target.name === "gender") {
-      if (e.target.value === "" || e.target.value === null) {
-        this.setState({
-          genderError: true
-        });
-      } else {
-        this.setState({
-          genderError: false,
-          gender: e.target.value
-        });
-      }
-    }
+    let {data} = this.state;
+    data[e.target.name] = e.target.value;
+    this.setState({data});
   };
 
   validateEmail(email) {
     const pattern = /[a-zA-Z0-9]+[\.]?([a-zA-Z0-9]+)?[\@][a-z]{3,9}[\.][a-z]{2,5}/g;
     const result = pattern.test(email);
-    if (result === true) {
-      this.setState({
-        emailError: false,
-        email: email
-      });
-    } else {
-      this.setState({
-        emailError: true
-      });
-    }
+    return result;
   }
 
   validatePhone(phone) {
     const pattern = /^\d{10,11}$/;
     const result = pattern.test(phone);
-    if (result === true) {
-      this.setState({
-        phoneError: false,
-        phone: phone
-      });
-    } else {
-      this.setState({
-        phoneError: true
-      });
-    }
+    return result;
   }
 
   handleCheckBox = () =>{
@@ -160,64 +146,50 @@ class Pay extends Component {
   }
 
   handleChange(e) {
-    const target = e.target;
-    const value = target.type === "checkbox" ? target.checked : target.value;
-    const name = target.name;
-    this.setState({
-      [name]: value
-    });
-    if (e.target.name === "firstname") {
-      if (e.target.value === "" || e.target.value === null) {
-        this.setState({
-          firstnameError: true
-        });
-      } else {
-        this.setState({
-          firstnameError: false,
-          firstName: e.target.value
-        });
-      }
+    const value = e.target.value;
+    const name = e.target.name;
+    let {errors} = this.state;
+    const { data } = this.state;
+    data[name] = value;
+    if(value !== ''){
+        errors[name] = '';
     }
-    if (e.target.name === "lastname") {
-      if (e.target.value === "" || e.target.value === null) {
-        this.setState({
-          lastnameError: true
-        });
-      } else {
-        this.setState({
-          lastnameError: false,
-          lastName: e.target.value
-        });
-      }
-    }
-    if (e.target.name === "email") {
-      this.validateEmail(e.target.value);
-    }
-    if (e.target.name === "phone") {
-      this.validatePhone(e.target.value);
-    }
-    if (
-      this.state.firstnameError === false &&
-      this.state.lastnameError === false &&
-      this.state.emailError === false &&
-      this.state.genderError === false
-    ) {
-      this.setState({
-        isDisabled: false
-      });
-    }
+    this.setState({ data });
   }
+
+  isValidate = () => {
+    const { data } = this.state;
+    let isError = false;
+    let errors = {};
+    if(data.first_name === '') {
+      isError = true;
+      errors['first_name'] = 'First name is empty, Input your first name';
+    }
+    if(data.last_name === '') {
+      isError = true;
+      errors['last_name'] = 'Last name is empty, Input your last name';
+    }
+    if(this.validateEmail(data.email) === false){
+      isError = true;
+      errors['email'] = 'Email example like abcxzy@gmail.com';
+    }
+    if(this.validatePhone(data.phone) === false){
+      isError = true;
+      errors['phone'] = 'Phone must be digits and have 10-11 digits';
+    }
+
+    this.setState({ isError, errors });
+    if(isError) 
+      return true;
+
+    return false;
+  }
+
   submitForm = e => {
     e.preventDefault();
-    const data = {
-      firstName: this.state.firstName,
-      lastName: this.state.lastName,
-      email: this.state.email,
-      phone: this.state.phone,
-      gender: this.state.gender
-    };
-    this.setState({ isDisabledPay: false });
-
+    if(this.isValidate()) {
+      return false;
+    } 
   };
 
   render() {
@@ -239,8 +211,7 @@ class Pay extends Component {
     let {postInfo} = this.state;
     
     let tourDetail = JSON.parse(sessionStorage.getItem("tourDetail"));
-    let begin_date = tourDetail.begin_date.split(" ");
-    let end_date = tourDetail.end_date.split(" ");
+  
     let user = JSON.parse(sessionStorage.getItem("user"));
     if (tourDetail === null || user === null) {
       window.location.href = "/";
@@ -248,7 +219,9 @@ class Pay extends Component {
     } else {
       sessionStorage.setItem("messagePay", "");
     }
-
+    let begin_date = tourDetail.begin_date.split(" ");
+    let end_date = tourDetail.end_date.split(" ");
+    let {data,errors} = this.state;
     return (
       <div>
         <div className="coverLoader">
@@ -285,6 +258,7 @@ class Pay extends Component {
                   className="gendermale"
                   name="gender"
                   value="male"
+                  checked={data.gender === 'male'}
                   onChange={e => this.genderOnChange(e)}
                 />{" "}
                 Male
@@ -292,6 +266,7 @@ class Pay extends Component {
                   type="radio"
                   name="gender"
                   value="female"
+                  checked={data.gender === 'female'}
                   onChange={e => this.genderOnChange(e)}
                 />{" "}
                 Female
@@ -299,6 +274,7 @@ class Pay extends Component {
                   type="radio"
                   name="gender"
                   value="other"
+                  checked={data.gender === 'other'}
                   onChange={e => this.genderOnChange(e)}
                 />{" "}
                 Other
@@ -309,35 +285,23 @@ class Pay extends Component {
                 <input
                   type="text"
                   placeholder="Fisrt name"
-                  name="firstname"
+                  name="first_name"
                   onChange={e => {
                     this.handleChange(e);
                   }}
                 />
-                {this.state.firstnameError ? (
-                  <p style={{ color: "red" }} className="errorInput">
-                    Please enter your first name
-                  </p>
-                ) : (
-                  ""
-                )}
+                {errors['first_name'] ? <p style={{color: "red"}} className="errorInput">{errors['first_name']}</p> : ''}
 
                 <p>Last name</p>
                 <input
                   type="text"
                   placeholder="Last name"
-                  name="lastname"
+                  name="last_name"
                   onChange={e => {
                     this.handleChange(e);
                   }}
                 />
-                {this.state.lastnameError ? (
-                  <p style={{ color: "red" }} className="errorInput">
-                    Please enter your last name
-                  </p>
-                ) : (
-                  ""
-                )}
+                 {errors['last_name'] ? <p style={{color: "red"}} className="errorInput">{errors['last_name']}</p> : ''}
 
                 <p>Email</p>
                 <input
@@ -348,19 +312,19 @@ class Pay extends Component {
                     this.handleChange(e);
                   }}
                 />
-                {this.state.emailError ? (
-                  <p style={{ color: "red" }} className="errorInput">
-                    Please enter your email
-                  </p>
-                ) : (
-                  ""
-                )}
+               {errors['email'] ? <p style={{color: "red"}} className="errorInput">{errors['email']}</p> : ''}
+
                 <p>Country of residence</p>
                 <select
                   style={{
                     width: "100%",
                     height: "40px",
                     border: "1px solid #eaeaea"
+                  }}
+                  name='country_name'
+                  value={data.country_name}
+                  onChange={e => {
+                    this.handleChange(e);
                   }}
                 >
                   {country_name}
@@ -372,6 +336,11 @@ class Pay extends Component {
                     width: "40%",
                     height: "42px",
                     border: "1px solid #eaeaea"
+                  }}
+                  name='country_phone'
+                  value={data.country_phone}
+                  onChange={e => {
+                    this.handleChange(e);
                   }}
                 >
                   {country_phone}
@@ -385,19 +354,11 @@ class Pay extends Component {
                     this.handleChange(e);
                   }}
                 />
-                {this.state.phoneError ? (
-                  <p style={{ color: "red" }} className="errorInput">
-                    Phone must be have 10 digit
-                  </p>
-                ) : (
-                  ""
-                )}
-
+                 {errors['phone'] ? <p style={{color: "red"}} className="errorInput">{errors['phone']}</p> : ''}
                 <input
                   type="submit"
                   value="Save"
                   className="saveInfoTraveller"
-                  disabled={this.state.isDisabled}
                   onClick={this.submitForm}
                 />
               </div>

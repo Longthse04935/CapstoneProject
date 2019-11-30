@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import $ from 'jquery';
 import "font-awesome/css/font-awesome.min.css";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import Config from './Config';
+
 class Logged extends Component {
     constructor(props) {
         super(props);
@@ -134,7 +136,7 @@ class Logged extends Component {
                                 <li className="avatarLogged" onClick={this.disableLoggedChoice}>
 
 
-                                    <img src="/img/2.jpg" />
+                                    <img src={`${Config.api_url}images/account.png`}/>
 
                                     <ul className="dropContent" style={this.state.disable ? { display: 'none' } : { display: 'block' }}>
                                         {user.role === 'GUIDER' ?

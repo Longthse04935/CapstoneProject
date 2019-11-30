@@ -3,93 +3,200 @@ import "font-awesome/css/font-awesome.min.css";
 import $ from 'jquery';
 import Config from './Config';
 import ReactDOM from 'react-dom';
+import SweetAlert from 'react-bootstrap-sweetalert';
 
 class Navbar extends Component {
     constructor(props) {
         super(props);
+        this.state = { 
+            alert: null,
+            data:{
+                userName: "",
+                password: "",
+                re_password:'',
+                role: "TRAVELER",
+                email:""
+            },
+            login:{
+                userName: "",
+                password: "",
+                role: "TRAVELER"
+            },
+            errors:[],
+            isError:false,
+            activeSearch:false
+        }
+        this.wrapperRef = React.createRef();
         this.signUp = this.signUp.bind(this);
         this.logIn = this.logIn.bind(this);
 
     }
 
-    async signUp(eve) {
-        eve.preventDefault();
-        const dom = ReactDOM.findDOMNode(this);
-        let bod = {
+    genderOnChange = e => {
+        let {data} = this.state;
+        data[e.target.name] = e.target.value;
+        this.setState({data});
+      };
+    
+      genderOnChangeLogin = e => {
+        let {login} = this.state;
+        login[e.target.name] = e.target.value;
+        this.setState({login});
+    };
+
+    validateEmail(email){
+        const pattern = /[a-zA-Z0-9]+[\.]?([a-zA-Z0-9]+)?[\@][a-z]{3,9}[\.][a-z]{2,5}/g;
+        const result = pattern.test(email);
+        return result;
+      }
+
+    handleChange = (e)=>{
+        const value = e.target.value;
+        const name = e.target.name;
+        let {errors} = this.state;
+        const { data } = this.state;
+        data[name] = value;
+        if(value !== ''){
+            errors[name] = '';
+        }
+        this.setState({ data });
+    }
+
+    handleChangeLogin = (e)=>{
+        const value = e.target.value;
+        const name = e.target.name;
+        const { login } = this.state;
+        login[name] = value;
+        this.setState({ login });
+    }
+
+    isValidate = () => {
+        const { data } = this.state;
+        let isError = false;
+        let errors = {};
+        if(data.userName === '') {
+          isError = true;
+          errors['userName'] = 'User name is empty, Input your user name';
+        }
+        if(data.password.length < 8) {
+          isError = true;
+          errors['password'] = 'Password consists of 8 characters or more';
+        }
+        if(this.validateEmail(data.email) === false) {
+            isError = true;
+            errors['email'] = 'Email example like googleemail@gmail.com';
+          }
+        if(data.re_password !== data.password){
+          isError = true;
+          errors['re_password'] = 'Re-password is not the same as a password';
+        }
+    
+        this.setState({ isError, errors });
+        if(isError) 
+          return true;
+    
+        return false;
+      }
+
+    resetText = () =>{
+        let data = {
             userName: "",
             password: "",
-            role: ""
-        };
-        if (dom instanceof HTMLElement) {
-            bod.userName = dom.querySelector("input[name='sign-up-name']").value;
-            bod.password = dom.querySelector("input[name='sign-up-password']").value;
-            bod.role = dom.querySelector("select[class='sign-up-custom-select']").value;
-
-            console.log(bod);
-            try {
-                const response = await fetch(Config.api_url + "account/registrator",
-                    {
-                        method: "POST",
-                        mode: "cors",
-                        credentials: "include",
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(bod)
-                    }
-                );
-                if (!response.ok) { throw Error(response.status + ": " + response.statusText); }
-                const user = await response.json();
-                // console.log(await user);
-                this.props.reload.call(this, await user);
-            } catch (err) {
-                console.log(err);
-            }
-        } else {
-            console.log("find DOM do not work");
+            re_password:'',
+            role: "TRAVELER"
         }
+        let errors =[]
+        let isError = false
+
+        this.setState({data,errors,isError})
+    }
+
+    async signUp(eve) {
+        eve.preventDefault();
+        if(this.isValidate()) {
+            return false;
+          } 
+        
+        let {data,errors} = this.state;
+       
+        try {
+            const response = await fetch(Config.api_url + "account/registrator",
+                {
+                    method: "POST",
+                    mode: "cors",
+                    credentials: "include",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                }
+            );
+            if(response.status === 500){
+                errors['userName'] = 'This account name already existed';
+                this.setState({errors});
+                return false;
+            }
+            const user = await response.json();
+            this.props.reload.call(this, await user);
+        } catch (err) {
+            console.log('dulicate');
+        }
+        $('.signUpForm').hide();
+        this.statusProfile('We come to my website');
 
     }
+
+
 
     async logIn(eve) {
         eve.preventDefault();
-        const dom = ReactDOM.findDOMNode(this);
-        let bod = {
-            userName: "",
-            password: "",
-            role: ""
-        };
-        if (dom instanceof HTMLElement) {
-            bod.userName = dom.querySelector("input[name='log-in-name']").value;
-            bod.password = dom.querySelector("input[name='log-in-password']").value;
-            bod.role = dom.querySelector("select[class='log-in-custom-select']").value;
-            try {
-                const response = await fetch(Config.api_url + "account/login",
-                    {
-                        method: "POST",
-                        mode: "cors",
-                        credentials: "include",
-                        headers: {
-                            'Content-Type': 'application/json',
-                            // http://localhost:8080/account/login
+        let{login} = this.state;
+        try {
+            const response = await fetch(Config.api_url + "account/login",
+                {
+                    method: "POST",
+                    mode: "cors",
+                    credentials: "include",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        // http://localhost:8080/account/login
 
-                        },
-                        body: JSON.stringify(bod)
-                    }
-                );
+                    },
+                    body: JSON.stringify(login)
+                }
+            );
 
-                if (!response.ok) { throw Error(response.status + ": " + response.statusText); }
-                const user = await response.json();
-                // console.log(await user);
-                this.props.reload.call(this, await user);
-            } catch (err) {
-                console.log(err);
-            }
-        } else {
-            console.log("find DOM do not work");
+            if (!response.ok) { throw Error(response.status + ": " + response.statusText); }
+            const user = await response.json();
+            // console.log(await user);
+            this.props.reload.call(this, await user);
+        } catch (err) {
+            console.log(err);
         }
     }
 
+    hideAlert() {
+    this.setState({
+        alert: null
+    });
+    }
+
+    statusProfile(message){
+    const getAlert = () => (
+        <SweetAlert 
+        success 
+        title="Woot!" 
+        onConfirm={() => this.hideAlert()}
+        >
+        {message}
+        </SweetAlert>
+    );
+
+    this.setState({
+        alert: getAlert()
+    });
+    }
+    
     componentDidMount() {
         $("head").append('<link href="/css/login.css" rel="stylesheet"/>');
         $("head").append('<link href="/css/navbar.css" rel="stylesheet"/>');
@@ -99,21 +206,19 @@ class Navbar extends Component {
             $(this).addClass('active');
         });
 
-        let pathname = window.location.pathname;
-        if(pathname !== '/'){
-            $('input[name=search]').focus(function () {
-                $('.search .fillter').show();
-    
-            });
-            $(document).mouseup(function (e) {
-                if (!$('.search').is(e.target) && !$('.fillter').is(e.target)
-                    && $('.search').has(e.target).length === 0
-                    && $('.fillter').has(e.target).length === 0) {
-                    $('.fillter').hide();
-                }
-            });
-        }
+        
+        $('input[name=search]').focus(function () {
+            $('#searchNav #fillterNav').show();
 
+        });
+        $(document).mouseup(function (e) {
+            if (!$('#searchNav').is(e.target) && !$('#fillterNav').is(e.target)
+                && $('#searchNav').has(e.target).length === 0
+                && $('#fillterNav').has(e.target).length === 0) {
+                $('#fillterNav').hide();
+            }
+        });
+        
         // click sign up and close sign up form
         $('.signup').click(function () {
             $('.signUpForm').show();
@@ -133,6 +238,7 @@ class Navbar extends Component {
             $('.signUpForm').hide();
         });
 
+       
         $('.SignIn').click(function () {
             $('.signUpForm').show();
             $('.loginForm').hide();
@@ -154,27 +260,69 @@ class Navbar extends Component {
             var input = $("#pass_log_id");
             input.attr('type') === 'password' ? input.attr('type', 'text') : input.attr('type', 'password');
         });
+
+        //reset text when click out a div with reactjs
+        document.addEventListener('click', this.handleClick)
+
+       
+      
     }
+
+    handleClick = (event) => {
+        const { target } = event
+        if (!this.wrapperRef.current.contains(target)) {
+            let data = {
+                userName: "",
+                password: "",
+                re_password:"",
+                role: "TRAVELER",
+                email:""
+            }
+            let errors =[]
+            let isError = false
+            this.setState({data,errors,isError});
+        }
+    }
+
+    componentWillUnmount() {
+        // important
+        document.removeEventListener('click', this.handleClick);
+    }
+    
+
     render() {
+        let {data,errors,login} = this.state;
+        let path = window.location.pathname;
         return (
             <div>
+                {this.state.alert}
                 {/* sign up */}
                 <div className="layout signUpForm">
-                    <div className="content-login">
+                    <div className="content-login" ref={this.wrapperRef}>
                         <button className="closeLogin">
-                            <i className="fa fa-times" />
+                            <i className="fa fa-times" onClick={this.resetText}/>
                         </button>
                         <h3 className="SubTitle-230L-">Sign up </h3>
                         <form style={{ textAlign: "center" }} onSubmit={this.signUp}>
                             <div className="SignupForm-20HPb">
-                                <div className="role">
-                                    <label className="InputLabel-Tch5j InputLabelConditionalHide-24VTo">
-                                        You are *</label>
-                                    <select className="sign-up-custom-select" id="inputGroupSelect02">
-                                        <option value="GUIDER">Guider</option>
-                                        <option value="TRAVELER">Traveler</option>
-
-                                    </select>
+                            <div className="gender" style={{marginBottom:'15px',marginTop:'15px'}}>
+                                    <input
+                                    type="radio"
+                                    className="gendermale"
+                                    name="role"
+                                    value="TRAVELER"
+                                    checked={data.role === 'TRAVELER'}
+                                    onChange={e => this.genderOnChange(e)}
+                                    />{" "}
+                                    Traveler
+                                    <input
+                                    type="radio"
+                                    name="role"
+                                    value="GUIDER"
+                                    checked={data.role === 'GUIDER'}
+                                    onChange={e => this.genderOnChange(e)}
+                                    />{" "}
+                                    Guider
                                 </div>
                                 <div className="UserName">
                                     <label className="InputLabel-Tch5j InputLabelConditionalHide-24VTo">
@@ -183,22 +331,13 @@ class Navbar extends Component {
                                     <input
                                         className="Input-1e6rU"
                                         type="text"
-                                        name="sign-up-name"
-                                        placeholder="Name"
+                                        name="userName"
+                                        placeholder="User name"
+                                        value={data.userName}
+                                        onChange={(e)=>{this.handleChange(e)}}
                                     />
+                                    {errors['userName'] ? <p style={{color: "red"}} className="errorInput">{errors['userName']}</p> : ''}
                                 </div>
-
-                                {/* <div className="email">
-                                    <label className="InputLabel-Tch5j InputLabelConditionalHide-24VTo">
-                                        Email *
-                                </label>
-                                    <input
-                                        className="Input-1e6rU"
-                                        type="email"
-                                        name="email"
-                                        placeholder="Email"
-                                    />
-                                </div> */}
                                 <div className="PasswordInput-1Qf5F">
                                     <div className="password">
                                         <label className="InputLabel-Tch5j InputLabelConditionalHide-24VTo">
@@ -208,10 +347,11 @@ class Navbar extends Component {
                                             className="Input-1e6rU"
                                             placeholder="Password"
                                             type="password"
-                                            name="sign-up-password"
-                                            required
-
+                                            name="password"
+                                            value={data.password}
+                                            onChange={(e)=>{this.handleChange(e)}}
                                         />
+                                        {errors['password'] ? <p style={{color: "red"}} className="errorInput">{errors['password']}</p> : ''}
                                     </div>
                                 </div>
                                 <div className="lastName">
@@ -221,16 +361,35 @@ class Navbar extends Component {
                                     <input
                                         className="Input-1e6rU"
                                         type="password"
-                                        name="rePassword"
-                                        placeholder="Password"
+                                        name="re_password"
+                                        placeholder="Re-password"
+                                        value={data.re_password}
+                                        onChange={(e)=>{this.handleChange(e)}}
                                     />
+                                    {errors['re_password'] ? <p style={{color: "red"}} className="errorInput">{errors['re_password']}</p> : ''}
+                                </div>
+                                <div className="lastName">
+                                    <label className="InputLabel-Tch5j InputLabelConditionalHide-24VTo">
+                                        Confirm password
+                                </label>
+                                    <input
+                                        className="Input-1e6rU"
+                                        type="text"
+                                        name="email"
+                                        placeholder="Email"
+                                        value={data.email}
+                                        onChange={(e)=>{this.handleChange(e)}}
+                                    />
+                                    {errors['email'] ? <p style={{color: "red"}} className="errorInput">{errors['email']}</p> : ''}
                                 </div>
                             </div>
+
                             <div className="Submit-2es0L">
                                 <button type="submit" className="Button-2iSbC SubmitButton-3lXjw">
                                     <span className="SubmitText-sXv20">Join Withlocals</span>
                                 </button>
                             </div>
+
                             <div className="loginLinkContain">
                                 <button className="loginLink">
                                     <span className="SpanReady">I already have an account.</span>
@@ -245,19 +404,29 @@ class Navbar extends Component {
                 <div className="layout loginForm">
                     <div className="content-login">
                         <button className="closeLogin">
-                            <i className="fa fa-times" />
+                            <i className="fa fa-times" onClick={this.resetText}/>
                         </button>
                         <h3 className="SubTitle-230L-">Log in</h3>
                         <form style={{ textAlign: "center" }} onSubmit={this.logIn}>
                             <div className="SignupForm-20HPb">
-                                <div className="role">
-                                    <label className="InputLabel-Tch5j InputLabelConditionalHide-24VTo">
-                                        You are *</label>
-                                    <select className="log-in-custom-select" id="inputGroupSelect02">
-                                        <option value="GUIDER">Guider</option>
-                                        <option value="TRAVELER">Traveler</option>
-
-                                    </select>
+                            <div className="gender" style={{marginBottom:'15px',marginTop:'15px'}}>
+                                    <input
+                                    type="radio"
+                                    className="gendermale"
+                                    name="role"
+                                    value="TRAVELER"
+                                    checked={login.role === 'TRAVELER'}
+                                    onChange={e => this.genderOnChangeLogin (e)}
+                                    />{" "}
+                                    Traveler
+                                    <input
+                                    type="radio"
+                                    name="role"
+                                    value="GUIDER"
+                                    checked={login.role === 'GUIDER'}
+                                    onChange={e => this.genderOnChangeLogin (e)}
+                                    />{" "}
+                                    Guider
                                 </div>
                                 <div className="firstName">
                                     <label className="InputLabel-Tch5j InputLabelConditionalHide-24VTo">
@@ -266,8 +435,9 @@ class Navbar extends Component {
                                     <input
                                         className="Input-1e6rU"
                                         type="text"
-                                        name="log-in-name"
+                                        name="userName"
                                         placeholder="Name"
+                                        onChange={(e)=>{this.handleChangeLogin(e)}}
                                     />
                                 </div>
                                 <div className="PasswordInput-1Qf5F">
@@ -281,8 +451,8 @@ class Navbar extends Component {
                                                 className="Input-1e6rU"
                                                 placeholder="Password"
                                                 type="password"
-                                                name="log-in-password"
-                                                required
+                                                name="password"
+                                                onChange={(e)=>{this.handleChangeLogin(e)}}
 
                                             />
                                             <i className="fa fa-eye" />
@@ -309,14 +479,16 @@ class Navbar extends Component {
                 </div>
                 {/* end login */}
                 {/* Menubar */}
-                <nav className="navbar">
+                <nav className="navbar" id="navbar">
                     <div className="menubar">
                         <div className="logoContainer">
                             <a href="/">
                                 <i className="fa fa-arrows" aria-hidden="true" />
                             </a>
                         </div>
-                        <div className="search">
+                        { path === '/' ? "" 
+                        :
+                        <div className="search" id="searchNav">
                             <label>
                                 <input
                                     type="text"
@@ -325,7 +497,7 @@ class Navbar extends Component {
                                     autoComplete="off"
                                 />
                             </label>
-                            <div className="fillter">
+                            <div className="fillter" id="fillterNav">
                                 <div className="filter-Content">
                                     <div className="localsOrExperience">
                                         <h3 className="explore">Explore TravelWlocals</h3>
@@ -386,18 +558,19 @@ class Navbar extends Component {
                                 </div>
                             </div>
                         </div>
+                        }
                         <div className="navbarRightContent">
                             <ul>
                                 <li>
-                                    <a href="#">Become a host</a>
+                                    <a style={{cursor:"pointer"}}>Become a host</a>
                                 </li>
                                 <li>
-                                    <a href="#" className="login">
+                                    <a style={{cursor:"pointer"}} className="login">
                                         Log in
                         </a>
                                 </li>
                                 <li>
-                                    <a href="#" className="signup">
+                                    <a style={{cursor:"pointer"}} className="signup">
                                         Sign up
                         </a>
                                 </li>

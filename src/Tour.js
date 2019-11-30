@@ -262,25 +262,25 @@ class Tour extends Component {
       <div className="intro">
         <ol className="Breadcrumbs">
           <li className="ListItem">
-            <a className="Link-3Z1kp" href="#">
+            <a className="Link-3Z1kp" href="">
               <span>Viet Nam</span>
             </a>
             ›
           </li>
           <li className="ListItem">
-            <a className="Link-3Z1kp" href="#">
+            <a className="Link-3Z1kp" href="">
               <span>Ha Noi</span>
             </a>
             ›
           </li>
-          <li className="#">
-            <a className="Link-3Z1kp" href="#">
+          <li className="">
+            <a className="Link-3Z1kp" href="">
               <span>Tours</span>
             </a>
             ›
           </li>
           <li className="ListItem">
-            <a className="Link-3Z1kp" href="#">
+            <a className="Link-3Z1kp" href="">
               <span>Food tours</span>
             </a>
             ›

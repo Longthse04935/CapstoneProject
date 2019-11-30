@@ -90,6 +90,12 @@ class ProfileTraveller extends Component {
     return result;
   }
 
+  validatePhone(phone){
+    const pattern = /^\d{10,11}$/;
+    const result = pattern.test(phone);
+    return result;
+  }
+
   handleChange=(e)=>{
     const value = e.target.value;
     const name = e.target.name;
@@ -123,10 +129,9 @@ class ProfileTraveller extends Component {
       errors['email'] = 'Email example like abcxzy@gmail.com';
     }
 
-    var letters = /^[0-9]+$/;
-    if(!data.phone.match(letters)){
+    if(this.validatePhone(data.phone) === false){
       isError = true;
-      errors['phone'] = 'Phone must be digits';
+      errors['phone'] = 'Phone must be digits and have 10-11 digits';
     }
     if(data.slogan === ''){
       isError = true;

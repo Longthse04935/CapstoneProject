@@ -181,7 +181,7 @@ class Chatbox extends Component {
       let options = this.option(" "+e.target.value);
       let response = await fetch(Config.api_url+'Order/GetClosestFinishDate', options);
       let closest_EndDate = await response.text();
-
+      console.log(closest_EndDate);
       response = await fetch(Config.api_url+'Order/GetExpectedTourEnd', options);
       let endTime = await response.text();
       closest_EndDate ="Last tour ended at "+closest_EndDate;

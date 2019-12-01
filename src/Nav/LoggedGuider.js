@@ -4,7 +4,7 @@ import "font-awesome/css/font-awesome.min.css";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Config from '../Config';
 
-class Logged extends Component {
+class LoggedGuider extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -139,26 +139,11 @@ class Logged extends Component {
                                     <img src={`${Config.api_url}images/account.png`}/>
 
                                     <ul className="dropContent" style={this.state.disable ? { display: 'none' } : { display: 'block' }}>
-                                        {user.role === 'GUIDER' ?
                                         <span>
                                         <li><Link to="/profile">Profile</Link><i className="fa fa-address-card-o" aria-hidden="true"></i></li>
                                         <li><Link to="/edit">Edit Post</Link><i className="fa fa-pencil" aria-hidden="true"></i></li>
                                         <li><Link to="/add">Add Post</Link><i className="fa fa-user" aria-hidden="true"></i></li>
                                         </span>
-                                        : ''
-                                        }
-                                        {user.role === 'TRAVELER' ?
-                                        <span>
-                                        <li><Link to="/profiletraveller">Profile traveller</Link><i className="fa fa-address-card-o" aria-hidden="true"></i></li>
-                                        <li><Link to="/tvlManager">Travel manager</Link><i className="fa fa-file-text-o" aria-hidden="true"></i></li>
-                                        </span>
-                                        : ''
-                                        }
-                                        {/* {
-                                            if(user.role ==="TRAVELER"){
-
-                                            }
-                                        } */}
                                         <li onClick={() => {
                                             console.log("log out");
                                             const user = {
@@ -184,4 +169,4 @@ class Logged extends Component {
     }
 }
 
-export default Logged;
+export default LoggedGuider;

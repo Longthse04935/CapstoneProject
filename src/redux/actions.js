@@ -2,24 +2,28 @@ export const role = {
       GUEST: "GUEST",
       GUIDER: "GUIDER",
       TRAVELER: "TRAVELER"
+};
+
+export function logIn(id, name, role) {
+      return { type: LOGIN, id, name, role }
 }
 
-export const logStatus = {
-      IN: "IN",
-      OUT: "OUT"
+export function logOut() {
+      return { type: LOGOUT }
 }
 
-export const
+export const LOGOUT = "LOGOUT";
 
-export function changeUser(name) {
-      return
-}
+export const LOGIN = "LOGIN";
 
 const state = {
-      userName: "guest",
-      role: "GUEST",
-      id: 0,
-      logedIn: false,
+      user: {
+            name: "guest",
+            role: "GUEST",
+            id: 0,
+            loggedIn: false,
+      },
+
       notification: [
             {
                   sender: "system",
@@ -33,4 +37,4 @@ const state = {
             }
       ]
 
-}
+};

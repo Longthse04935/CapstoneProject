@@ -136,7 +136,7 @@ class LoggedTvl extends Component {
                                 <li className="avatarLogged" onClick={this.disableLoggedChoice}>
 
 
-                                    <img src={`${Config.api_url}images/account.png`}/>
+                                    <img src={`${Config.api_url}images/account.jpg`}/>
 
                                     <ul className="dropContent" style={this.state.disable ? { display: 'none' } : { display: 'block' }}>
                                         <span>

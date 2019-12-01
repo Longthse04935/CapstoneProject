@@ -16,7 +16,8 @@ class TravellerManager extends Component {
 			info:{},
 			rated:0.0,
 			alert: null,
-			cmtExist:[]
+			cmtExist:[],
+			status:''
 		};
 	}
 	componentWillMount(){
@@ -54,6 +55,10 @@ class TravellerManager extends Component {
 			} catch (err) {
 				console.log(err);
 			}
+			var $li = $('.tvlTab li').click(function() {
+				$li.removeClass('selected');
+				$(this).addClass('selected');
+			});
     }
 
     async sendReview(){
@@ -127,6 +132,7 @@ class TravellerManager extends Component {
 	}
 	
 	async tabList(status){
+		
 		var user = JSON.parse(sessionStorage.getItem('user'));
 		try {
 			const orderResponse = await fetch(
@@ -144,7 +150,7 @@ class TravellerManager extends Component {
 				throw Error(orderResponse.status + ": " + orderResponse.statusText);
 			}
 			const order = await orderResponse.json();
-			this.setState({ orders:order });
+			this.setState({ orders:order,status:status });
 		} catch (err) {
 			console.log(err);
 		}
@@ -173,24 +179,27 @@ class TravellerManager extends Component {
 	  }
 	  
 	render() {
-		let order = this.state.orders.map((order, index) => 
-			<tr className="row100 body" key={index}>
+		let order = this.state.orders.map((order, index) => {
+			let {status} = this.state;
+			return (
+				<tr className="row100 body" key={index}>
 				<td className="cell100 ">{order.guider_id}</td>
 				<td className="cell100 ">{order.begin_date}</td>
 				<td className="cell100 ">{order.finish_date}</td>
 				<td className="cell100 ">{order.post_id}</td>
 				<td className="cell100 ">{order.adult_quantity}</td>
 				<td className="cell100 ">{order.children_quantity}</td>
-				<td className="cell100 ">{order.fee_paid}</td>
-				<td className="cell100 "><button type="button" className="btn btn-secondary" onClick={()=>this.showReview(order.order_id,order.guider_id,order.post_id)}>Review</button></td>
+				<td className="cell100 ">{order.fee_paid}$</td>
+				{status === "FINISHED" ? <td className="cell100 "><button type="button" className="btn btn-secondary" onClick={()=>this.showReview(order.order_id,order.guider_id,order.post_id)}>Review</button></td> : ''}
 			</tr>
-        );
+			)
+		});
 		var arr = ['UNCONFIRMED','ONGOING','FINISHED','CANCELED'];
 
 		var tab = arr.map((value,index) => 
 			<li key={index} onClick={()=>{this.tabList(value)}}>{value}</li>
 		);
-		var {isDisable,isError,errorRate,hideAddComment,rated} = this.state;
+		var {isDisable,isError,errorRate,hideAddComment,rated,status} = this.state;
 		
 		return (
 			<div>
@@ -265,7 +274,7 @@ class TravellerManager extends Component {
 										<th className="cell100 column6">Adult quantity</th>
 										<th className="cell100 column7">Child quantiy</th>
 										<th className="cell100 column8">Price</th>
-										<th className="cell100 column8">Review</th>
+										{status ==="FINISHED" ? <th className="cell100 column8">Review</th> : ''}
 									</tr>
 								</thead>
 								<tbody>

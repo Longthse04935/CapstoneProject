@@ -8,7 +8,8 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import {BrowserRouter} from "react-router-dom";
 import Navbar from './Nav/Navbar';
 import Footer from './Footer';
-import Logged from './Nav/Logged';
+import LoggedTvl from './Nav/LoggedTvl';
+import LoggedGuider from './Nav/LoggedGuider';
 import PostDetail from './Guider/PostDetail';
 import Tour from './Tour';
 import PostTourDetail from './PostTourDetail';
@@ -57,8 +58,19 @@ class App extends Component {
 
 
 	render() {
-		let present = this.state.logedIn ? <Logged reload={this.reload} /> : <Navbar reload={this.reload} />;
-
+		let present ;
+		let user = JSON.parse(window.sessionStorage.getItem('user'));
+		if(this.state.logedIn){
+			if(user.role === 'TRAVELER'){
+				present = <LoggedTvl reload={this.reload} />;
+			}
+			else {
+				present = <LoggedGuider reload={this.reload} />;
+			}
+		}else{
+			present = <Navbar reload={this.reload} />;
+		}
+		
 
 		return (
 			<div>

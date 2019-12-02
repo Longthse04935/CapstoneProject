@@ -2,10 +2,11 @@ import { combineReducers } from 'redux';
 import {ROLE, LOGIN, LOGOUT} from './actions';
 const init =  {
       user: {
-            name: "guest",
+            userName: "guest",
             role: "GUEST",
             id: 0,
             loggedIn: false,
+            avatar: ""
       },
       notification: [],
       chatMessage: []

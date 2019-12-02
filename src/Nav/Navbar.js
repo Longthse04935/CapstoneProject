@@ -137,7 +137,7 @@ class Navbar extends Component {
                 return false;
             }
             const user = await response.json();
-            this.props.reload.call(this, await user);
+            this.props.reload.call(this, user);
         } catch (err) {
             console.log('dulicate');
         }

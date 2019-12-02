@@ -151,6 +151,7 @@ class LoggedGuider extends Component {
                                                 role: "GUEST",
                                                 id: 0
                                             };
+                                            
                                             this.props.reload.call(this, user);
                                             window.location.href = '/';
                                         }}>Log out<i className="fa fa-sign-out" aria-hidden="true"></i></li>

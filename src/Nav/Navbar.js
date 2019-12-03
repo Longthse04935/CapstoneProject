@@ -142,7 +142,6 @@ class Navbar extends Component {
                 return false;
             }
             const user = await response.json();
-           
             // this.props.reload.call(this, await user);
         } catch (err) {
             console.log('dulicate');
@@ -180,6 +179,7 @@ class Navbar extends Component {
             }
             this.props.reload.call(this, await user);
         } catch (err) {
+            console.log(err);
             errors['login'] = 'User name or password is wrong';
             this.setState({errors});
         }

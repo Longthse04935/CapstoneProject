@@ -128,7 +128,7 @@ class LoggedGuider extends Component {
                         <div className="navbarRightContent">
                             <ul className="logged" >
                                 <li>
-                                    <Link to="/">Message</Link>
+                                    <Link to="/chat">Message</Link>
                                 </li>
                                 <li>
                                     <Link to={"/guier"+guider_id}>Bookings</Link>
@@ -151,6 +151,7 @@ class LoggedGuider extends Component {
                                                 role: "GUEST",
                                                 id: 0
                                             };
+                                            
                                             this.props.reload.call(this, user);
                                             window.location.href = '/';
                                         }}>Log out<i className="fa fa-sign-out" aria-hidden="true"></i></li>

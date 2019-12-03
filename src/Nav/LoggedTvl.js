@@ -46,6 +46,7 @@ class LoggedTvl extends Component {
       }
     });
 
+
     let user = JSON.parse(window.sessionStorage.getItem("user"));
     if (user) {
       const responseTraveller = await fetch(

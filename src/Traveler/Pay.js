@@ -54,22 +54,34 @@ class Pay extends Component {
       }
     });
 
+    $(document).mouseup(function (e) {
+      var container = $(".tool_tipGuider");
+      // if the target of the click isn't the container nor a descendant of the container
+      if (!container.is(e.target) && container.has(e.target).length === 0 && !$('.guiderNamePay').is(e.target)) {
+        $('.tool_tipGuider').hide();
+        $('.guiderNamePay').removeClass('showing');
+      }
+
+  });
+
     $('.titleTourPay').click(function () {
       if($('.titleTourPay').hasClass('showing') === false){
         $('.tool-tipPost').show();
         $('.titleTourPay').addClass('showing');
+      }else{
+        $('.tool-tipPost').hide();
+        $('.titleTourPay').removeClass('showing');
       }
     });
 
     $(document).mouseup(function (e) {
-      if (e.button === 0) {
           var container = $(".tool-tipPost");
           // if the target of the click isn't the container nor a descendant of the container
-          if (!container.is(e.target) && container.has(e.target).length === 0) {
+          if (!container.is(e.target) && container.has(e.target).length === 0 && !$('.titleTourPay').is(e.target)) {
             $('.tool-tipPost').hide();
             $('.titleTourPay').removeClass('showing');
           }
-      }
+   
   });
 
     //load post data
@@ -222,6 +234,7 @@ class Pay extends Component {
     let begin_date = tourDetail.begin_date.split(" ");
     let end_date = tourDetail.end_date.split(" ");
     let {data,errors} = this.state;
+    console.log(postInfo);
     return (
       <div>
         <div className="coverLoader">
@@ -368,8 +381,8 @@ class Pay extends Component {
           {/* infoTourBook */}
           <div className="infoTourBook">
             <div className="intro_tour">
-              <img className="payImg" alt="natural" src="/img/natural1.jpg" />
-              <h2 className="titleTourPay">The Magic of Dubai at Night Private Tour</h2>
+              <img className="payImg" alt="natural" src={`${Config.api_url}images/${postInfo.picture_link}`} />
+              <h2 className="titleTourPay">{postInfo.title}</h2>
               <div className="tool-tipPost">
                   {/* Post */}
                   <div id="reactContainer">

@@ -13,6 +13,7 @@ class ProfileTraveller extends Component {
       isError: false,
       errors: {},
       alert: null,
+      avatar:'',
       data: {
         traveler_id:'',
         first_name: '',
@@ -33,6 +34,7 @@ class ProfileTraveller extends Component {
         day:'01',
         month:'01',
         year:'1970',
+      
       }
     }
   }
@@ -77,7 +79,9 @@ class ProfileTraveller extends Component {
     dataTraveller.year = res[0];
     dataTraveller.month = res[1];
     dataTraveller.day = res[2];
-    this.setState({data:dataTraveller});
+    this.setState({data:dataTraveller,avatar:dataTraveller.avatar_link});
+    }else{
+      this.setState({avatar:"account.jpg"});
     }
     
   }
@@ -213,7 +217,8 @@ class ProfileTraveller extends Component {
     var {data} = this.state;
     data.traveler_id = user.id;
     data.date_of_birth = data.year +"-"+ data.month +"-"+ data.day;
-    
+    console.log(JSON.stringify(data));
+    return false;   
     if(errorAPI !== 404){
       let options = {
         method: 'POST',
@@ -303,7 +308,7 @@ class ProfileTraveller extends Component {
                 height={150}
                 width={150}
                 className="profile-avatar"
-                src="https://withlocals-com-res.cloudinary.com/image/upload/w_200,h_200,c_thumb,q_auto,f_auto/15476f307eb33925c9aba3968a030060"
+                src={Config.api_url+'images/'+this.state.avatar}
               />
               <br />
               <button className="btn-changepic" id="avatar_trigger">Change profile picture</button>{data.avatar_link}

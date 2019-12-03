@@ -221,6 +221,7 @@ class Navbar extends Component {
             $('#searchNav #fillterNav').show();
 
         });
+
         $(document).mouseup(function (e) {
             if (!$('#searchNav').is(e.target) && !$('#fillterNav').is(e.target)
                 && $('#searchNav').has(e.target).length === 0
@@ -501,8 +502,7 @@ class Navbar extends Component {
                                 <i className="fa fa-arrows" aria-hidden="true" />
                             </a>
                         </div>
-                        { path === '/' ? "" 
-                        :
+                        
                         <div className="search" id="searchNav">
                             <label>
                                 <input
@@ -573,7 +573,7 @@ class Navbar extends Component {
                                 </div>
                             </div>
                         </div>
-                        }
+                        
                         <div className="navbarRightContent">
                             <ul>
                                 <li>

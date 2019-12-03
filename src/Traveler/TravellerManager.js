@@ -97,7 +97,7 @@ class TravellerManager extends Component {
 	
 	async showReview(order_id,guider_id,post_id){
 		let commentRespone = await fetch(
-			"http://localhost:8080/review/checkExist?order_id="+order_id,
+			"http://localhost:8080/review/checkExist?trip_id="+order_id,
 			{
 				method: "GET",
 				mode: "cors",
@@ -115,7 +115,6 @@ class TravellerManager extends Component {
 			this.setState({isDisable:true,info});
 		}else{
 			let comment = await commentRespone.json();
-			console.log(comment[0].rated);
 			this.setState({comment:comment[0].review,rated:comment[0].rated,isDisable:true,hideAddComment:true});
 		}
 	}
@@ -190,7 +189,7 @@ class TravellerManager extends Component {
 				<td className="cell100 ">{order.adult_quantity}</td>
 				<td className="cell100 ">{order.children_quantity}</td>
 				<td className="cell100 ">{order.fee_paid}$</td>
-				{status === "FINISHED" ? <td className="cell100 "><button type="button" className="btn btn-secondary" onClick={()=>this.showReview(order.order_id,order.guider_id,order.post_id)}>Review</button></td> : ''}
+				{status === "FINISHED" ? <td className="cell100 "><button type="button" className="btn btn-secondary" onClick={()=>this.showReview(order.trip_id,order.guider_id,order.post_id)}>Review</button></td> : ''}
 			</tr>
 			)
 		});

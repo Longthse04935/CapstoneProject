@@ -19,6 +19,8 @@ import GuiderContract from './Guider/GuiderContract';
 import Chart from './Guider/Chart';
 import ManagePost from './Guider/ManagePost';
 import AddPost from './Guider/AddPost';
+
+
 class App extends Component {
 	constructor(props) {
 		super(props);
@@ -47,6 +49,7 @@ class App extends Component {
 	}
 
 	componentDidMount() {
+		
 		if (typeof (Storage) !== 'undefined') {
 			// get sessionStorage
 			let user = window.sessionStorage.getItem('user');
@@ -54,6 +57,7 @@ class App extends Component {
 		} else {
 			alert('Browser not support!');
 		}
+
 	}
 
 
@@ -77,7 +81,7 @@ class App extends Component {
 				{present}
 				<Switch>
 				<Route path='/' component={Home} exact />
-				{/* <Route path='/guider/:guider_id' component={GuiderAllPost} exact /> */}
+				<Route path='/guider/:guider_id' component={GuiderAllPost} exact />
 				<Route path='/post/:post_id' component={PostDetail} exact />
 				<Route exact path='/chatbox/:post_id' component={Chatbox} />
 				<Route exact path='/chatbox/:post_id/:message' component={Chatbox} />

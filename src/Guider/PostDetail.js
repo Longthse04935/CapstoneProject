@@ -20,15 +20,18 @@ class PostDetail extends React.Component {
   async componentDidMount() {
     $("html").animate({ scrollTop: 0 }, 500, "swing");
     const post_id = this.props.match.params.post_id;
-
-    try {
+    let autheticate =  {
+      method: "GET",
+      mode: "cors",
+      credentials: "include",
+      headers: {
+        'Accept': 'application/json'
+    }
+    }
+    
       const response2 = await fetch(
         Config.api_url + "Guider/guiderByPostId?post_id=" + post_id,
-        {
-          method: "GET",
-          mode: "cors",
-          credentials: "include"
-        }
+        autheticate
       );
       if (!response2.ok) {
         throw Error(response2.status + ": " + response2.statusText);
@@ -38,11 +41,7 @@ class PostDetail extends React.Component {
 
       const response = await fetch(
         Config.api_url + "guiderpost/findSpecificPost?post_id=" + post_id,
-        {
-          method: "GET",
-          mode: "cors",
-          credentials: "include"
-        }
+        autheticate
       );
       if (!response.ok) {
         throw Error(response.status + ": " + response.statusText);
@@ -52,11 +51,15 @@ class PostDetail extends React.Component {
         Config.api_url +
           "guiderpost/postOfOneGuider?guider_id=" +
           guider.guider_id,
-        {
-          method: "GET",
-          mode: "cors",
-          credentials: "include"
-        }
+          autheticate
+      );
+      if (!responsePosts.ok) {
+        throw Error(responsePosts.status + ": " + responsePosts.statusText);
+      }
+
+      const responseCategories = await fetch(
+        Config.api_url + "category/findAll",
+          autheticate
       );
       if (!responsePosts.ok) {
         throw Error(responsePosts.status + ": " + responsePosts.statusText);
@@ -78,10 +81,17 @@ class PostDetail extends React.Component {
         this.setState({link_youtube:link_youtube[0].replace("watch?v=","embed/")});
       }
       
+      const length = postInfo.including_service.length;
+      let including_service = "";
+        for(var i = 0; i < length ;i++){
+          if(i+1 === length){
+            including_service = including_service+postInfo.including_service[i];
+          }else{
+            including_service = including_service+postInfo.including_service[i]+'-';
+          }
+        }
+    this.setState({ including_service });
 
-    } catch (err) {
-      console.log(err);
-    }
   }
 
   handleGotoPage = (post_id, guider_id) => {
@@ -130,63 +140,65 @@ class PostDetail extends React.Component {
     });
 
     let posts = currentdata.map((post, index) => (
+      
       <li key={index}>
         <div className="sheet">
           <div className="imageFigure">
-            <img src="/img/1.jpg" alt="logo" width="42" height="42" />
+            <img src={Config.api_url+'images/'+post.picture_link[0]} alt="logo" />
           </div>
           <div className="experienceCard-details">
-            <div className="experienceAvatarCardContainer">
-              <div className="experienceAvatarCard1">
-                <img src="/img/2.jpg" alt="logo" width="64" height="64" />
-              </div>
-              <div className="experienceAvatarCard2">
-                <img src="/img/3.jpg" alt="logo" width={64} height={64} />
-              </div>
-              <div className="localAvailable">7 others locals available</div>
-            </div>
             <span className="enjoy">
-              Enjoy <span className="withName">{post.post_id}</span>
+              Enjoy <span className="withName">{post.title}</span>
             </span>
             <h3>
               <span
                 onClick={() => this.handleGotoPage(post.post_id, guider_id)}
               >
-                {post.title}
+                {post.description}
               </span>
             </h3>
             <div className="price">
-              <span>${post.price}</span>
+            <i className="fa fa-money" aria-hidden="true"></i><span>{" "+post.price}$</span>
               <span className="experienceCard-topDetails-bullet">
                 {" "}
                 &#9679;{" "}
               </span>
+              <i className="fa fa-hourglass-half" aria-hidden="true"></i>
               <span className="experienceCard-topDetails-duration">
-                {post.total_hour} hours
+                {" "+post.total_hour} hours
               </span>
               <span className="experienceCard-topDetails-bullet">
                 {" "}
                 &#9679;{" "}
               </span>
-              <span data-translatekey="Experience.SubcategoryOrTag.day-trip">
-                Day trip
-              </span>
+              {
+                post.total_hour > 24 ? 
+                <span>
+                <i className="fa fa-moon-o" aria-hidden="true"></i>
+                <span data-translatekey="Experience.SubcategoryOrTag.day-trip">
+                {" "}Long trip
+               </span>
+                </span>
+                :
+                <span>
+                <i className="fa fa-sun-o" aria-hidden="true"></i>
+                <span data-translatekey="Experience.SubcategoryOrTag.day-trip">
+                {" "} Day trip
+               </span>
+                </span>
+              }
+              
             </div>
             <div className="experienceCard-bottomDetails">
               <Rated number="5" />
-              <span className="colorShared">1249 | </span>
-              <span className="colorShared">
-                <i className="fa fa-bolt" /> |
-              </span>
-              <span className="colorShared">
-                {" "}
-                <i className="fa fa-car" />
-              </span>
             </div>
           </div>
         </div>
       </li>
     ));
+    
+    let imgPostInfo = <img className="imgPostInfo" src={Config.api_url+'images/'+postInfo.picture_link}/>;
+
     return (
       <div>
         <div>
@@ -204,15 +216,6 @@ class PostDetail extends React.Component {
               <div className="content-right">
                 <div className="PostDetail">
                   <div className="intro">
-                    {/* <video
-                      controls="controls"
-                      class="video-stream"
-                      x-webkit-airplay="allow"
-                      data-youtube-id="N9oxmRT2YWw"
-                      src={postInfo.video_link}
-                    ></video> */}
-                    {/* <iframe src={postInfo.video_link}>
-                    </iframe> */}
                     <iframe
                       src={this.state.link_youtube}
                       frameBorder="0"
@@ -230,16 +233,25 @@ class PostDetail extends React.Component {
                       </li>
                       <li>
                         <i className="fa fa-cutlery" aria-hidden="true"></i>
-                        <span>Food tour</span>
+                        <span>{postInfo.category} tour</span>
                       </li>
                       <li>
                         <i className="fa fa-hourglass-end" />
                         <span>{postInfo.total_hour} hours</span>
                       </li>
-                      <li>
-                        <i className="fa fa-bicycle" aria-hidden="true"></i>
-                        <span>Walking tour</span>
-                      </li>
+                
+                        {postInfo.total_hour > 24 ?
+                          <li>
+                            <i className="fa fa-moon-o" aria-hidden="true"></i>
+                            <span>Long trip</span>
+                          </li>
+                        :
+                          <li>
+                          <i className="fa fa-sun-o" aria-hidden="true"></i>
+                            <span>Day trip</span>
+                          </li>
+                        }
+                   
                       <li>
                         <i className="fa fa-users" />
                         <span>Private tour. Only you and your host</span>
@@ -248,18 +260,18 @@ class PostDetail extends React.Component {
                     <i className="fa fa-sticky-note" />
                     <span>
                       <strong>Including:</strong>
-                      {postInfo.including_service}
+                      {this.state.including_service}
                     </span>
                   </div>
 
                   <ReviewInPost postId={post_id} />
 
                   <PlanInPost postId={post_id} />
-                  <button className="serve">How can I serve you!!</button>
+                  {imgPostInfo}
                 </div>
-
+                
                 <div className="bookOffers">
-                  <h2>Book one of my offers in Ha Noi</h2>
+                  <h2 style={{marginBottom:'20px'}}>Watch one of my trip</h2>
                   <ul>{posts}</ul>
                 </div>
 

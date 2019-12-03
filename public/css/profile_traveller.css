@@ -37,6 +37,11 @@
     border: 2px solid #6fbe44;
     margin-bottom: 20px;
     margin-left: 20px;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    min-width: 150px;
+    min-height: 150px;
 }
 
 .btn-changepic{

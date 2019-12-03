@@ -12,13 +12,14 @@ class GuiderAllPost extends Component {
 		this.state = {
 			currentPage: 1,
 			todosPerPage: 8,
-			posts: []
+			posts: [],
+			guider_id:""
 		};
 	}
 
 	async componentDidMount() {
 		try {
-			let guider_id = this.props.id;
+			let guider_id = this.props.match.params.guider_id;
 			const responsePosts = await fetch(
 				Config.api_url + "guiderpost/postOfOneGuider?guider_id=" + guider_id,
 				{
@@ -36,8 +37,7 @@ class GuiderAllPost extends Component {
 			}
 
 			const posts = await responsePosts.json();
-
-			this.setState({ posts });
+			this.setState({ posts,guider_id });
 		} catch (err) {
 			console.log(err);
 		}
@@ -52,7 +52,7 @@ class GuiderAllPost extends Component {
 	render() {
 		
 		let data = this.state.posts;
-		let { currentPage, todosPerPage } = this.state;
+		let { currentPage, todosPerPage,guider_id } = this.state;
 		let user = sessionStorage.getItem('user');
 		// Logic for displaying todos
 		let indexOfLastTodo = currentPage * todosPerPage;
@@ -79,39 +79,59 @@ class GuiderAllPost extends Component {
 		});
 		let posts = currentdata.map((post, index) => (
 			<li key={index}>
-				<div className="sheet">
-					<div className="imageFigure">
-						<img src={post.picture_link[0]} alt="logo" width="42" height="42" />
-					</div>
-					<div className="experienceCard-details">
-						<span className="enjoy">
-							Enjoy <span className="withName">{post.post_id}</span>
-						</span>
-						<h3>
-						 <Link to={"/post/" + post.post_id}>{post.title}</Link> 
-						</h3>
-						<div className="price">
-							<span>${post.price}</span>
-							<span className="experienceCard-topDetails-bullet">
-								{" "}
-								&#9679;{" "}
-							</span>
-							<span className="experienceCard-topDetails-duration">{post.total_hour} hours</span>
-							<span className="experienceCard-topDetails-bullet">
-								{" "}
-								&#9679;{" "}
-							</span>
-							<span data-translatekey="Experience.SubcategoryOrTag.day-trip">Day trip</span>
-						</div>
-						<div className="experienceCard-bottomDetails">
-							<Rated number="5" />
-							<span className="colorShared">1249 | </span>
-							<span className="colorShared"><i className="fa fa-bolt" /> |</span>
-							<span className="colorShared"><i className="fa fa-car" /></span>
-						</div>
-					</div>
+			<div className="sheet">
+			  <div className="imageFigure">
+				<img src={Config.api_url+'images/'+post.picture_link[0]} alt="logo" />
+			  </div>
+			  <div className="experienceCard-details">
+				<span className="enjoy">
+				  Enjoy <span className="withName">{post.title}</span>
+				</span>
+				<h3>
+					<Link to={"/post/" + post.post_id}>
+					<span>
+					{post.description}
+				  </span>
+					</Link>
+				</h3>
+				<div className="price">
+				<i className="fa fa-money" aria-hidden="true"></i><span>{" "+post.price}$</span>
+				  <span className="experienceCard-topDetails-bullet">
+					{" "}
+					&#9679;{" "}
+				  </span>
+				  <i className="fa fa-hourglass-half" aria-hidden="true"></i>
+				  <span className="experienceCard-topDetails-duration">
+					{" "+post.total_hour} hours
+				  </span>
+				  <span className="experienceCard-topDetails-bullet">
+					{" "}
+					&#9679;{" "}
+				  </span>
+				  {
+					post.total_hour > 24 ? 
+					<span>
+					<i className="fa fa-moon-o" aria-hidden="true"></i>
+					<span data-translatekey="Experience.SubcategoryOrTag.day-trip">
+					{" "}Long trip
+				   </span>
+					</span>
+					:
+					<span>
+					<i className="fa fa-sun-o" aria-hidden="true"></i>
+					<span data-translatekey="Experience.SubcategoryOrTag.day-trip">
+					{" "} Day trip
+				   </span>
+					</span>
+				  }
+				  
 				</div>
-			</li>
+				<div className="experienceCard-bottomDetails">
+				  <Rated number="5" />
+				</div>
+			  </div>
+			</div>
+		  </li>
 		));
 		
 		
@@ -124,7 +144,7 @@ class GuiderAllPost extends Component {
 						{/*  Content  */}
 						<div className="content">
 						<div className="content-left">
-							{this.props.id ? (<GuiderInPost guiderId={this.props.id} />) : null}
+							{guider_id ? (<GuiderInPost guiderId={guider_id} />) : null}
 						</div>
 							<div className="content-right">
 								<div className="bookOffers">

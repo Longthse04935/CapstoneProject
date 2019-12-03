@@ -95,6 +95,7 @@ class Home extends Component {
     $(".search-4ul6i").focus(function() {
       $(".fillter-4ul6i").show();
     });
+    
     $(document).mouseup(function(e) {
       if (
         !$(".Search-3ul6i").is(e.target) &&
@@ -185,8 +186,9 @@ class Home extends Component {
     });
 
     let guiderByRate = this.state.posts.map((post, index) => {
+      let bgImg = Config.api_url+"images/"+post.avatar;
       return (
-        <div className="profile-box" key={index}>
+        <div className="profile-box" key={index} >
           <div className="pb-header header-stick">
             <div className="header-pb">
               <h1 className="TitlePb TileStickyPb">
@@ -194,6 +196,7 @@ class Home extends Component {
               </h1>
             </div>
           </div>
+          <img src={bgImg} className="imgpb-header"/>
           <Rated number={post.rated} />
           <Link to={"/guider/" + post.guider_id}>
             <button className="contactMe">About me</button>
@@ -202,21 +205,26 @@ class Home extends Component {
       );
     });
 
-    let guiderByContribute = this.state.postsContribute.map((post, index) => (
-      <div className="profile-box" key={index}>
-        <div className="pb-header header-stick">
-          <div className="header-pb">
-            <h1 className="TitlePb TileStickyPb">
-              {post.first_name + "" + post.last_name}
-            </h1>
+    let guiderByContribute = this.state.postsContribute.map((post, index) => {
+      let bgImg = Config.api_url+"images/"+post.avatar;
+      // style={{backgroundImage: `url(${bgImg})`}};
+      return (
+        <div className="profile-box" key={index} >
+          <div className="pb-header header-stick">
+            <div className="header-pb">
+              <h1 className="TitlePb TileStickyPb">
+                {post.first_name + "" + post.last_name}
+              </h1>
+            </div>
           </div>
+          <img src={bgImg} className="imgpb-header"/>
+          <Rated number={post.rated} />
+          <Link to={"/guider/" + post.guider_id}>
+            <button className="contactMe">About me</button>
+          </Link>
         </div>
-        <Rated number={post.rated} />
-        <Link to={"/guider/" + post.guider_id}>
-          <button className="contactMe">About me</button>
-        </Link>
-      </div>
-    ));
+      )
+    });
     let slide = this.state.tours.map((value, index) => (
       <div className="slideContent" key={index}>
         <h2>Enjoy our {value.title}</h2>

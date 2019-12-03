@@ -3,11 +3,10 @@ import "bootstrap/dist/css/bootstrap.css";
 import "font-awesome/css/font-awesome.min.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import Notification from './Traveler/Notification';
 import Config from './Config';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import $ from 'jquery';
-
+import Rated from './Rated';
 
 class Chatbox extends Component {
   constructor(props) {
@@ -37,8 +36,6 @@ class Chatbox extends Component {
       plan:[],
       //time can book tour
       timeAvailable:[],
-      message: '',
-      isError: false,
       closest_EndDate:"",
       alert:null,
       endTime:'',
@@ -91,13 +88,13 @@ class Chatbox extends Component {
   async componentDidMount() {
 
     let flag = this.props.match.params.message === undefined ? '' : this.props.match.params.message;
-    let isError = (flag === "booking_success") ? false : true;
-
-    let message = '';
-    if(flag) {
-      message = (isError) ? 'Booking Failed' : 'Booking Success';
+    if (flag !== ''){
+      if(flag === "booking_success"){
+        this.notification("booking_success");
+      }else{
+        this.notification("booking_failed");
+      }
     }
-    
 
     // this.scrollToBottom();
     let post_id = this.props.match.params.post_id;
@@ -129,7 +126,7 @@ class Chatbox extends Component {
         let option = this.option(" "+response[0]);
         let endTime = await fetch(Config.api_url+'Order/GetExpectedTourEnd', option);
         endTime = await endTime.text();
-        this.setState({ message, isError,numberInjoy,timeAvailable:response,hourBegin:response[0],endTime:endTime});
+        this.setState({numberInjoy,timeAvailable:response,hourBegin:response[0],endTime:endTime});
 
         //get profile guider
         const responseGuider = await fetch(Config.api_url + "Guider/" + sessionStorage.getItem('guider_id'),{
@@ -139,6 +136,7 @@ class Chatbox extends Component {
       });
         if (!responseGuider.ok) { throw Error(responseGuider.status + ": " + responseGuider.statusText); }
         const guider = await responseGuider.json();
+        console.log(guider);
         this.setState({guider});
         
         $(".ratingChatbox img").hover(function(){
@@ -259,6 +257,43 @@ class Chatbox extends Component {
 
   }
 
+  onNotification() {
+    this.setState({ alert: null });
+  }
+
+
+  notification(notification) {
+    
+    if(notification === "booking_success"){
+      var getAlert = () => (
+        <SweetAlert 
+        success 
+        title="Woot!" 
+        onConfirm={() => this.onNotification()}
+        >
+        Booking success , go to travel manager to check
+        </SweetAlert>
+      );
+      
+    }else{
+      var getAlert = () => (
+        <SweetAlert
+          warning
+          confirmBtnText="Booking failed!!"
+          confirmBtnBsStyle="danger"
+          title="Notification for book"
+          onConfirm={() => this.onNotification()}
+        >
+          Booking failed call for support or booking again
+        </SweetAlert>
+      );
+    }
+
+    this.setState({
+      alert: getAlert()
+    });
+  }
+  
   changeNumber = (age, minusPlus) => {
     const { numberInjoy } = this.state;
     const min = 1;
@@ -301,7 +336,6 @@ class Chatbox extends Component {
     return (
       <div className="ChatRoom">
         {this.state.alert}
-        <Notification message={this.state.message} isError={this.state.isError}/>
         {/* Chat form */}
         <div className="chat_window">
           {/* plan of tour */}
@@ -337,12 +371,8 @@ class Chatbox extends Component {
               <h1>{window.sessionStorage.getItem("guider_name")}</h1>
 
               <div className="rating ratingChatbox">
-                <img src="https://withlocals-com-res.cloudinary.com/image/upload/w_80,h_80,c_thumb,q_auto,dpr_1.0,f_auto/956bda712df856f552fa7bfebbbcce8f" />
-                <i className="fa fa-star" aria-hidden="true"></i>
-                <i className="fa fa-star" aria-hidden="true"></i>
-                <i className="fa fa-star" aria-hidden="true"></i>
-                <i className="fa fa-star" aria-hidden="true"></i>
-                <i className="fa fa-star" aria-hidden="true"></i>
+                <img src={Config.api_url+'images/'+guider.avatar} />
+                <Rated number={guider.rated} />
                 <div className="tool-tip">
                 <p className="tool-tipItem">
                         <span className="tool-tipItemIcon">

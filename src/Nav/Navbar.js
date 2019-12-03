@@ -136,18 +136,19 @@ class Navbar extends Component {
                     body: JSON.stringify(data)
                 }
             );
-            if(response.status === 500){
+            if(response.status !== 200){
                 errors['userName'] = 'This account name already existed';
                 this.setState({errors});
                 return false;
             }
             const user = await response.json();
+            $('.signUpForm').hide();
+            this.statusProfile('We come to my website');
             // this.props.reload.call(this, await user);
         } catch (err) {
             console.log('dulicate');
         }
-        $('.signUpForm').hide();
-        this.statusProfile('We come to my website');
+       
 
     }
 

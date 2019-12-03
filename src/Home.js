@@ -22,7 +22,8 @@ class Home extends Component {
         "images/phobo.jpg",
         "images/thanhphodanang.jpg"
       ],
-      currentIndex: 0
+      currentIndex: 0,
+      search:''
     };
   }
 
@@ -166,6 +167,14 @@ class Home extends Component {
     window.sessionStorage.setItem("category_name", category_name);
   };
 
+  handleSearch = (e) => {
+      this.setState({search:e.target.value});
+  }
+
+  OnClickSearch = () => {
+    
+  }
+
   render() {
     let { currentIndex, slideShow } = this.state;
     let src = Config.api_url + slideShow[currentIndex];
@@ -252,6 +261,7 @@ class Home extends Component {
                     name="search"
                     autoComplete="off"
                     className="search-4ul6i"
+                    onChange={(e)=>this.handleSearch(e)}
                   />
                 </label>
                 <div className="fillter fillter-4ul6i">
@@ -262,88 +272,6 @@ class Home extends Component {
                         <button className="active">Guider</button>
                         <button>Location</button>
                       </div>
-                    </div>
-                    <div className="popularDestination">
-                      <h3 id="popularLabel">Popular Destinations</h3>
-                      <ul>
-                        <li>
-                          <i
-                            className="fa fa-map-marker"
-                            aria-hidden="true"
-                          ></i>
-                          <a>Ha Noi</a>
-                        </li>
-                        <li>
-                          <i
-                            className="fa fa-map-marker"
-                            aria-hidden="true"
-                          ></i>
-                          <a>Ho Chi Minh</a>
-                        </li>
-                        <li>
-                          <i
-                            className="fa fa-map-marker"
-                            aria-hidden="true"
-                          ></i>
-                          <a>Da Nang</a>
-                        </li>
-                        <li>
-                          <i
-                            className="fa fa-map-marker"
-                            aria-hidden="true"
-                          ></i>
-                          <a>Bac Ninh</a>
-                        </li>
-                        <li>
-                          <i
-                            className="fa fa-map-marker"
-                            aria-hidden="true"
-                          ></i>
-                          <a>Da Lat</a>
-                        </li>
-                        <li>
-                          <i
-                            className="fa fa-map-marker"
-                            aria-hidden="true"
-                          ></i>
-                          <a>Hue</a>
-                        </li>
-                        <li>
-                          <i
-                            className="fa fa-map-marker"
-                            aria-hidden="true"
-                          ></i>
-                          <a>Vung Tau</a>
-                        </li>
-                        <li>
-                          <i
-                            className="fa fa-map-marker"
-                            aria-hidden="true"
-                          ></i>
-                          <a>Hai Phong</a>
-                        </li>
-                        <li>
-                          <i
-                            className="fa fa-map-marker"
-                            aria-hidden="true"
-                          ></i>
-                          <a>Phu Quoc</a>
-                        </li>
-                        <li>
-                          <i
-                            className="fa fa-map-marker"
-                            aria-hidden="true"
-                          ></i>
-                          <a>Sapa</a>
-                        </li>
-                        <li>
-                          <i
-                            className="fa fa-map-marker"
-                            aria-hidden="true"
-                          ></i>
-                          <a>Ca Mau</a>
-                        </li>
-                      </ul>
                     </div>
                   </div>
                 </div>

@@ -66,19 +66,18 @@ class ProfileTraveller extends Component {
         credentials: "include"
     });
 
- 
-    if (!responseTraveller.ok) {
+    if (responseTraveller.ok) {
       sessionStorage.setItem('errorAPI',responseTraveller.status);
     }
-    
+
     var data=JSON.parse(sessionStorage.getItem('errorAPI'));
-    if(data !== 404){
+    if(data === 200){
     const dataTraveller = await responseTraveller.json();
     var str = dataTraveller.date_of_birth;
     var res = str.split("-");
     dataTraveller.year = res[0];
     dataTraveller.month = res[1];
-    dataTraveller.day = res[2];
+    dataTraveller.day = res[2].split(" ")[0];
     this.setState({data:dataTraveller,avatar:dataTraveller.avatar_link});
     }else{
       this.setState({avatar:"account.jpg"});
@@ -216,10 +215,8 @@ class ProfileTraveller extends Component {
     var errorAPI = JSON.parse(sessionStorage.getItem('errorAPI'));
     var {data} = this.state;
     data.traveler_id = user.id;
-    data.date_of_birth = data.year +"-"+ data.month +"-"+ data.day;
-    console.log(JSON.stringify(data));
-    return false;   
-    if(errorAPI !== 404){
+    data.date_of_birth = data.year +"-"+ data.month +"-"+ data.day+" 00:00"; 
+    if(errorAPI === 200){
       let options = {
         method: 'POST',
         mode: "cors",
@@ -233,7 +230,7 @@ class ProfileTraveller extends Component {
       let response = await fetch(Config.api_url +'Traveler/Update', options);
       response = await response.text();
       this.statusProfile('Update success!!');
-    }else if(errorAPI === 404){
+    }else if(errorAPI !== 200){
         let options = {
           method: 'POST',
           mode: "cors",
@@ -336,9 +333,9 @@ class ProfileTraveller extends Component {
               <input className="input-information" name="phone" value={data.phone} onChange={(e)=>{this.handleChange(e)}}/>
               {errors['phone'] ? <p style={{color: "red"}} className="errorInput">{errors['phone']}</p> : ''}
 
-              <div className="label-information">Email</div>
+              {/* <div className="label-information">Email</div>
               <input className="input-information" name="email" value={data.email} onChange={(e)=>{this.handleChange(e)}}/>
-              {errors['email'] ? <p style={{color: "red"}} className="errorInput">{errors['email']}</p> : ''}
+              {errors['email'] ? <p style={{color: "red"}} className="errorInput">{errors['email']}</p> : ''} */}
               
               <div className="label-information">Date Of Birth</div>
               <div style={{ marginBottom: 30 }}>

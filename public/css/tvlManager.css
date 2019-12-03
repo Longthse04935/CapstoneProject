@@ -33,6 +33,12 @@
     box-shadow: 0 6px 13px 0 rgba(56, 42, 42, 0.25);
 }
 
+.tvlManager_Container .tvlManager_title .tvlTab li.selected{
+  color: #e71575;
+  text-decoration: underline;
+  box-shadow: 0 6px 13px 0 rgba(56, 42, 42, 0.25);
+}
+
 .table100 {
     margin-top: 8%;
 }

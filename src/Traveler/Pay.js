@@ -36,9 +36,7 @@ class Pay extends Component {
   async componentDidMount() {
     this.setState({ country });
     //open loader to paypal
-    $('input[name="paypal"]').on("click", function() {
-      $(".coverLoader").show();
-    });
+    
 
     $("#amout_show").hover(function(){
       $('.tool_tipPeople').show();
@@ -119,6 +117,7 @@ class Pay extends Component {
     };
     let response = await fetch(Config.api_url + "Payment/Pay", options);
     response = await response.text();
+    $(".coverLoader").show();
     window.location.href = response;
     sessionStorage.setItem("link", response);
   }
@@ -190,6 +189,7 @@ class Pay extends Component {
     if(this.isValidate()) {
       return false;
     } 
+    this.setState({isDisabledPay:false});
   };
 
   render() {

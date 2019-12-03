@@ -200,7 +200,7 @@
     padding: 2rem 1.5rem 2rem 10px;
     margin: 30px;
     display: inline-block;
-    background-image: url('http://localhost:8080/images/3.jpg');
+   
     background-position: center; /* Center the image */
     background-repeat: no-repeat; 
     color: white;

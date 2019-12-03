@@ -105,10 +105,15 @@ class Navbar extends Component {
             re_password:'',
             role: "TRAVELER"
         }
+        let login = {
+            userName: "",
+            password: "",
+            role: "TRAVELER"
+        }
         let errors =[]
         let isError = false
 
-        this.setState({data,errors,isError})
+        this.setState({data,errors,isError,login})
     }
 
     async signUp(eve) {
@@ -137,7 +142,7 @@ class Navbar extends Component {
                 return false;
             }
             const user = await response.json();
-            this.props.reload.call(this, user);
+            // this.props.reload.call(this, await user);
         } catch (err) {
             console.log('dulicate');
         }
@@ -150,7 +155,7 @@ class Navbar extends Component {
 
     async logIn(eve) {
         eve.preventDefault();
-        let{login} = this.state;
+        let{login,errors} = this.state;
         try {
             const response = await fetch(Config.api_url + "account/login",
                 {
@@ -159,19 +164,24 @@ class Navbar extends Component {
                     credentials: "include",
                     headers: {
                         'Content-Type': 'application/json',
-                        // http://localhost:8080/account/login
 
                     },
                     body: JSON.stringify(login)
                 }
             );
-
             if (!response.ok) { throw Error(response.status + ": " + response.statusText); }
             const user = await response.json();
             // console.log(await user);
+            if(user.role !== login.role){
+                errors['role'] = 'Role is wrong';
+                this.setState({errors});
+                return false;
+            }
             this.props.reload.call(this, await user);
         } catch (err) {
             console.log(err);
+            errors['login'] = 'User name or password is wrong';
+            this.setState({errors});
         }
     }
 
@@ -409,6 +419,7 @@ class Navbar extends Component {
                         <h3 className="SubTitle-230L-">Log in</h3>
                         <form style={{ textAlign: "center" }} onSubmit={this.logIn}>
                             <div className="SignupForm-20HPb">
+                            {errors['role'] ? <p style={{color: "red"}} className="errorInput">{errors['role']}</p> : ''}
                             <div className="gender" style={{marginBottom:'15px',marginTop:'15px'}}>
                                     <input
                                     type="radio"
@@ -428,15 +439,18 @@ class Navbar extends Component {
                                     />{" "}
                                     Guider
                                 </div>
+                                {errors['login'] ? <p style={{color: "red"}} className="errorInput">{errors['login']}</p> : ''}
                                 <div className="firstName">
                                     <label className="InputLabel-Tch5j InputLabelConditionalHide-24VTo">
                                         Nick name *
-                                </label>
+                                    </label>
+                                    
                                     <input
                                         className="Input-1e6rU"
                                         type="text"
                                         name="userName"
                                         placeholder="Name"
+                                        value={login.userName}
                                         onChange={(e)=>{this.handleChangeLogin(e)}}
                                     />
                                 </div>
@@ -452,6 +466,7 @@ class Navbar extends Component {
                                                 placeholder="Password"
                                                 type="password"
                                                 name="password"
+                                                value={login.password}
                                                 onChange={(e)=>{this.handleChangeLogin(e)}}
 
                                             />

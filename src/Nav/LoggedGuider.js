@@ -128,7 +128,7 @@ class LoggedGuider extends Component {
                         <div className="navbarRightContent">
                             <ul className="logged" >
                                 <li>
-                                    <Link to="/">Message</Link>
+                                    <Link to="/chat">Message</Link>
                                 </li>
                                 <li>
                                     <Link to={"/guier"+guider_id}>Bookings</Link>
@@ -136,7 +136,7 @@ class LoggedGuider extends Component {
                                 <li className="avatarLogged" onClick={this.disableLoggedChoice}>
 
 
-                                    <img src={`${Config.api_url}images/account.png`}/>
+                                    <img src={`${Config.api_url}images/account.jpg`}/>
 
                                     <ul className="dropContent" style={this.state.disable ? { display: 'none' } : { display: 'block' }}>
                                         <span>

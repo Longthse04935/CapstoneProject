@@ -21,7 +21,8 @@ import ManagePost from './Guider/ManagePost';
 import AddPost from './Guider/AddPost';
 import { connect } from 'react-redux';
 import { logOut,logIn } from './redux/actions';
-
+import {wsConnect, wsDisconnect, send} from './redux/webSocket';
+import ChatList from './ChatStore'
 class App extends Component {
 	constructor(props) {
 		super(props);
@@ -39,11 +40,13 @@ class App extends Component {
 
 		if (typeof (Storage) !== 'undefined') {
 			if (user.id === 0) {
+				this.props.dispatch(wsDisconnect("http://localhost:8080/ws"));
 				
 				window.sessionStorage.clear();
 			}
 			else {
-			
+				this.props.dispatch(wsConnect("http://localhost:8080/ws", user.userName));
+				
 				window.sessionStorage.setItem('user', JSON.stringify(user));
 			}
 		} else {
@@ -88,7 +91,7 @@ class App extends Component {
 				{present}
 				<Switch>
 					<Route path='/' component={Home} exact />
-					{/* <Route path='/guider/:guider_id' component={GuiderAllPost} exact /> */}
+					<Route path='/guider/:guider_id' component={GuiderAllPost} exact />
 					<Route path='/post/:post_id' component={PostDetail} exact />
 					<Route exact path='/chatbox/:post_id' component={Chatbox} />
 					<Route exact path='/chatbox/:post_id/:message' component={Chatbox} />
@@ -102,6 +105,7 @@ class App extends Component {
 					<Route path='/contract' component={GuiderContract} />
 					<Route path='/chart' component={Chart} />
 					<Route path='/add' ><AddPost guiderId={this.state.id} /></Route>
+					<Route path='/chat' ><ChatList name={this.state.userName} messages={this.props.messages}/></Route>
 					<Route exact path={"/edit"}>
 						<BrowserRouter>
 							<ManagePost guiderId={this.state.id} />
@@ -115,4 +119,12 @@ class App extends Component {
 		);
 	}
 }
+function mapStateToProps(state) {
+      console.log(state);
+      const messages = state.messages;
+      return {messages};
+}
+App = connect(mapStateToProps)(App);
+
 export default App;
+//export default connect()(App);

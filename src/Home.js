@@ -128,6 +128,8 @@ class Home extends Component {
         );
       } else if (messagePay === "You are Guider") {
         this.notification("You do not have access to here");
+      }else if (messagePay === "You are Traveler") {
+        this.notification("You do not have access to here");
       }
     }
 

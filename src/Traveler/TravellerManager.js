@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import $ from 'jquery';
 import Config from '../Config';
+import {Link} from 'react-router-dom';
 import SweetAlert from 'react-bootstrap-sweetalert';
 class TravellerManager extends Component {
 
@@ -182,10 +183,10 @@ class TravellerManager extends Component {
 			let {status} = this.state;
 			return (
 				<tr className="row100 body" key={index}>
-				<td className="cell100 ">{order.guider_id}</td>
+				<td className="cell100 "><Link to={'/guider/'+order.guider_id} style={{color:'#e71575'}}>{order.object}</Link></td>
 				<td className="cell100 ">{order.begin_date}</td>
 				<td className="cell100 ">{order.finish_date}</td>
-				<td className="cell100 ">{order.post_id}</td>
+				<td className="cell100 "><Link to={'/post/'+order.post_id} style={{color:'#e71575'}}>{order.postTitle}</Link></td>
 				<td className="cell100 ">{order.adult_quantity}</td>
 				<td className="cell100 ">{order.children_quantity}</td>
 				<td className="cell100 ">{order.fee_paid}$</td>

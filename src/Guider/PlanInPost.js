@@ -4,24 +4,28 @@ import Config from '../Config';
 class PlanInPost extends React.Component {
       constructor(props) {
             super(props);
-            let obj = [{
-                  "brief": "",
-                  "detail": ""
-            }];
-            this.state = { plans: obj };
+
+            this.state = {
+                  plans: {
+                        plan_id: 0,
+                        meeting_point: "",
+                        detail: "",
+                        post_id: props.post_id
+                  }
+            };
 
       }
       async componentDidMount() {
             try {
-                  const response = await fetch(Config.api_url + "activity/post/"+this.props.postId,
-                  {
-                        method: "GET",
-                        mode: "cors",
-                        credentials: "include",
-                        headers: {
-                            'Accept': 'application/json'
-                        },
-                    });
+                  const response = await fetch(Config.api_url + "plan/" + this.props.postId,
+                        {
+                              method: "GET",
+                              mode: "cors",
+                              credentials: "include",
+                              headers: {
+                                    'Accept': 'application/json'
+                              },
+                        });
                   if (!response.ok) { throw Error(response.status + ": " + response.statusText); }
                   const plan = await response.json();
                   this.setState({ plans: plan });
@@ -31,22 +35,29 @@ class PlanInPost extends React.Component {
 
       }
       render() {
-            const planList = this.state.plans.map((plan, index) =>
-                  <div className="detail" key={index}>
-                        <i key={index} className="fa fa-circle"></i>
-                        <div className="detailPlan">
-                              <h4>{plan.brief}</h4>
-                              <p>{plan.detail}</p>
-                        </div>
-                  </div>
-            );
+            // const planList = this.state.plans.map((plan, index) =>
+            //       <div className="detail" key={index}>
+            //             <i key={index} className="fa fa-circle"></i>
+            //             <div className="detailPlan">
+            //                   <h4>{plan.brief}</h4>
+            //                   <p>{plan.detail}</p>
+            //             </div>
+            //       </div>
+            // );
             return (
                   <div className="plan">
                         <h2>This is plan 2</h2>
                         <p>Check out the plan below to see what you'll get up to with your local host.</p>
                         <p> Feel free to personalize this offer.</p>
-                        {planList}
-                        <button>Contact me to personalize this for you</button>
+                        <div className="meetPoint">
+                              <i className="fas fa-map-marker-alt"></i>
+                              <div className="detailPlan">
+                                    <h4>Meeting point</h4>
+                                    <p>{this.state.plans.meeting_point}</p>
+                              </div>
+
+                        </div>
+                        {this.state.plans.detail}
 
                   </div>
             );

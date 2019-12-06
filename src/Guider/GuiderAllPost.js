@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "font-awesome/css/font-awesome.min.css";
 import { Link, Route, Switch } from 'react-router-dom';
-import Rated from "../Rated";
+import Rated from "./Rated";
 import GuiderInPost from './GuiderInPost';
 import EditPost from './EditPost';
 import Config from '../Config';
@@ -18,7 +18,7 @@ class GuiderAllPost extends Component {
 
 	async componentDidMount() {
 		try {
-			let guider_id = this.props.id;
+			let guider_id = this.props.match.params.guider_id;
 			const responsePosts = await fetch(
 				Config.api_url + "guiderpost/postOfOneGuider?guider_id=" + guider_id,
 				{

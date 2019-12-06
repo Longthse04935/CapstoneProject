@@ -1,18 +1,18 @@
 import React, { Component } from "react";
-import Chatbox from "./Chatbox";
+import Chatbox from "./Traveler/Chatbox";
 import ProfileGuiders from "./Guider/ProfileGuiders";
-import Home from "./Home";
+import Home from "./common/Home";
 import ProfileTravaller from './Traveler/ProfileTraveller';
 import GuiderAllPost from './Guider/GuiderAllPost';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { BrowserRouter } from "react-router-dom";
 import Navbar from './Nav/Navbar';
-import Footer from './Footer';
+import Footer from './common/Footer';
 import LoggedTvl from './Nav/LoggedTvl';
 import LoggedGuider from './Nav/LoggedGuider';
 import PostDetail from './Guider/PostDetail';
 import Tour from './Tour';
-import PostTourDetail from './PostTourDetail';
+import PostTourDetail from './common/PostTourDetail';
 import Pay from './Traveler/Pay';
 import TravellerManager from './Traveler/TravellerManager';
 import GuiderContract from './Guider/GuiderContract';
@@ -22,7 +22,7 @@ import AddPost from './Guider/AddPost';
 import { connect } from 'react-redux';
 import { logOut,logIn } from './redux/actions';
 import {wsConnect, wsDisconnect, send} from './redux/webSocket';
-import ChatList from './ChatStore'
+import Message from './common/Message'
 class App extends Component {
 	constructor(props) {
 		super(props);
@@ -105,7 +105,8 @@ class App extends Component {
 					<Route path='/contract' component={GuiderContract} />
 					<Route path='/chart' component={Chart} />
 					<Route path='/add' ><AddPost guiderId={this.state.id} /></Route>
-					<Route path='/chat' ><ChatList name={this.state.userName} messages={this.props.messages}/></Route>
+					<Route path='/chat' ><Message	 name={this.state.userName}
+					 messages={this.props.messages} clients={this.props.clients}/></Route>
 					<Route exact path={"/edit"}>
 						<BrowserRouter>
 							<ManagePost guiderId={this.state.id} />
@@ -121,8 +122,9 @@ class App extends Component {
 }
 function mapStateToProps(state) {
       console.log(state);
-      const messages = state.messages;
-      return {messages};
+	const messages = state.messages;
+	const clients = state.clients;
+      return {messages, clients};
 }
 App = connect(mapStateToProps)(App);
 

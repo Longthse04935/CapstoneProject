@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Navbar from '../Nav/Navbar';
-import Footer from '../Footer';
+import Footer from '../common/Footer';
 import $ from "jquery";
 import ReactDOMServer from 'react-dom/server';
+import Image from './Image';
+
+import Config from '../Config';
 class AddPost extends Component {
     constructor(props) {
         super(props);
@@ -25,6 +28,7 @@ class AddPost extends Component {
                 brief: "",
                 detail: ""
             }],
+            images: [],
             services: [""],
             reasons: [""],
             plan: initPlan,
@@ -51,11 +55,9 @@ class AddPost extends Component {
 
     removeReason(eve) {
         const copy = this.state;
-        // console.log(copy.reasons);
         const dom = ReactDOM.findDOMNode(this);
         if (dom instanceof HTMLElement) {
             const acts = dom.querySelectorAll(".reason");
-            // console.log(acts);
             let reasons = [];
             for (let i = 0; i < acts.length; i++) {
                 if (i == eve.target.id) continue;
@@ -63,10 +65,8 @@ class AddPost extends Component {
             }
             for (let i = 0; i < reasons.length; i++) {
                 acts[i].value = reasons[i];
-            }
-            console.log(reasons);
-            copy.reasons = reasons;
-            //console.log(eve.target.id);
+            }console.log(reasons);
+            copy.reasons = reasons; 
             this.setState(copy);
         } else {
             console.log("find DOM do not work");
@@ -102,8 +102,8 @@ class AddPost extends Component {
         $("head").append('<link href="/css/editPost.css" rel="stylesheet"/>');
         const copy = Object.assign({},this.state);
         try {
-            const responseLocation = await fetch("http://localhost:8080/location/findAll");
-            const responseCategory = await fetch("http://localhost:8080/category/findAll");
+            const responseLocation = await fetch(Config.api_url+"location/findAll");
+            const responseCategory = await fetch(Config.api_url+"category/findAll");
        
             if (!responseCategory.ok) { throw Error(responseCategory.status + ": " + responseCategory.statusText); }
             if (!responseLocation.ok) { throw Error(responseLocation.status + ": " + responseLocation.statusText); }
@@ -124,7 +124,7 @@ class AddPost extends Component {
         const copy = Object.assign({},this.state);
         const dom = ReactDOM.findDOMNode(this);
 
-        let image = [];
+        
         let location = 1;
         let cate = 1;
         if (dom instanceof HTMLElement) {
@@ -134,13 +134,6 @@ class AddPost extends Component {
             //query cate
             lo = dom.querySelector("#inputGroupSelect02");
             cate = lo.options[lo.selectedIndex].value;
-            //query file
-            const files = dom.querySelector(".filePicture").files;
-            console.log(files);
-
-            for (let i = 0; i < files.length; i++) {
-                image.push(await this.toBase64(files[i]));
-            }
 
         } else {
             console.log("find DOM do not work");
@@ -149,7 +142,7 @@ class AddPost extends Component {
 
             "title": copy.title,
             "video_link": copy.video_link,
-            "picture_link": image,
+            "picture_link": this.state.images,
             "total_hour": copy.total_hour,
             "description": copy.description,
             "including_service": copy.services,
@@ -164,7 +157,7 @@ class AddPost extends Component {
         console.log(initPost);
         console.log(plan);
         try {
-            let response = await fetch("http://localhost:8080/guiderpost/add/post?guider_id=" + this.props.guiderId,
+            let response = await fetch(Config.api_url+"guiderpost/add/post?guider_id=" + this.props.guiderId,
                 {
                     method: "POST",
                     mode: "cors",
@@ -183,7 +176,7 @@ class AddPost extends Component {
                 detail: plan,
                 post_id: id,
             };
-            response = await fetch("http://localhost:8080/plan/create",
+            response = await fetch(Config.api_url+"plan/create",
                 {
                     method: "POST",
                     mode: "cors",
@@ -340,8 +333,35 @@ class AddPost extends Component {
         }
     }
 
+    
+    showImage = async (eve) =>  {
+        let image = [];
+        const dom = ReactDOM.findDOMNode(this);
+        if (dom instanceof HTMLElement) {
+            
+            //query file
+            const files = dom.querySelector(".filePicture").files;
+            //console.log(files); 
+            
+            for (let i = 0; i < files.length; i++) {
+                image.push(await this.toBase64(files[i]));
+            }
+            dom.querySelector(".filePicture").value = "";
+            //console.log(await image.length);
+            await this.setState({images: this.state.images.concat(image)});
+        } else {
+            console.log("find DOM do not work");
+        }
+    }
+
+    deleteImg = (index)=>{
+        //console.log(this.state.images);
+        this.state.images.splice(index,1);
+        //console.log(this.state.images);
+    }
+
     render() {
-        console.log(this.props.guiderId);
+        //console.log(this.props.guiderId);
         let locationOption = this.state.locations.map((location, index) =>
             <option value={location.location_id} key={index}>{location.location}</option>
         );
@@ -351,7 +371,7 @@ class AddPost extends Component {
 
         let serviceInput = this.state.services.map((service, index) =>
             <div className="dropdownCoverSelect" key={index}>
-                <input className="dropdown-select service" type="text" onChange={(eve) => { service = eve.target.value; }} />
+                <input className="dropdown-select service" type="text" name="service" onChange={(eve) => { this.state.services[index] = eve.target.value; }} />
                 <button type="button" className="btn btn-danger btn-add-service" onClick={this.removeService} id={index}>Delete</button>
             </div>
         );
@@ -359,7 +379,7 @@ class AddPost extends Component {
         let actInput = this.state.activities.map((act, index) =>
             <div className="activitiesInput" key={index}>
                 <div className="coverContent" key={index}>
-                    <div className="brief">Brief<input type="text" name="brief" onChange={(eve) => { act.brief = eve.target.value; }} /></div>
+                    <div className="brief">Brief<input type="text" name="brief" onChange={(eve) => { act.brief = eve.target.value;}} /></div>
                     <div className="detail">Detail<textarea rows={4} cols={50} type="textarea" name="detail" onChange={(eve) => { act.detail = eve.target.value; }} /></div>
                     <button type="button" className="btn btn-danger" onClick={this.removeActivity} id={index}>Delete</button>
                 </div>
@@ -367,14 +387,15 @@ class AddPost extends Component {
         );
 
         let reasonInput = this.state.reasons.map((reason, index) =>
-            <div className="dropdownCoverSelect" key={index}>
-                <input className="dropdown-select reason" type="text" onChange={(eve) => { reason = eve.target.value; }} />
+            <div className="dropdownCoverSelect"  key={index}>
+                <input className="dropdown-select reason" type="text" name="reason" onChange={(eve) => { this.state.reasons[index] = eve.target.value;}} />
                 <button type="button" className="btn btn-danger btn-add-service" onClick={this.removeReason} id={index}>Delete</button>
             </div>
         );
 
+
         return (
-            <div>
+            <div className="addPost">
                 <div className="container">
                     <div className="row m-y-2">
                         {/* edit form column */}
@@ -426,12 +447,12 @@ class AddPost extends Component {
                                             className="filePicture"
                                             type="file"
                                             accept="image/png, image/jpeg. image/jpg"
-
+                                            onChange={this.showImage}
                                             multiple
                                         />
 
                                     </div>
-
+                                    <Image bases={this.state.images} deleteImg={this.deleteImg}/>
                                 </div>
                                 <div className="form-group row">
                                     <label className="col-lg-3 col-form-label form-control-label">Total hour</label>

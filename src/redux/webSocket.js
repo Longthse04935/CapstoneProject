@@ -6,8 +6,10 @@ export const wsDisconnected = host => ({ type: 'WS_DISCONNECTED', host });
 export const send = message => ({ type: 'SEND', message });
 export const get = () => ({ type: 'GET' });
 export const save = message => ({ type: 'SAVE', message });
+export const arrange = user => ({ type: 'ARRANGE', user });
 const websocketInitialState = {};
 const messageInitState = [];
+const clients = [];
 
 export const websocketReducer = (state = { ...websocketInitialState }, action) => {
       switch (action.type) {
@@ -19,13 +21,34 @@ export const websocketReducer = (state = { ...websocketInitialState }, action) =
 };
 
 export const getMessages = (state = messageInitState , action) => {
-      console.log("save: ", action);
+      //console.log("save: ", action);
       switch (action.type) {
             case 'SAVE':
+                  
                   return [...state, action.message];
             case 'GET':
+
                   return state;
             default:
                   return state;
       }
 };
+
+export const arrangeClients = (state = clients, action) => {
+      switch (action.type) {
+            case 'ARRANGE':
+                  let queue = Object.assign([], state);
+                  if(queue.indexOf(action.message.user) >=  0) {
+                        queue.splice(queue.indexOf(action.message.user),1);
+                        queue.unshift(action.message.user);
+                  } else {
+                        queue.push(action.message.user);
+                  }
+                  return queue;
+            case 'GET':
+
+                  return state;
+            default:
+                  return state;
+      }
+}

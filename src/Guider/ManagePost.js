@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "font-awesome/css/font-awesome.min.css";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import Rated from "../Rated";
+import Rated from "./Rated";
 import GuiderInPost from './GuiderInPost';
 import EditPost from './EditPost';
 import Config from '../Config';
@@ -36,8 +36,8 @@ class ManagePost extends Component {
                   }
 
                   const posts = await responsePosts.json();
-
-                  this.setState({ posts });
+                  console.log(posts);
+                  this.setState({ posts: posts });
             } catch (err) {
                   console.log(err);
             }
@@ -54,6 +54,7 @@ class ManagePost extends Component {
 
             let posts = this.state.posts.map((post, index) => (
                   <li key={index}>
+                        <Link to={"/update/"+this.props.guiderId+"/" + post.post_id}>
                         <div className="sheet">
                               <div className="imageFigure">
                                     <img src={post.picture_link[0]} alt="logo" width="42" height="42" />
@@ -63,20 +64,22 @@ class ManagePost extends Component {
                                           Enjoy <span className="withName">{post.post_id}</span>
                                     </span>
                                     <h3>
-                                          <Link to={"/update/" + post.post_id}>{post.title}</Link>
+                                          {post.title}
                                     </h3>
 
                               </div>
                         </div>
+                        </Link>
                   </li>
             ));
             let routes = this.state.posts.map((post, index) => (
-                  <Route path={"/update/" + post.post_id}><EditPost guiderId={this.props.guiderId} postId={post.post_id} /></Route>
+                  <Route path={"/update/:guider/:post"} key={index} component={EditPost} />
+                       
 
 
             ));
 
-
+ //<EditPost guiderId={this.props.guiderId} postId={post.post_id} /></Route> 
             return (
                   <div>
                         <Switch>

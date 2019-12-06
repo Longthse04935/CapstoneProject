@@ -21,6 +21,7 @@ const socketMiddleware = () => {
             // console.log(store);
             let payload = msg.body;
             store.dispatch(actions.save(JSON.parse(payload)));
+
             // switch (payload.type) {
             //       case 'update_game_players':
             //             store.dispatch(updateGame(payload.game));
@@ -66,7 +67,6 @@ const socketMiddleware = () => {
                         socket = null;
                         break;
                   case 'SEND':
-                        
                         
                         socket.send("/app/chat.sendMessage", {}, JSON.stringify(action.message));
                         // action.message.id = "0";

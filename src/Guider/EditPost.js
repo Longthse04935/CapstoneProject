@@ -1,31 +1,39 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Navbar from '../Nav/Navbar';
-import Footer from '../Footer';
+import Footer from '../common/Footer';
 import $ from "jquery";
 import ReactDOMServer from 'react-dom/server';
+import Image from './Image';
 
+import Config from '../Config';
 class EditPost extends Component {
     constructor(props) {
         super(props);
 
-        console.log("route work");
-        let initPost = {};
-        let initLocation = [{}];
+        let initLocation = [{
+            location_id: 1,
+            location: "Phu Quoc"
+        }];
         let initCategory = [{}];
+        let initPlan = {
+            meetingPoint: "",
+            plan: []
+        }
 
         this.state = {
-            post: initPost,
+            post_id: 0,
             locations: initLocation,
             categories: initCategory,
             activities: [{
                 brief: "",
                 detail: ""
             }],
+            total_hour: 0,
+            images: [],
             services: [""],
             reasons: [""],
-            plan: [],
-            "picture_link": "",
+            plan: initPlan,
             "title": "",
             "video_link": "",
             "total_hour": 1,
@@ -36,6 +44,10 @@ class EditPost extends Component {
             "reason": "",
             "price": ""
         };
+        this.addService = this.addService.bind(this);
+        this.removeService = this.removeService.bind(this);
+        this.addActivity = this.addActivity.bind(this);
+        this.removeActivity = this.removeActivity.bind(this);
         this.formHandler = this.submitForm.bind(this);
         this.inputOnChange = this.inputOnChange.bind(this);
         this.addReason = this.addReason.bind(this);
@@ -47,11 +59,9 @@ class EditPost extends Component {
 
     removeReason(eve) {
         const copy = this.state;
-        // console.log(copy.reasons);
         const dom = ReactDOM.findDOMNode(this);
         if (dom instanceof HTMLElement) {
             const acts = dom.querySelectorAll(".reason");
-            // console.log(acts);
             let reasons = [];
             for (let i = 0; i < acts.length; i++) {
                 if (i == eve.target.id) continue;
@@ -59,10 +69,8 @@ class EditPost extends Component {
             }
             for (let i = 0; i < reasons.length; i++) {
                 acts[i].value = reasons[i];
-            }
-            console.log(reasons);
+            } console.log(reasons);
             copy.reasons = reasons;
-            //console.log(eve.target.id);
             this.setState(copy);
         } else {
             console.log("find DOM do not work");
@@ -99,34 +107,36 @@ class EditPost extends Component {
         $("head").append('<link href="/css/editPost.css" rel="stylesheet"/>');
         const copy = Object.assign({}, this.state);
         try {
-            const responseLocation = await fetch("http://localhost:8080/location/findAll");
-            const responseCategory = await fetch("http://localhost:8080/category/findAll");
-            const post = await fetch("http://localhost:8080/guiderpost?post_id=" + this.props.id,
-                {
-                    method: "GET",
-                    mode: "cors",
-                    credentials: "include",
-                    headers: {
-                        'Accept': 'application/json'
-                    },
-                });
-            const plans = await fetch("http://localhost:8080/plan/" + this.props.id,
-                {
-                    method: "GET",
-                    mode: "cors",
-                    credentials: "include",
-                    headers: {
-                        'Accept': 'application/json'
-                    },
-                });
+            const responseLocation = await fetch(Config.api_url + "location/findAll");
+            const responseCategory = await fetch(Config.api_url + "category/findAll");
             if (!responseCategory.ok) { throw Error(responseCategory.status + ": " + responseCategory.statusText); }
             if (!responseLocation.ok) { throw Error(responseLocation.status + ": " + responseLocation.statusText); }
-            if (!post.ok) { throw Error(post.status + ": " + post.statusText); }
-            const edit = await post.json();
             const location = await responseLocation.json();
             const category = await responseCategory.json();
             copy.locations = location;
             copy.categories = category;
+            const post = await fetch(Config.api_url + "guiderpost/findSpecificPost?post_id=" + this.props.match.params.post,
+                {
+                    method: "GET",
+                    mode: "cors",
+                    credentials: "include",
+                    headers: {
+                        'Accept': 'application/json'
+                    },
+                });
+            if (!post.ok) { throw Error(post.status + ": " + post.statusText); }
+            const edit = await post.json();
+            //console.log(edit);
+            const plans = await fetch(Config.api_url + "plan/" + this.props.match.params.post,
+                {
+                    method: "GET",
+                    mode: "cors",
+                    credentials: "include",
+                    headers: {
+                        'Accept': 'application/json'
+                    },
+                });
+            copy.post_id = edit.post_id;
             copy.title = edit.title;
             copy.video_link = edit.video_link;
             copy.picture_link = edit.picture_link;
@@ -136,12 +146,16 @@ class EditPost extends Component {
             copy.location = edit.location;
             copy.category = edit.category;
             copy.price = edit.price;
-            copy.reason = this.parseReason(edit.reasons);
+            copy.reasons = this.parseReason(edit.reasons);
             const plan = await plans.json();
-            console.log(await plan);
-            copy.meeting_point = await plan.meeting_point;
+            //console.log(plan);
+            copy.images = await edit.picture_link.map((img) => {
+                return this.fromDataURL(img);
+            }).filter((img) => img !== undefined);
+            copy.meeting_point = plan.meeting_point;
             copy.activities = this.parsePlan(plan.detail);
-            this.setState(copy);
+            //console.log(await copy);
+            this.setState(await copy);
 
         } catch (err) {
             console.log(err);
@@ -154,7 +168,7 @@ class EditPost extends Component {
         let m;
         let reasons = [];
         do {
-            
+
             m = detailRegex.exec(html);
             if (m) {
                 reasons.push(m[0].replace("<p>", "").replace("</p>", ""));
@@ -181,18 +195,18 @@ class EditPost extends Component {
             }
         } while (m);
         let acts = [];
-        for(let i = 0; i < briefs.length; i ++) {
-            acts.push({brief: briefs[i], detail:details[i]});
+        for (let i = 0; i < briefs.length; i++) {
+            acts.push({ brief: briefs[i], detail: details[i] });
         }
         return acts;
     }
 
     async submitForm(eve) {
         eve.preventDefault();
-        const copy = this.state;
+        const copy = Object.assign({}, this.state);
         const dom = ReactDOM.findDOMNode(this);
 
-        let image = [];
+
         let location = 1;
         let cate = 1;
         if (dom instanceof HTMLElement) {
@@ -202,22 +216,15 @@ class EditPost extends Component {
             //query cate
             lo = dom.querySelector("#inputGroupSelect02");
             cate = lo.options[lo.selectedIndex].value;
-            //query file
-            const files = dom.querySelector(".filePicture").files;
-            console.log(files);
-
-            for (let i = 0; i < files.length; i++) {
-                image.push(await this.toBase64(files[i]));
-            }
 
         } else {
             console.log("find DOM do not work");
         }
         let initPost = await {
-            "guider_id": this.props.guiderId,
+            post_id: copy.post_id,
             "title": copy.title,
             "video_link": copy.video_link,
-            "picture_link": image,
+            "picture_link": this.state.images,
             "total_hour": copy.total_hour,
             "description": copy.description,
             "including_service": copy.services,
@@ -226,14 +233,13 @@ class EditPost extends Component {
             "category": cate,
             "price": copy.price,
             "rated": 3,
-            "reason": ReactDOMServer.renderToString(this.reasonToHTML(copy.reasons))
+            "reasons": ReactDOMServer.renderToString(this.reasonToHTML(copy.reasons))
         };
-
         let plan = ReactDOMServer.renderToString(this.planToHTML(copy.activities));
         console.log(initPost);
         console.log(plan);
         try {
-            let response = await fetch("http://localhost:8080/guiderpost//update/post=",
+            let response = await fetch(Config.api_url + "guiderpost/update/post",
                 {
                     method: "POST",
                     mode: "cors",
@@ -246,12 +252,13 @@ class EditPost extends Component {
             );
             if (!response.ok) { throw Error(response.status + ": " + response.statusText); }
             const id = await response.text();
-            let plans = {
+            console.log(id);
+            let plans = await {
                 meeting_point: copy.meeting_point,
                 detail: plan,
                 post_id: id,
             };
-            response = await fetch("http://localhost:8080/plan/create",
+            response = await fetch(Config.api_url + "plan/update",
                 {
                     method: "POST",
                     mode: "cors",
@@ -297,6 +304,18 @@ class EditPost extends Component {
         </div>);
     }
 
+    fromDataURL = url => {
+        fetch(url)
+            .then(response => response.blob())
+            .then(blob => new Promise((resolve, reject) => {
+                const reader = new FileReader()
+                reader.readAsDataURL(blob);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+
+            }))
+    }
+
     toBase64 = file => new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
@@ -304,6 +323,54 @@ class EditPost extends Component {
         reader.onerror = error => reject(error);
     });
 
+    addService() {
+        const copy = this.state;
+
+        const dom = ReactDOM.findDOMNode(this);
+        if (dom instanceof HTMLElement) {
+            const acts = dom.querySelectorAll(".service");
+            let services = [];
+            for (let i = 0; i < acts.length; i++) {
+                services.push(acts[i].value);
+            }
+
+            services.push("");
+            copy.services = services;
+            // console.log(copy.services);
+            this.setState(copy);
+        } else {
+            console.log("find DOM do not work");
+        }
+    }
+
+    addActivity() {
+        const copy = this.state;
+
+        const dom = ReactDOM.findDOMNode(this);
+        //document.querySelectorAll(".coverContent")[0].querySelector("input[name='detail']").value
+        if (dom instanceof HTMLElement) {
+            const acts = dom.querySelectorAll(".coverContent");
+
+            let activities = [];
+            for (let i = 0; i < acts.length; i++) {
+                let brief = acts[i].querySelector("input[name='brief']").value;
+                let detail = acts[i].querySelector("textarea[name='detail']").value;
+                activities.push({
+                    brief: brief,
+                    detail: detail
+                });
+            }
+            activities.push({
+                brief: "",
+                detail: ""
+            });
+            copy.activities = activities;
+            //console.log(copy.activities);
+            this.setState(copy);
+        } else {
+            console.log("find DOM do not work");
+        }
+    }
     removeService(eve) {
         const copy = this.state;
 
@@ -319,11 +386,14 @@ class EditPost extends Component {
             for (let i = 0; i < services.length; i++) {
                 acts[i].value = services[i];
             }
+            //console.log(services);
             copy.services = services;
+            //console.log(eve.target.id);
             this.setState(copy);
         } else {
             console.log("find DOM do not work");
         }
+
     }
 
     removeActivity(eve) {
@@ -348,25 +418,54 @@ class EditPost extends Component {
                 acts[i].querySelector("input[name='brief']").value = activities[i].brief;
                 acts[i].querySelector("textarea[name='detail']").value = activities[i].detail;
             }
+
             copy.activities = activities;
+            // console.log(eve.target.id);
             this.setState(copy);
         } else {
             console.log("find DOM do not work");
         }
     }
+    showImage = async (eve) => {
+        let image = [];
+        const dom = ReactDOM.findDOMNode(this);
+        if (dom instanceof HTMLElement) {
+
+            //query file
+            const files = dom.querySelector(".filePicture").files;
+            //console.log(files);
+
+            for (let i = 0; i < files.length; i++) {
+                image.push(await this.toBase64(files[i]));
+            }
+            dom.querySelector(".filePicture").value = "";
+            //console.log(await image.length);
+            this.setState({ images: this.state.images.concat(image) });
+        } else {
+            console.log("find DOM do not work");
+        }
+    }
+
+    deleteImg = (index) => {
+        let copy = Object.assign([], this.state.images);
+        //console.log(copy);
+        copy.splice(index, 1);
+        this.setState({ images: copy });
+        //console.log(this.state.images);
+    }
 
     render() {
-        console.log(this.props.guiderId);
+        //console.log(this.state.images);
         let locationOption = this.state.locations.map((location, index) =>
-            <option value={location.location_id} key={index} >{location.location}</option>
+            <option value={location.location_id} key={index} selected={(location.location === this.state.location)}>{location.location}</option>
         );
         let categoryOption = this.state.categories.map((cate, index) =>
-            <option value={cate.category_id} key={index} >{cate.category}</option>
+            <option value={cate.category_id} key={index} selected={(cate.category === this.state.category)} >{cate.category}</option>
         );
 
         let serviceInput = this.state.services.map((service, index) =>
             <div className="dropdownCoverSelect" key={index}>
-                <input className="dropdown-select service" type="text" onChange={(eve) => { service = eve.target.value; }}  defaultValue={service}/>
+                <input className="dropdown-select service" type="text" onChange={(eve) => { this.state.services[index] = eve.target.value; }} defaultValue={this.state.services[index]} />
                 <button type="button" className="btn btn-danger btn-add-service" onClick={this.removeService} id={index}>Delete</button>
             </div>
         );
@@ -374,8 +473,8 @@ class EditPost extends Component {
         let actInput = this.state.activities.map((act, index) =>
             <div className="activitiesInput" key={index}>
                 <div className="coverContent" key={index}>
-                    <div className="brief">Brief<input type="text" name="brief" onChange={(eve) => { act.brief = eve.target.value; }} defaultValue={act.brief}/></div>
-                    <div className="detail">Detail<textarea rows={4} cols={50} type="textarea" name="detail" onChange={(eve) => { act.detail = eve.target.value; }}  defaultValue={act.detail}/></div>
+                    <div className="brief">Brief<input type="text" name="brief" onChange={(eve) => { act.brief = eve.target.value; }} defaultValue={act.brief} /></div>
+                    <div className="detail">Detail<textarea rows={4} cols={50} type="textarea" name="detail" onChange={(eve) => { act.detail = eve.target.value; }} defaultValue={act.detail} /></div>
                     <button type="button" className="btn btn-danger" onClick={this.removeActivity} id={index}>Delete</button>
                 </div>
             </div>
@@ -383,7 +482,7 @@ class EditPost extends Component {
 
         let reasonInput = this.state.reasons.map((reason, index) =>
             <div className="dropdownCoverSelect" key={index}>
-                <input className="dropdown-select reason" type="text" onChange={(eve) => { reason = eve.target.value; }} defaultValue={reason}/>
+                <input className="dropdown-select reason" type="text" onChange={(eve) => { this.state.reasons[index] = eve.target.value; }} defaultValue={this.state.reasons[index]} />
                 <button type="button" className="btn btn-danger btn-add-service" onClick={this.removeReason} id={index}>Delete</button>
             </div>
         );
@@ -403,7 +502,7 @@ class EditPost extends Component {
                                 <div className="form-group row">
                                     <label className="col-lg-3 col-form-label form-control-label">Location</label>
                                     <div className="col-lg-8">
-                                        <select className="custom-select" id="inputGroupSelect01" defaultValue ={this.state.location} >
+                                        <select className="custom-select" id="inputGroupSelect01" defaultValue={this.state.location} >
                                             {locationOption}
                                         </select>
                                     </div>
@@ -412,7 +511,7 @@ class EditPost extends Component {
 
                                     <label className="col-lg-3 col-form-label form-control-label">Category</label>
                                     <div className="col-lg-8">
-                                        <select className="custom-select" id="inputGroupSelect02" defaultValue ={this.state.category} >
+                                        <select className="custom-select" id="inputGroupSelect02" defaultValue={this.state.category} >
                                             {categoryOption}
                                         </select>
                                     </div>
@@ -445,10 +544,10 @@ class EditPost extends Component {
                                             type="file"
 
                                             accept="image/png, image/jpeg. image/jpg"
-
+                                            onChange={this.showImage}
                                             multiple
                                         />
-
+                                        <Image bases={this.state.images} deleteImg={this.deleteImg} />
                                     </div>
 
                                 </div>
@@ -477,7 +576,7 @@ class EditPost extends Component {
                                 <div className="form-group row">
                                     <label className="col-lg-3 col-form-label form-control-label">Meeting point</label>
                                     <div className="col-lg-8">
-                                        <input onChange={this.inputOnChange} name="meeting_point" className="form-control " type="text" />
+                                        <input onChange={this.inputOnChange} name="meeting_point" className="form-control " type="text" defaultValue={this.state.meeting_point} />
                                     </div>
                                 </div>
                                 <div className="form-group row">
@@ -488,7 +587,7 @@ class EditPost extends Component {
                                 </div>
 
                                 <div className="">
-                                    {/* {actInput} */}
+                                    {actInput}
                                 </div>
                                 <div className="form-group row">
                                     <label className="col-lg-3 col-form-label form-control-label">Why to pick you   </label>

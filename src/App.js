@@ -23,6 +23,8 @@ import { connect } from 'react-redux';
 import { logOut,logIn } from './redux/actions';
 import {wsConnect, wsDisconnect, send} from './redux/webSocket';
 import Message from './common/Message'
+import ChatList from './common/ChatStore'
+
 class App extends Component {
 	constructor(props) {
 		super(props);
@@ -61,6 +63,7 @@ class App extends Component {
 	}
 
 	componentDidMount() {
+		
 		if (typeof (Storage) !== 'undefined') {
 			// get sessionStorage
 			let user = window.sessionStorage.getItem('user');
@@ -68,6 +71,7 @@ class App extends Component {
 		} else {
 			alert('Browser not support!');
 		}
+
 	}
 
 
@@ -90,6 +94,7 @@ class App extends Component {
 			<div>
 				{present}
 				<Switch>
+
 					<Route path='/' component={Home} exact />
 					<Route path='/guider/:guider_id' component={GuiderAllPost} exact />
 					<Route path='/post/:post_id' component={PostDetail} exact />
@@ -112,6 +117,7 @@ class App extends Component {
 							<ManagePost guiderId={this.state.id} />
 						</BrowserRouter>
 					</Route>
+
 
 				</Switch>
 				<Footer />

@@ -17,3 +17,8 @@
     font-size: 45px;
     font-weight: 600;
 }
+
+.guider_aggument{
+    max-height: 160px;
+    overflow-y: scroll;
+}

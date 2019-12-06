@@ -13,6 +13,8 @@ class ProfileTraveller extends Component {
       isError: false,
       errors: {},
       alert: null,
+      avatar_link:'',
+      avtImage:'',
       data: {
         traveler_id:'',
         first_name: '',
@@ -33,6 +35,7 @@ class ProfileTraveller extends Component {
         day:'01',
         month:'01',
         year:'1970',
+      
       }
     }
   }
@@ -64,31 +67,26 @@ class ProfileTraveller extends Component {
         credentials: "include"
     });
 
- 
-    if (!responseTraveller.ok) {
+    if (responseTraveller.ok) {
       sessionStorage.setItem('errorAPI',responseTraveller.status);
     }
-    
+
     var data=JSON.parse(sessionStorage.getItem('errorAPI'));
-    if(data !== 404){
+    if(data === 200){
     const dataTraveller = await responseTraveller.json();
     var str = dataTraveller.date_of_birth;
     var res = str.split("-");
     dataTraveller.year = res[0];
     dataTraveller.month = res[1];
-    dataTraveller.day = res[2];
-    this.setState({data:dataTraveller});
+    dataTraveller.day = res[2].split(" ")[0];
+    this.setState({data:dataTraveller,avatar_link:Config.api_url+"images/"+dataTraveller.avatar_link});
+    }else{
+      this.setState({avatar_link:Config.api_url+"images/"+"account.jpg"});
     }
     
   }
 
 
-
-  validateEmail(email){
-    const pattern = /[a-zA-Z0-9]+[\.]?([a-zA-Z0-9]+)?[\@][a-z]{3,9}[\.][a-z]{2,5}/g;
-    const result = pattern.test(email);
-    return result;
-  }
 
   validatePhone(phone){
     const pattern = /^\d{10,11}$/;
@@ -112,6 +110,19 @@ class ProfileTraveller extends Component {
     this.setState({ data });
   }
 
+  onImageChange = (event) => {
+    
+    if (event.target.files && event.target.files[0]) {
+      let avtImage = event.target.value.replace("C:\\fakepath\\","");
+      let reader = new FileReader();
+    reader.onload = (event) => {
+      
+      this.setState({avatar_link: event.target.result, avtImage });
+    };
+    reader.readAsDataURL(event.target.files[0]);
+   }
+  }
+
   isValidate = () => {
     const { data } = this.state;
     let isError = false;
@@ -123,10 +134,6 @@ class ProfileTraveller extends Component {
     if(data.last_name === '') {
       isError = true;
       errors['last_name'] = 'Last name is empty, Input your last name';
-    }
-    if(this.validateEmail(data.email) === false){
-      isError = true;
-      errors['email'] = 'Email example like abcxzy@gmail.com';
     }
 
     if(this.validatePhone(data.phone) === false){
@@ -201,20 +208,32 @@ class ProfileTraveller extends Component {
    
   }
 
+  toBase64 = file => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+});
+
   async submitForm(e){
     e.preventDefault();
-    
     var user = JSON.parse(sessionStorage.getItem('user'));
     if(this.isValidate()) {
       return false;
     } 
-
+    console.log( "data.avatar_link");
     var errorAPI = JSON.parse(sessionStorage.getItem('errorAPI'));
-    var {data} = this.state;
+    var {data,avatar_link,avtImage} = this.state;
     data.traveler_id = user.id;
-    data.date_of_birth = data.year +"-"+ data.month +"-"+ data.day;
-    
-    if(errorAPI !== 404){
+    data.date_of_birth = data.year +"-"+ data.month +"-"+ data.day+" 00:00"; 
+    if(avtImage === ''){
+      data.avatar_link = await this.toBase64(avatar_link.replace(Config.api_url+'images/',''));
+    }else{
+      data.avatar_link = await this.toBase64(avtImage);
+    }
+   console.log( data.avatar_link);
+   return false;
+    if(errorAPI === 200){
       let options = {
         method: 'POST',
         mode: "cors",
@@ -228,7 +247,7 @@ class ProfileTraveller extends Component {
       let response = await fetch(Config.api_url +'Traveler/Update', options);
       response = await response.text();
       this.statusProfile('Update success!!');
-    }else if(errorAPI === 404){
+    }else if(errorAPI !== 200){
         let options = {
           method: 'POST',
           mode: "cors",
@@ -249,7 +268,7 @@ class ProfileTraveller extends Component {
 
   render() {
 
-    const { errors, data } = this.state;
+    const { errors, data ,avatar_link} = this.state;
     var day = [];
     for (var i = 1; i <= 31; i++){
         day.push(i);
@@ -303,11 +322,11 @@ class ProfileTraveller extends Component {
                 height={150}
                 width={150}
                 className="profile-avatar"
-                src="https://withlocals-com-res.cloudinary.com/image/upload/w_200,h_200,c_thumb,q_auto,f_auto/15476f307eb33925c9aba3968a030060"
+                src={avatar_link}
               />
               <br />
-              <button className="btn-changepic" id="avatar_trigger">Change profile picture</button>{data.avatar_link}
-              <input type="file" id="avatar_link" style={{display:'none'}} name="avatar_link" onChange={(e)=>{this.handleChange(e)}}/>
+              <button className="btn-changepic" id="avatar_trigger">Change profile picture</button>
+              <input type="file" id="avatar_link" style={{display:'none'}} name="avatar_link"  onChange={this.onImageChange}/>
             </div>
             <div className="profile-information">
               <div className="label-information">First Name</div>
@@ -331,9 +350,9 @@ class ProfileTraveller extends Component {
               <input className="input-information" name="phone" value={data.phone} onChange={(e)=>{this.handleChange(e)}}/>
               {errors['phone'] ? <p style={{color: "red"}} className="errorInput">{errors['phone']}</p> : ''}
 
-              <div className="label-information">Email</div>
+              {/* <div className="label-information">Email</div>
               <input className="input-information" name="email" value={data.email} onChange={(e)=>{this.handleChange(e)}}/>
-              {errors['email'] ? <p style={{color: "red"}} className="errorInput">{errors['email']}</p> : ''}
+              {errors['email'] ? <p style={{color: "red"}} className="errorInput">{errors['email']}</p> : ''} */}
               
               <div className="label-information">Date Of Birth</div>
               <div style={{ marginBottom: 30 }}>

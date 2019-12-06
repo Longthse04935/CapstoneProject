@@ -20,29 +20,49 @@
 .postInTour > h2{
     display: inline-block;
     margin-left: 10%;
+    font-weight: 700;
+    font-size: 40px;
+    margin-top: 20px;
 }
 .postInTour .contentTourDetail{
     width: 45%;
     height: auto;
     display: inline-block;
-    padding: 10px;
+    padding: 30px 40px;;
     box-shadow: 0 6px 13px 0 rgba(0,0,0,.4);
     border-radius: 10px;
-    margin-bottom: 30px;
+    margin-bottom: 55px;
     text-align: center;
-    color: #2b2a2a;
+    color: #fff;
     font-size: 18px;
+    position: relative;
 }
 
-.contentTourDetail video{
+.contentTourDetail .imgTourDetail{
+    position: absolute;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 700px;
+    border-radius: 10px;
+    object-fit: cover;
+    z-index: -1;
+}
+
+.contentTourDetail iframe{
     width: 100%;
     height: auto;
-    border-radius: 10px;
     min-height: 260px;
 }
-.contentTour .contentTourDetail .Rating {
+
+.contentTourDetail .postDestTour{
+    height: 60px; overflow: hidden;
+}
+.contentTour .contentTourDetail .RatingTour {
     margin-bottom: 10px;
     display: block;
+    font-size: 16px;
+    color: black;
 }
 .contentTour .contentTourDetail .Rating i{
     color: #e71575;

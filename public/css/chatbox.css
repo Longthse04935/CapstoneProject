@@ -351,16 +351,20 @@ body {
 }
 .rating {
   color:#e71575;
-  margin: 20px 0;
+  margin: 0 0 20px 0;
 }
 
 .ratingChatbox{
   position: relative;
 }
-
+.ratingChatbox .Rating i{
+  font-size: 17px;
+}
 .rating img {
   width: 80px;
- border-radius: 50%;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .rating i {

@@ -143,6 +143,7 @@ class LoggedGuider extends Component {
                                         <li><Link to="/profile">Profile</Link><i className="fa fa-address-card-o" aria-hidden="true"></i></li>
                                         <li><Link to="/edit">Edit Post</Link><i className="fa fa-pencil" aria-hidden="true"></i></li>
                                         <li><Link to="/add">Add Post</Link><i className="fa fa-user" aria-hidden="true"></i></li>
+                                        <li><Link to="/contract">Contract</Link><i className="fa fa-handshake-o" aria-hidden="true"></i></li>
                                         </span>
                                         <li onClick={() => {
                                             console.log("log out");

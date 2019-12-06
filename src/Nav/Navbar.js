@@ -136,18 +136,19 @@ class Navbar extends Component {
                     body: JSON.stringify(data)
                 }
             );
-            if(response.status === 500){
+            if(response.status !== 200){
                 errors['userName'] = 'This account name already existed';
                 this.setState({errors});
                 return false;
             }
             const user = await response.json();
+            $('.signUpForm').hide();
+            this.statusProfile('We come to my website');
             // this.props.reload.call(this, await user);
         } catch (err) {
             console.log('dulicate');
         }
-        $('.signUpForm').hide();
-        this.statusProfile('We come to my website');
+       
 
     }
 
@@ -221,6 +222,7 @@ class Navbar extends Component {
             $('#searchNav #fillterNav').show();
 
         });
+
         $(document).mouseup(function (e) {
             if (!$('#searchNav').is(e.target) && !$('#fillterNav').is(e.target)
                 && $('#searchNav').has(e.target).length === 0
@@ -501,8 +503,7 @@ class Navbar extends Component {
                                 <i className="fa fa-arrows" aria-hidden="true" />
                             </a>
                         </div>
-                        { path === '/' ? "" 
-                        :
+                        
                         <div className="search" id="searchNav">
                             <label>
                                 <input
@@ -573,7 +574,7 @@ class Navbar extends Component {
                                 </div>
                             </div>
                         </div>
-                        }
+                        
                         <div className="navbarRightContent">
                             <ul>
                                 <li>

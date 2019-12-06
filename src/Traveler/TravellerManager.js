@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import $ from 'jquery';
 import Config from '../Config';
+import {Link} from 'react-router-dom';
 import SweetAlert from 'react-bootstrap-sweetalert';
 class TravellerManager extends Component {
 
@@ -35,7 +36,7 @@ class TravellerManager extends Component {
 		var user = JSON.parse(sessionStorage.getItem('user'));
 			try {
 				const orderResponse = await fetch(
-					"http://localhost:8080/Order/GetOrderByStatus?role=" + "TRAVELER" + "&id=" + user.id+ "&status=UNCONFIRMED",
+					Config.api_url+"Order/GetOrderByStatus?role=" + "TRAVELER" + "&id=" + user.id+ "&status=UNCONFIRMED",
 					{
 						method: "GET",
 						mode: "cors",
@@ -50,7 +51,6 @@ class TravellerManager extends Component {
 				}
 				
 				const order = await orderResponse.json();
-				console.log(order);
 				this.setState({ orders:order });
 			} catch (err) {
 				console.log(err);
@@ -97,7 +97,7 @@ class TravellerManager extends Component {
 	
 	async showReview(order_id,guider_id,post_id){
 		let commentRespone = await fetch(
-			"http://localhost:8080/review/checkExist?order_id="+order_id,
+			"http://localhost:8080/review/checkExist?trip_id="+order_id,
 			{
 				method: "GET",
 				mode: "cors",
@@ -115,7 +115,6 @@ class TravellerManager extends Component {
 			this.setState({isDisable:true,info});
 		}else{
 			let comment = await commentRespone.json();
-			console.log(comment[0].rated);
 			this.setState({comment:comment[0].review,rated:comment[0].rated,isDisable:true,hideAddComment:true});
 		}
 	}
@@ -136,7 +135,7 @@ class TravellerManager extends Component {
 		var user = JSON.parse(sessionStorage.getItem('user'));
 		try {
 			const orderResponse = await fetch(
-				"http://localhost:8080/Order/GetOrderByStatus?role=" + "TRAVELER" + "&id=" + user.id+ "&status="+status,
+				Config.api_url+"Order/GetOrderByStatus?role=" + "TRAVELER" + "&id=" + user.id+ "&status="+status,
 				{
 					method: "GET",
 					mode: "cors",
@@ -183,18 +182,18 @@ class TravellerManager extends Component {
 			let {status} = this.state;
 			return (
 				<tr className="row100 body" key={index}>
-				<td className="cell100 ">{order.guider_id}</td>
+				<td className="cell100 "><Link to={'/guider/'+order.guider_id} style={{color:'#e71575'}}>{order.object}</Link></td>
 				<td className="cell100 ">{order.begin_date}</td>
 				<td className="cell100 ">{order.finish_date}</td>
-				<td className="cell100 ">{order.post_id}</td>
+				<td className="cell100 "><Link to={'/post/'+order.post_id} style={{color:'#e71575'}}>{order.postTitle}</Link></td>
 				<td className="cell100 ">{order.adult_quantity}</td>
 				<td className="cell100 ">{order.children_quantity}</td>
 				<td className="cell100 ">{order.fee_paid}$</td>
-				{status === "FINISHED" ? <td className="cell100 "><button type="button" className="btn btn-secondary" onClick={()=>this.showReview(order.order_id,order.guider_id,order.post_id)}>Review</button></td> : ''}
+				{status === "FINISHED" ? <td className="cell100 "><button type="button" className="btn btn-secondary" onClick={()=>this.showReview(order.trip_id,order.guider_id,order.post_id)}>Review</button></td> : ''}
 			</tr>
 			)
 		});
-		var arr = ['UNCONFIRMED','ONGOING','FINISHED','CANCELED'];
+		var arr = ['UNCONFIRMED','ONGOING','FINISHED','CANCELLED'];
 
 		var tab = arr.map((value,index) => 
 			<li key={index} onClick={()=>{this.tabList(value)}}>{value}</li>

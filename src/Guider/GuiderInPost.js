@@ -2,6 +2,7 @@ import React from 'react';
 import "font-awesome/css/font-awesome.min.css";
 import {Link} from 'react-router-dom';
 import Config from '../Config';
+import Rated from './Rated';
 class GuiderInPost extends React.Component {
       constructor(props) {
             super(props);
@@ -36,19 +37,12 @@ class GuiderInPost extends React.Component {
                   <div className="profile-box">
                         <div className="pb-header header-stick">
                         <div className="header-pb">
-                            <h1 className="TitlePb TileStickyPb">{guide.first_name + "" + guide.last_name}</h1>
-                            <div className="Rating">
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>
-                                250 reviews
-                            </div>
+                            <h1 className="TitlePb TileStickyPb">{guide.first_name + " " + guide.last_name}</h1>
+                            <Rated number={guide.rated} />
                         </div>
                         <div>
                             <img className="pf-avatar"
-                                src="https://withlocals-com-res.cloudinary.com/image/upload/w_80,h_80,c_thumb,q_auto,dpr_1.0,f_auto/956bda712df856f552fa7bfebbbcce8f"/>
+                                src={Config.api_url+"images/"+guide.avatar}/>
                         </div>
                     </div>
                     <p className="ListItem">

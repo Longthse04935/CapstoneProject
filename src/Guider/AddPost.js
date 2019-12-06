@@ -109,7 +109,6 @@ class AddPost extends Component {
             if (!responseLocation.ok) { throw Error(responseLocation.status + ": " + responseLocation.statusText); }
             const location = await responseLocation.json();
             const category = await responseCategory.json();
-            console.log(location + category);   
             copy.locations = location;
             copy.categories = category;
 

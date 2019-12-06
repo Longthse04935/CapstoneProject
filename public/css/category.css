@@ -82,10 +82,9 @@
   }
 .Search-2ul6i .Search-3ul6i .fillter{
     width: 458px;
-    height: 340px;
+    height: 130px;
     position: absolute;
     top: 62px;
-    overflow-y: scroll;
     box-sizing: border-box;
     box-shadow: 0 2px 8px 2px rgba(0,0,0,.1);
     left: 1px;
@@ -208,9 +207,21 @@
     font-size: 30px;
     font-weight: 600;
     position: relative;
+    background-color: #252525;
+    background-size: 100%;
 }
 .topGuiderByRate .content-left .ListItem{
         margin-top: 20px;
+}
+
+.imgpb-header{
+    width: 350px;
+    height: 450px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: .5rem;
+    object-fit: cover;
 }
 
 .topGuiderByRate .content-left .header-stick{

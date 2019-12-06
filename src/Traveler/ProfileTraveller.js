@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import ReactDOM from 'react-dom';
 import "font-awesome/css/font-awesome.min.css";
 import $ from "jquery";
 import country from '../json/country.json';
@@ -110,14 +111,13 @@ class ProfileTraveller extends Component {
     this.setState({ data });
   }
 
-  onImageChange = (event) => {
+  onImageChange = async (event) => {
     
     if (event.target.files && event.target.files[0]) {
-      let avtImage = event.target.value.replace("C:\\fakepath\\","");
       let reader = new FileReader();
     reader.onload = (event) => {
       
-      this.setState({avatar_link: event.target.result, avtImage });
+      this.setState({avatar_link: event.target.result});
     };
     reader.readAsDataURL(event.target.files[0]);
    }
@@ -221,18 +221,17 @@ class ProfileTraveller extends Component {
     if(this.isValidate()) {
       return false;
     } 
-    console.log( "data.avatar_link");
     var errorAPI = JSON.parse(sessionStorage.getItem('errorAPI'));
     var {data,avatar_link,avtImage} = this.state;
     data.traveler_id = user.id;
     data.date_of_birth = data.year +"-"+ data.month +"-"+ data.day+" 00:00"; 
     if(avtImage === ''){
-      data.avatar_link = await this.toBase64(avatar_link.replace(Config.api_url+'images/',''));
+      data.avatar_link = avatar_link.replace(Config.api_url+'images/','');
     }else{
-      data.avatar_link = await this.toBase64(avtImage);
+      data.avatar_link = avatar_link;
     }
-   console.log( data.avatar_link);
-   return false;
+    // console.log(data.avatar_link);
+    // return false;
     if(errorAPI === 200){
       let options = {
         method: 'POST',

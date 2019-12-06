@@ -36,7 +36,7 @@ class TravellerManager extends Component {
 		var user = JSON.parse(sessionStorage.getItem('user'));
 			try {
 				const orderResponse = await fetch(
-					"http://localhost:8080/Order/GetOrderByStatus?role=" + "TRAVELER" + "&id=" + user.id+ "&status=UNCONFIRMED",
+					Config.api_url+"Order/GetOrderByStatus?role=" + "TRAVELER" + "&id=" + user.id+ "&status=UNCONFIRMED",
 					{
 						method: "GET",
 						mode: "cors",
@@ -51,7 +51,6 @@ class TravellerManager extends Component {
 				}
 				
 				const order = await orderResponse.json();
-				console.log(order);
 				this.setState({ orders:order });
 			} catch (err) {
 				console.log(err);
@@ -136,7 +135,7 @@ class TravellerManager extends Component {
 		var user = JSON.parse(sessionStorage.getItem('user'));
 		try {
 			const orderResponse = await fetch(
-				"http://localhost:8080/Order/GetOrderByStatus?role=" + "TRAVELER" + "&id=" + user.id+ "&status="+status,
+				Config.api_url+"Order/GetOrderByStatus?role=" + "TRAVELER" + "&id=" + user.id+ "&status="+status,
 				{
 					method: "GET",
 					mode: "cors",
@@ -194,7 +193,7 @@ class TravellerManager extends Component {
 			</tr>
 			)
 		});
-		var arr = ['UNCONFIRMED','ONGOING','FINISHED','CANCELED'];
+		var arr = ['UNCONFIRMED','ONGOING','FINISHED','CANCELLED'];
 
 		var tab = arr.map((value,index) => 
 			<li key={index} onClick={()=>{this.tabList(value)}}>{value}</li>

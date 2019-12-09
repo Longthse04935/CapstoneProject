@@ -22,8 +22,12 @@ import AddPost from './Guider/AddPost';
 import { connect } from 'react-redux';
 import { logOut,logIn } from './redux/actions';
 import {wsConnect, wsDisconnect, send} from './redux/webSocket';
-import Message from './common/Message'
-import ChatList from './common/ChatStore'
+import Message from './common/Message';
+import ChatList from './common/ChatStore';
+import Books from './Guider/Books';
+import Schedule from './Guider/Schedule';
+import ChangePassword from "./common/ChangePassword";
+
 
 class App extends Component {
 	constructor(props) {
@@ -106,11 +110,14 @@ class App extends Component {
 					<Route path='/tour/:id' component={PostTourDetail} exact />
 					<Route path='/posttour/:id' component={PostTourDetail} />
 					<Route path='/book' component={Pay} />
-					<Route path='/tvlManager' component={TravellerManager} />
+					<Route path='/tvlManager'> <TravellerManager id={this.state.id}/> </Route>
 					<Route path='/contract' component={GuiderContract} />
 					<Route path='/chart' component={Chart} />
 					<Route path='/add' ><AddPost guiderId={this.state.id} /></Route>
-					<Route path='/chat' ><Message	 name={this.state.userName}
+					<Route path='/managebook' ><Books id={this.state.id} /></Route>
+					<Route path='/schedule' ><Schedule id={this.state.id} /></Route>
+					<Route path='/changepassword' ><ChangePassword guiderId={this.state.id} /></Route>
+					<Route path='/chat' ><Message	 id={this.state.id}
 					 messages={this.props.messages} clients={this.props.clients}/></Route>
 					<Route exact path={"/edit"}>
 						<BrowserRouter>

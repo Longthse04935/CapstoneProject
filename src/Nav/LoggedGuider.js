@@ -131,7 +131,7 @@ class LoggedGuider extends Component {
                                     <Link to="/chat">Message</Link>
                                 </li>
                                 <li>
-                                    <Link to={"/guier"+guider_id}>Bookings</Link>
+                                    <Link to={"/managebook"}>Bookings</Link>
                                 </li>
                                 <li className="avatarLogged" onClick={this.disableLoggedChoice}>
 
@@ -143,6 +143,8 @@ class LoggedGuider extends Component {
                                         <li><Link to="/profile">Profile</Link><i className="fa fa-address-card-o" aria-hidden="true"></i></li>
                                         <li><Link to="/edit">Edit Post</Link><i className="fa fa-pencil" aria-hidden="true"></i></li>
                                         <li><Link to="/add">Add Post</Link><i className="fa fa-user" aria-hidden="true"></i></li>
+                                        <li><Link to="/schedule">Schedule</Link><i className="fa fa-handshake-o" aria-hidden="true"></i></li>
+                                        <li><Link to="/changepassword">Change Password</Link><i className="fa fa-handshake-o" aria-hidden="true"></i></li>
                                         <li><Link to="/contract">Contract</Link><i className="fa fa-handshake-o" aria-hidden="true"></i></li>
                                         </span>
                                         <li onClick={() => {

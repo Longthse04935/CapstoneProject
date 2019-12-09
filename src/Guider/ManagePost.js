@@ -12,7 +12,8 @@ class ManagePost extends Component {
             this.state = {
                   currentPage: 1,
                   todosPerPage: 8,
-                  posts: []
+                  posts: [],
+                  page: 0
             };
       }
 
@@ -20,7 +21,7 @@ class ManagePost extends Component {
             try {
                   let guider_id = this.props.guiderId;
                   const responsePosts = await fetch(
-                        Config.api_url + "guiderpost/postOfOneGuider?guider_id=" + guider_id,
+                        Config.api_url + "guiderpost/postOfOneGuider/" + guider_id+"/"+this.state.page,
                         {
                               method: "GET",
                               mode: "cors",
@@ -37,7 +38,7 @@ class ManagePost extends Component {
 
                   const posts = await responsePosts.json();
                   console.log(posts);
-                  this.setState({ posts: posts });
+                  this.setState({ posts: posts, page: ++this.state.page });
             } catch (err) {
                   console.log(err);
             }

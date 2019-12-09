@@ -1,7 +1,6 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { send } from './redux/webSocket';
 import $ from "jquery";
+import Config from '../Config'
 class ChatList extends React.Component {
       constructor(props) {
             super(props);
@@ -18,7 +17,7 @@ class ChatList extends React.Component {
             console.log(this.props);
             return (<div className="changePassword" style={{}}>
 
-                  <form onSubmit={e => {
+                  <form onSubmit={async  (e) => {
                         e.preventDefault();
                         if (!password.value.trim()) {
                               return;
@@ -67,4 +66,4 @@ class ChatList extends React.Component {
       }
 }
 
-export default connect()(ChatList);
+export default (ChatList);

@@ -488,7 +488,7 @@ class Navbar extends Component {
                             <div className="loginLinkContain">
                                 <button className="loginLink">
                                     <span className="SpanReady">No account?</span>
-                                    <span className="SignIn"> Sign in</span>
+                                    <span className="SignIn"> Sign up</span>
                                 </button>
                             </div>
                         </form>

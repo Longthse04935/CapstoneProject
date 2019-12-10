@@ -13,7 +13,8 @@ class GuiderAllPost extends Component {
 			currentPage: 1,
 			todosPerPage: 8,
 			posts: [],
-			guider_id:""
+			guider_id:"",
+			page: 0
 		};
 	}
 
@@ -21,7 +22,7 @@ class GuiderAllPost extends Component {
 		try {
 			let guider_id = this.props.match.params.guider_id;
 			const responsePosts = await fetch(
-				Config.api_url + "guiderpost/postOfOneGuider?guider_id=" + guider_id,
+				Config.api_url + "guiderpost/postOfOneGuider/" + guider_id+"/"+this.state.page,
 				{
 					method: "GET",
 					mode: "cors",
@@ -37,7 +38,7 @@ class GuiderAllPost extends Component {
 			}
 
 			const posts = await responsePosts.json();
-			this.setState({ posts,guider_id });
+			this.setState({ posts:posts,guider_id:guider_id,page: ++this.state.page });
 		} catch (err) {
 			console.log(err);
 		}

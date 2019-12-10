@@ -9,24 +9,24 @@ class LoggedTvl extends Component {
     super(props);
     this.state = {
       disable: true,
-      avatar:''
+      avatar: ''
     };
   }
 
   async componentDidMount() {
     $("head").append('<link href="/css/login.css" rel="stylesheet"/>');
     $("head").append('<link href="/css/navbar.css" rel="stylesheet"/>');
-    $(".button-group > button").on("click", function() {
+    $(".button-group > button").on("click", function () {
       $(".button-group > button").removeClass("active");
       $(this).addClass("active");
     });
 
     let pathname = window.location.pathname;
     if (pathname !== "/") {
-      $("input[name=search]").focus(function() {
+      $("input[name=search]").focus(function () {
         $(".search .fillter").show();
       });
-      $(document).mouseup(function(e) {
+      $(document).mouseup(function (e) {
         if (
           !$(".search").is(e.target) &&
           !$(".fillter").is(e.target) &&
@@ -38,7 +38,7 @@ class LoggedTvl extends Component {
       });
     }
 
-    $(document).mouseup(function(e) {
+    $(document).mouseup(function (e) {
       var container = $(".dropContent");
       // if the target of the click isn't the container nor a descendant of the container
       if (!container.is(e.target) && container.has(e.target).length === 0) {
@@ -50,7 +50,7 @@ class LoggedTvl extends Component {
     let user = JSON.parse(window.sessionStorage.getItem("user"));
     if (user) {
       const responseTraveller = await fetch(
-        Config.api_url + "Traveler/GetTraveler?traveler_id="+user.id ,
+        Config.api_url + "Traveler/GetTraveler?traveler_id=" + user.id,
         {
           method: "GET",
           mode: "cors",
@@ -59,7 +59,7 @@ class LoggedTvl extends Component {
       );
 
       const dataTraveller = await responseTraveller.json();
-      this.setState({avatar:dataTraveller.avatar_link});
+      this.setState({ avatar: dataTraveller.avatar_link });
     }
   }
 
@@ -69,12 +69,12 @@ class LoggedTvl extends Component {
 
   render() {
     var guider_id = JSON.parse(sessionStorage.getItem("guider_id"));
-    let {avatar} = this.state;
+    let { avatar } = this.state;
     let avatar_link;
-    if(avatar === ""){
-        avatar_link = <img src={`${Config.api_url}images/account.jpg`} /> 
-    }else{
-        avatar_link = <img src={`${Config.api_url}images/${avatar}`} /> 
+    if (avatar === "") {
+      avatar_link = <img src={`${Config.api_url}images/account.jpg`} />
+    } else {
+      avatar_link = <img src={`${Config.api_url}images/${avatar}`} />
     }
     return (
       <div>
@@ -161,16 +161,16 @@ class LoggedTvl extends Component {
             <div className="navbarRightContent">
               <ul className="logged">
                 <li>
-                  <Link to="/">Message</Link>
+                  <Link to="/chat">Message</Link>
                 </li>
                 <li>
-                  <Link to={"/guier" + guider_id}>Bookings</Link>
+                  <Link to={"/tvlManager"}>Bookings</Link>
                 </li>
                 <li className="avatarLogged" onClick={this.disableLoggedChoice}>
-                {
-                   avatar_link
-                }
-                  
+                  {
+                    avatar_link
+                  }
+
 
                   <ul
                     className="dropContent"
@@ -187,10 +187,6 @@ class LoggedTvl extends Component {
                           className="fa fa-address-card-o"
                           aria-hidden="true"
                         ></i>
-                      </li>
-                      <li>
-                        <Link to="/tvlManager">Travel manager</Link>
-                        <i className="fa fa-file-text-o" aria-hidden="true"></i>
                       </li>
                     </span>
                     <li

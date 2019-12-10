@@ -25,7 +25,9 @@ class Home extends Component {
 			],
 			currentIndex: 0,
 			filter: "none",
-			location: []
+			location: [],
+			postPage: 0,
+			guiderPage: 0
 		};
 	}
 
@@ -150,7 +152,7 @@ class Home extends Component {
 	searchGuider = async (input) => {
 		try {
 			const responsePosts = await fetch(
-				Config.api_url + "Guider/Search/" + input,
+				Config.api_url + "Guider/Search/" + input+"/"+this.state.guiderPage,
 				{
 					method: "GET",
 					mode: "cors",
@@ -167,7 +169,7 @@ class Home extends Component {
 
 			const guiders = await responsePosts.json();
 
-			this.setState({ searchGuider: guiders });
+			this.setState({ searchGuider: guiders, guiderPage: ++this.state.guiderPage });
 		} catch (err) {
 			console.log(err);
 		}
@@ -176,7 +178,7 @@ class Home extends Component {
 		try {
 			let guider_id = this.props.id;
 			const responsePosts = await fetch(
-				Config.api_url + "guiderpost/findAllPostWithLocationName?name=" + input,
+				Config.api_url + "guiderpost/findAllPostWithLocationName/" + input+"/"+this.state.postPage,
 				{
 					method: "GET",
 					mode: "cors",
@@ -193,7 +195,7 @@ class Home extends Component {
 
 			const posts = await responsePosts.json();
 
-			this.setState({ searchPost: posts });
+			this.setState({ searchPost: posts, postPage: ++this.state.postPage });
 		} catch (err) {
 			console.log(err);
 		}

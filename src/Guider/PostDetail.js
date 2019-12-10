@@ -14,7 +14,8 @@ class PostDetail extends React.Component {
 			todosPerPage: 4,
 			postInfo: [],
 			posts: [],
-			guider: {}
+			guider: {},
+			page: 0
 		};
 	}
 	async componentDidMount() {
@@ -50,8 +51,8 @@ class PostDetail extends React.Component {
 
 			const responsePosts = await fetch(
 				Config.api_url +
-				"guiderpost/postOfOneGuider?guider_id=" +
-				guider.guider_id,
+				"guiderpost/postOfOneGuider/" +
+				guider.guider_id+"/"+this.state.page,
 				autheticate
 			);
 			if (!responsePosts.ok) {
@@ -69,7 +70,7 @@ class PostDetail extends React.Component {
 			window.sessionStorage.setItem("guider_id", "" + guider.guider_id);
 
 			const postInfo = await response.json();
-			this.setState({ postInfo });
+			this.setState({ postInfo:postInfo, page: ++this.state.page });
 
 
 			const posts = await responsePosts.json();

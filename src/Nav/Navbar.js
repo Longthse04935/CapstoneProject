@@ -146,7 +146,7 @@ class Navbar extends Component {
             this.statusProfile('We come to my website');
             // this.props.reload.call(this, await user);
         } catch (err) {
-            console.log('dulicate');
+            console.log(err);
         }
        
 

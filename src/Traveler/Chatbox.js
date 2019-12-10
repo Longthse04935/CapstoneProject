@@ -44,7 +44,9 @@ class Chatbox extends Component {
 			alert: null,
 			endTime: '',
 			valueItem: '',
-			guider: {},
+			guider: {
+				languages:['']
+			},
 			user: JSON.parse(sessionStorage.getItem('user'))
 		};
 	}
@@ -293,11 +295,18 @@ class Chatbox extends Component {
 
 	render() {
 		const { chatData, chatText, author, numberInjoy, plan, guider } = this.state;
-
+		let languages = '' ;
+		for (var i = 0 ; i < guider.languages.length;i++){
+			if(i+1 === guider.languages.length){
+				languages += guider.languages[i].toUpperCase();
+			}else{
+				languages += guider.languages[i].toUpperCase()+',';
+			}
+		}
 		let selectHour = this.state.timeAvailable.map((value, index) => {
 			return <option key={index} value={value}>{value}</option>;
 		});
-
+		console.log(guider);
 
 		return (
 			<div className="ChatRoom">
@@ -312,7 +321,7 @@ class Chatbox extends Component {
 							<p>
 								Check out the plan below to see what you'll get up to with your
 								local host.
-              </p>
+              				</p>
 							<p> Feel free to personalize this offer.</p>
 							<div style={{ marginBottom: "30px" }} />
 							{
@@ -335,10 +344,10 @@ class Chatbox extends Component {
 					{/* guider infor */}
 					<div className="guiderInfo" >
 						<div className="guiderContent">
-							<h1>{window.sessionStorage.getItem("guider_name")}</h1>
+							<h1>{guider.first_name+" "+guider.last_name}</h1>
 
 							<div className="rating ratingChatbox">
-								<img src="https://withlocals-com-res.cloudinary.com/image/upload/w_80,h_80,c_thumb,q_auto,dpr_1.0,f_auto/956bda712df856f552fa7bfebbbcce8f" />
+								<img src={Config.api_url+"images/"+guider.avatar} />
 								<i className="fa fa-star" aria-hidden="true"></i>
 								<i className="fa fa-star" aria-hidden="true"></i>
 								<i className="fa fa-star" aria-hidden="true"></i>
@@ -358,7 +367,7 @@ class Chatbox extends Component {
 											<i className="fa fa-globe"></i>
 										</span>
 										<span className="tool-tipItemText">
-											I speak {guider.languages}
+											I speak {languages}
 										</span>
 									</p>
 									<p className="tool-tipItem">
@@ -366,7 +375,7 @@ class Chatbox extends Component {
 											<i className="fa fa-heart"></i>
 										</span>
 										<span className="tool-tipItemText">
-											My passions are
+											My passions are {guider.passion}
                         </span>
 									</p>
 									<p className="tool-tipItem">

@@ -59,6 +59,7 @@ class LoggedTvl extends Component {
       );
 
       const dataTraveller = await responseTraveller.json();
+      console.log(dataTraveller);
       this.setState({ avatar: dataTraveller.avatar_link });
     }
   }
@@ -70,12 +71,15 @@ class LoggedTvl extends Component {
   render() {
     var guider_id = JSON.parse(sessionStorage.getItem("guider_id"));
     let { avatar } = this.state;
-    let avatar_link;
-    if (avatar === "") {
-      avatar_link = <img src={`${Config.api_url}images/account.jpg`} />
-    } else {
-      avatar_link = <img src={`${Config.api_url}images/${avatar}`} />
-    }
+    let avatar_link = <img src={avatar} />
+    // let avatar_link;
+    // if (avatar === "") {
+    //   console.log('avata null')
+    //   
+    // } else {
+    //   console.log('avata not null')
+    //   avatar_link = <img src={`${Config.api_url}images/${avatar}`} />
+    // }
     return (
       <div>
         {/* Menubar */}
@@ -187,6 +191,10 @@ class LoggedTvl extends Component {
                           className="fa fa-address-card-o"
                           aria-hidden="true"
                         ></i>
+                      </li>
+                      <li>
+                        <Link to="/tvlManager">Traveler manage</Link>
+                        <i className="fa fa-suitcase" aria-hidden="true"></i>
                       </li>
                     </span>
                     <li

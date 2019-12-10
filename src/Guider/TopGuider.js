@@ -46,8 +46,6 @@ class TopGuider extends Component {
 
                   const posts = await responseRate.json();
                   const postsContribute = await responseContribute.json();
-                  console.log(posts);
-                  console.log(postsContribute);
                   this.setState({ postsRate: posts, postsContribute:postsContribute});
             } catch (err) {
                   console.log(err);

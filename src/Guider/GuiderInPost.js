@@ -6,7 +6,11 @@ import Rated from './Rated';
 class GuiderInPost extends React.Component {
       constructor(props) {
             super(props);
-            this.state = {guider:[]};
+            this.state = {
+                guider: {
+                    languages: ['']
+                }
+            };
       }
       async componentDidMount() {
             try {
@@ -26,12 +30,20 @@ class GuiderInPost extends React.Component {
       }
       render() {
             let guide = this.state.guider;
-            let languages = guide.languages;
+            let languages = '' ;
+            for (var i = 0 ; i < guide.languages.length;i++){
+                if(i+1 === guide.languages.length){
+                    languages += guide.languages[i].toUpperCase();
+                }else{
+                    languages += guide.languages[i].toUpperCase()+',';
+                }
+            }
+            
             let checkPath = window.location.pathname ;
             if(checkPath.includes('post') ){
                 checkPath = <Link to={"/chatbox/"+this.props.postId}><button className="BtnContact">Contact with me</button></Link>;
             }else{
-                checkPath = <Link to={"/"}><button className="BtnContact">Go home</button></Link>;
+                checkPath = <Link to={"/chat"}><button className="BtnContact">Contact with me</button></Link>;
             }
             return (
                   <div className="profile-box">
@@ -59,6 +71,14 @@ class GuiderInPost extends React.Component {
                         </span>
                         <span className="ListItemText">
                             I speak {languages}
+                        </span>
+                    </p>
+                    <p className="ListItem">
+                        <span className="ListItemIcon">
+                        <i className="fa fa-graduation-cap" aria-hidden="true"></i>
+                        </span>
+                        <span className="ListItemText">
+                            Age {guide.age}
                         </span>
                     </p>
                     <p className="ListItem">

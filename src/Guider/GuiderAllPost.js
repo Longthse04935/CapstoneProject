@@ -82,7 +82,7 @@ class GuiderAllPost extends Component {
 			<li key={index}>
 			<div className="sheet">
 			  <div className="imageFigure">
-				<img src={Config.api_url+'images/'+post.picture_link[0]} alt="logo" />
+				<img src={post.picture_link[0]} alt="logo" />
 			  </div>
 			  <div className="experienceCard-details">
 				<span className="enjoy">

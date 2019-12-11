@@ -1,30 +1,33 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
 import "font-awesome/css/font-awesome.min.css";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
 import Config from '../Config';
+import { connect } from 'react-redux';
+import { logOut } from '../redux/actions';
 
 class LoggedGuider extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            disable: true
+            disable: true,
+            avatar: ''
         }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         $("head").append('<link href="/css/login.css" rel="stylesheet"/>');
         $("head").append('<link href="/css/navbar.css" rel="stylesheet"/>');
         $('.button-group > button').on('click', function () {
             $('.button-group > button').removeClass('active');
             $(this).addClass('active');
         });
-     
+
         let pathname = window.location.pathname;
-        if(pathname !== '/'){
+        if (pathname !== '/') {
             $('input[name=search]').focus(function () {
                 $('.search .fillter').show();
-    
+
             });
             $(document).mouseup(function (e) {
                 if (!$('.search').is(e.target) && !$('.fillter').is(e.target)
@@ -34,12 +37,26 @@ class LoggedGuider extends Component {
                 }
             });
         }
+        let user = JSON.parse(window.sessionStorage.getItem("user"));
+        if (user) {
+            const responseTraveller = await fetch(
+                Config.api_url + "Guider/getGuider/" + user.id,
+                {
+                    method: "GET",
+                    mode: "cors",
+                    credentials: "include"
+                }
+            );
+
+            const dataTraveller = await responseTraveller.json();
+            this.setState({ avatar: dataTraveller.avatar_link });
+        }
     }
 
     disableLoggedChoice = () => {
         this.setState({ disable: !this.state.disable });
     }
-    
+
     render() {
         var user = JSON.parse(sessionStorage.getItem('user'));
         var guider_id = JSON.parse(sessionStorage.getItem('guider_id'));
@@ -136,27 +153,28 @@ class LoggedGuider extends Component {
                                 <li className="avatarLogged" onClick={this.disableLoggedChoice}>
 
 
-                                    <img src={`${Config.api_url}images/account.jpg`}/>
+                                    <img src={`${this.state.avatar}`} />
 
                                     <ul className="dropContent" style={this.state.disable ? { display: 'none' } : { display: 'block' }}>
                                         <span>
-                                        <li><Link to="/profile">Profile</Link><i className="fa fa-address-card-o" aria-hidden="true"></i></li>
-                                        <li><Link to="/edit">Edit Post</Link><i className="fa fa-pencil" aria-hidden="true"></i></li>
-                                        <li><Link to="/add">Add Post</Link><i className="fa fa-user" aria-hidden="true"></i></li>
-                                        <li><Link to="/schedule">Schedule</Link><i className="fa fa-handshake-o" aria-hidden="true"></i></li>
-                                        <li><Link to="/changepassword">Change Password</Link><i className="fa fa-handshake-o" aria-hidden="true"></i></li>
-                                        <li><Link to="/contract">Contract</Link><i className="fa fa-handshake-o" aria-hidden="true"></i></li>
+                                            <li><Link to="/profileguiders">Profile</Link><i className="fa fa-address-card-o" aria-hidden="true"></i></li>
+                                            <li><Link to="/edit">Edit Post</Link><i className="fa fa-pencil" aria-hidden="true"></i></li>
+                                            <li><Link to="/add">Add Post</Link><i className="fa fa-user" aria-hidden="true"></i></li>
+                                            <li><Link to="/schedule">Schedule</Link><i className="fa fa-handshake-o" aria-hidden="true"></i></li>
+                                            <li><Link to="/changepassword">Change Password</Link><i className="fa fa-handshake-o" aria-hidden="true"></i></li>
+                                            <li><Link to="/contract">Contract</Link><i className="fa fa-handshake-o" aria-hidden="true"></i></li>
                                         </span>
                                         <li onClick={() => {
-                                            console.log("log out");
-                                            const user = {
-                                                userName: "Guest",
-                                                role: "GUEST",
-                                                id: 0
-                                            };
+                                            // console.log("log out");
+                                            // const user = {
+                                            //   userName: "Guest",
+                                            //   role: "GUEST",
+                                            //   id: 0
+                                            // };
+                                            // this.props.reload.call(this, user);window.location.href = '/';
+                                            this.props.dispatch(logOut());
+                                            return (<Redirect to='/'  />);
                                             
-                                            this.props.reload.call(this, user);
-                                            window.location.href = '/';
                                         }}>Log out<i className="fa fa-sign-out" aria-hidden="true"></i></li>
 
                                     </ul>
@@ -173,4 +191,4 @@ class LoggedGuider extends Component {
     }
 }
 
-export default LoggedGuider;
+export default connect()(LoggedGuider);

@@ -1,5 +1,6 @@
 import React from 'react';
 import Config from '../Config';
+import ReactDOM from 'react-dom';
 
 class PlanInPost extends React.Component {
       constructor(props) {
@@ -57,7 +58,7 @@ class PlanInPost extends React.Component {
                               </div>
 
                         </div>
-                        {this.state.plans.detail}
+                        <div  dangerouslySetInnerHTML={{__html: this.state.plans.detail}}/>
 
                   </div>
             );

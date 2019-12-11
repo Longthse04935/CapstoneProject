@@ -3,6 +3,7 @@ import "font-awesome/css/font-awesome.min.css";
 import {Link} from 'react-router-dom';
 import Config from '../Config';
 import Rated from './Rated';
+import { connect } from 'react-redux';
 class GuiderInPost extends React.Component {
       constructor(props) {
             super(props);
@@ -10,13 +11,14 @@ class GuiderInPost extends React.Component {
       }
       async componentDidMount() {
             try {
-                  const response = await fetch(Config.api_url + "Guider/" + this.props.guiderId,{
+                  const response = await fetch(Config.api_url + "Guider/" + this.props.user.id,{
                     method: "GET",
                     mode: "cors",
                     credentials: "include"
                 });
                   if (!response.ok) { throw Error(response.status + ": " + response.statusText); }
                   const guider = await response.json();
+                //   console.log(guider);
                   this.setState({guider});
                   window.sessionStorage.setItem("guider_name", ""+guider.first_name);
             } catch (err) {
@@ -42,7 +44,7 @@ class GuiderInPost extends React.Component {
                         </div>
                         <div>
                             <img className="pf-avatar"
-                                src={Config.api_url+"images/"+guide.avatar}/>
+                                src={guide.avatar}/>
                         </div>
                     </div>
                     <p className="ListItem">
@@ -90,5 +92,9 @@ class GuiderInPost extends React.Component {
       }
 
 }
+function mapStateToProps(state) {
 
-export default GuiderInPost;
+  const user = state.user;
+    return {messages, clients, user};
+}
+export default connect(mapStateToProps)(GuiderInPost);

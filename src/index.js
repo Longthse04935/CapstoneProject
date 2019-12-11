@@ -8,19 +8,32 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import rootReducer from './redux/reducers';
 import thunkMiddleware from 'redux-thunk'
 import wsMiddleware from './redux/middleware';
-import WebSocketConnection from './redux/WebSocketConnection';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
+import { PersistGate } from 'redux-persist/lib/integration/react';
+import storageSession from 'redux-persist/lib/storage/session';
 //const store = createStore(signInApp);
-const store = createStore(
-  rootReducer,
+
+const persistConfig = {
+  key: 'root',
+  storage: storageSession,
+  stateReconciler: autoMergeLevel2 // see "Merge Process" section for details.
+ };
+ const pReducer = persistReducer(persistConfig, rootReducer);
+ 
+ const store = createStore(
+  pReducer,
   applyMiddleware(thunkMiddleware, wsMiddleware )
 );
+const persistor = persistStore(store);
 ReactDOM.render((
   <Provider store={store}>
-    {/* <WebSocketConnection host={"ws://localhost:8080/ws"}> */}
+    <PersistGate persistor={persistor}>
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    {/* </WebSocketConnection> */}
+      </PersistGate>
     </Provider>
 ), document.getElementById('root'));
 

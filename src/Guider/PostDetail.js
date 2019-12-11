@@ -30,7 +30,6 @@ class PostDetail extends React.Component {
 					'Accept': 'application/json'
 				}
 			}
-
 			const response2 = await fetch(
 				Config.api_url + "Guider/guiderByPostId?post_id=" + post_id,
 				autheticate
@@ -39,8 +38,6 @@ class PostDetail extends React.Component {
 				throw Error(response2.status + ": " + response2.statusText);
 			}
 			const guider = await response2.json();
-			this.setState({ guider });
-
 			const response = await fetch(
 				Config.api_url + "guiderpost/findSpecificPost?post_id=" + post_id,
 				autheticate
@@ -48,17 +45,15 @@ class PostDetail extends React.Component {
 			if (!response.ok) {
 				throw Error(response.status + ": " + response.statusText);
 			}
-
 			const responsePosts = await fetch(
 				Config.api_url +
 				"guiderpost/postOfOneGuider/" +
-				guider.guider_id+"/"+this.state.page,
+				guider.guider_id + "/" + this.state.page,
 				autheticate
 			);
 			if (!responsePosts.ok) {
 				throw Error(responsePosts.status + ": " + responsePosts.statusText);
 			}
-
 			const responseCategories = await fetch(
 				Config.api_url + "category/findAll",
 				autheticate
@@ -66,16 +61,12 @@ class PostDetail extends React.Component {
 			if (!responsePosts.ok) {
 				throw Error(responsePosts.status + ": " + responsePosts.statusText);
 			}
-
 			window.sessionStorage.setItem("guider_id", "" + guider.guider_id);
-
 			const postInfo = await response.json();
-			this.setState({ postInfo:postInfo, page: ++this.state.page });
-
-
 			const posts = await responsePosts.json();
-			this.setState({ posts });
 			let link_youtube = postInfo.video_link;
+			console.log(posts);
+			this.setState({ postInfo: postInfo, page: ++this.state.page, posts: posts, guider: guider });
 			if (link_youtube.includes('youtu.be')) {
 				link_youtube = link_youtube.replace("youtu.be", "youtube.com/embed");
 				this.setState({ link_youtube });
@@ -84,13 +75,40 @@ class PostDetail extends React.Component {
 				this.setState({ link_youtube: link_youtube[0].replace("watch?v=", "embed/") });
 			}
 
-
-
 		} catch (err) {
 			console.log(err);
 		}
 	}
+	commonNext = () => {
+		let { currentIndex, slideShow } = this.state;
+		currentIndex++;
+		if (currentIndex >= slideShow.length) {
+			currentIndex = 0;
+		}
+		this.setState({ currentIndex });
+	}
 
+
+	handleNext = () => {
+		clearInterval(this.state.intervalId);
+		this.commonNext();
+		this.setupInterval();
+	}
+
+	handlePrev = () => {
+		clearInterval(this.state.intervalId);
+		let { currentIndex, slideShow } = this.state;
+		currentIndex--;
+		if (currentIndex < 0) {
+			currentIndex = slideShow.length - 1;
+		}
+		this.setState({ currentIndex });
+		this.setupInterval();
+	}
+	setupInterval = () => {
+		let intervalId = setInterval(this.timer, 3000);
+		this.setState({ intervalId: intervalId });
+	}
 	handleGotoPage = (post_id, guider_id) => {
 		this.props.history.push("/post/" + post_id);
 		window.location.reload();
@@ -141,7 +159,7 @@ class PostDetail extends React.Component {
 			<li key={index}>
 				<div className="sheet">
 					<div className="imageFigure">
-						<img src={Config.api_url + 'images/' + post.picture_link[0]} alt="logo" />
+						<img src={post.picture_link[0]} alt="logo" />
 					</div>
 					<div className="experienceCard-details">
 						<span className="enjoy">
@@ -193,8 +211,21 @@ class PostDetail extends React.Component {
 				</div>
 			</li>
 		));
-
-		let imgPostInfo = <img className="imgPostInfo" src={Config.api_url + 'images/' + postInfo.picture_link} />;
+		let imgPostInfo = (<div className="slideshow-container">
+			<h2>What you can expect</h2>
+			{postInfo.picture_link.map((link, i) => (
+				<div className={`mySlides${i === this.state.currentIndex ? ' active' : ''}`} key={i}>
+					<img src={link} />
+				</div>
+			))}
+			<a className="prev" onClick={this.handlePrev}>
+				❮
+		</a>
+			<a className="next" onClick={this.handleNext}>
+				❯
+		</a>
+		</div>);
+		//<img className="imgPostInfo" src={postInfo.picture_link} />;
 
 		return (
 			<div>
@@ -263,9 +294,9 @@ class PostDetail extends React.Component {
 
 									<ReviewInPost postId={post_id} />
 
-
-									<PlanInPost postId={post_id} />
 									{imgPostInfo}
+									<PlanInPost postId={post_id} />
+
 								</div>
 
 								<div className="bookOffers">

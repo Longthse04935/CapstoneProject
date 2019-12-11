@@ -4,7 +4,8 @@ import $ from 'jquery';
 import Config from '../Config';
 import ReactDOM from 'react-dom';
 import SweetAlert from 'react-bootstrap-sweetalert';
-
+import { connect } from 'react-redux';
+import { signIn } from '../redux/actions';
 class Navbar extends Component {
     constructor(props) {
         super(props);
@@ -158,27 +159,29 @@ class Navbar extends Component {
         eve.preventDefault();
         let{login,errors} = this.state;
         try {
-            const response = await fetch(Config.api_url + "account/login",
-                {
-                    method: "POST",
-                    mode: "cors",
-                    credentials: "include",
-                    headers: {
-                        'Content-Type': 'application/json',
+            // const response = await fetch(Config.api_url + "account/login",
+            //     {
+            //         method: "POST",
+            //         mode: "cors",
+            //         credentials: "include",
+            //         headers: {
+            //             'Content-Type': 'application/json',
 
-                    },
-                    body: JSON.stringify(login)
-                }
-            );
-            if (!response.ok) { throw Error(response.status + ": " + response.statusText); }
-            const user = await response.json();
-            // console.log(await user);
-            if(user.role !== login.role){
-                errors['role'] = 'Role is wrong';
-                this.setState({errors});
-                return false;
-            }
-            this.props.reload.call(this, await user);
+            //         },
+            //         body: JSON.stringify(login)
+            //     }
+            // );
+            // if (!response.ok) { throw Error(response.status + ": " + response.statusText); }
+            // const user = await response.json();
+            // // console.log(await user);
+            // if(user.role !== login.role){
+            //     errors['role'] = 'Role is wrong';
+            //     this.setState({errors});
+            //     return false;
+            // }
+            // this.props.reload.call(this, await user);
+            this.props.dispatch(signIn(login));
+            //this.props.reload.call(this,  this.props.user);
         } catch (err) {
             console.log(err);
             errors['login'] = 'User name or password is wrong';
@@ -601,4 +604,4 @@ class Navbar extends Component {
     }
 }
 
-export default Navbar;
+export default connect()(Navbar);

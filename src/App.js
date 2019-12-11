@@ -26,12 +26,15 @@ import Message from './common/Message';
 import ChatList from './common/ChatStore';
 import Books from './Guider/Books';
 import Schedule from './Guider/Schedule';
+import GuiderProfile from './Guider/GuiderProfile';
 import ChangePassword from "./common/ChangePassword";
-
+import EditPost from './Guider/EditPost';
 
 class App extends Component {
 	constructor(props) {
 		super(props);
+		console.log("constructor app");
+		console.log(props);
 		this.state = {
 			userName: "Guest",
 			role: "GUEST",
@@ -80,9 +83,22 @@ class App extends Component {
 
 
 	render() {
+		// let present;
+		// let user = JSON.parse(window.sessionStorage.getItem('user'));
+		// if (this.state.logedIn) {
+		// 	if (user.role === 'TRAVELER') {
+		// 		present = <LoggedTvl reload={this.reload} />;
+		// 	}
+		// 	else {
+		// 		present = <LoggedGuider reload={this.reload} />;
+		// 	}
+		// } else {
+		// 	present = <Navbar reload={this.reload} user={this.props.user}/>;
+		// }
+
 		let present;
-		let user = JSON.parse(window.sessionStorage.getItem('user'));
-		if (this.state.logedIn) {
+		let user = this.props.user; 
+		if (user.logedIn) {
 			if (user.role === 'TRAVELER') {
 				present = <LoggedTvl reload={this.reload} />;
 			}
@@ -92,8 +108,6 @@ class App extends Component {
 		} else {
 			present = <Navbar reload={this.reload} />;
 		}
-
-
 		return (
 			<div>
 				{present}
@@ -103,8 +117,7 @@ class App extends Component {
 					<Route path='/guider/:guider_id' component={GuiderAllPost} exact />
 					<Route path='/post/:post_id' component={PostDetail} exact />
 					<Route exact path='/chatbox/:post_id' component={Chatbox} />
-					<Route exact path='/chatbox/:post_id/:message' component={Chatbox} />
-					<Route path='/profileguiders' component={ProfileGuiders} />
+					<Route path='/profileguiders'><GuiderProfile /> </Route>
 					<Route path='/tour' component={Tour} />
 					<Route path='/profiletraveller' component={ProfileTravaller} />
 					<Route path='/tour/:id' component={PostTourDetail} exact />
@@ -113,17 +126,14 @@ class App extends Component {
 					<Route path='/tvlManager'> <TravellerManager id={this.state.id}/> </Route>
 					<Route path='/contract' component={GuiderContract} />
 					<Route path='/chart' component={Chart} />
-					<Route path='/add' ><AddPost guiderId={this.state.id} /></Route>
-					<Route path='/managebook' ><Books id={this.state.id} /></Route>
-					<Route path='/schedule' ><Schedule id={this.state.id} /></Route>
-					<Route path='/changepassword' ><ChangePassword guiderId={this.state.id} /></Route>
-					<Route path='/chat' ><Message	 id={this.state.id}
+					<Route path='/add' ><AddPost guiderId={this.props.user.id} /></Route>
+					<Route path='/managebook' ><Books id={this.props.user.id} /></Route>
+					<Route path='/schedule' ><Schedule id={this.props.user.id} /></Route>
+					<Route path='/changepassword' ><ChangePassword guiderId={this.props.user.id} /></Route>
+					<Route path='/chat' ><Message	 id={this.props.user.id}
 					 messages={this.props.messages} clients={this.props.clients}/></Route>
-					<Route exact path={"/edit"}>
-						<BrowserRouter>
-							<ManagePost guiderId={this.state.id} />
-						</BrowserRouter>
-					</Route>
+					<Route exact path={"/edit"}><ManagePost guiderId={this.props.user.id} /></Route>
+					<Route path={"/update/:guider/:post"} component={EditPost}/>
 
 
 				</Switch>
@@ -137,7 +147,8 @@ function mapStateToProps(state) {
       console.log(state);
 	const messages = state.messages;
 	const clients = state.clients;
-      return {messages, clients};
+	const user = state.user;
+      return {messages, clients, user};
 }
 App = connect(mapStateToProps)(App);
 

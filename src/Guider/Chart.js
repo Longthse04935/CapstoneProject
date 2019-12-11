@@ -39,7 +39,7 @@ class Chart extends Component {
 		
 		return (
 		<div className="splineChart" style={{marginTop:'6%'}}>
-			<h1>React Spline Chart</h1>
+			<h1>Your income history</h1>
 			<CanvasJSChart options = {options} 
 
 			/>

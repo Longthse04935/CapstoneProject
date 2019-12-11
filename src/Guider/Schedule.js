@@ -3,56 +3,49 @@ import { Link } from 'react-router-dom';
 import $ from 'jquery';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+
+import Config from "../Config";
 class Schedule extends Component {
 
       constructor(props) {
             super(props);
             this.state = {
                   orders: [],
-                  tourDate: new Date()
+                  tourDate: new Date(),
+                  id: 0
             };
       }
+      componentWillMount() {
+            var user = JSON.parse(sessionStorage.getItem('user'));
+            if (user === null) {
+                  sessionStorage.setItem('messagePay', 'Error user or tour inf');
+                  window.location.href = '/';
+            } else if (user.role === 'TRAVELER') {
+                  sessionStorage.setItem('messagePay', 'You are TRAVELER');
+                  window.location.href = '/';
+            } else {
+                  this.state.id = user.id;
+            }
+      }
 
-      dateChange = async date => {
-            // let getDate = parseInt(date.getDate()) < 10 ? "0"+parseInt(date.getDate()) : parseInt(date.getDate());
-            // let getMonth = parseInt(date.getMonth()+1) < 10 ? "0"+parseInt(date.getMonth()+1) : parseInt(date.getMonth()+1);
-            // let data = {
-            //   "guider_id":"1",
-            //   "post_id": ""+this.props.match.params.post_id,
-            //   "begin_date":"" + getMonth + "/"+ getDate +"/"+ date.getFullYear()+" 00:00"
-            // };
-        
-            this.setState({
-              tourDate: date
-            });
-        
-            let options = {
-              method: 'POST',
-              headers: {
-                  Accept: 'application/json',
-                  'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(date)
-            };
-            let response = await fetch('http://localhost:8080/Order/getOrderByWeek/'+this.props.user.id, options);
-            let order = await response.json();
-            console.log("schedule "+ await order.object);
-            //this.setState({timeAvailable:response});
-        
-          }
+
+
 
 
       render() {
             let order = this.state.orders.map((order, index) =>
-                  <tr className="row100 body" key="index">
-                        <td className="cell100 column2">{order.traveler_id}</td>
-                        <td className="cell100 column3">{order.begin_date}</td>
-                        <td className="cell100 column4">{order.finish_date}</td>
-                        <td className="cell100 column5">{order.post_id}</td>
-                        <td className="cell100 column6">{order.adult_quantity}</td>
-                        <td className="cell100 column7">{order.children_quantity}</td>
-                        <td className="cell100 column8">{order.fee_paid}</td>
-                  </tr>
+                  // <li className="single-event" data-start={`${order.begin_date.getHours()}:${order.begin_date.getMinutes()}`} 
+                  // data-end={`${order.finish_date.getHours()}:${order.finish_date.getMinutes()}`}
+                  // time-start={`${order.begin_date.getHours()}:${order.begin_date.getMinutes()}`}
+                  // data-end={`${order.finish_date.getHours()}:${order.finish_date.getMinutes()}`}
+                  //  data-content="event-abs-circuit" data-event="event-1">
+                  //       <a >
+                  <em className="event-name">{order.object}</em>
+                  //       </a>
+                  //       <Link to={`/post/${order.post_id}`}>
+                  //             <em className="event-name">{order.postTitle}</em>
+                  //       </Link>
+                  // </li>
             );
 
             return (
@@ -97,11 +90,18 @@ class Schedule extends Component {
 
                               <div className="events">
                                     <ul>
+
+                                          <li className="events-group">
+                                                <div className="top-info"><span>Sunday</span></div>
+
+                                                <ul>
+                                                </ul>
+                                          </li>
                                           <li className="events-group">
                                                 <div className="top-info"><span>Monday</span></div>
 
                                                 <ul>
-                                                      <li className="single-event" data-start="00:01" data-end="03:00" time-start="00:01" time-end="03:00" data-content="event-abs-circuit" data-event="event-1">
+                                                      <li className="single-event" data-start="0:01" data-end="3:00"  data-content="event-abs-circuit" data-event="event-1">
                                                             <a href="#0">
                                                                   <em className="event-name">Abs Circuit</em>
                                                             </a>
@@ -139,6 +139,13 @@ class Schedule extends Component {
 
                                                 </ul>
                                           </li>
+                                          <li className="events-group">
+                                                <div className="top-info"><span>Saturday</span></div>
+
+                                                <ul>
+
+                                                </ul>
+                                          </li>
                                     </ul>
                               </div>
 
@@ -168,20 +175,41 @@ class Schedule extends Component {
                   </div>
             );
       }
+      dateChange = async date => {
+            this.setState({
+                  tourDate: date
+            });
+
+            let options = {
+                  method: 'POST',
+                  headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(date)
+            };
+            let response = await fetch(Config.api_url + 'Order/getOrderByWeek/' + this.state.id, options);
+            let order = await response.json();
+            console.log(order);
+            //this.setState({timeAvailable:response});
+
+      }
       async componentDidMount() {
             $("head").append('<link href="/css/schedule.css" rel="stylesheet"/>');
             try {
                   let options = {
                         method: 'POST',
                         headers: {
-                            Accept: 'application/json',
-                            'Content-Type': 'application/json',
+                              Accept: 'application/json',
+                              'Content-Type': 'application/json',
                         },
                         body: JSON.stringify(new Date)
-                      };
-                      let response = await fetch('http://localhost:8080/Order/getOrderByWeek/'+this.props.user.id, options);
-                      response = await response.json();
-                      console.log("schedule "+ response);
+                  };
+                  let response = await fetch(Config.api_url + 'Order/getOrderByWeek/' + this.state.id, options);
+                  //console.log("schedule "+ await response);
+                  let orders = await response.json();
+                  console.log(orders);
+                  this.setState({ orders: orders });
             } catch (err) {
                   console.log(err);
             }
@@ -253,7 +281,7 @@ class Schedule extends Component {
 
                         this.singleEvents.each(function () {
                               //create the .event-date element for each event
-                              var durationLabel = '<span class="event-date">' + $(this).attr('time-start') + ' - ' + $(this).attr('time-end') + '</span>';
+                              var durationLabel = '<span class="event-date">' + $(this).attr('data-start') + ' - ' + $(this).attr('data-end') + '</span>';
                               $(this).children('a').prepend($(durationLabel));
 
                               //detect click on the event and open the modal

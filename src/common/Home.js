@@ -9,6 +9,7 @@ import { NONAME } from "dns";
 class Home extends Component {
 	constructor(props) {
 		super(props);
+		
 		this.state = {
 			category: [],
 			alert: null,
@@ -30,6 +31,7 @@ class Home extends Component {
 			guiderPage: 0
 		};
 	}
+	
 
 
 	onNotification() {
@@ -80,7 +82,7 @@ class Home extends Component {
 				throw Error(responseTour.status + ": " + responseTour.statusText);
 			}
 			const cities = await locate.json();
-			
+
 
 			const responseTour = await fetch(Config.api_url + "guiderpost/getTopTour", {
 				method: "GET",
@@ -152,7 +154,7 @@ class Home extends Component {
 	searchGuider = async (input) => {
 		try {
 			const responsePosts = await fetch(
-				Config.api_url + "Guider/Search/" + input+"/"+this.state.guiderPage,
+				Config.api_url + "Guider/Search/" + input + "/" + this.state.guiderPage,
 				{
 					method: "GET",
 					mode: "cors",
@@ -176,9 +178,9 @@ class Home extends Component {
 	}
 	searchLocation = async (input) => {
 		try {
-			let guider_id = this.props.id;
+			//let guider_id = this.props.id;
 			const responsePosts = await fetch(
-				Config.api_url + "guiderpost/findAllPostWithLocationName/" + input+"/"+this.state.postPage,
+				Config.api_url + "guiderpost/findAllPostWithLocationName/" + input + "/" + this.state.postPage,
 				{
 					method: "GET",
 					mode: "cors",
@@ -223,7 +225,7 @@ class Home extends Component {
 		let slide = this.state.tours.map((value, index) => (
 			<div className="slideContent" key={index}>
 				<h2>Enjoy our {value.title}</h2>
-				<img src={`${Config.api_url}images/${value.picture_link[0]}`} />
+				<img src={`${value.picture_link[0]}`} />
 				<Link to={"/post/" + value.post_id}>
 					<button>Explore</button>
 				</Link>
@@ -393,5 +395,6 @@ class Home extends Component {
 		);
 	}
 }
+
 
 export default Home;

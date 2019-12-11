@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import $ from "jquery";
 import "font-awesome/css/font-awesome.min.css";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
 import Config from "../Config";
+import { connect } from 'react-redux';
+import { logOut } from '../redux/actions';
 
 class LoggedTvl extends Component {
   constructor(props) {
@@ -74,7 +76,7 @@ class LoggedTvl extends Component {
     if (avatar === "") {
       avatar_link = <img src={`${Config.api_url}images/account.jpg`} />
     } else {
-      avatar_link = <img src={`${Config.api_url}images/${avatar}`} />
+      avatar_link = <img src={`${avatar}`} />
     }
     return (
       <div>
@@ -191,14 +193,16 @@ class LoggedTvl extends Component {
                     </span>
                     <li
                       onClick={() => {
-                        console.log("log out");
-                        const user = {
-                          userName: "Guest",
-                          role: "GUEST",
-                          id: 0
-                        };
-                        this.props.reload.call(this, user);
-                        window.location.href = "/";
+                        // console.log("log out");
+                        // const user = {
+                        //   userName: "Guest",
+                        //   role: "GUEST",
+                        //   id: 0
+                        // };
+                        // this.props.reload.call(this, user);window.location.href = "/";
+                        this.props.dispatch(logOut());
+                        return (<Redirect to='/'  />);
+                        
                       }}
                     >
                       Log out
@@ -216,4 +220,4 @@ class LoggedTvl extends Component {
   }
 }
 
-export default LoggedTvl;
+export default connect()(LoggedTvl);

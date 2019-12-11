@@ -5,10 +5,12 @@ import Rated from "./Rated";
 import GuiderInPost from './GuiderInPost';
 import EditPost from './EditPost';
 import Config from '../Config';
+import { connect } from 'react-redux';
 class ManagePost extends Component {
       constructor(props) {
             super(props);
-
+            console.log("constructor pót");
+		console.log(props);
             this.state = {
                   currentPage: 1,
                   todosPerPage: 8,
@@ -16,10 +18,18 @@ class ManagePost extends Component {
                   page: 0
             };
       }
+      // componentWillMount() {
+      //       console.log(this.props);
+	// 	var user = JSON.parse(sessionStorage.getItem('user'));
+	// 	if (user !== null) {
+	// 		console.log("session storage");
+	// 	} 
+	// }
 
       async componentDidMount() {
+            //console.log(this.props);
             try {
-                  let guider_id = this.props.guiderId;
+                  let guider_id = this.props.user.id;
                   const responsePosts = await fetch(
                         Config.api_url + "guiderpost/postOfOneGuider/" + guider_id+"/"+this.state.page,
                         {
@@ -51,7 +61,7 @@ class ManagePost extends Component {
       }
 
       render() {
-            console.log(this.props.guiderId);
+            console.log(this.props);
 
             let posts = this.state.posts.map((post, index) => (
                   <li key={index}>
@@ -73,19 +83,19 @@ class ManagePost extends Component {
                         </Link>
                   </li>
             ));
-            let routes = this.state.posts.map((post, index) => (
-                  <Route path={"/update/:guider/:post"} key={index} component={EditPost} />
+            // let routes = this.state.posts.map((post, index) => (
+            //       <Route path={"/update/:guider/:post"} key={index} component={EditPost} />
                        
 
 
-            ));
+            // ));
 
  //<EditPost guiderId={this.props.guiderId} postId={post.post_id} /></Route> 
             return (
                   <div>
-                        <Switch>
+                        {/* <Switch>
                               {routes}
-                        </Switch>
+                        </Switch> */}
                         <div>
 
                               <div id="reactContainer">
@@ -112,5 +122,8 @@ class ManagePost extends Component {
             );
       }
 }
-
-export default ManagePost;
+function mapStateToProps(state) {
+	const user = state.user;
+      return {user};
+}
+export default connect(mapStateToProps)(ManagePost);

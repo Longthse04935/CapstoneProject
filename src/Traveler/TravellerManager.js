@@ -32,11 +32,11 @@ class TravellerManager extends Component {
 	// 	}
 	// }
 
-	async componentDidMount() {
-		var user = JSON.parse(sessionStorage.getItem('user'));
+	async componentDidMount() {//var user = JSON.parse(sessionStorage.getItem('user'));
+		let user = this.props.user;
 		try {
 			const orderResponse = await fetch(
-				Config.api_url + "Order/GetOrderByStatus?role=" + "TRAVELER" + "&id=" + this.props.id + "&status=UNCONFIRMED",
+				Config.api_url + "Order/GetOrderByStatus?role=" + "TRAVELER" + "&id=" + user.id + "&status=UNCONFIRMED",
 				{
 					method: "GET",
 					mode: "cors",
@@ -132,10 +132,11 @@ class TravellerManager extends Component {
 
 	async tabList(status) {
 
-		var user = JSON.parse(sessionStorage.getItem('user'));
+		//var user = JSON.parse(sessionStorage.getItem('user'));
+		let user = this.props.user;
 		try {
 			const orderResponse = await fetch(
-				Config.api_url + "Order/GetOrderByStatus?role=" + "TRAVELER" + "&id=" + this.props.id + "&status=" + status,
+				Config.api_url + "Order/GetOrderByStatus?role=" + "TRAVELER" + "&id=" + user.id + "&status=" + status,
 				{
 					method: "GET",
 					mode: "cors",
@@ -266,7 +267,7 @@ class TravellerManager extends Component {
 								<table>
 									<thead>
 										<tr className="row100 head">
-											<th className="cell100 column2">Traverler</th>
+											<th className="cell100 column2">Guider</th>
 											<th className="cell100 column3">Start time</th>
 											<th className="cell100 column4">End time</th>
 											<th className="cell100 column5">Post</th>
@@ -290,5 +291,8 @@ class TravellerManager extends Component {
 		);
 	}
 }
-
-export default TravellerManager;
+function mapStateToProps(state) {
+	const user = state.user;
+	return { user };
+}
+export default connect(mapStateToProps)(TravellerManager);

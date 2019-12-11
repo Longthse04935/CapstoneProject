@@ -5,7 +5,7 @@ import $ from "jquery";
 import country from '../json/country.json';
 import Config from '../Config';
 import SweetAlert from 'react-bootstrap-sweetalert';
-
+import {connect} from 'react-redux';
 class ProfileTraveller extends Component {
   constructor(props){
     super(props);
@@ -41,16 +41,16 @@ class ProfileTraveller extends Component {
     }
   }
   
-  componentWillMount(){
-		var user = JSON.parse(sessionStorage.getItem('user'));
-		if(user === null){
-			sessionStorage.setItem('messagePay','Error user or tour inf');
-			window.location.href = '/';
-		}else if(user.role === 'GUIDER'){
-			sessionStorage.setItem('messagePay','You are Guider');
-			window.location.href = '/';
-		}
-  }
+  // componentWillMount(){
+	// 	var user = JSON.parse(sessionStorage.getItem('user'));
+	// 	if(user === null){
+	// 		sessionStorage.setItem('messagePay','Error user or tour inf');
+	// 		window.location.href = '/';
+	// 	}else if(user.role === 'GUIDER'){
+	// 		sessionStorage.setItem('messagePay','You are Guider');
+	// 		window.location.href = '/';
+	// 	}
+  // }
   
   async componentDidMount(){
     $("head").append('<link href="/css/profile_traveller.css" rel="stylesheet"/>');
@@ -58,8 +58,8 @@ class ProfileTraveller extends Component {
     $("#avatar_trigger").click(function () {
       $("#avatar_link").trigger('click');
      });
-     var user = JSON.parse(sessionStorage.getItem('user'));
-
+     //var user = JSON.parse(sessionStorage.getItem('user'));
+     let user = this.props.user;
      const responseTraveller = await fetch(
       Config.api_url + "Traveler/GetTraveler?traveler_id="+user.id,
       {
@@ -80,7 +80,7 @@ class ProfileTraveller extends Component {
     dataTraveller.year = res[0];
     dataTraveller.month = res[1];
     dataTraveller.day = res[2].split(" ")[0];
-    this.setState({data:dataTraveller,avatar_link:Config.api_url+"images/"+dataTraveller.avatar_link});
+    this.setState({data:dataTraveller,avatar_link: dataTraveller.avatar_link});
     }else{
       this.setState({avatar_link:Config.api_url+"images/"+"account.jpg"});
     }
@@ -436,5 +436,9 @@ class ProfileTraveller extends Component {
     );
   }
 }
+function mapStateToProps(state) {
+	const user = state.user;
+      return {user};
+}
 
-export default ProfileTraveller;
+export default connect(mapStateToProps)(ProfileTraveller);

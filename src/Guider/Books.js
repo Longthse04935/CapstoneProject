@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from 'react-router-dom';
 import $ from 'jquery';
 import Config from '../Config';
-
+import {connect} from 'react-redux';
 class GuiderBooks extends Component {
 
 	constructor(props) {
@@ -14,11 +14,12 @@ class GuiderBooks extends Component {
 
 		this.accept = this.accept.bind(this);
 		this.deny = this.deny.bind(this);
+		this.cancel = this.cancel.bind(this);
 	}
 	async accept(eve) {
 		try {
 			const remain = this.state.orders.splice(eve.target.id, 1);
-			console.log(eve.target);
+			//console.log(eve.target);
 			const orderResponse = await fetch(
 				Config.api_url + "Order/AcceptOrder/" + eve.target.value,
 				{
@@ -33,7 +34,7 @@ class GuiderBooks extends Component {
 			}
 
 			const status = await orderResponse.text();
-			console.log(status);
+			//console.log(status);
 			this.setState({ orders: remain });
 		} catch (err) {
 			console.log(err);
@@ -46,7 +47,7 @@ class GuiderBooks extends Component {
 			const denied = this.state.orders[eve.target.id]
 			const remain = this.state.orders.splice(eve.target.id, 1);
 			const orderResponse = await fetch(
-				Config.api_url + "Order/CancelOrderAsTraveler",
+				Config.api_url + "Order/refuseTrip/"+eve.target.value,
 				{
 					method: "PUT",
 					mode: "cors",
@@ -59,7 +60,7 @@ class GuiderBooks extends Component {
 			}
 
 			const order = await orderResponse.text();
-			console.log(order);
+			//console.log(order);
 			this.setState({ orders: remain });
 		} catch (err) {
 			console.log(err);
@@ -69,7 +70,8 @@ class GuiderBooks extends Component {
 	async cancel(eve) {
 		eve.preventDefault();
 		try {
-			const denied = this.state.orders[eve.target.id]
+			//console.log(this.state.orders);
+			const denied = this.state.orders[eve.target.id];
 			const remain = this.state.orders.splice(eve.target.id, 1);
 			const orderResponse = await fetch(
 				Config.api_url + "Order/CancelOrderAsGuider?trip_id=" + eve.target.value,
@@ -85,7 +87,7 @@ class GuiderBooks extends Component {
 			}
 
 			const order = await orderResponse.text();
-			console.log(order);
+			//console.log(order);
 			this.setState({ orders: remain });
 		} catch (err) {
 			console.log(err);
@@ -95,9 +97,10 @@ class GuiderBooks extends Component {
 	async componentDidMount() {
 		// $("head").append('<link href="/css/books.css" rel="stylesheet"/>');
 		// $("head").append('<link href="/css/util.css" rel="stylesheet"/>');
+		let user = this.props.user;
 		try {
 			const orderResponse = await fetch(
-				Config.api_url + "Order/GetOrderByStatus?role=" + "GUIDER" + "&id=" + this.props.id + "&status="+this.state.status,
+				Config.api_url + "Order/GetOrderByStatus?role=" + "GUIDER" + "&id=" + user.id + "&status="+this.state.status,
 				{
 					method: "GET",
 					mode: "cors",
@@ -120,10 +123,10 @@ class GuiderBooks extends Component {
 	}
 
 	async tabList(status) {
-
+		let user = this.props.user;
 		try {
 			const orderResponse = await fetch(
-				Config.api_url + "Order/GetOrderByStatus?role=" + "GUIDER" + "&id=" + this.props.id + "&status=" + status,
+				Config.api_url + "Order/GetOrderByStatus?role=" + "GUIDER" + "&id=" + user.id + "&status=" + status,
 				{
 					method: "GET",
 					mode: "cors",
@@ -167,7 +170,7 @@ class GuiderBooks extends Component {
 				case "ONGOING":
 					return (<tr className="row100 body" key={index}>
 						<td className="cell100 column1"><button className="cancel" value={order.trip_id}
-							id={index} onClick={this.accept} type="button">Cancel</button></td>
+							id={index} onClick={this.cancel} type="button">Cancel</button></td>
 					</tr>);
 				case "FINISH":
 					return (<tr className="row100 body" key={index}>
@@ -179,7 +182,7 @@ class GuiderBooks extends Component {
 
 		});
 
-		let arr = ['WAITING', 'ONGOING', 'FINISHED', 'CANCELED'];
+		let arr = ['WAITING', 'ONGOING', 'FINISHED', 'CANCELLED'];
 		
 		let tab = arr.map((value, index) =>
 			<li key={index} onClick={() => { this.tabList(value) }}>{value}</li>
@@ -236,5 +239,8 @@ class GuiderBooks extends Component {
 		);
 	}
 }
-
-export default GuiderBooks;
+function mapStateToProps(state) {
+	const user = state.user;
+	return { user };
+}
+export default connect(mapStateToPropst)(GuiderBooks);

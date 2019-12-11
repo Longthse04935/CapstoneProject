@@ -9,25 +9,19 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 import $ from 'jquery';
 import ChatList from "../common/ChatStore";
 import { connect } from 'react-redux';
+import PlanInPost from "../Guider/PlanInPost";
 
+import { Redirect } from "react-router-dom";
 class Chatbox extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			//chatbox
 			index: 1,
-			chatText: "",
-			chatData: [
-				{
-					id: 1,
-					author: "Tran Hoang long",
-					message: "Hello can i help you !:) ",
-					type: "you"
-				}
-			],
 			//tour
 			tourDate: new Date(),
 			hourBegin: '',
+			endTime: '',
 			numberInjoy: {
 				adult: 1,
 				children: 0,
@@ -42,38 +36,22 @@ class Chatbox extends Component {
 			isError: false,
 			closest_EndDate: "",
 			alert: null,
-			endTime: '',
 			valueItem: '',
 			guider: {},
-			user: JSON.parse(sessionStorage.getItem('user'))
+			//user: JSON.parse(sessionStorage.getItem('user'))
+			user: props.user
 		};
 	}
 
-	handleChange = e => {
-		this.setState({ chatText: e.target.value });
-	};
 
-	handleSend = async e => {
-		e.stopPropagation();
-		e.preventDefault();
-		let { chatData, chatText, index } = this.state;
-		index++;
-		chatData.push({
-			id: index,
-			message: chatText,
-			type: "me",
-			author: "Tran Hoang Long"
-		});
-
-		this.setState({ chatData, chatText: "", index: index });
-	};
 
 	option = (time) => {
 		var date = this.state.tourDate;
 		var getDate = parseInt(date.getDate()) < 10 ? "0" + parseInt(date.getDate()) : parseInt(date.getDate());
 		var getMonth = parseInt(date.getMonth() + 1) < 10 ? "0" + parseInt(date.getMonth() + 1) : parseInt(date.getMonth() + 1);
+		//window.sessionStorage.getItem("guider_id")
 		var data = {
-			"guider_id": "" + window.sessionStorage.getItem("guider_id"),
+			"guider_id": "" + this.props.user.id,
 			"post_id": "" + this.props.match.params.post_id,
 			"begin_date": "" + getMonth + "/" + getDate + "/" + date.getFullYear() + time
 		};
@@ -131,17 +109,16 @@ class Chatbox extends Component {
 			let option = this.option(" " + response[0]);
 			let endTime = await fetch(Config.api_url + 'Order/GetExpectedTourEnd', option);
 			endTime = await endTime.text();
-			this.setState({ message, isError, numberInjoy, timeAvailable: response, hourBegin: response[0], endTime: endTime });
-
-			//get profile guider
-			const responseGuider = await fetch(Config.api_url + "Guider/" + sessionStorage.getItem('guider_id'), {
+			
+			//get profile guider sessionStorage.getItem('guider_id')
+			const responseGuider = await fetch(Config.api_url + "Guider/" + this.props.user.id, {
 				method: "GET",
 				mode: "cors",
 				credentials: "include"
 			});
 			if (!responseGuider.ok) { throw Error(responseGuider.status + ": " + responseGuider.statusText); }
 			const guider = await responseGuider.json();
-			this.setState({ guider: guider });
+			this.setState({guider: guider , message, isError, numberInjoy, timeAvailable: response, hourBegin: response[0], endTime: endTime });
 
 			$(".ratingChatbox img").hover(function () {
 				$('.tool-tip').show();
@@ -157,7 +134,7 @@ class Chatbox extends Component {
 	dateChange = async date => {
 		let tourDate = new Date() > date ? new Date() : date;
 		this.setState({
-			tourDate,
+			tourDate: tourDate,
 			closest_EndDate: ""
 		});
 
@@ -205,7 +182,7 @@ class Chatbox extends Component {
 			<SweetAlert
 				warning
 				showCancel
-				confirmBtnText="Go to login ^-^"
+				confirmBtnText="Go to login"
 				confirmBtnBsStyle="danger"
 				title="Login notification"
 				onConfirm={() => this.onLogin()}
@@ -226,15 +203,15 @@ class Chatbox extends Component {
 		if (user === null) {
 			this.alertAccount();
 		} else if (user !== null) {
-			var data = this.state;
-			var today = data.tourDate;
-			var getDate = parseInt(today.getDate()) < 10 ? "0" + parseInt(today.getDate()) : parseInt(today.getDate());
-			var getMonth = parseInt(today.getMonth() + 1) < 10 ? "0" + parseInt(today.getMonth() + 1) : parseInt(today.getMonth() + 1);
+			let data = this.state;
+			let today = data.tourDate;
+			let getDate = parseInt(today.getDate()) < 10 ? "0" + parseInt(today.getDate()) : parseInt(today.getDate());
+			let getMonth = parseInt(today.getMonth() + 1) < 10 ? "0" + parseInt(today.getMonth() + 1) : parseInt(today.getMonth() + 1);
 
 			let options = this.option(" " + this.state.hourBegin);
 
 
-			var tourDetail = {
+			let tourDetail = {
 				traveler_id: '',
 				post_id: '',
 				begin_date: '',
@@ -254,7 +231,9 @@ class Chatbox extends Component {
 			tourDetail.price = data.numberInjoy.totalPrice;
 			tourDetail.end_date = this.state.endTime;
 			sessionStorage.setItem('tourDetail', JSON.stringify(tourDetail));
-			window.location.href = "/book";
+			//add check here
+			//window.location.href = "/book";
+			return <Redirect to="/book"/>
 		}
 
 
@@ -305,40 +284,17 @@ class Chatbox extends Component {
 				<Notification message={this.state.message} isError={this.state.isError} />
 				{/* Chat form */}
 				<div className="chat_window" >
-					{/* plan of tour */}
-					<div className="plan" >
-						<div className="planContent">
-							<h2>This is our plan</h2>
-							<p>
-								Check out the plan below to see what you'll get up to with your
-								local host.
-              </p>
-							<p> Feel free to personalize this offer.</p>
-							<div style={{ marginBottom: "30px" }} />
-							{
-								plan.map(value => (
-									<div className="detail">
-										<i className="fa fa-circle" />
-										<div className="detailPlan detailPlanChatBox">
-											<h4>{value.brief}</h4>
-											<p>
-												{value.detail}
-											</p>
-										</div>
-									</div>
-								))
-							}
-
-						</div>
+					{/* plan of tour detailPlanChatBox*/}
+					<div className="detailPlanChatBox"> 
+					<PlanInPost postId={this.props.match.params.post_id}/>
 					</div>
-
 					{/* guider infor */}
 					<div className="guiderInfo" >
 						<div className="guiderContent">
 							<h1>{window.sessionStorage.getItem("guider_name")}</h1>
 
 							<div className="rating ratingChatbox">
-								<img src="https://withlocals-com-res.cloudinary.com/image/upload/w_80,h_80,c_thumb,q_auto,dpr_1.0,f_auto/956bda712df856f552fa7bfebbbcce8f" />
+								<img src="" />
 								<i className="fa fa-star" aria-hidden="true"></i>
 								<i className="fa fa-star" aria-hidden="true"></i>
 								<i className="fa fa-star" aria-hidden="true"></i>
@@ -389,6 +345,8 @@ class Chatbox extends Component {
                 <DatePicker
 									selected={this.state.tourDate}
 									onChange={this.dateChange}
+
+									minDate={new Date()}
 								/>
 							</div>
 							<div className="selectTime">
@@ -468,17 +426,13 @@ class Chatbox extends Component {
 					</div>
 
 					{/* End guider infor */}
-					{/* <div className="buttons">
-              <div className="button close"></div>
-              <div className="button minimize"></div>
-              <div className="button maximize"></div>
-            </div> */}
+
 					{/* End plan of tour */}
 					<ChatList name={this.state.user.userName} messages={this.props.messages}
-					 receiver={this.state.guider.name}/>
-					
+						receiver={this.state.guider.name} />
+
 				</div>
-				
+
 				{/*End  Chat form */}
 
 			</div>
@@ -488,6 +442,7 @@ class Chatbox extends Component {
 function mapStateToProps(state) {
 	console.log(state);
 	const messages = state.messages;
+	const user = state.message;
 	return { messages };
 }
 Chatbox = connect(mapStateToProps)(Chatbox)

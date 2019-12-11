@@ -118,9 +118,9 @@ class PostTourDetail extends Component {
 				link_youtube = link_youtube.split("&");
 				link_youtube = link_youtube[0].replace("watch?v=", "embed/");
 			}
-			let imgSrc = Config.api_url + "images/" + post.picture_link[0];
+			let imgSrc = post.picture_link[0];
 			let result = locations.find(location => location.location_id === post.location_id);
-			console.log(result);
+			//console.log(result);
 			return (
 				<div className="contentTourDetail" key={index}>
 					<iframe
@@ -142,9 +142,9 @@ class PostTourDetail extends Component {
 				</div>
 			)
 		})
-
+		//Config.api_url + "images/"
 		let guiderByRate = this.state.posts.map((post, index) => {
-			let bgImg = Config.api_url + "images/" + post.avatar;
+			let bgImg = post.avatar;
 			return (
 				<div className="profile-box" key={index} >
 					<div className="pb-header header-stick">
@@ -164,7 +164,7 @@ class PostTourDetail extends Component {
 		});
 
 		let guiderByContribute = this.state.postsContribute.map((post, index) => {
-			let bgImg = Config.api_url + "images/" + post.avatar;
+			let bgImg = post.avatar;
 			// style={{backgroundImage: `url(${bgImg})`}};
 			return (
 				<div className="profile-box" key={index} >

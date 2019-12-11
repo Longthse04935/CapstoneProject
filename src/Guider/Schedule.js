@@ -282,6 +282,7 @@ class Schedule extends Component {
                         this.singleEvents.each(function () {
                               //create the .event-date element for each event
                               var durationLabel = '<span class="event-date">' + $(this).attr('data-start') + ' - ' + $(this).attr('data-end') + '</span>';
+
                               $(this).children('a').prepend($(durationLabel));
 
                               //detect click on the event and open the modal

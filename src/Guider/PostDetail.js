@@ -12,7 +12,9 @@ class PostDetail extends React.Component {
 		this.state = {
 			currentPage: 1,
 			todosPerPage: 4,
-			postInfo: [],
+			postInfo: {
+				picture_link: []
+			},
 			posts: [],
 			guider: {},
 			page: 0

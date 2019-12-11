@@ -15,6 +15,7 @@ import { Redirect } from "react-router-dom";
 class Chatbox extends Component {
 	constructor(props) {
 		super(props);
+		console.log(props);
 		this.state = {
 			//chatbox
 			index: 1,
@@ -37,9 +38,12 @@ class Chatbox extends Component {
 			closest_EndDate: "",
 			alert: null,
 			valueItem: '',
-			guider: {},
 			//user: JSON.parse(sessionStorage.getItem('user'))
-			user: props.user
+			user: props.user,
+			guider: {
+				languages:['']
+			}
+			
 		};
 	}
 
@@ -272,11 +276,18 @@ class Chatbox extends Component {
 
 	render() {
 		const { chatData, chatText, author, numberInjoy, plan, guider } = this.state;
-
+		let languages = '' ;
+		for (var i = 0 ; i < guider.languages.length;i++){
+			if(i+1 === guider.languages.length){
+				languages += guider.languages[i].toUpperCase();
+			}else{
+				languages += guider.languages[i].toUpperCase()+',';
+			}
+		}
 		let selectHour = this.state.timeAvailable.map((value, index) => {
 			return <option key={index} value={value}>{value}</option>;
 		});
-
+		console.log(guider);
 
 		return (
 			<div className="ChatRoom">
@@ -287,14 +298,16 @@ class Chatbox extends Component {
 					{/* plan of tour detailPlanChatBox*/}
 					<div className="detailPlanChatBox"> 
 					<PlanInPost postId={this.props.match.params.post_id}/>
+
 					</div>
 					{/* guider infor */}
 					<div className="guiderInfo" >
 						<div className="guiderContent">
-							<h1>{window.sessionStorage.getItem("guider_name")}</h1>
+							<h1>{guider.first_name+" "+guider.last_name}</h1>
 
 							<div className="rating ratingChatbox">
-								<img src="" />
+
+								<img src={+guider.avatar} />
 								<i className="fa fa-star" aria-hidden="true"></i>
 								<i className="fa fa-star" aria-hidden="true"></i>
 								<i className="fa fa-star" aria-hidden="true"></i>
@@ -314,7 +327,7 @@ class Chatbox extends Component {
 											<i className="fa fa-globe"></i>
 										</span>
 										<span className="tool-tipItemText">
-											I speak {guider.languages}
+											I speak {languages}
 										</span>
 									</p>
 									<p className="tool-tipItem">
@@ -322,7 +335,7 @@ class Chatbox extends Component {
 											<i className="fa fa-heart"></i>
 										</span>
 										<span className="tool-tipItemText">
-											My passions are
+											My passions are {guider.passion}
                         </span>
 									</p>
 									<p className="tool-tipItem">
@@ -428,7 +441,7 @@ class Chatbox extends Component {
 					{/* End guider infor */}
 
 					{/* End plan of tour */}
-					<ChatList name={this.state.user.userName} messages={this.props.messages}
+					<ChatList name={this.props.user.userName} messages={this.props.messages}
 						receiver={this.state.guider.name} />
 
 				</div>
@@ -442,8 +455,8 @@ class Chatbox extends Component {
 function mapStateToProps(state) {
 	console.log(state);
 	const messages = state.messages;
-	const user = state.message;
-	return { messages };
+	const user = state.user;
+	return { messages, user };
 }
 Chatbox = connect(mapStateToProps)(Chatbox)
 export default Chatbox;

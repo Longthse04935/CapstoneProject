@@ -11,12 +11,12 @@ class ChatList extends React.Component {
             let receiver = this.props.receiver;
             let user = this.props.name;
             //let messages = this.props.getState().messages;
-            console.log(this.props);
-            return (<div className="ChatRoom" style={{ height: "800px", maxWidth:"700px"}}>
-                  <div className="top_menu" style={{ maxWidth:"700px"}}>
+            //console.log(this.props);
+            return (<div className="ChatRoom" >
+                  <div className="top_menu" >
                         <div className="title">Chat</div>
                   </div>
-                  <ul className="messages" style={{ maxWidth:"700px"}}>
+                  <ul className="messages" >
                         {this.props.messages.map((msg, index) => (
                               <li
                                     className={`message ${msg.user === user ? "right" : "left"} appeared`} key={index}>
@@ -40,7 +40,7 @@ class ChatList extends React.Component {
                               if (!input.value.trim()) {
                                     return;
                               }
-
+                              //console.log("send 2??");
                               let chatMessage = {
                                     user: user,
                                     content: input.value,

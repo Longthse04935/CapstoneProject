@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-ro
 import Config from "../Config";
 import { connect } from 'react-redux';
 import { logOut } from '../redux/actions';
+import {wsConnect, wsDisconnect, send} from '../redux/webSocket';
 
 class LoggedTvl extends Component {
   constructor(props) {
@@ -61,6 +62,7 @@ class LoggedTvl extends Component {
       );
 
       const dataTraveller = await responseTraveller.json();
+      console.log(dataTraveller);
       this.setState({ avatar: dataTraveller.avatar_link });
     }
   }
@@ -78,6 +80,7 @@ class LoggedTvl extends Component {
     } else {
       avatar_link = <img src={`${avatar}`} />
     }
+
     return (
       <div>
         {/* Menubar */}
@@ -190,6 +193,10 @@ class LoggedTvl extends Component {
                           aria-hidden="true"
                         ></i>
                       </li>
+                      <li>
+                        <Link to="/tvlManager">Traveler manage</Link>
+                        <i className="fa fa-suitcase" aria-hidden="true"></i>
+                      </li>
                     </span>
                     <li
                       onClick={() => {
@@ -200,8 +207,9 @@ class LoggedTvl extends Component {
                         //   id: 0
                         // };
                         // this.props.reload.call(this, user);window.location.href = "/";
+                        this.props.dispatch(wsDisconnect("http://localhost:8080/ws"));
                         this.props.dispatch(logOut());
-                        return (<Redirect to='/'  />);
+                        window.location.href = "/";
                         
                       }}
                     >

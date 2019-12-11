@@ -17,7 +17,7 @@ import storageSession from 'redux-persist/lib/storage/session';
 
 const persistConfig = {
   key: 'root',
-  storage: storageSession,
+  storage: storage,
   stateReconciler: autoMergeLevel2 // see "Merge Process" section for details.
  };
  const pReducer = persistReducer(persistConfig, rootReducer);

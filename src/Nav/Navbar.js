@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { connect } from 'react-redux';
 import { signIn } from '../redux/actions';
+import {wsConnect, wsDisconnect, send} from '../redux/webSocket';
 class Navbar extends Component {
     constructor(props) {
         super(props);
@@ -147,7 +148,7 @@ class Navbar extends Component {
             this.statusProfile('We come to my website');
             // this.props.reload.call(this, await user);
         } catch (err) {
-            console.log('dulicate');
+            console.log(err);
         }
        
 
@@ -181,6 +182,7 @@ class Navbar extends Component {
             // }
             // this.props.reload.call(this, await user);
             this.props.dispatch(signIn(login));
+            window.location.href = "/";
             //this.props.reload.call(this,  this.props.user);
         } catch (err) {
             console.log(err);
@@ -491,7 +493,7 @@ class Navbar extends Component {
                             <div className="loginLinkContain">
                                 <button className="loginLink">
                                     <span className="SpanReady">No account?</span>
-                                    <span className="SignIn"> Sign in</span>
+                                    <span className="SignIn"> Sign up</span>
                                 </button>
                             </div>
                         </form>

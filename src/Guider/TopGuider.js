@@ -46,29 +46,28 @@ class TopGuider extends Component {
 
                   const posts = await responseRate.json();
                   const postsContribute = await responseContribute.json();
-                  console.log(posts);
-                  console.log(postsContribute);
                   this.setState({ postsRate: posts, postsContribute:postsContribute});
             } catch (err) {
                   console.log(err);
             }
             
 
-            window.onscroll = function () {
-                  if (window.pageYOffset === 0) {
-                        $("#navbar").css({ background: "none", "border-bottom": "none" });
-                        $(".navbarRightContent ul li").css({
-                              color: "black",
-                              "font-size": "18px"
-                        });
-                  }
-            };
+            // window.onscroll = function () {
+            //       if (window.pageYOffset === 0) {
+            //             $("#navbar").css({ background: "none", "border-bottom": "none" });
+            //             $(".navbarRightContent ul li").css({
+            //                   color: "black",
+            //                   "font-size": "18px"
+            //             });
+            //       }
+            // };
       }
 
 
       render() {
 
             let guiderByRate = this.state.postsRate.map((post, index) => {
+                  let bgImg = Config.api_url+"images/"+post.avatar;
                   return (
                         <div className="profile-box" key={index}>
                               <div className="pb-header header-stick">
@@ -78,6 +77,7 @@ class TopGuider extends Component {
                                           </h1>
                                     </div>
                               </div>
+                              <img src={bgImg} className="imgpb-header"/>
                               <Rated number={post.rated} />
                               <Link to={"/guider/" + post.guider_id}>
                                     <button className="contactMe">About me</button>
@@ -86,21 +86,25 @@ class TopGuider extends Component {
                   );
             });
 
-            let guiderByContribute = this.state.postsContribute.map((post, index) => (
-                  <div className="profile-box" key={index}>
-                        <div className="pb-header header-stick">
-                              <div className="header-pb">
-                                    <h1 className="TitlePb TileStickyPb">
-                                          {post.first_name + "" + post.last_name}
-                                    </h1>
+            let guiderByContribute = this.state.postsContribute.map((post, index) => {
+                  let bgImg = Config.api_url+"images/"+post.avatar;
+                  return (
+                        <div className="profile-box" key={index}>
+                              <div className="pb-header header-stick">
+                                    <div className="header-pb">
+                                          <h1 className="TitlePb TileStickyPb">
+                                                {post.first_name + "" + post.last_name}
+                                          </h1>
+                                    </div>
                               </div>
+                              <img src={bgImg} className="imgpb-header"/>
+                              <Rated number={post.rated} />
+                              <Link to={"/guider/" + post.guider_id}>
+                                    <button className="contactMe">About me</button>
+                              </Link>
                         </div>
-                        <Rated number={post.rated} />
-                        <Link to={"/guider/" + post.guider_id}>
-                              <button className="contactMe">About me</button>
-                        </Link>
-                  </div>
-            ));
+                  )
+            });
             
             return (
                   <div className="topGuider">

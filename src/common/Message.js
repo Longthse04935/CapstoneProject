@@ -37,11 +37,18 @@ class Message extends React.Component {
 
                                     </div>
                               </div>
-                              <ChatList name={this.props.name} receiver={this.state.sender}
-                                    messages={this.props.messages.filter(mess => mess.receiver = this.state.sender)} />
+                              <ChatList name={this.props.user.userName} receiver={this.state.sender}
+                                    messages={this.props.messages} />
+                                    {/* .filter(mess => mess.receiver = this.state.sender) */}
                         </div>
                   </div>);
       }
 }
-
-export default connect()(Message);
+function mapStateToProps(state) {
+      //console.log(state);
+	const messages = state.messages;
+	const clients = state.clients;
+	const user = state.user;
+      return {messages, clients, user};
+}
+export default connect(mapStateToProps)(Message);

@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-ro
 import Config from '../Config';
 import { connect } from 'react-redux';
 import { logOut } from '../redux/actions';
+import {wsConnect, wsDisconnect, send} from '../redux/webSocket';
 
 class LoggedGuider extends Component {
     constructor(props) {
@@ -172,8 +173,9 @@ class LoggedGuider extends Component {
                                             //   id: 0
                                             // };
                                             // this.props.reload.call(this, user);window.location.href = '/';
+                                            this.props.dispatch(wsDisconnect("http://localhost:8080/ws"));
                                             this.props.dispatch(logOut());
-                                            return (<Redirect to='/'  />);
+                                            window.location.href = '/';
                                             
                                         }}>Log out<i className="fa fa-sign-out" aria-hidden="true"></i></li>
 

@@ -272,17 +272,17 @@ class GuiderProfile extends Component {
       render() {
 
             const { errors, data, avatar_link } = this.state;
-            // var day = [];
-            // for (var i = 1; i <= 31; i++) {
-            //       day.push(i);
-            // }
-            // var dayOption = day.map((value, index) => {
-            //       if (parseInt(value) < 10) {
-            //             return <option value={"0" + value} key={index}>{value}</option>
-            //       }
-            //       return <option value={value} key={index}>{value}</option>
-            // }
-            // )
+            var day = [];
+            for (var i = 1; i <= 31; i++) {
+                  day.push(i);
+            }
+            var dayOption = day.map((value, index) => {
+                  if (parseInt(value) < 10) {
+                        return <option value={"0" + value} key={index}>{value}</option>
+                  }
+                  return <option value={value} key={index}>{value}</option>
+            }
+            )
 
             var month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
             var monthOptiom = month.map((value, index) => {

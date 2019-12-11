@@ -243,4 +243,4 @@ function mapStateToProps(state) {
 	const user = state.user;
 	return { user };
 }
-export default connect(mapStateToPropst)(GuiderBooks);
+export default connect(mapStateToProps)(GuiderBooks);

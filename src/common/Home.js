@@ -117,15 +117,15 @@ class Home extends Component {
 
 		this.setupInterval();
 
-		window.onscroll = function () {
-			if (window.pageYOffset === 0) {
-				$("#navbar").css({ background: "none", "border-bottom": "none" });
-				$(".navbarRightContent ul li").css({
-					color: "black",
-					"font-size": "18px"
-				});
-			}
-		};
+		// window.onscroll = function () {
+		// 	if (window.pageYOffset === 0) {
+		// 		$("#navbar").css({ background: "none", "border-bottom": "none" });
+		// 		$(".navbarRightContent ul li").css({
+		// 			color: "black",
+		// 			"font-size": "18px"
+		// 		});
+		// 	}
+		// };
 	}
 
 	setupInterval = () => {

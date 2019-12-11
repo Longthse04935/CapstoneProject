@@ -53,21 +53,21 @@ class GuiderDetail extends React.Component {
 		return (
 
 			<div className="content-right">
-				<div class="intro">
+				<div className="intro">
 					<h2>Hi There ! Nice to meet you</h2>
 					<video controls>
 						<source src="./video/withlocals_originals_silvina_merino.mp4" type="video/mp4" />
 					</video>
-					<div class="readMoreText">
+					<div className="readMoreText">
 						<div id="section">
-							<div class="article">
+							<div className="article">
 								{guide.about_me}
 							</div>
-							<a class="moreless-button" href="javascript:void(0)">Read more</a>
+							<a className="moreless-button" href="javascript:void(0)">Read more</a>
 						</div>
 					</div>
 				</div>
-				<div class="myPassions">
+				<div className="myPassions">
 					<h2>My passions</h2>
 					{}
 				</div>

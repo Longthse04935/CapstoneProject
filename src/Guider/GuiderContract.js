@@ -54,6 +54,17 @@ class GuiderContract extends Component {
     }
   }
 
+  onFileChangeHandler = (e) => {
+    e.preventDefault();
+    const { data } = this.state;
+    data['file_link'] = e.target.files[0].name;
+    this.setState({
+        selectedFile: e.target.files[0],
+        data
+    });
+   console.log(this.state.data);
+};
+
   handleCheckBox = () =>{
     this.setState({isClickCheckBox:!this.state.isClickCheckBox});
     let {errors} = this.state;
@@ -174,6 +185,19 @@ class GuiderContract extends Component {
     });
       // if (!response.ok) { throw Error(response.status + ": " + response.statusText); }
       const guider = await response.json();
+      const formData = new FormData();
+      formData.append('file', this.state.selectedFile);    
+      formData.append('contract_id', guider);    
+      fetch(Config.api_url+'Guider/UploadDocument', {
+          method: 'post',
+          mode: "cors",
+          credentials: "include",
+          body: formData
+      }).then(res => {
+          if(res.ok) {
+              console.log("run success",res.data);
+          }
+      });
       this.statusProfile('Create contract success');
 } catch (err) {
       console.log(err);
@@ -378,6 +402,16 @@ class GuiderContract extends Component {
                   }}
                 />
                 {errors['card_issued_province'] ? <p style={{color: "red"}} className="errorInput">{errors['card_issued_province']}</p> : ''}
+
+                <p>Upload file PDF</p>
+                <input
+                  type="file"
+                  className="phone_traveller"
+                  name="file_link"
+                  onChange={this.onFileChangeHandler}
+                />
+                {errors['card_issued_province'] ? <p style={{color: "red"}} className="errorInput">{errors['card_issued_province']}</p> : ''}
+
                 <div>
                 <h2 style={{marginTop:"20px"}}>Guider Aggument</h2>
                   <p className="guider_aggument">

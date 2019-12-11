@@ -75,12 +75,14 @@ class ProfileTraveller extends Component {
     var data=JSON.parse(sessionStorage.getItem('errorAPI'));
     if(data === 200){
     const dataTraveller = await responseTraveller.json();
+    console.log(dataTraveller);
     var str = dataTraveller.date_of_birth;
     var res = str.split("-");
     dataTraveller.year = res[0];
     dataTraveller.month = res[1];
     dataTraveller.day = res[2].split(" ")[0];
-    this.setState({data:dataTraveller,avatar_link: dataTraveller.avatar_link});
+
+    this.setState({data:dataTraveller,avatar_link:dataTraveller.avatar_link});
     }else{
       this.setState({avatar_link:Config.api_url+"images/"+"account.jpg"});
     }

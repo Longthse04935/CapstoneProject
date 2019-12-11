@@ -21,7 +21,7 @@ export const signIn = login => dispatch => fetch(`${Config.api_url}account/login
 })
       .then(res => res.json(), error => {
             console.log('An error occurred.', error);
-            throw new Error(error);
+            //throw new Error(error);
       })
       .then((json) => {
             dispatch({ type: 'LOGIN', data: json });

@@ -3,6 +3,7 @@ import $ from 'jquery';
 import Config from '../Config';
 import { Link } from 'react-router-dom';
 import SweetAlert from 'react-bootstrap-sweetalert';
+import {connect} from 'react-redux';
 class TravellerManager extends Component {
 
 	constructor(props) {
@@ -21,22 +22,24 @@ class TravellerManager extends Component {
 			status: ''
 		};
 	}
-	// componentWillMount() {
-	// 	var user = JSON.parse(sessionStorage.getItem('user'));
-	// 	if (user === null) {
-	// 		sessionStorage.setItem('messagePay', 'Error user or tour inf');
-	// 		window.location.href = '/';
-	// 	} else if (user.role === 'GUIDER') {
-	// 		sessionStorage.setItem('messagePay', 'You are Guider');
-	// 		window.location.href = '/';
-	// 	}
-	// }
+	//check xem ng đăng nhập là ai nếu là guider thì về trang home
+	componentWillMount() {
+		var user = JSON.parse(sessionStorage.getItem('user'));
+		if (user === null) {
+			sessionStorage.setItem('messagePay', 'Error user or tour inf');
+			window.location.href = '/';
+		} else if (user.role === 'GUIDER') {
+			sessionStorage.setItem('messagePay', 'You are Guider');
+			window.location.href = '/';
+		}
+	}
 
 	async componentDidMount() {//var user = JSON.parse(sessionStorage.getItem('user'));
 		let user = this.props.user;
 		try {
 			const orderResponse = await fetch(
 				Config.api_url + "Order/GetOrderByStatus?role=" + "TRAVELER" + "&id=" + user.id + "&status=UNCONFIRMED",
+
 				{
 					method: "GET",
 					mode: "cors",
@@ -71,11 +74,8 @@ class TravellerManager extends Component {
 				var { info, rated } = this.state;
 				var user = JSON.parse(sessionStorage.getItem('user'));
 				var data = {}
-				data.order_id = info.order_id;
-				data.guider_id = info.guider_id;
-				data.post_id = info.post_id;
+				data.trip_id = info.order_id;
 				data.review = this.state.comment;
-				data.traveler_id = user.id;
 				data.rated = rated;
 				let options = {
 					method: 'POST',
@@ -150,6 +150,7 @@ class TravellerManager extends Component {
 				throw Error(orderResponse.status + ": " + orderResponse.statusText);
 			}
 			const order = await orderResponse.json();
+			console.log(order);
 			this.setState({ orders: order, status: status });
 		} catch (err) {
 			console.log(err);
@@ -190,7 +191,7 @@ class TravellerManager extends Component {
 					<td className="cell100 ">{order.adult_quantity}</td>
 					<td className="cell100 ">{order.children_quantity}</td>
 					<td className="cell100 ">{order.fee_paid}$</td>
-					{status === "FINISHED" ? <td className="cell100 "><button type="button" className="btn btn-secondary" onClick={() => this.showReview(order.trip_id, order.guider_id, order.post_id)}>Review</button></td> : 'n'}
+					{status === "FINISHED" ? <td className="cell100 "><button type="button" className="btn btn-secondary" onClick={() => this.showReview(order.trip_id, order.guider_id, order.post_id)}>Review</button></td> : ''}
 				</tr>
 			)
 		});
@@ -274,7 +275,7 @@ class TravellerManager extends Component {
 											<th className="cell100 column6">Adult quantity</th>
 											<th className="cell100 column7">Child quantiy</th>
 											<th className="cell100 column8">Price</th>
-											{status === "FINISHED" ? <th className="cell100 column8">Review</th> : 'n'}
+											{status === "FINISHED" ? <th className="cell100 column8">Review</th> : ''}
 										</tr>
 									</thead>
 									<tbody>

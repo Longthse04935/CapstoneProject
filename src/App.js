@@ -20,7 +20,6 @@ import Chart from './Guider/Chart';
 import ManagePost from './Guider/ManagePost';
 import AddPost from './Guider/AddPost';
 import { connect } from 'react-redux';
-import { logOut,logIn } from './redux/actions';
 import {wsConnect, wsDisconnect, send} from './redux/webSocket';
 import Message from './common/Message';
 import ChatList from './common/ChatStore';
@@ -71,14 +70,20 @@ class App extends Component {
 
 	componentDidMount() {
 		
-		if (typeof (Storage) !== 'undefined') {
-			// get sessionStorage
-			let user = window.sessionStorage.getItem('user');
-			if (user !== null) this.reload(JSON.parse(user));
+		// if (typeof (Storage) !== 'undefined') {
+		// 	// get sessionStorage
+		// 	let user = window.sessionStorage.getItem('user');
+		// 	if (user !== null) this.reload(JSON.parse(user));
+		// } else {
+		// 	alert('Browser not support!');
+		// }
+		let user = this.props.user; 
+		if (user.logedIn) {
+			this.props.dispatch(wsConnect("http://localhost:8080/ws"));
 		} else {
-			alert('Browser not support!');
+			
 		}
-
+		
 	}
 
 
@@ -130,8 +135,7 @@ class App extends Component {
 					<Route path='/managebook' ><Books id={this.props.user.id} /></Route>
 					<Route path='/schedule' ><Schedule id={this.props.user.id} /></Route>
 					<Route path='/changepassword' ><ChangePassword guiderId={this.props.user.id} /></Route>
-					<Route path='/chat' ><Message	 id={this.props.user.id}
-					 messages={this.props.messages} clients={this.props.clients}/></Route>
+					<Route path='/chat' ><Message	 /></Route>
 					<Route exact path={"/edit"}><ManagePost guiderId={this.props.user.id} /></Route>
 					<Route path={"/update/:guider/:post"} component={EditPost}/>
 

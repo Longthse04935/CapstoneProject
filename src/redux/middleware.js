@@ -22,20 +22,6 @@ const socketMiddleware = () => {
             let payload = msg.body;
             store.dispatch(actions.save(JSON.parse(payload)));
 
-            // switch (payload.type) {
-            //       case 'update_game_players':
-            //             store.dispatch(updateGame(payload.game));
-            //             break;
-            //       case 'update_timer':
-            //             store.dispatch(updateTimer(payload.time));
-            //             break;
-            //       case 'update_game_player':
-            //             store.dispatch(updateGamePlayer(payload.current_player));
-            //             break;
-            //       default:
-            //             console.log(payload);
-            //             break;
-            // }
       };
 
       return store => next => (action) => {

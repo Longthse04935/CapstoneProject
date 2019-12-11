@@ -42,7 +42,7 @@ export const arrangeClients = (state = clients, action) => {
                         queue.splice(queue.indexOf(action.message.user),1);
                         queue.unshift(action.message.user);
                   } else {
-                        queue.push(action.message.user);
+                        queue.unshift(action.message.user);
                   }
                   return queue;
             case 'GET':

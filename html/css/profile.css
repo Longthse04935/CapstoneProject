@@ -37,13 +37,13 @@ body{
     padding-top: 12px;
 }
 
-#reactContainer .navbar .menubar .search{
+/* #reactContainer .navbar .menubar .search{
     display: inline-block;
     position: relative;
     line-height: 80px;
     left: 1%;
     bottom: 15px;
-}
+} */
 
 .logoContainer .far{
     font-size: 50px;

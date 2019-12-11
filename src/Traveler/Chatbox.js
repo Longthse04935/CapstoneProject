@@ -95,11 +95,10 @@ class Chatbox extends Component {
 	async componentDidMount() {
 
 		let flag = this.props.match.params.message === undefined ? '' : this.props.match.params.message;
-		let isError = (flag === "booking_success") ? false : true;
-
-		let message = '';
-		if (flag) {
-			message = (isError) ? 'Booking Failed' : 'Booking Success';
+		if(flag === "booking_success"){
+			this.statusProfile("Booking Success");
+		}else if(flag === "booking_fail"){
+			this.notification("Booking Fail")
 		}
 
 
@@ -133,7 +132,7 @@ class Chatbox extends Component {
 			let option = this.option(" " + response[0]);
 			let endTime = await fetch(Config.api_url + 'Order/GetExpectedTourEnd', option);
 			endTime = await endTime.text();
-			this.setState({ message, isError, numberInjoy, timeAvailable: response, hourBegin: response[0], endTime: endTime });
+			this.setState({ numberInjoy, timeAvailable: response, hourBegin: response[0], endTime: endTime });
 
 			//get profile guider
 			const responseGuider = await fetch(Config.api_url + "Guider/" + sessionStorage.getItem('guider_id'), {
@@ -207,7 +206,7 @@ class Chatbox extends Component {
 			<SweetAlert
 				warning
 				showCancel
-				confirmBtnText="Go to login ^-^"
+				confirmBtnText="Go to login"
 				confirmBtnBsStyle="danger"
 				title="Login notification"
 				onConfirm={() => this.onLogin()}
@@ -223,6 +222,45 @@ class Chatbox extends Component {
 		});
 	}
 
+	//notification khi booking failed or success
+	onNotification() {
+		this.setState({ alert: null });
+	}
+
+	notification(notification) {
+		const getAlert = () => (
+			<SweetAlert
+				warning
+				confirmBtnText="Close"
+				confirmBtnBsStyle="danger"
+				title="Notification"
+				onConfirm={() => this.onNotification()}
+			>
+				{notification}
+			</SweetAlert>
+		);
+
+		this.setState({
+			alert: getAlert()
+		});
+	}
+
+	
+		statusProfile(message){
+		const getAlert = () => (
+			<SweetAlert 
+			success 
+			onConfirm={() => this.onNotification()}
+			>
+			{message}
+			</SweetAlert>
+		);
+	
+		this.setState({
+			alert: getAlert()
+		});
+		}
+	// end phuong thuc thong bao dat tour
 	bookNow = async () => {
 		var user = JSON.parse(sessionStorage.getItem('user'));
 		if (user === null) {

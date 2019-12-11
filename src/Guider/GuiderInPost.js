@@ -75,14 +75,6 @@ class GuiderInPost extends React.Component {
                     </p>
                     <p className="ListItem">
                         <span className="ListItemIcon">
-                        <i className="fa fa-graduation-cap" aria-hidden="true"></i>
-                        </span>
-                        <span className="ListItemText">
-                            Age {guide.age}
-                        </span>
-                    </p>
-                    <p className="ListItem">
-                        <span className="ListItemIcon">
                             <i className="fa fa-heart"></i>
                         </span>
                         <span className="ListItemText">

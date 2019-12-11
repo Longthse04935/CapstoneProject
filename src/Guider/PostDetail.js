@@ -225,7 +225,7 @@ class PostDetail extends React.Component {
 									<div className="activities">
 										<ul>
 											<li>
-												<i className="fa fa-map-marker"></i>
+												<i class="fa fa-thumb-tack" aria-hidden="true"></i>
 												<span>{postInfo.location}</span>
 											</li>
 											<li>
@@ -260,11 +260,9 @@ class PostDetail extends React.Component {
 											{this.state.including_service}
 										</span>
 									</div>
-
-									<ReviewInPost postId={post_id} />
-
-
 									<PlanInPost postId={post_id} />
+									
+									<ReviewInPost postId={post_id} />									
 									{imgPostInfo}
 								</div>
 

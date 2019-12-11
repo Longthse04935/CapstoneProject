@@ -31,7 +31,8 @@ class GuiderContract extends Component {
         dayCard:'01',
         monthCard:'01',
         yearCard:'1970',
-        card_issued_province:''
+        card_issued_province:'',
+        file_link:''
       }
       
     };
@@ -56,13 +57,18 @@ class GuiderContract extends Component {
 
   onFileChangeHandler = (e) => {
     e.preventDefault();
-    const { data } = this.state;
-    data['file_link'] = e.target.files[0].name;
+    const { data,errors } = this.state;
+    if(e.target.files[0] === undefined){
+      data['file_link'] = '';
+    }else{
+      data['file_link'] = e.target.files[0].name;
+    errors['file_link'] = '';
     this.setState({
         selectedFile: e.target.files[0],
-        data
+        data,errors
     });
-   console.log(this.state.data);
+    }
+
 };
 
   handleCheckBox = () =>{
@@ -125,6 +131,9 @@ class GuiderContract extends Component {
     }if(isClickCheckBox === false) {
       isError = true;
       errors['aggument'] = 'Agree with aggument';
+    }if(!(data.file_link.toLowerCase()).includes('.pdf')) {
+      isError = true;
+      errors['file_link'] = 'File import must be PDF';
     }
 
 
@@ -147,7 +156,6 @@ class GuiderContract extends Component {
     const getAlert = () => (
       <SweetAlert 
         success 
-        title="Woot!" 
         onConfirm={() => this.hideAlert()}
       >
         {message}
@@ -410,7 +418,7 @@ class GuiderContract extends Component {
                   name="file_link"
                   onChange={this.onFileChangeHandler}
                 />
-                {errors['card_issued_province'] ? <p style={{color: "red"}} className="errorInput">{errors['card_issued_province']}</p> : ''}
+                {errors['file_link'] ? <p style={{color: "red"}} className="errorInput">{errors['file_link']}</p> : ''}
 
                 <div>
                 <h2 style={{marginTop:"20px"}}>Guider Aggument</h2>

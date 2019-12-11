@@ -265,7 +265,7 @@ class TravellerManager extends Component {
 								<table>
 									<thead>
 										<tr className="row100 head">
-											<th className="cell100 column2">Traverler</th>
+											<th className="cell100 column2">Guider</th>
 											<th className="cell100 column3">Start time</th>
 											<th className="cell100 column4">End time</th>
 											<th className="cell100 column5">Post</th>

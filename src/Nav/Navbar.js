@@ -578,9 +578,6 @@ class Navbar extends Component {
                         <div className="navbarRightContent">
                             <ul>
                                 <li>
-                                    <a style={{cursor:"pointer"}}>Become a host</a>
-                                </li>
-                                <li>
                                     <a style={{cursor:"pointer"}} className="login">
                                         Log in
                         </a>

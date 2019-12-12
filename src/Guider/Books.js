@@ -18,7 +18,7 @@ class GuiderBooks extends Component {
 	async accept(eve) {
 		try {
 			const remain = this.state.orders.splice(eve.target.id, 1);
-			console.log(eve.target);
+		
 			const orderResponse = await fetch(
 				Config.api_url + "Order/AcceptOrder/" + eve.target.value,
 				{
@@ -33,7 +33,7 @@ class GuiderBooks extends Component {
 			}
 
 			const status = await orderResponse.text();
-			console.log(status);
+			
 			this.setState({ orders: remain });
 		} catch (err) {
 			console.log(err);

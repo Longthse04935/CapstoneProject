@@ -5,6 +5,7 @@ import GuiderInPost from "./GuiderInPost";
 import Rated from "./Rated";
 import $ from "jquery";
 import Config from "../Config";
+import { ar } from "date-fns/locale";
 
 class PostDetail extends React.Component {
 	constructor(props) {
@@ -12,7 +13,9 @@ class PostDetail extends React.Component {
 		this.state = {
 			currentPage: 1,
 			todosPerPage: 4,
-			postInfo: [],
+			postInfo: {
+			},
+			including_service:'',
 			posts: [],
 			guider: {},
 			page: 0
@@ -30,7 +33,7 @@ class PostDetail extends React.Component {
 					'Accept': 'application/json'
 				}
 			}
-
+			//lay guider theo post đang ấn vào
 			const response2 = await fetch(
 				Config.api_url + "Guider/guiderByPostId?post_id=" + post_id,
 				autheticate
@@ -38,9 +41,11 @@ class PostDetail extends React.Component {
 			if (!response2.ok) {
 				throw Error(response2.status + ": " + response2.statusText);
 			}
+
 			const guider = await response2.json();
 			this.setState({ guider });
 
+			//lay ra thông tin bài post đó
 			const response = await fetch(
 				Config.api_url + "guiderpost/findSpecificPost?post_id=" + post_id,
 				autheticate
@@ -49,6 +54,7 @@ class PostDetail extends React.Component {
 				throw Error(response.status + ": " + response.statusText);
 			}
 
+			//lay ra tất cả các bài post của guider đó
 			const responsePosts = await fetch(
 				Config.api_url +
 				"guiderpost/postOfOneGuider/" +
@@ -59,6 +65,7 @@ class PostDetail extends React.Component {
 				throw Error(responsePosts.status + ": " + responsePosts.statusText);
 			}
 
+			//lấy ra category
 			const responseCategories = await fetch(
 				Config.api_url + "category/findAll",
 				autheticate
@@ -83,7 +90,7 @@ class PostDetail extends React.Component {
 				link_youtube = link_youtube.split("&");
 				this.setState({ link_youtube: link_youtube[0].replace("watch?v=", "embed/") });
 			}
-
+			this.including_service();
 
 
 		} catch (err) {
@@ -101,6 +108,20 @@ class PostDetail extends React.Component {
 			currentPage: event.target.id
 		});
 	};
+
+	including_service = () =>{
+		let {postInfo} = this.state; 
+		let arr = postInfo.including_service;
+		let including_service = '';
+		for (let i = 0; i < arr.length;i++){
+			if(i === (arr.length-1)){
+				including_service += arr[i];
+			}else{
+				including_service += arr[i]+',';
+			}
+		}
+		this.setState({including_service});
+	}
 
 	render() {
 		const { postInfo } = this.state;
@@ -141,7 +162,7 @@ class PostDetail extends React.Component {
 			<li key={index}>
 				<div className="sheet">
 					<div className="imageFigure">
-						<img src={Config.api_url + 'images/' + post.picture_link[0]} alt="logo" />
+						<img src={post.picture_link[0]} alt="logo" />
 					</div>
 					<div className="experienceCard-details">
 						<span className="enjoy">
@@ -194,7 +215,7 @@ class PostDetail extends React.Component {
 			</li>
 		));
 
-		let imgPostInfo = <img className="imgPostInfo" src={Config.api_url + 'images/' + postInfo.picture_link} />;
+		let imgPostInfo = <img className="imgPostInfo" src={postInfo.picture_link} />;
 
 		return (
 			<div>

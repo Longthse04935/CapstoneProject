@@ -80,7 +80,7 @@ class ReviewTraveler extends Component {
               reviews.push(value)
           })
           this.setState({reviews});
-          console.log(tvl)
+       
          
     }
 

@@ -37,7 +37,7 @@ class ManagePost extends Component {
                   }
 
                   const posts = await responsePosts.json();
-                  console.log(posts);
+
                   this.setState({ posts: posts, page: ++this.state.page });
             } catch (err) {
                   console.log(err);

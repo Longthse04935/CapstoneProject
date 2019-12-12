@@ -136,7 +136,6 @@ class App extends Component {
 	}
 }
 function mapStateToProps(state) {
-      console.log(state);
 	const messages = state.messages;
 	const clients = state.clients;
       return {messages, clients};

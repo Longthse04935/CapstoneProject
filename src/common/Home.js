@@ -376,7 +376,7 @@ class Home extends Component {
 									return;
 								}
 								this.state.filter = (this.state.filter === "none") ? "guider" : this.state.filter;
-								console.log("input: " + input.value);
+							
 								if (this.state.filter === "guider") {
 									this.searchGuider(input.value);
 								} else if (this.state.filter === "location") {

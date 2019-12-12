@@ -59,7 +59,6 @@ class LoggedTvl extends Component {
       );
 
       const dataTraveller = await responseTraveller.json();
-      console.log(dataTraveller);
       this.setState({ avatar: dataTraveller.avatar_link });
     }
   }

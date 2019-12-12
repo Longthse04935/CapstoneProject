@@ -66,7 +66,7 @@ class PostTourDetail extends Component {
 			const postsContribute = await responseContribute.json();
 			const locations = await responseLocations.json();
 			this.setState({ dataPostOneCategory, posts, postsContribute, locations, page: ++this.state.page });
-			console.log(dataPostOneCategory);
+	
 		} catch (err) {
 			console.log(err);
 		}
@@ -120,7 +120,7 @@ class PostTourDetail extends Component {
 			}
 			let imgSrc = Config.api_url + "images/" + post.picture_link[0];
 			let result = locations.find(location => location.location_id === post.location_id);
-			console.log(result);
+		
 			return (
 				<div className="contentTourDetail" key={index}>
 					<iframe

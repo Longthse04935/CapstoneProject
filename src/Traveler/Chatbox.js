@@ -183,7 +183,6 @@ class Chatbox extends Component {
 		let options = this.option(" " + e.target.value);
 		let response = await fetch(Config.api_url + 'Order/GetClosestFinishDate', options);
 		let closest_EndDate = await response.text();
-		console.log(closest_EndDate);
 		response = await fetch(Config.api_url + 'Order/GetExpectedTourEnd', options);
 		let endTime = await response.text();
 		closest_EndDate = "Last tour ended at " + closest_EndDate;
@@ -344,7 +343,7 @@ class Chatbox extends Component {
 		let selectHour = this.state.timeAvailable.map((value, index) => {
 			return <option key={index} value={value}>{value}</option>;
 		});
-		console.log(guider);
+	
 
 		return (
 			<div className="ChatRoom">
@@ -533,7 +532,6 @@ class Chatbox extends Component {
 	}
 }
 function mapStateToProps(state) {
-	console.log(state);
 	const messages = state.messages;
 	return { messages };
 }

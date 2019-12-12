@@ -5,8 +5,32 @@ import { Link } from "react-router-dom";
 import $ from "jquery";
 import Rated from '../Guider/Rated';
 import TopGuider from "../Guider/TopGuider";
+import ItemsCarousel from 'react-items-carousel';
 import { NONAME } from "dns";
+const responsive = {
+	superLargeDesktop: {
+		// the naming can be any, depends on you.
+		breakpoint: { max: 4000, min: 3000 },
+		items: 5,
+	  },
+	desktop: {
+	  breakpoint: { max: 3000, min: 1024 },
+	  items: 3,
+	  slidesToSlide: 3, // optional, default to 1.
+	},
+	tablet: {
+	  breakpoint: { max: 1024, min: 464 },
+	  items: 2,
+	  slidesToSlide: 2, // optional, default to 1.
+	},
+	mobile: {
+	  breakpoint: { max: 464, min: 0 },
+	  items: 1,
+	  slidesToSlide: 1, // optional, default to 1.
+	},
+  };
 class Home extends Component {
+
 	constructor(props) {
 		super(props);
 		
@@ -32,7 +56,6 @@ class Home extends Component {
 		};
 	}
 	
-
 
 	onNotification() {
 		this.setState({ alert: null });
@@ -211,8 +234,9 @@ class Home extends Component {
 		let src = Config.api_url + slideShow[currentIndex];
 		let tour = this.state.category.map((tour, index) => {
 			return (
-				<li key={index}>
-					<img src={`${tour.image}`} />
+
+				<div className="setImgSlide" key={index}>
+					<img src={`${Config.api_url}images/${tour.category}.jpg`} />
 					<Link
 						to={"/posttour/" + tour.category_id}
 						onClick={() => {
@@ -221,19 +245,23 @@ class Home extends Component {
 					>
 						<button className="categoriesTour">{tour.category} tour</button>
 					</Link>
-				</li>
+				</div>
 			);
 		});
 		let slide = this.state.tours.map((value, index) => (
 			<div className="slideContent" key={index}>
-				<h2>Enjoy our {value.title}</h2>
-				<img src={value.picture_link[0]}/>
-				<Link to={"/post/" + value.post_id}>
-					<button>Explore</button>
-				</Link>
+
+				<div className="bg_Gradient">
+					<h2>Enjoy our {value.title}</h2>
+					<img src={`${Config.api_url}images/${value.picture_link[0]}`} />
+					<Link to={"/post/" + value.post_id}>
+						<button>Explore</button>
+					</Link>
+				</div>
 			</div>
 		));
 		let home = (<div className="categoryTour">
+			<div className="containerMain">
 			<h1>Explore Withlocals</h1>
 			<h2 className="sectionSubtitle">
 				<span data-translatekey="Homepage.Categories.subTitle">
@@ -242,11 +270,14 @@ class Home extends Component {
 					<span>With the local of your choice</span>
 				</span>
 			</h2>
-			<ul className="tourDetail">{tour}</ul>
+			<div className="tourDetail"><ItemsCarousel>
+				{tour}
+			</ItemsCarousel></div>
 			{this.state.alert}
-			<h1 style={{ marginTop: "30px", fontSize: "30px" }}>The travel is most appreciated</h1>
+			<h1>The travel is most appreciated</h1>
 			<div className="coverTopTour">{slide}</div>
 			<TopGuider />
+			</div>
 		</div>);
 		let postResult = (<div className="postResult">
 			<div className="bookOffers">

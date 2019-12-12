@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import "font-awesome/css/font-awesome.min.css";
 import $ from 'jquery';
+// import iconMain from '../../public/icon/iconMain.jpg';
 class Footer extends Component {
     componentDidMount() {
         $("head").append('<link href="/css/footer.css" rel="stylesheet"/>');
@@ -15,6 +16,7 @@ class Footer extends Component {
                                 <i className="fa fa-arrows" aria-hidden="true" />
                             </a>
                             Travel
+
                         </div>
                     </div>
                     <div className="webInfo">
@@ -55,20 +57,6 @@ class Footer extends Component {
                                 </li>
                             </ul>
                         </div>
-                        {/* <div>
-                            <h4>How to partner</h4>
-                            <ul>
-                                <li>
-                                    <a>Become a host</a>
-                                </li>
-                                <li>
-                                    <a>Become a partner</a>
-                                </li>
-                                <li>
-                                    <a>Become an ambassador</a>
-                                </li>
-                            </ul>
-                        </div> */}
                         <div>
                             <h4>About my web</h4>
                             <ul>

@@ -115,10 +115,11 @@ class Pay extends Component {
           mode: "cors",
           credentials: "include"
         });
-        if(res.status === 200){
-          this.setState({isDisabledPay:false});
-        }else{
+        const result = await res.json();
+        if(result === true){
           this.setState({isDisabledPay:true});
+        }else{
+          this.setState({isDisabledPay:false});
         }
   }
 

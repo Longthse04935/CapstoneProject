@@ -24,7 +24,8 @@ class TravellerManager extends Component {
 	}
 	//check xem ng đăng nhập là ai nếu là guider thì về trang home
 	componentWillMount() {
-		var user = JSON.parse(sessionStorage.getItem('user'));
+		//var user = JSON.parse(sessionStorage.getItem('user'));
+		let user = this.props.user;
 		if (user === null) {
 			sessionStorage.setItem('messagePay', 'Error user or tour inf');
 			window.location.href = '/';
@@ -167,7 +168,7 @@ class TravellerManager extends Component {
 		const getAlert = () => (
 			<SweetAlert
 				success
-				title="Woot!"
+				title="Thank you"
 				onConfirm={() => this.hideAlert()}
 			>
 				{message}

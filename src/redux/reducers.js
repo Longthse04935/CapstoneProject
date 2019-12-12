@@ -1,12 +1,13 @@
 import { combineReducers } from 'redux';
-import { gameReducer } from './actions';
+import { gameReducer,catchError } from './actions';
 import { websocketReducer, getMessages, arrangeClients } from './webSocket'
 
 const rootReducer = combineReducers({
       websocket: websocketReducer,
       messages: getMessages,
       clients: arrangeClients,
-      user: gameReducer
+      user: gameReducer,
+      Error: catchError
 });
 
 export default rootReducer;

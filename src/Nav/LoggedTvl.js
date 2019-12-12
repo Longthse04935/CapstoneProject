@@ -4,7 +4,7 @@ import "font-awesome/css/font-awesome.min.css";
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
 import Config from "../Config";
 import { connect } from 'react-redux';
-import { logOut } from '../redux/actions';
+import { exit } from '../redux/actions';
 import {wsConnect, wsDisconnect, send} from '../redux/webSocket';
 
 class LoggedTvl extends Component {
@@ -208,7 +208,7 @@ class LoggedTvl extends Component {
                         // };
                         // this.props.reload.call(this, user);window.location.href = "/";
                         this.props.dispatch(wsDisconnect("http://localhost:8080/ws"));
-                        this.props.dispatch(logOut());
+                        this.props.dispatch(exit());
                         window.location.href = "/";
                         
                       }}

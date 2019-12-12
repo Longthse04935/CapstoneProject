@@ -17,7 +17,7 @@ class PostDetail extends React.Component {
 			},
 			posts: [],
 			guider: {},
-			page: 0
+			page: 0,
 		};
 	}
 	async componentDidMount() {
@@ -55,12 +55,7 @@ class PostDetail extends React.Component {
 			);
 			if (!responsePosts.ok) {
 				throw Error(responsePosts.status + ": " + responsePosts.statusText);
-			}
-			const responseCategories = await fetch(
-				Config.api_url + "category/findAll",
-				autheticate
-			);
-			if (!responsePosts.ok) {
+			}			if (!responsePosts.ok) {
 				throw Error(responsePosts.status + ": " + responsePosts.statusText);
 			}
 			window.sessionStorage.setItem("guider_id", "" + guider.guider_id);
@@ -258,7 +253,7 @@ class PostDetail extends React.Component {
 									<div className="activities">
 										<ul>
 											<li>
-												<i className="fa fa-map-marker"></i>
+												<i className	="fa fa-thumb-tack" aria-hidden="true"></i>
 												<span>{postInfo.location}</span>
 											</li>
 											<li>
@@ -294,9 +289,8 @@ class PostDetail extends React.Component {
 										</span>
 									</div>
 
-									<ReviewInPost postId={post_id} />
 
-									{imgPostInfo}
+									<ReviewInPost postId={post_id} />
 									<PlanInPost postId={post_id} />
 
 								</div>

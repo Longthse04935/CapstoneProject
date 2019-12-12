@@ -144,9 +144,6 @@ class GuiderAllPost extends Component {
 					<div id="reactContainer">
 						{/*  Content  */}
 						<div className="content">
-						<div className="content-left">
-							{guider_id ? (<GuiderInPost guiderId={guider_id} />) : null}
-						</div>
 							<div className="content-right">
 								<div className="bookOffers">
 									<h2>Book one of my offers in Ha Noi</h2>

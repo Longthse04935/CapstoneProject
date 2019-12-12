@@ -6,10 +6,14 @@ export const wsDisconnected = host => ({ type: 'WS_DISCONNECTED', host });
 export const send = message => ({ type: 'SEND', message });
 export const get = () => ({ type: 'GET' });
 export const save = message => ({ type: 'SAVE', message });
+export const loadGuest = () => ({type: 'LOAD'});
 export const arrange = user => ({ type: 'ARRANGE', user });
 const websocketInitialState = {};
 const messageInitState = [];
 const clients = [];
+
+
+
 
 export const websocketReducer = (state = { ...websocketInitialState }, action) => {
       switch (action.type) {

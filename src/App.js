@@ -20,7 +20,7 @@ import Chart from './Guider/Chart';
 import ManagePost from './Guider/ManagePost';
 import AddPost from './Guider/AddPost';
 import { connect } from 'react-redux';
-import {wsConnect, wsDisconnect, send} from './redux/webSocket';
+import { wsConnect, wsDisconnect, send } from './redux/webSocket';
 import Message from './common/Message';
 import ChatList from './common/ChatStore';
 import Books from './Guider/Books';
@@ -29,6 +29,7 @@ import GuiderProfile from './Guider/GuiderProfile';
 import ChangePassword from "./common/ChangePassword";
 import EditPost from './Guider/EditPost';
 
+import SweetAlert from 'react-bootstrap-sweetalert';
 class App extends Component {
 	constructor(props) {
 		super(props);
@@ -39,22 +40,25 @@ class App extends Component {
 			role: "GUEST",
 			id: 0,
 			logedIn: false,
-			avartar: ""
+			avartar: "",
+			
+			alert: null,
 		};
 
 	}
+	
 
 	reload = (user) => {
 
 		if (typeof (Storage) !== 'undefined') {
 			if (user.id === 0) {
 				this.props.dispatch(wsDisconnect("http://localhost:8080/ws"));
-				
+
 				window.sessionStorage.clear();
 			}
 			else {
 				this.props.dispatch(wsConnect("http://localhost:8080/ws", user.userName));
-				
+
 				window.sessionStorage.setItem('user', JSON.stringify(user));
 			}
 		} else {
@@ -69,7 +73,7 @@ class App extends Component {
 	}
 
 	componentDidMount() {
-		
+
 		// if (typeof (Storage) !== 'undefined') {
 		// 	// get sessionStorage
 		// 	let user = window.sessionStorage.getItem('user');
@@ -77,13 +81,13 @@ class App extends Component {
 		// } else {
 		// 	alert('Browser not support!');
 		// }
-		let user = this.props.user; 
+		let user = this.props.user;
 		if (user.logedIn) {
 			this.props.dispatch(wsConnect("http://localhost:8080/ws"));
 		} else {
-			
+
 		}
-		
+
 	}
 
 
@@ -100,9 +104,10 @@ class App extends Component {
 		// } else {
 		// 	present = <Navbar reload={this.reload} user={this.props.user}/>;
 		// }
+		
 
 		let present;
-		let user = this.props.user; 
+		let user = this.props.user;
 		if (user.logedIn) {
 			if (user.role === 'TRAVELER') {
 				present = <LoggedTvl reload={this.reload} />;
@@ -121,23 +126,23 @@ class App extends Component {
 					<Route path='/' component={Home} exact />
 					<Route path='/guider/:guider_id' component={GuiderAllPost} exact />
 					<Route path='/post/:post_id' component={PostDetail} exact />
-					<Route exact path='/chatbox/:post_id' component={Chatbox} />
+					<Route exact path='/chatbox/:guiderId/:post_id' component={Chatbox} />
 					<Route path='/profileguiders'><GuiderProfile /> </Route>
 					<Route path='/tour' component={Tour} />
 					<Route path='/profiletraveller' component={ProfileTravaller} />
 					<Route path='/tour/:id' component={PostTourDetail} exact />
 					<Route path='/posttour/:id' component={PostTourDetail} />
 					<Route path='/book' component={Pay} />
-					<Route path='/tvlManager'> <TravellerManager id={this.state.id}/> </Route>
+					<Route path='/tvlManager'> <TravellerManager id={this.state.id} /> </Route>
 					<Route path='/contract' component={GuiderContract} />
 					<Route path='/chart' component={Chart} />
 					<Route path='/add' ><AddPost guiderId={this.props.user.id} /></Route>
 					<Route path='/managebook' ><Books id={this.props.user.id} /></Route>
 					<Route path='/schedule' ><Schedule id={this.props.user.id} /></Route>
 					<Route path='/changepassword' ><ChangePassword guiderId={this.props.user.id} /></Route>
-					<Route path='/chat' ><Message	 /></Route>
+					<Route path='/chat' ><Message /></Route>
 					<Route exact path={"/edit"}><ManagePost guiderId={this.props.user.id} /></Route>
-					<Route path={"/update/:guider/:post"} component={EditPost}/>
+					<Route path={"/update/:guider/:post"} component={EditPost} />
 
 
 				</Switch>
@@ -148,11 +153,12 @@ class App extends Component {
 	}
 }
 function mapStateToProps(state) {
-      console.log(state);
+	console.log(state);
 	const messages = state.messages;
 	const clients = state.clients;
 	const user = state.user;
-      return {messages, clients, user};
+	const error = state.logInError;
+	return { messages, clients, user, error };
 }
 App = connect(mapStateToProps)(App);
 

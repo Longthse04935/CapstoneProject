@@ -16,38 +16,6 @@ class Footer extends Component {
                             </a>
                             Travel
                         </div>
-                        {/* <ul className="socialMediaList">
-                            <li>
-                                <a href="/">
-                                    <i className="fa fa-facebook-square" />
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/">
-                                    <i className="fa fa-twitter-square" />
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/">
-                                    <i className="fa fa-instagram" />
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/">
-                                    <i className="fa fa-youtube" />
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/">
-                                    <i className="fa fa-pinterest-square" />
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/">
-                                    <i className="fa fa-facebook-messenger" />
-                                </a>
-                            </li>
-                        </ul> */}
                     </div>
                     <div className="webInfo">
                         <div>

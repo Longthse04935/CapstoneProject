@@ -3,8 +3,8 @@ import {wsConnect} from './webSocket';
 
 export const logIn = json => ({ type: 'LOGIN', data: json });
 export const exit = () => ({ type: 'LOGOUT' });
-export const startRound = () => ({ type: 'START_ROUND' });
-export const updateTimer = time => ({ type: 'UPDATE_TIMER', time });
+export const firErr = err => ({ type: 'ERROR', err });
+export const visit = json => ({ type: 'VISIT', guider:json });
 export const makeMove = move => ({ type: 'MAKE_MOVE', move });
 export const updateGamePlayer = player => ({ type: 'UPDATE_GAME_PLAYER', player });
 
@@ -21,10 +21,13 @@ export const signIn = login => dispatch => fetch(`${Config.api_url}account/login
 })
       .then(res => res.json(), error => {
             console.log('An error occurred.', error);
-            //throw new Error(error);
+            throw new Error(error);
+            
       })
       .then((json) => {
             dispatch({ type: 'LOGIN', data: json });
+      }).catch(err => {
+            dispatch({type: 'ERROR', err: 'User name or password is wrong'});
       });
 
 export const logOut = () => dispatch => fetch(`${Config.api_url}account/logout`, {
@@ -40,12 +43,41 @@ export const logOut = () => dispatch => fetch(`${Config.api_url}account/logout`,
             dispatch({ type: 'LOGOUT' });
       });
 
+
+
+
 const gameInitialState = {
       userName: "",
       role: "",
       id: 0,
       logedIn: false,
       avatar: ""
+};
+
+const intialError = {
+      msg: "nothing",
+      flag: false
+};
+const initGuider = {
+      guiderId: 0,
+      guiderName: "",
+      guiderAvatar: ""      
+}
+
+
+
+
+export const catchError = (state = { ...intialError }, action) => {
+      switch (action.type) {
+            case 'ERROR':
+                  return {
+                        msg: action.err,
+                        flag: true
+                  };
+            
+            default:
+                  return state;
+      }
 };
 
 export const gameReducer = (state = { ...gameInitialState }, action) => {
@@ -61,11 +93,8 @@ export const gameReducer = (state = { ...gameInitialState }, action) => {
 
                   };
             case 'LOGOUT':
-                  return { gameInitialState };
-            case 'UPDATE_TIMER':
-                  return { ...state, time: action.time };
-            case 'UPDATE_GAME_PLAYER':
-                  return { ...state, gamePlayer: action.player };
+                  return gameInitialState ;
+            
             default:
                   return state;
       }

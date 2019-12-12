@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import PlanInPost from "../Guider/PlanInPost";
 
 import { Redirect } from "react-router-dom";
+import { thisExpression } from "@babel/types";
 class Chatbox extends Component {
 	constructor(props) {
 		super(props);
@@ -38,12 +39,13 @@ class Chatbox extends Component {
 			closest_EndDate: "",
 			alert: null,
 			valueItem: '',
-			//user: JSON.parse(sessionStorage.getItem('user'))
 			user: props.user,
 			guider: {
-				languages:['']
-			}
-			
+				languages: ['']
+			},
+
+			avaiDate: []
+
 		};
 	}
 
@@ -75,16 +77,16 @@ class Chatbox extends Component {
 	async componentDidMount() {
 
 		let flag = this.props.match.params.message === undefined ? '' : this.props.match.params.message;
-		let isError = (flag === "booking_success") ? false : true;
-
-		let message = '';
-		if (flag) {
-			message = (isError) ? 'Booking Failed' : 'Booking Success';
+		if (flag === "booking_success") {
+			this.statusProfile("Booking Success");
+		} else if (flag === "booking_fail") {
+			this.notification("Booking Fail")
 		}
 
 
 		// this.scrollToBottom();
 		let post_id = this.props.match.params.post_id;
+		let guiderId = this.props.match.params.guiderId;
 
 		//price in tour
 		let { numberInjoy } = this.state;
@@ -106,6 +108,9 @@ class Chatbox extends Component {
 
 
 			//load time avilable
+			let avaiDates = await fetch(Config.api_url + 'Order//GetPossibleDayInMonth/'
+				+ this.props.match.params.guiderId + '/' + posts.total_hour, options);
+			let d = await avaiDates.json();
 			let options = this.option(" 00:00");
 			let response = await fetch(Config.api_url + 'Order/GetAvailableHours', options);
 			response = await response.json();
@@ -113,16 +118,20 @@ class Chatbox extends Component {
 			let option = this.option(" " + response[0]);
 			let endTime = await fetch(Config.api_url + 'Order/GetExpectedTourEnd', option);
 			endTime = await endTime.text();
-			
+
 			//get profile guider sessionStorage.getItem('guider_id')
-			const responseGuider = await fetch(Config.api_url + "Guider/" + this.props.user.id, {
+			this.setState({ numberInjoy, timeAvailable: response, hourBegin: response[0], endTime: endTime, avaiDate: d });
+
+			//get profile guider
+			const responseGuider = await fetch(Config.api_url + "Guider/" + guiderId, {
+
 				method: "GET",
 				mode: "cors",
 				credentials: "include"
 			});
 			if (!responseGuider.ok) { throw Error(responseGuider.status + ": " + responseGuider.statusText); }
 			const guider = await responseGuider.json();
-			this.setState({guider: guider , message, isError, numberInjoy, timeAvailable: response, hourBegin: response[0], endTime: endTime });
+			this.setState({ guider: guider });
 
 			$(".ratingChatbox img").hover(function () {
 				$('.tool-tip').show();
@@ -176,25 +185,24 @@ class Chatbox extends Component {
 		});
 	}
 
-	onLogin() {
+
+
+	//notification khi booking failed or success
+	onNotification() {
 		this.setState({ alert: null });
-		$('.loginForm').show();
 	}
 
-	alertAccount() {
+	notification(notification) {
 		const getAlert = () => (
 			<SweetAlert
 				warning
-				showCancel
-				confirmBtnText="Go to login"
+				confirmBtnText="Close"
 				confirmBtnBsStyle="danger"
-				title="Login notification"
-				onConfirm={() => this.onLogin()}
-				onCancel={() => this.onCancel()}
-				focusCancelBtn
+				title="Notification"
+				onConfirm={() => this.onNotification()}
 			>
-				You are not logged in. Please login or register to book this tour!!
-      </SweetAlert>
+				{notification}
+			</SweetAlert>
 		);
 
 		this.setState({
@@ -202,45 +210,60 @@ class Chatbox extends Component {
 		});
 	}
 
+
+	statusProfile(message) {
+		const getAlert = () => (
+			<SweetAlert
+				success
+				onConfirm={() => this.onNotification()}
+			>
+				{message}
+			</SweetAlert>
+		);
+
+		this.setState({
+			alert: getAlert()
+		});
+	}
+	// end phuong thuc thong bao dat tour
 	bookNow = async () => {
-		var user = JSON.parse(sessionStorage.getItem('user'));
-		if (user === null) {
-			this.alertAccount();
-		} else if (user !== null) {
-			let data = this.state;
-			let today = data.tourDate;
-			let getDate = parseInt(today.getDate()) < 10 ? "0" + parseInt(today.getDate()) : parseInt(today.getDate());
-			let getMonth = parseInt(today.getMonth() + 1) < 10 ? "0" + parseInt(today.getMonth() + 1) : parseInt(today.getMonth() + 1);
 
-			let options = this.option(" " + this.state.hourBegin);
+		let data = this.state;
+		let today = data.tourDate;
+		let getDate = parseInt(today.getDate()) < 10 ? "0" + parseInt(today.getDate()) : parseInt(today.getDate());
+		let getMonth = parseInt(today.getMonth() + 1) < 10 ? "0" + parseInt(today.getMonth() + 1) : parseInt(today.getMonth() + 1);
+
+		let options = this.option(" " + this.state.hourBegin);
 
 
-			let tourDetail = {
-				traveler_id: '',
-				post_id: '',
-				begin_date: '',
-				adult_quantity: '',
-				children_quantity: '',
-				price: '',
-				end_date: '',
-				guider_id: sessionStorage.getItem('guider_id'),
-				guider_name: sessionStorage.getItem('guider_name')
-			};
+		let tourDetail = {
+			traveler_id: '',
+			post_id: '',
+			begin_date: '',
+			adult_quantity: '',
+			children_quantity: '',
+			price: '',
+			end_date: '',
+			guider_id: sessionStorage.getItem('guider_id'),
+			guider_name: sessionStorage.getItem('guider_name')
+		};
 
-			tourDetail.traveler_id = "" + user.id;
-			tourDetail.post_id = "" + this.props.match.params.post_id;
-			tourDetail.begin_date = getMonth + "/" + getDate + "/" + today.getFullYear() + " " + data.hourBegin;
-			tourDetail.adult_quantity = "" + data.numberInjoy.adult;
-			tourDetail.children_quantity = "" + data.numberInjoy.children;
-			tourDetail.price = data.numberInjoy.totalPrice;
-			tourDetail.end_date = this.state.endTime;
-			sessionStorage.setItem('tourDetail', JSON.stringify(tourDetail));
-			//add check here
-			//window.location.href = "/book";
-			return <Redirect to="/book"/>
+		tourDetail.traveler_id = "" + this.props.user.id;
+		tourDetail.post_id = "" + this.props.match.params.post_id;
+		tourDetail.begin_date = getMonth + "/" + getDate + "/" + today.getFullYear() + " " + data.hourBegin;
+		tourDetail.adult_quantity = "" + data.numberInjoy.adult;
+		tourDetail.children_quantity = "" + data.numberInjoy.children;
+		tourDetail.price = data.numberInjoy.totalPrice;
+		tourDetail.end_date = this.state.endTime;
+		sessionStorage.setItem('tourDetail', JSON.stringify(tourDetail));
+		//add check here
+		try {
+			let checkTime = await fetch(Config.api_url + 'Order/checktime', option);
+			if(!checkTime.ok) { throw Error(checkTime.status + ": " + checkTime.statusText); }
+			window.location.href = "/book";
+		} catch (err) { 
+			this.notification("The time your choose have been booked by someone else, please reload and pick another time");
 		}
-
-
 	}
 
 	changeNumber = (age, minusPlus) => {
@@ -275,13 +298,15 @@ class Chatbox extends Component {
 	};
 
 	render() {
-		const { chatData, chatText, author, numberInjoy, plan, guider } = this.state;
-		let languages = '' ;
-		for (var i = 0 ; i < guider.languages.length;i++){
-			if(i+1 === guider.languages.length){
+		const { chatData, chatText, author, numberInjoy, plan, guider, avaiDate } = this.state;
+		let includeCalendates = avaiDate.map(date => { return new Date(date); });
+		let languages = '';
+
+		for (var i = 0; i < guider.languages.length; i++) {
+			if (i + 1 === guider.languages.length) {
 				languages += guider.languages[i].toUpperCase();
-			}else{
-				languages += guider.languages[i].toUpperCase()+',';
+			} else {
+				languages += guider.languages[i].toUpperCase() + ',';
 			}
 		}
 		let selectHour = this.state.timeAvailable.map((value, index) => {
@@ -296,18 +321,18 @@ class Chatbox extends Component {
 				{/* Chat form */}
 				<div className="chat_window" >
 					{/* plan of tour detailPlanChatBox*/}
-					<div className="detailPlanChatBox"> 
+					{/* <div className="detailPlanChatBox"> 
 					<PlanInPost postId={this.props.match.params.post_id}/>
 
-					</div>
+					</div> */}
 					{/* guider infor */}
 					<div className="guiderInfo" >
 						<div className="guiderContent">
-							<h1>{guider.first_name+" "+guider.last_name}</h1>
+							<h1>{guider.first_name + " " + guider.last_name}</h1>
 
 							<div className="rating ratingChatbox">
 
-								<img src={+guider.avatar} />
+								<img src={guider.avatar} />
 								<i className="fa fa-star" aria-hidden="true"></i>
 								<i className="fa fa-star" aria-hidden="true"></i>
 								<i className="fa fa-star" aria-hidden="true"></i>
@@ -336,7 +361,7 @@ class Chatbox extends Component {
 										</span>
 										<span className="tool-tipItemText">
 											My passions are {guider.passion}
-                        </span>
+										</span>
 									</p>
 									<p className="tool-tipItem">
 										<span className="tool-tipItemIcon">
@@ -360,6 +385,7 @@ class Chatbox extends Component {
 									onChange={this.dateChange}
 
 									minDate={new Date()}
+									includeDates={includeCalendates}
 								/>
 							</div>
 							<div className="selectTime">

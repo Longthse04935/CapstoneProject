@@ -14,11 +14,11 @@ class ReviewInPost extends React.Component {
                   "post_date": ""
             }];
 
-            this.state = { 
+            this.state = {
                   reviews: obj,
                   rating: 0,
-                  isDisable:true
-             };
+                  isDisable: true
+            };
 
       }
 
@@ -28,7 +28,7 @@ class ReviewInPost extends React.Component {
                         method: "GET",
                         mode: "cors",
                         credentials: "include"
-                    });
+                  });
                   if (!response.ok) { throw Error(response.status + ": " + response.statusText); }
                   const review = await response.json();
                   console.log(review);
@@ -37,32 +37,36 @@ class ReviewInPost extends React.Component {
                   console.log(err);
             }
       }
-          
+
       render() {
-            var notification = this.state.isDisable ? "" : <p style={{color:'red'}}>Vote star before comment</p>;
-            const showReview = this.state.reviews.map((review, index) => 
-                  <li key={index}>
-                        <div className="review">
-                              <div className="reviewContainer">
-                                    <img className="defaultLogo" src="/img/defaultAvatarComment.webp" alt="logo" />
-                                    <div className="reviewInfo">
-                                          <div className="nickName">AnnaBanana</div>
-                                          <Rated number={review.rated}/>
-                                          <div className="dateComment">{review.post_date}</div>
+            var notification = this.state.isDisable ? "" : <p style={{ color: 'red' }}>Vote star before comment</p>;
+
+            let showReview = <div>There is no review yet. Be the first to show up here</div>;
+            if (this.state.reviews.length > 0) {
+                  showReview = this.state.reviews.map((review, index) =>
+                        <li key={index}>
+                              <div className="review">
+                                    <div className="reviewContainer">
+                                          <img className="defaultLogo" src="/img/defaultAvatarComment.webp" alt="logo" />
+                                          <div className="reviewInfo">
+                                                <div className="nickName">AnnaBanana</div>
+                                                <Rated number={review.rated} />
+                                                <div className="dateComment">{review.post_date}</div>
+                                          </div>
+                                          <div className="commentDetails">{review.review}</div>
+                                          <span className="reviewTitle">The Local!</span>
                                     </div>
-                                    <div className="commentDetails">{review.review}</div>
-                                    <span className="reviewTitle">The Local!</span>
+
+
                               </div>
-                              
-                             
-                        </div>
-                  </li>
-            );
+                        </li>
+                  );
+            }
             return (
-                        <ul className="listReview">
-                              <h2>Reviews</h2>
-                              {showReview}
-                        </ul>
+                  <ul className="listReview">
+                        <h2>Reviews</h2>
+                        {showReview}
+                  </ul>
             );
       }
 }

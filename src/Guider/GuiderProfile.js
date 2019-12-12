@@ -18,29 +18,28 @@ class GuiderProfile extends Component {
                   alert: null,
                   avatar_link: '',
                   avtImage: '',
+                  language: [],
                   data: {
-                        traveler_id: '',
+
                         first_name: '',
                         last_name: '',
                         phone: '',
                         gender: '0',
                         email: '',
                         date_of_birth: '1970-01-01',
-                        street: '',
-                        house_number: '',
-                        postal_code: '',
-                        slogan: '',
+                        passion: '',
                         about_me: '',
                         language: ["Vietnamese"],
                         country: 'Vietnam',
                         city: '',
-                        avatar_link: '',
-                        day: '01',
-                        month: '01',
-                        year: '1970',
+                        avatar: '',
+                        // day: '01',
+                        // month: '01',
+                        // year: '1970',
 
                   }
             }
+            //this.submitForm = this.submitForm.bind(this);
       }
 
       // componentWillMount() {
@@ -70,26 +69,27 @@ class GuiderProfile extends Component {
                         credentials: "include"
                   });
 
-            if (responseTraveller.ok) {
-                  sessionStorage.setItem('errorAPI', responseTraveller.status);
-            }
 
-            var data = JSON.parse(sessionStorage.getItem('errorAPI'));
-            if (data === 200) {
-                  const dataTraveller = await responseTraveller.json();
-                  var str = dataTraveller.date_of_birth;
-                  var res = str.split("-");
-                  dataTraveller.year = res[0];
-                  dataTraveller.month = res[1];
-                  dataTraveller.day = res[2].split(" ")[0];
-                  this.setState({ data: dataTraveller, avatar_link: dataTraveller.avatar_link });
-            } else {
-                  this.setState({ avatar_link: Config.api_url + "images/" + "account.jpg" });
-            }
+            const dataTraveller = await responseTraveller.json();
+            var str = dataTraveller.date_of_birth;
+            var res = str.split("/");
+            dataTraveller.year = res[0];
+            dataTraveller.month = res[1];
+            dataTraveller.day = res[2].split(" ")[0];
+            let link = dataTraveller.avatar;
+            dataTraveller.avatar = this.fromDataURL(dataTraveller.avatar);
+            console.log(dataTraveller);
+            this.setState({ data: dataTraveller, avatar_link: link });
+
 
       }
 
-
+      fromDataURL = url => {
+            let downloadedImg = new Image();
+            downloadedImg.crossOrigin = "Anonymous";
+            downloadedImg.src = url;
+            console.log(downloadedImg);
+      }
 
       validatePhone(phone) {
             const pattern = /^\d{10,11}$/;
@@ -117,13 +117,15 @@ class GuiderProfile extends Component {
 
             if (event.target.files && event.target.files[0]) {
                   let reader = new FileReader();
-                  reader.onload = (event) => {
-
-                        this.setState({ avatar_link: event.target.result });
-                  };
                   reader.readAsDataURL(event.target.files[0]);
+                  reader.onload = (event) => {
+                        this.state.data.avatar = reader.result;
+                        this.setState({ avatar_link: event.target.result,
+                         });
+                  };
+                  
             }
-      }
+      }     
 
       isValidate = () => {
             const { data } = this.state;
@@ -164,7 +166,7 @@ class GuiderProfile extends Component {
                   alert: null
             });
             //window.location.href = '/profileguiders';
-            return <Redirect to="/profileguiders"/>;
+
       }
 
       statusProfile(message) {
@@ -185,28 +187,23 @@ class GuiderProfile extends Component {
 
       createComplete = () => {
             var data = {
-                  traveler_id: '',
+
                   first_name: '',
                   last_name: '',
                   phone: '',
                   gender: '0',
-                  email: '',
                   date_of_birth: '1970-01-01',
-                  street: '',
-                  house_number: '',
-                  postal_code: '',
                   slogan: '',
                   about_me: '',
                   language: ["Vietnamese"],
                   country: 'Vietnam',
                   city: '',
-                  avatar_link: '',
-                  day: '01',
-                  month: '01',
-                  year: '1970',
+                  avatar: '',
+                  // day: '01',
+                  // month: '01',
+                  // year: '1970',
             }
             this.setState({ data });
-            sessionStorage.setItem('errorAPI', 1000);
             this.statusProfile();
 
       }
@@ -221,52 +218,33 @@ class GuiderProfile extends Component {
       async submitForm(e) {
             e.preventDefault();
             let user = this.props.user;
+
             // var user = JSON.parse(sessionStorage.getItem('user'));
             if (this.isValidate()) {
                   return false;
             }
-            var errorAPI = JSON.parse(sessionStorage.getItem('errorAPI'));
-            var { data, avatar_link, avtImage } = this.state;
-            data.traveler_id = user.id;
-            data.date_of_birth = data.year + "-" + data.month + "-" + data.day + " 00:00";
-            if (avtImage === '') {
-                  data.avatar_link = avatar_link.replace(Config.api_url + 'images/', '');
-            } else {
-                  data.avatar_link = avatar_link;
-            }
-            // console.log(data.avatar_link);
-            // return false;
-            if (errorAPI === 200) {
-                  let options = {
-                        method: 'POST',
-                        mode: "cors",
-                        credentials: "include",
-                        headers: {
-                              Accept: 'application/json',
-                              'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(data)
-                  };
-                  let response = await fetch(Config.api_url + 'Traveler/Update', options);
-                  response = await response.text();
-                  this.statusProfile('Update success!!');
-            } else if (errorAPI !== 200) {
-                  let options = {
-                        method: 'POST',
-                        mode: "cors",
-                        credentials: "include",
-                        headers: {
-                              Accept: 'application/json',
-                              'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(data)
-                  };
-                  let response = await fetch(Config.api_url + 'Traveler/Create', options);
-                  response = await response.text();
-                  if (response === "true") {
-                        this.createComplete('Create done!!');
-                  }
-            }
+            var { data, avtImage } = this.state;
+            data.date_of_birth = data.year + "/" + data.month + "/" + data.day + " 00:00";
+            delete data.year;
+            delete data.month;
+            delete data.day;
+            data.languages = this.state.language;
+            console.log(data);
+
+            let options = {
+                  method: 'POST',
+                  mode: "cors",
+                  credentials: "include",
+                  headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(data)
+            };
+            let response = await fetch(Config.api_url + 'Guider/Edit', options);
+            response = await response.text();
+            this.statusProfile('Update success!!');
+
       }
 
       render() {
@@ -309,9 +287,14 @@ class GuiderProfile extends Component {
 
             var language = ["English", "Vietnamese", "Japanese", "Chinese", "Korean", "French", "Russian", "Spanish"];
             var languageOption = language.map((value, index) => (
-                  <p><input value={value} key={index} type="checkbox"/>{value}</p>
+                  <p key={index}><input value={value} key={index} type="checkbox" onClick={(eve) => {
+                        //eve.preventDefault();
+                        if (eve.target.checked == true) this.state.language.push(eve.target.value);
+                        else if (this.state.language.indexOf(eve.target.value) >= 0) {
+                              this.state.language.splice(this.state.language.indexOf(eve.target.value), 1);
+                        }
+                  }} />{value}</p>
             ))
-            var message = this.props.match.params.message;
             return (
                   <div>
                         {this.state.alert}
@@ -402,9 +385,9 @@ class GuiderProfile extends Component {
                                           <input
                                                 placeholder="Share your habit to your clients !!!"
                                                 className="input-something"
-                                                name="slogan"
+                                                name="passion"
                                                 onChange={(e) => { this.handleChange(e) }}
-                                                value={data.slogan}
+                                                defaultValue={data.slogan}
                                           />
                                           {errors['slogan'] ? <p style={{ color: "red" }} className="errorInput">{errors['slogan']}</p> : ''}
                                     </div>
@@ -419,7 +402,7 @@ class GuiderProfile extends Component {
       }
 }
 function mapStateToProps(state) {
-	const user = state.user;
-      return {user};
+      const user = state.user;
+      return { user };
 }
 export default connect(mapStateToProps)(GuiderProfile);

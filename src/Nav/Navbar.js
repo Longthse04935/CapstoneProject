@@ -6,27 +6,28 @@ import ReactDOM from 'react-dom';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { connect } from 'react-redux';
 import { signIn } from '../redux/actions';
-import {wsConnect, wsDisconnect, send} from '../redux/webSocket';
+import { wsConnect, wsDisconnect, send } from '../redux/webSocket';
+import { Redirect } from "react-router-dom";
 class Navbar extends Component {
     constructor(props) {
         super(props);
-        this.state = { 
+        this.state = {
             alert: null,
-            data:{
+            data: {
                 userName: "",
                 password: "",
-                re_password:'',
+                re_password: '',
                 role: "TRAVELER",
-                email:""
+                email: ""
             },
-            login:{
+            login: {
                 userName: "",
                 password: "",
                 role: "TRAVELER"
             },
-            errors:[],
-            isError:false,
-            activeSearch:false
+            errors: [],
+            isError: false,
+            activeSearch: false
         }
         this.wrapperRef = React.createRef();
         this.signUp = this.signUp.bind(this);
@@ -35,36 +36,36 @@ class Navbar extends Component {
     }
 
     genderOnChange = e => {
-        let {data} = this.state;
+        let { data } = this.state;
         data[e.target.name] = e.target.value;
-        this.setState({data});
-      };
-    
-      genderOnChangeLogin = e => {
-        let {login} = this.state;
-        login[e.target.name] = e.target.value;
-        this.setState({login});
+        this.setState({ data });
     };
 
-    validateEmail(email){
+    genderOnChangeLogin = e => {
+        let { login } = this.state;
+        login[e.target.name] = e.target.value;
+        this.setState({ login });
+    };
+
+    validateEmail(email) {
         const pattern = /[a-zA-Z0-9]+[\.]?([a-zA-Z0-9]+)?[\@][a-z]{3,9}[\.][a-z]{2,5}/g;
         const result = pattern.test(email);
         return result;
-      }
+    }
 
-    handleChange = (e)=>{
+    handleChange = (e) => {
         const value = e.target.value;
         const name = e.target.name;
-        let {errors} = this.state;
+        let { errors } = this.state;
         const { data } = this.state;
         data[name] = value;
-        if(value !== ''){
+        if (value !== '') {
             errors[name] = '';
         }
         this.setState({ data });
     }
 
-    handleChangeLogin = (e)=>{
+    handleChangeLogin = (e) => {
         const value = e.target.value;
         const name = e.target.name;
         const { login } = this.state;
@@ -76,35 +77,35 @@ class Navbar extends Component {
         const { data } = this.state;
         let isError = false;
         let errors = {};
-        if(data.userName === '') {
-          isError = true;
-          errors['userName'] = 'User name is empty, Input your user name';
+        if (data.userName === '') {
+            isError = true;
+            errors['userName'] = 'User name is empty, Input your user name';
         }
-        if(data.password.length < 8) {
-          isError = true;
-          errors['password'] = 'Password consists of 8 characters or more';
+        if (data.password.length < 8) {
+            isError = true;
+            errors['password'] = 'Password consists of 8 characters or more';
         }
-        if(this.validateEmail(data.email) === false) {
+        if (this.validateEmail(data.email) === false) {
             isError = true;
             errors['email'] = 'Email example like googleemail@gmail.com';
-          }
-        if(data.re_password !== data.password){
-          isError = true;
-          errors['re_password'] = 'Re-password is not the same as a password';
         }
-    
-        this.setState({ isError, errors });
-        if(isError) 
-          return true;
-    
-        return false;
-      }
+        if (data.re_password !== data.password) {
+            isError = true;
+            errors['re_password'] = 'Re-password is not the same as a password';
+        }
 
-    resetText = () =>{
+        this.setState({ isError, errors });
+        if (isError)
+            return true;
+
+        return false;
+    }
+
+    resetText = () => {
         let data = {
             userName: "",
             password: "",
-            re_password:'',
+            re_password: '',
             role: "TRAVELER"
         }
         let login = {
@@ -112,20 +113,20 @@ class Navbar extends Component {
             password: "",
             role: "TRAVELER"
         }
-        let errors =[]
+        let errors = []
         let isError = false
 
-        this.setState({data,errors,isError,login})
+        this.setState({ data, errors, isError, login })
     }
 
     async signUp(eve) {
         eve.preventDefault();
-        if(this.isValidate()) {
+        if (this.isValidate()) {
             return false;
-          } 
-        
-        let {data,errors} = this.state;
-       
+        }
+
+        let { data, errors } = this.state;
+
         try {
             const response = await fetch(Config.api_url + "account/registrator",
                 {
@@ -138,9 +139,9 @@ class Navbar extends Component {
                     body: JSON.stringify(data)
                 }
             );
-            if(response.status !== 200){
+            if (response.status !== 200) {
                 errors['userName'] = 'This account name already existed';
-                this.setState({errors});
+                this.setState({ errors });
                 return false;
             }
             const user = await response.json();
@@ -150,7 +151,7 @@ class Navbar extends Component {
         } catch (err) {
             console.log(err);
         }
-       
+
 
     }
 
@@ -158,7 +159,7 @@ class Navbar extends Component {
 
     async logIn(eve) {
         eve.preventDefault();
-        let{login,errors} = this.state;
+        let { login, errors } = this.state;
         try {
             // const response = await fetch(Config.api_url + "account/login",
             //     {
@@ -182,37 +183,40 @@ class Navbar extends Component {
             // }
             // this.props.reload.call(this, await user);
             this.props.dispatch(signIn(login));
-            window.location.href = "/";
+            //window.location.href = "/";
+            
             //this.props.reload.call(this,  this.props.user);
         } catch (err) {
             console.log(err);
             errors['login'] = 'User name or password is wrong';
-            this.setState({errors});
+            this.setState({ errors });
         }
     }
 
     hideAlert() {
-    this.setState({
-        alert: null
-    });
+        this.setState({
+            alert: null
+        });
     }
 
-    statusProfile(message){
-    const getAlert = () => (
-        <SweetAlert 
-        success 
-        title="Woot!" 
-        onConfirm={() => this.hideAlert()}
-        >
-        {message}
-        </SweetAlert>
-    );
+    statusProfile(message) {
+        const getAlert = () => (
+            <SweetAlert
+                success
+                title="Woot!"
+                onConfirm={() => this.hideAlert()}
+            >
+                {message}
+            </SweetAlert>
+        );
 
-    this.setState({
-        alert: getAlert()
-    });
+        this.setState({
+            alert: getAlert()
+        });
     }
+
     
+
     componentDidMount() {
         $("head").append('<link href="/css/login.css" rel="stylesheet"/>');
         $("head").append('<link href="/css/navbar.css" rel="stylesheet"/>');
@@ -222,7 +226,7 @@ class Navbar extends Component {
             $(this).addClass('active');
         });
 
-        
+
         $('input[name=search]').focus(function () {
             $('#searchNav #fillterNav').show();
 
@@ -235,7 +239,7 @@ class Navbar extends Component {
                 $('#fillterNav').hide();
             }
         });
-        
+
         // click sign up and close sign up form
         $('.signup').click(function () {
             $('.signUpForm').show();
@@ -255,7 +259,7 @@ class Navbar extends Component {
             $('.signUpForm').hide();
         });
 
-       
+
         $('.SignIn').click(function () {
             $('.signUpForm').show();
             $('.loginForm').hide();
@@ -281,8 +285,8 @@ class Navbar extends Component {
         //reset text when click out a div with reactjs
         document.addEventListener('click', this.handleClick)
 
-       
-      
+
+
     }
 
     handleClick = (event) => {
@@ -291,24 +295,29 @@ class Navbar extends Component {
             let data = {
                 userName: "",
                 password: "",
-                re_password:"",
+                re_password: "",
                 role: "TRAVELER",
-                email:""
+                email: ""
             }
-            let errors =[]
+            let errors = []
             let isError = false
-            this.setState({data,errors,isError});
+            this.setState({ data, errors, isError });
         }
     }
 
     componentWillUnmount() {
         // important
         document.removeEventListener('click', this.handleClick);
+        
     }
-    
+
 
     render() {
-        let {data,errors,login} = this.state;
+        let { data, errors, login } = this.state;
+        if (this.props.error.flag) {
+			errors['login'] = 'User name or password is wrong';
+		}
+        
         let path = window.location.pathname;
         return (
             <div>
@@ -317,27 +326,27 @@ class Navbar extends Component {
                 <div className="layout signUpForm">
                     <div className="content-login" ref={this.wrapperRef}>
                         <button className="closeLogin">
-                            <i className="fa fa-times" onClick={this.resetText}/>
+                            <i className="fa fa-times" onClick={this.resetText} />
                         </button>
                         <h3 className="SubTitle-230L-">Sign up </h3>
                         <form style={{ textAlign: "center" }} onSubmit={this.signUp}>
                             <div className="SignupForm-20HPb">
-                            <div className="gender" style={{marginBottom:'15px',marginTop:'15px'}}>
+                                <div className="gender" style={{ marginBottom: '15px', marginTop: '15px' }}>
                                     <input
-                                    type="radio"
-                                    className="gendermale"
-                                    name="role"
-                                    value="TRAVELER"
-                                    checked={data.role === 'TRAVELER'}
-                                    onChange={e => this.genderOnChange(e)}
+                                        type="radio"
+                                        className="gendermale"
+                                        name="role"
+                                        value="TRAVELER"
+                                        checked={data.role === 'TRAVELER'}
+                                        onChange={e => this.genderOnChange(e)}
                                     />{" "}
                                     Traveler
                                     <input
-                                    type="radio"
-                                    name="role"
-                                    value="GUIDER"
-                                    checked={data.role === 'GUIDER'}
-                                    onChange={e => this.genderOnChange(e)}
+                                        type="radio"
+                                        name="role"
+                                        value="GUIDER"
+                                        checked={data.role === 'GUIDER'}
+                                        onChange={e => this.genderOnChange(e)}
                                     />{" "}
                                     Guider
                                 </div>
@@ -351,9 +360,9 @@ class Navbar extends Component {
                                         name="userName"
                                         placeholder="User name"
                                         value={data.userName}
-                                        onChange={(e)=>{this.handleChange(e)}}
+                                        onChange={(e) => { this.handleChange(e) }}
                                     />
-                                    {errors['userName'] ? <p style={{color: "red"}} className="errorInput">{errors['userName']}</p> : ''}
+                                    {errors['userName'] ? <p style={{ color: "red" }} className="errorInput">{errors['userName']}</p> : ''}
                                 </div>
                                 <div className="PasswordInput-1Qf5F">
                                     <div className="password">
@@ -366,9 +375,9 @@ class Navbar extends Component {
                                             type="password"
                                             name="password"
                                             value={data.password}
-                                            onChange={(e)=>{this.handleChange(e)}}
+                                            onChange={(e) => { this.handleChange(e) }}
                                         />
-                                        {errors['password'] ? <p style={{color: "red"}} className="errorInput">{errors['password']}</p> : ''}
+                                        {errors['password'] ? <p style={{ color: "red" }} className="errorInput">{errors['password']}</p> : ''}
                                     </div>
                                 </div>
                                 <div className="lastName">
@@ -381,9 +390,9 @@ class Navbar extends Component {
                                         name="re_password"
                                         placeholder="Re-password"
                                         value={data.re_password}
-                                        onChange={(e)=>{this.handleChange(e)}}
+                                        onChange={(e) => { this.handleChange(e) }}
                                     />
-                                    {errors['re_password'] ? <p style={{color: "red"}} className="errorInput">{errors['re_password']}</p> : ''}
+                                    {errors['re_password'] ? <p style={{ color: "red" }} className="errorInput">{errors['re_password']}</p> : ''}
                                 </div>
                                 <div className="lastName">
                                     <label className="InputLabel-Tch5j InputLabelConditionalHide-24VTo">
@@ -395,9 +404,9 @@ class Navbar extends Component {
                                         name="email"
                                         placeholder="Email"
                                         value={data.email}
-                                        onChange={(e)=>{this.handleChange(e)}}
+                                        onChange={(e) => { this.handleChange(e) }}
                                     />
-                                    {errors['email'] ? <p style={{color: "red"}} className="errorInput">{errors['email']}</p> : ''}
+                                    {errors['email'] ? <p style={{ color: "red" }} className="errorInput">{errors['email']}</p> : ''}
                                 </div>
                             </div>
 
@@ -421,44 +430,44 @@ class Navbar extends Component {
                 <div className="layout loginForm">
                     <div className="content-login">
                         <button className="closeLogin">
-                            <i className="fa fa-times" onClick={this.resetText}/>
+                            <i className="fa fa-times" onClick={this.resetText} />
                         </button>
                         <h3 className="SubTitle-230L-">Log in</h3>
                         <form style={{ textAlign: "center" }} onSubmit={this.logIn}>
                             <div className="SignupForm-20HPb">
-                            {errors['role'] ? <p style={{color: "red"}} className="errorInput">{errors['role']}</p> : ''}
-                            <div className="gender" style={{marginBottom:'15px',marginTop:'15px'}}>
+                                {errors['role'] ? <p style={{ color: "red" }} className="errorInput">{errors['role']}</p> : ''}
+                                <div className="gender" style={{ marginBottom: '15px', marginTop: '15px' }}>
                                     <input
-                                    type="radio"
-                                    className="gendermale"
-                                    name="role"
-                                    value="TRAVELER"
-                                    checked={login.role === 'TRAVELER'}
-                                    onChange={e => this.genderOnChangeLogin (e)}
+                                        type="radio"
+                                        className="gendermale"
+                                        name="role"
+                                        value="TRAVELER"
+                                        checked={login.role === 'TRAVELER'}
+                                        onChange={e => this.genderOnChangeLogin(e)}
                                     />{" "}
                                     Traveler
                                     <input
-                                    type="radio"
-                                    name="role"
-                                    value="GUIDER"
-                                    checked={login.role === 'GUIDER'}
-                                    onChange={e => this.genderOnChangeLogin (e)}
+                                        type="radio"
+                                        name="role"
+                                        value="GUIDER"
+                                        checked={login.role === 'GUIDER'}
+                                        onChange={e => this.genderOnChangeLogin(e)}
                                     />{" "}
                                     Guider
                                 </div>
-                                {errors['login'] ? <p style={{color: "red"}} className="errorInput">{errors['login']}</p> : ''}
+                                {errors['login'] ? <p style={{ color: "red" }} className="errorInput">{errors['login']}</p> : ''}
                                 <div className="firstName">
                                     <label className="InputLabel-Tch5j InputLabelConditionalHide-24VTo">
                                         Nick name *
                                     </label>
-                                    
+
                                     <input
                                         className="Input-1e6rU"
                                         type="text"
                                         name="userName"
                                         placeholder="Name"
                                         value={login.userName}
-                                        onChange={(e)=>{this.handleChangeLogin(e)}}
+                                        onChange={(e) => { this.handleChangeLogin(e) }}
                                     />
                                 </div>
                                 <div className="PasswordInput-1Qf5F">
@@ -474,7 +483,7 @@ class Navbar extends Component {
                                                 type="password"
                                                 name="password"
                                                 value={login.password}
-                                                onChange={(e)=>{this.handleChangeLogin(e)}}
+                                                onChange={(e) => { this.handleChangeLogin(e) }}
 
                                             />
                                             <i className="fa fa-eye" />
@@ -508,7 +517,7 @@ class Navbar extends Component {
                                 <i className="fa fa-arrows" aria-hidden="true" />
                             </a>
                         </div>
-                        
+
                         <div className="search" id="searchNav">
                             <label>
                                 <input
@@ -579,19 +588,16 @@ class Navbar extends Component {
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div className="navbarRightContent">
                             <ul>
                                 <li>
-                                    <a style={{cursor:"pointer"}}>Become a host</a>
-                                </li>
-                                <li>
-                                    <a style={{cursor:"pointer"}} className="login">
+                                    <a style={{ cursor: "pointer" }} className="login">
                                         Log in
                         </a>
                                 </li>
                                 <li>
-                                    <a style={{cursor:"pointer"}} className="signup">
+                                    <a style={{ cursor: "pointer" }} className="signup">
                                         Sign up
                         </a>
                                 </li>
@@ -605,5 +611,8 @@ class Navbar extends Component {
         );
     }
 }
-
-export default connect()(Navbar);
+function mapStateToProps(state) {
+    const error = state.Error;
+    return { error};
+}
+export default connect(mapStateToProps)(Navbar);

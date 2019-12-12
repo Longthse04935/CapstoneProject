@@ -69,7 +69,6 @@ class GuiderDetail extends React.Component {
 				</div>
 				<div className="myPassions">
 					<h2>My passions</h2>
-					{}
 				</div>
 
 			</div>

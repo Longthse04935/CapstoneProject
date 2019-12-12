@@ -153,8 +153,6 @@ class AddPost extends Component {
             "reasons": ReactDOMServer.renderToString(this.reasonToHTML(copy.reasons))
         };
         let plan = ReactDOMServer.renderToString(this.planToHTML(copy.activities));
-        console.log(initPost);
-        console.log(plan);
         try {
             let response = await fetch(Config.api_url+"guiderpost/add/post?guider_id=" + this.props.guiderId,
                 {
@@ -196,13 +194,12 @@ class AddPost extends Component {
         return (
             acts.map((act, index) =>
                 <div className="detail">
-                    <i key={index} className="fas fa-circle"></i>
+                    <i key={index} className="fa fa-circle"></i>
                     <div className="detailPlan">
                         <h4>{act.brief}</h4>
                         <p>{act.detail}</p>
                     </div>
                 </div>)
-
         );
     }
 
@@ -255,7 +252,6 @@ class AddPost extends Component {
         //document.querySelectorAll(".coverContent")[0].querySelector("input[name='detail']").value
         if (dom instanceof HTMLElement) {
             const acts = dom.querySelectorAll(".coverContent");
-
             let activities = [];
             for (let i = 0; i < acts.length; i++) {
                 let brief = acts[i].querySelector("input[name='brief']").value;

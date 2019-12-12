@@ -6,6 +6,7 @@ class ChatList extends React.Component {
             super(props);
       }
 
+
       render() {
             let input = null;
             let receiver = this.props.receiver;

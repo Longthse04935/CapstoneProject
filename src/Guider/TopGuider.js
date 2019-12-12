@@ -67,7 +67,7 @@ class TopGuider extends Component {
       render() {
 
             let guiderByRate = this.state.postsRate.map((post, index) => {
-                  let bgImg = Config.api_url+"images/"+post.avatar;
+                  let bgImg = post.avatar;
                   return (
                         <div className="profile-box" key={index}>
                               <div className="pb-header header-stick">
@@ -87,7 +87,7 @@ class TopGuider extends Component {
             });
 
             let guiderByContribute = this.state.postsContribute.map((post, index) => {
-                  let bgImg = Config.api_url+"images/"+post.avatar;
+                  let bgImg = post.avatar;
                   return (
                         <div className="profile-box" key={index}>
                               <div className="pb-header header-stick">

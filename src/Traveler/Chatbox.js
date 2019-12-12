@@ -385,7 +385,7 @@ class Chatbox extends Component {
 							<h1>{guider.first_name+" "+guider.last_name}</h1>
 
 							<div className="rating ratingChatbox">
-								<img src={Config.api_url+"images/"+guider.avatar} />
+								<img src={guider.avatar} />
 								<i className="fa fa-star" aria-hidden="true"></i>
 								<i className="fa fa-star" aria-hidden="true"></i>
 								<i className="fa fa-star" aria-hidden="true"></i>

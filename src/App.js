@@ -27,7 +27,8 @@ import ChatList from './common/ChatStore';
 import Books from './Guider/Books';
 import Schedule from './Guider/Schedule';
 import ChangePassword from "./common/ChangePassword";
-
+import Page404 from './Page404';
+import ReviewTraveler from './Guider/ReviewTraveler';
 
 class App extends Component {
 	constructor(props) {
@@ -113,6 +114,7 @@ class App extends Component {
 					<Route path='/tvlManager'> <TravellerManager id={this.state.id}/> </Route>
 					<Route path='/contract' component={GuiderContract} />
 					<Route path='/chart' component={Chart} />
+					<Route path='/reviewtvl/:id' component={ReviewTraveler} />
 					<Route path='/add' ><AddPost guiderId={this.state.id} /></Route>
 					<Route path='/managebook' ><Books id={this.state.id} /></Route>
 					<Route path='/schedule' ><Schedule id={this.state.id} /></Route>
@@ -124,7 +126,7 @@ class App extends Component {
 							<ManagePost guiderId={this.state.id} />
 						</BrowserRouter>
 					</Route>
-
+					<Route path='*' component={Page404} />
 
 				</Switch>
 				<Footer />

@@ -5,6 +5,7 @@ import GuiderInPost from "./GuiderInPost";
 import Rated from "./Rated";
 import $ from "jquery";
 import Config from "../Config";
+import { ar } from "date-fns/locale";
 
 class PostDetail extends React.Component {
 	constructor(props) {
@@ -15,7 +16,7 @@ class PostDetail extends React.Component {
 			postInfo: {
 				picture_link: []
 			},
-			posts: [],
+			including_service:'',
 			guider: {},
 			page: 0,
 		};
@@ -39,7 +40,13 @@ class PostDetail extends React.Component {
 			if (!response2.ok) {
 				throw Error(response2.status + ": " + response2.statusText);
 			}
+
 			const guider = await response2.json();
+
+			this.setState({ guider });
+
+			//lay ra thông tin bài post đó
+
 			const response = await fetch(
 				Config.api_url + "guiderpost/findSpecificPost?post_id=" + post_id,
 				autheticate
@@ -47,6 +54,9 @@ class PostDetail extends React.Component {
 			if (!response.ok) {
 				throw Error(response.status + ": " + response.statusText);
 			}
+
+			//lay ra tất cả các bài post của guider đó
+
 			const responsePosts = await fetch(
 				Config.api_url +
 				"guiderpost/postOfOneGuider/" +
@@ -55,10 +65,18 @@ class PostDetail extends React.Component {
 			);
 			if (!responsePosts.ok) {
 				throw Error(responsePosts.status + ": " + responsePosts.statusText);
-			}			if (!responsePosts.ok) {
+
+			}
+
+			//lấy ra category
+			const responseCategories = await fetch(
+				Config.api_url + "category/findAll",
+				autheticate
+			);
+			if (!responsePosts.ok) {
 				throw Error(responsePosts.status + ": " + responsePosts.statusText);
 			}
-			window.sessionStorage.setItem("guider_id", "" + guider.guider_id);
+			
 			const postInfo = await response.json();
 			const posts = await responsePosts.json();
 			let link_youtube = postInfo.video_link;
@@ -71,6 +89,10 @@ class PostDetail extends React.Component {
 				link_youtube = link_youtube.split("&");
 				this.setState({ link_youtube: link_youtube[0].replace("watch?v=", "embed/") });
 			}
+
+			this.including_service();
+
+
 
 		} catch (err) {
 			console.log(err);
@@ -116,6 +138,20 @@ class PostDetail extends React.Component {
 			currentPage: event.target.id
 		});
 	};
+
+	including_service = () =>{
+		let {postInfo} = this.state; 
+		let arr = postInfo.including_service;
+		let including_service = '';
+		for (let i = 0; i < arr.length;i++){
+			if(i === (arr.length-1)){
+				including_service += arr[i];
+			}else{
+				including_service += arr[i]+',';
+			}
+		}
+		this.setState({including_service});
+	}
 
 	render() {
 		const { postInfo } = this.state;
@@ -223,6 +259,7 @@ class PostDetail extends React.Component {
 		</a>
 		</div>);
 		//<img className="imgPostInfo" src={postInfo.picture_link} />;
+
 
 		return (
 			<div>

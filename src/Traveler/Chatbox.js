@@ -172,7 +172,6 @@ class Chatbox extends Component {
 		let options = this.option(" " + e.target.value);
 		let response = await fetch(Config.api_url + 'Order/GetClosestFinishDate', options);
 		let closest_EndDate = await response.text();
-		console.log(closest_EndDate);
 		response = await fetch(Config.api_url + 'Order/GetExpectedTourEnd', options);
 		let endTime = await response.text();
 		closest_EndDate = "Last tour ended at " + closest_EndDate;
@@ -258,7 +257,11 @@ class Chatbox extends Component {
 		sessionStorage.setItem('tourDetail', JSON.stringify(tourDetail));
 		//add check here
 		try {
-			let checkTime = await fetch(Config.api_url + 'Order/checktime', option);
+			let checkTime = await fetch(Config.api_url + 'Order/checktime',  {
+			method: "GET",
+			mode: "cors",
+			credentials: "include"
+		});
 			if(!checkTime.ok) { throw Error(checkTime.status + ": " + checkTime.statusText); }
 			window.location.href = "/book";
 		} catch (err) { 
@@ -312,7 +315,7 @@ class Chatbox extends Component {
 		let selectHour = this.state.timeAvailable.map((value, index) => {
 			return <option key={index} value={value}>{value}</option>;
 		});
-		console.log(guider);
+	
 
 		return (
 			<div className="ChatRoom">
@@ -331,7 +334,6 @@ class Chatbox extends Component {
 							<h1>{guider.first_name + " " + guider.last_name}</h1>
 
 							<div className="rating ratingChatbox">
-
 								<img src={guider.avatar} />
 								<i className="fa fa-star" aria-hidden="true"></i>
 								<i className="fa fa-star" aria-hidden="true"></i>
@@ -479,7 +481,6 @@ class Chatbox extends Component {
 	}
 }
 function mapStateToProps(state) {
-	console.log(state);
 	const messages = state.messages;
 	const user = state.user;
 	return { messages, user };

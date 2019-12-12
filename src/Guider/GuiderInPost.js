@@ -102,6 +102,7 @@ class GuiderInPost extends React.Component {
                     <div>
                         <img className="pf-avatar"
                             src={guide.avatar} />
+
                     </div>
                 </div>
                 <p className="ListItem">

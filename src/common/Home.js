@@ -43,7 +43,7 @@ class Home extends Component {
 		const getAlert = () => (
 			<SweetAlert
 				warning
-				confirmBtnText="This is notification for you"
+				confirmBtnText="Close"
 				confirmBtnBsStyle="danger"
 				title="Notification"
 				onConfirm={() => this.onNotification()}
@@ -111,7 +111,9 @@ class Home extends Component {
 					"You are not logged in. Please login or register to use service mywebsite!!"
 				);
 			} else if (messagePay === "You are Guider") {
-				this.notification("You do not have access to here");
+				this.notification("Guider do not have access to here");
+			}else if (messagePay === "You are Traveler") {
+				this.notification("Traveler do not have access to here");
 			}
 		}
 
@@ -225,7 +227,7 @@ class Home extends Component {
 		let slide = this.state.tours.map((value, index) => (
 			<div className="slideContent" key={index}>
 				<h2>Enjoy our {value.title}</h2>
-				<img src={`${value.picture_link[0]}`} />
+				<img src={value.picture_link[0]}/>
 				<Link to={"/post/" + value.post_id}>
 					<button>Explore</button>
 				</Link>
@@ -376,7 +378,7 @@ class Home extends Component {
 									return;
 								}
 								this.state.filter = (this.state.filter === "none") ? "guider" : this.state.filter;
-								console.log("input: " + input.value);
+							
 								if (this.state.filter === "guider") {
 									this.searchGuider(input.value);
 								} else if (this.state.filter === "location") {

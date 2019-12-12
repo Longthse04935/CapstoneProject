@@ -14,7 +14,6 @@ class ChatList extends React.Component {
             let password = null;
             let repassword = null;
             let newpassword = null;
-            console.log(this.props);
             return (<div className="changePassword" style={{}}>
 
                   <form onSubmit={async  (e) => {

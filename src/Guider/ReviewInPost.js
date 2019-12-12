@@ -31,7 +31,6 @@ class ReviewInPost extends React.Component {
                   });
                   if (!response.ok) { throw Error(response.status + ": " + response.statusText); }
                   const review = await response.json();
-                  console.log(review);
                   this.setState({ reviews: review });
             } catch (err) {
                   console.log(err);

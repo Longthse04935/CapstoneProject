@@ -203,7 +203,7 @@ class GuiderContract extends Component {
           body: formData
       }).then(res => {
           if(res.ok) {
-              console.log("run success",res.data);
+        
           }
       });
       this.statusProfile('Create contract success');

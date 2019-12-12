@@ -28,8 +28,9 @@ import Schedule from './Guider/Schedule';
 import GuiderProfile from './Guider/GuiderProfile';
 import ChangePassword from "./common/ChangePassword";
 import EditPost from './Guider/EditPost';
-
 import SweetAlert from 'react-bootstrap-sweetalert';
+import Page404 from './Page404';
+import ReviewTraveler from './Guider/ReviewTraveler';
 class App extends Component {
 	constructor(props) {
 		super(props);
@@ -143,6 +144,7 @@ class App extends Component {
 					<Route path='/chat' ><Message /></Route>
 					<Route exact path={"/edit"}><ManagePost guiderId={this.props.user.id} /></Route>
 					<Route path={"/update/:guider/:post"} component={EditPost} />
+					<Route path='/reviewtvl/:id' component={ReviewTraveler} />
 
 
 				</Switch>

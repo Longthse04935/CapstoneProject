@@ -75,7 +75,6 @@ class ProfileTraveller extends Component {
     var data=JSON.parse(sessionStorage.getItem('errorAPI'));
     if(data === 200){
     const dataTraveller = await responseTraveller.json();
-    console.log(dataTraveller);
     var str = dataTraveller.date_of_birth;
     var res = str.split("-");
     dataTraveller.year = res[0];
@@ -433,7 +432,7 @@ class ProfileTraveller extends Component {
             </div>
           </div>
         </div>
-        ;
+       
       </div>
     );
   }

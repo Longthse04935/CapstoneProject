@@ -1,9 +1,9 @@
 /* foooter */
 
 footer{
-    margin-top:20px;
-    height: 200px;
     width: 100%;
+    background: rgba(0,0,0,0.7);
+    color: #f1e4e4;
   }
   
   footer .footer-content{
@@ -17,19 +17,22 @@ footer{
   }
   
   .socialMedia{
-    position: relative;
-    padding: 0 0 20px 00;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
     border-bottom: 1px solid #757575;
   }
   
   .socialMedia ul li{
     list-style-type: none;
   }
-  .socialMedia ul{
-    display:inline-block;
-    position: absolute;
-    right: 0;
-    top: 3px;
+  .socialMedia ul.socialMediaList{
+    width: 50%;
+    float: right;
+    display: flex;
+    justify-content: flex-end;
+    align-content: center;
+    margin-bottom: 0;
   }
   
   .socialMedia ul::after{
@@ -48,6 +51,7 @@ footer{
     font-size: 35px;
     font-weight: 800;
     opacity: 0.8;
+    width: 50%;
   }
   
   .socialMedia .fa-arrows{
@@ -63,13 +67,15 @@ footer{
   }
   .webInfo{
     display: flex;
+    flex-wrap: wrap;
+    width: 100%;
     padding: 20px 0;
     justify-content: space-between;
     line-height: 30px;
   }
   .webInfo div{
     display: inline-block;
-    width: 16%;
+    width: 25%;
   }
   
   .webInfo div ul li{

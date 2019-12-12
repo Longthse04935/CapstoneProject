@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import "font-awesome/css/font-awesome.min.css";
 import $ from 'jquery';
+// import iconMain from '../../public/icon/iconMain.jpg';
 class Footer extends Component {
     componentDidMount(){
         $("head").append('<link href="/css/footer.css" rel="stylesheet"/>');
@@ -8,13 +9,10 @@ class Footer extends Component {
     render() {
         return (
                 <footer>
-                    <div className="footer-content">
+                    <div className="containerMain">
                         <div className="socialMedia">
                         <div className="webLogo">
-                            <a href="/">
-                            <i className="fa fa-arrows" aria-hidden="true"/>
-                            </a>
-                            Travel
+                            <a href="/"><img src="../public/icon/iconMain.jpg" /></a>
                         </div>
                         <ul className="socialMediaList">
                             <li>

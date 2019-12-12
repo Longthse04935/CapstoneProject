@@ -63,6 +63,20 @@
     position: relative;
 }
 
+.navbar .menubar .search label::after{
+  content: "";
+    display: inline;
+    position: absolute;
+    right: 8px;
+    top: 25px;
+    width: 30px;
+    background: url(../img/searchIcon.svg) center center no-repeat;
+    background-size: contain;
+    /* background-color: #4A4A4A; */
+    z-index: 99;
+    height: 30px;
+}
+
 .logoContainer .fa{
     font-size: 50px;
     color:#6fbe44;
@@ -114,21 +128,6 @@ input[name="search"] {
   outline: 0;
   position: relative;
 }
-
-  input[name="search"]:after{
-    content: "";
-    display: inline;
-    position: absolute;
-    right: 7px;
-    top: 0;
-    width: 20px;
-    background: url(../img/searchIcon.svg) center center no-repeat;
-    background-size: contain;
-    /* background-color: #4A4A4A; */
-    /* webkit-box-sizing: initial !important;
-    box-sizing: initial !important; */
-    z-index: 10;
-  }
 
   input[name="search"]:hover , input[name="search"]:visited{
     box-shadow: 0 2px 8px 2px rgba(0,0,0,.1);

@@ -7,6 +7,7 @@ import Rated from '../Guider/Rated';
 import TopGuider from "../Guider/TopGuider";
 import ItemsCarousel from 'react-items-carousel';
 import { NONAME } from "dns";
+
 const responsive = {
 	superLargeDesktop: {
 		// the naming can be any, depends on you.
@@ -232,6 +233,7 @@ class Home extends Component {
 		let input = null;
 		let { currentIndex, slideShow } = this.state;
 		let src = Config.api_url + slideShow[currentIndex];
+
 		let tour = this.state.category.map((tour, index) => {
 			return (
 
@@ -248,12 +250,13 @@ class Home extends Component {
 				</div>
 			);
 		});
+
 		let slide = this.state.tours.map((value, index) => (
 			<div className="slideContent" key={index}>
 
 				<div className="bg_Gradient">
 					<h2>Enjoy our {value.title}</h2>
-					<img src={`${Config.api_url}images/${value.picture_link[0]}`} />
+					<img src={value.picture_link[0]} />
 					<Link to={"/post/" + value.post_id}>
 						<button>Explore</button>
 					</Link>
@@ -279,6 +282,7 @@ class Home extends Component {
 			<TopGuider />
 			</div>
 		</div>);
+		
 		let postResult = (<div className="postResult">
 			<div className="bookOffers">
 				<h2>Search Result </h2>

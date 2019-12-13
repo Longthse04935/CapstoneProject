@@ -11,21 +11,15 @@ class PostDetail extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			currentPage: 1,
-			todosPerPage: 4,
 			postInfo: {
 				picture_link: []
 			},
 			including_service:'',
 			guider: {},
 			page: 0,
-		};
-	}
-	async componentDidMount() {
-		$("html").animate({ scrollTop: 0 }, 500, "swing");
-		try {
-			const post_id = this.props.match.params.post_id;
-			let autheticate = {
+			pageCount:0,
+			posts:[],
+			autheticate:{
 				method: "GET",
 				mode: "cors",
 				credentials: "include",
@@ -33,6 +27,13 @@ class PostDetail extends React.Component {
 					'Accept': 'application/json'
 				}
 			}
+		};
+	}
+	async componentDidMount() {
+		$("html").animate({ scrollTop: 0 }, 500, "swing");
+		try {
+			const post_id = this.props.match.params.post_id;
+			let {page,autheticate,pageCount} = this.state;
 			const response2 = await fetch(
 				Config.api_url + "Guider/guiderByPostId?post_id=" + post_id,
 				autheticate
@@ -60,13 +61,25 @@ class PostDetail extends React.Component {
 			const responsePosts = await fetch(
 				Config.api_url +
 				"guiderpost/postOfOneGuider/" +
-				guider.guider_id + "/" + this.state.page,
+				guider.guider_id + "/" + page,
 				autheticate
 			);
+
 			if (!responsePosts.ok) {
 				throw Error(responsePosts.status + ": " + responsePosts.statusText);
 
 			}
+			//lấy total page
+
+			const totalPage = await fetch(
+				Config.api_url + "guiderpost/postOfOneGuiderPageCount/" + guider.guider_id,autheticate
+			);
+
+			if (!totalPage.ok) {
+				throw Error(totalPage.status + ": " + totalPage.statusText);
+			}
+			pageCount = await totalPage.json();
+			pageCount++;
 
 			//lấy ra category
 			const responseCategories = await fetch(
@@ -80,8 +93,7 @@ class PostDetail extends React.Component {
 			const postInfo = await response.json();
 			const posts = await responsePosts.json();
 			let link_youtube = postInfo.video_link;
-			console.log(posts);
-			this.setState({ postInfo: postInfo, page: ++this.state.page, posts: posts, guider: guider });
+			this.setState({ postInfo: postInfo, posts: posts, guider: guider,pageCount });
 			if (link_youtube.includes('youtu.be')) {
 				link_youtube = link_youtube.replace("youtu.be", "youtube.com/embed");
 				this.setState({ link_youtube });
@@ -133,11 +145,6 @@ class PostDetail extends React.Component {
 		window.location.reload();
 	};
 
-	handleCurrentPage = event => {
-		this.setState({
-			currentPage: event.target.id
-		});
-	};
 
 	including_service = () =>{
 		let {postInfo} = this.state; 
@@ -153,41 +160,43 @@ class PostDetail extends React.Component {
 		this.setState({including_service});
 	}
 
+	handleCurrentPage = (currentPage) => {
+		let {autheticate} = this.state;
+		this.loadPost(autheticate,currentPage);
+		this.setState({
+			page: currentPage
+		});
+	}
+
+	range = (start, end) => {
+		var ans = [];
+		for (let i = start; i <= end; i++) {
+			ans.push(i);
+		}
+		return ans;
+	}
+
 	render() {
-		const { postInfo } = this.state;
+		const { postInfo,pageCount,page } = this.state;
 		const post_id = this.props.match.params.post_id;
 		let guider_id = this.state.guider.guider_id;
 
 		//pagination
 
 		const data = this.state.posts;
-		const { currentPage, todosPerPage } = this.state;
-
-		// Logic for displaying todos
-		const indexOfLastTodo = currentPage * todosPerPage;
-		const indexOfFirstTodo = indexOfLastTodo - todosPerPage;
-		const currentdata = data.slice(indexOfFirstTodo, indexOfLastTodo);
-
-		// Logic for displaying page numbers
-		const pageNumbers = [];
-		for (let i = 1; i <= Math.ceil(data.length / todosPerPage); i++) {
-			pageNumbers.push(i);
-		}
-
-		const renderPageNumbers = pageNumbers.map(number => {
-			return (
-				<button
-					key={number}
-					id={number}
-					onClick={this.handleCurrentPage}
-					className={currentPage === number ? "currentPage" : ""}
-				>
-					{number}
-				</button>
+			const range = this.range(0, pageCount - 1);
+			let renderPageNumbers = range.map((i) => (
+					<button
+						key={i}
+						id={i}
+						onClick={()=>this.handleCurrentPage(i)}
+						className={page === i ? "currentPage" : ''}
+					>
+						{i+1}
+					</button>
+				)
 			);
-		});
-
-		let posts = currentdata.map((post, index) => (
+		let posts = data.map((post, index) => (
 
 			<li key={index}>
 				<div className="sheet">
@@ -238,7 +247,7 @@ class PostDetail extends React.Component {
 
 						</div>
 						<div className="experienceCard-bottomDetails">
-							<Rated number="5" />
+							<Rated number={post.rated} />
 						</div>
 					</div>
 				</div>
@@ -338,7 +347,9 @@ class PostDetail extends React.Component {
 								</div>
 
 								<div className="pagination">
-									<div className="paginationContent">{renderPageNumbers}</div>
+									<div className="paginationContent">
+									{renderPageNumbers}
+									</div>
 								</div>
 							</div>
 						</div>

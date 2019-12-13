@@ -17,8 +17,6 @@ class LoggedGuider extends Component {
     }
 
     async componentDidMount() {
-        $("head").append('<link href="/css/login.css" rel="stylesheet"/>');
-        $("head").append('<link href="/css/navbar.css" rel="stylesheet"/>');
         $('.button-group > button').on('click', function () {
             $('.button-group > button').removeClass('active');
             $(this).addClass('active');
@@ -50,7 +48,7 @@ class LoggedGuider extends Component {
             );
 
             const dataTraveller = await responseTraveller.json();
-            this.setState({ avatar: dataTraveller.avatar_link });
+            this.setState({ avatar: dataTraveller.avatar });
         }
     }
 
@@ -59,8 +57,6 @@ class LoggedGuider extends Component {
     }
 
     render() {
-        var user = JSON.parse(sessionStorage.getItem('user'));
-        var guider_id = JSON.parse(sessionStorage.getItem('guider_id'));
         return (
             <div>
                 {/* Menubar */}

@@ -59,9 +59,23 @@ class ReviewTraveler extends Component {
           tvl.date_of_birth = tvl.date_of_birth.split(" ")[0];
           this.setState({tvl});
     }
+    
+    reviewFillter = (value) => {
+      let {reviews} = this.state;
+      value.post_date = value.post_date.split('T')[0];
+      var count = 0;
+      for(let i = 0;i < reviews.length;i++){
+        if(reviews[i].review_id === value.review_id){
+          count = 1;
+        }
+      }
+      if(count === 0) reviews.push(value);
+      console.log(reviews);
+      this.setState({reviews});
+    }
 
     loadReview = async (param,page) => {
-        var {reviews} = this.state;
+      let {reviews} = this.state;
         const response = await fetch(
             Config.api_url + "review/showTravelerReview?traveler_id="+param+"&page="+page,
             {
@@ -75,13 +89,17 @@ class ReviewTraveler extends Component {
           }
 
           const tvl = await response.json();
+         if(page === 0){
           tvl.map(value =>{
-              value.post_date = value.post_date.split("T")[0];
-              reviews.push(value)
+            value.post_date = value.post_date.split('T')[0];
+            reviews.push(value);
           })
-          this.setState({reviews});
-       
-         
+         this.setState({reviews});
+         }else{
+          tvl.map(value =>{
+            this.reviewFillter(value);
+          })
+         }
     }
 
     loadMore = () =>{
@@ -98,7 +116,7 @@ class ReviewTraveler extends Component {
      }
 
      handleSubmit = async () => {
-        let {data,param} = this.state;
+        let {data,param,reviews} = this.state;
         let user = JSON.parse(window.sessionStorage.getItem('user'));
         data.traveler_id = param;
         data.guider_id = user.id;
@@ -114,9 +132,14 @@ class ReviewTraveler extends Component {
             }
         );
     if (!response.ok) { throw Error(response.status + ": " + response.statusText); }
+          
+        let review = await response.json();
         data.review = '';
-        this.setState({data})
+        review.post_date = review.post_date.split('T')[0];
+        reviews.push(review);
+        this.setState({data,reviews});
      }
+    
     gender = (gender) =>{
         if(gender === 0) {
             return 'Male'

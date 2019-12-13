@@ -17,14 +17,16 @@ class ReviewInPost extends React.Component {
             this.state = {
                   reviews: obj,
                   rating: 0,
-                  isDisable: true
+                  isDisable: true,
+                  page:0
             };
 
       }
 
       async componentDidMount() {
+            let {page} = this.state;
             try {
-                  const response = await fetch(Config.api_url + "review/reviewByPostId?post_id=" + this.props.postId, {
+                  const response = await fetch(Config.api_url + "review/reviewByPostId?post_id=" + this.props.postId+"&page="+page, {
                         method: "GET",
                         mode: "cors",
                         credentials: "include"

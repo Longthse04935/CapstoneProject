@@ -14,71 +14,80 @@ class GuiderAllPost extends Component {
 			todosPerPage: 8,
 			posts: [],
 			guider_id:"",
-			page: 0
+			page: 0,
+			pageCount:0,
+			autheticate: {
+				method: "GET",
+				mode: "cors",
+				credentials: "include",
+				headers: {
+					'Accept': 'application/json'
+				}
+			}
 		};
 	}
 
 	async componentDidMount() {
 		try {
 			let guider_id = this.props.match.params.guider_id;
-			const responsePosts = await fetch(
-				Config.api_url + "guiderpost/postOfOneGuider/" + guider_id+"/"+this.state.page,
-				{
-					method: "GET",
-					mode: "cors",
-					credentials: "include",
-					headers: {
-						'Accept': 'application/json'
-					},
-				}
+			let {page,pageCount,autheticate} = this.state;
+			const respone = await fetch(
+				Config.api_url + "guiderpost/postOfOneGuider/" + guider_id+"/"+page,autheticate
 			);
 
-			if (!responsePosts.ok) {
-				throw Error(responsePosts.status + ": " + responsePosts.statusText);
+			if (!respone.ok) {
+				throw Error(respone.status + ": " + respone.statusText);
+			}
+			const totalPage = await fetch(
+				Config.api_url + "guiderpost/postOfOneGuiderPageCount/" + guider_id,autheticate
+			);
+
+			if (!totalPage.ok) {
+				throw Error(totalPage.status + ": " + totalPage.statusText);
 			}
 
-			const posts = await responsePosts.json();
-			this.setState({ posts:posts,guider_id:guider_id,page: ++this.state.page });
+			const posts = await respone.json();
+			pageCount = await totalPage.json();
+			pageCount++;
+			this.setState({ posts:posts,pageCount});
 		} catch (err) {
 			console.log(err);
 		}
 	}
 
-	handleCurrentPage = (event) => {
-	  this.setState({
-	    currentPage: event.target.id
-	  });
+	handleCurrentPage = (currentPage) => {
+		let {autheticate} = this.state;
+		this.loadPost(autheticate,currentPage);
+		this.setState({
+			page: currentPage
+		});
+	}
+
+	range = (start, end) => {
+		var ans = [];
+		for (let i = start; i <= end; i++) {
+			ans.push(i);
+		}
+		return ans;
 	}
 
 	render() {
 		
 		let data = this.state.posts;
-		let { currentPage, todosPerPage,guider_id } = this.state;
-		let user = sessionStorage.getItem('user');
-		// Logic for displaying todos
-		let indexOfLastTodo = currentPage * todosPerPage;
-		let indexOfFirstTodo = indexOfLastTodo - todosPerPage;
-		let currentdata = data.slice(indexOfFirstTodo, indexOfLastTodo);
-
-		// Logic for displaying page numbers
-		let pageNumbers = [];
-		for (let i = 1; i <= Math.ceil(data.length / todosPerPage); i++) {
-		  pageNumbers.push(i);
-		}
-
-		let renderPageNumbers = pageNumbers.map(number => {
-		  return (
-		    <button
-		      key={number}
-		      id={number}
-		      onClick={this.handleCurrentPage}
-		      className={currentPage === number ? 'currentPage' : ''}
-		    >
-		      {number}
-		    </button>
-		  );
-		});
-		let posts = currentdata.map((post, index) => (
+		let {pageCount,page} = this.state;
+		const range = this.range(0, pageCount - 1);
+		let renderPageNumbers = range.map((i) => (
+				<button
+					key={i}
+					id={i}
+					onClick={()=>this.handleCurrentPage(i)}
+					className={page === i ? "currentPage" : ''}
+				>
+					{i+1}
+				</button>
+			)
+		);
+		let posts = data.map((post, index) => (
 			<li key={index}>
 			<div className="sheet">
 			  <div className="imageFigure">

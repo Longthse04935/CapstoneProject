@@ -145,6 +145,7 @@ class App extends Component {
 					<Route exact path={"/edit"}><ManagePost guiderId={this.props.user.id} /></Route>
 					<Route path={"/update/:guider/:post"} component={EditPost} />
 					<Route path='/reviewtvl/:id' component={ReviewTraveler} />
+					<Route path='/profileguider' component={ProfileGuiders} />
 					<Route path='*' component={Page404} />
 
 

@@ -3,12 +3,17 @@ import "font-awesome/css/font-awesome.min.css";
 import $ from 'jquery';
 import GuiderInPost from './GuiderInPost';
 import Config from '../Config';
+import Rated from './Rated';
 class ProfileGuiders extends Component {
     constructor(props){
         super(props);
         this.state = {
             guider_id:0,
-            guider:{},
+            posts:[],
+            guider:{
+            },
+            page:0,
+            pageCount:0,
             autheticate: {
                 method: "GET",
                 mode: "cors",
@@ -62,11 +67,12 @@ class ProfileGuiders extends Component {
         });
         //get guider id
         let guider_id = this.props.match.params.guider_id; 
-        this.loadDataGuider(guider_id);
+        this.loadInfoGuider(guider_id);
+        this.LoadPostGuider(guider_id,this.state.page);
         this.setState({guider_id});
     }
 
-    loadDataGuider = async(guider_id)=>{
+    loadInfoGuider = async(guider_id)=>{
         let {autheticate} = this.state;
         try {
             const response = await fetch(
@@ -78,6 +84,12 @@ class ProfileGuiders extends Component {
             }
       
             const guider = await response.json();
+            if (guider.profile_video.includes("youtu.be")) {
+                guider.profile_video = guider.profile_video.replace("youtu.be", "youtube.com/embed");
+              } else {
+                guider.profile_video = guider.profile_video.split("&");
+                guider.profile_video = guider.profile_video[0].replace("watch?v=", "embed/");
+              }
             console.log(guider);
             this.setState({ guider });
         }catch(err){
@@ -85,8 +97,117 @@ class ProfileGuiders extends Component {
         }
     }
 
+    LoadPostGuider = async (guider_id,page) =>{
+        let {autheticate,posts} = this.state;
+          const response= await fetch(
+            Config.api_url +
+            "guiderpost/postOfOneGuider/" +guider_id +
+            "/" +
+            page,
+            autheticate
+        );
+
+        if (!response.ok) {
+            throw Error(response.status + ": " + response.statusText);
+        }
+        posts = await response.json();
+        this.setState({posts})
+    }
+
+    RenderPostGuider = (guider_id) =>{
+        let {posts} = this.state;
+        let post = posts.map((post, index) => (
+            <li key={index}>
+              <div className="sheet">
+                <div className="imageFigure">
+                  <img src={post.picture_link[0]} alt="logo" />
+                </div>
+                <div className="experienceCard-details">
+                  <span className="enjoy">
+                    Enjoy <span className="withName">{post.title}</span>
+                  </span>
+                  <h3>
+                    <span
+                      onClick={() => this.handleGotoPage(post.post_id, guider_id)}
+                    >
+                      {post.description}
+                    </span>
+                  </h3>
+                  <div className="price">
+                    <i className="fa fa-money" aria-hidden="true"></i>
+                    <span>{" " + post.price}$</span>
+                    <span className="experienceCard-topDetails-bullet">
+                      {" "}
+                      &#9679;{" "}
+                    </span>
+                    <i className="fa fa-hourglass-half" aria-hidden="true"></i>
+                    <span className="experienceCard-topDetails-duration">
+                      {" " + post.total_hour} hours
+                    </span>
+                    <span className="experienceCard-topDetails-bullet">
+                      {" "}
+                      &#9679;{" "}
+                    </span>
+                    {post.total_hour > 24 ? (
+                      <span>
+                        <i className="fa fa-moon-o" aria-hidden="true"></i>
+                        <span data-translatekey="Experience.SubcategoryOrTag.day-trip">
+                          {" "}
+                          Long trip
+                        </span>
+                      </span>
+                    ) : (
+                      <span>
+                        <i className="fa fa-sun-o" aria-hidden="true"></i>
+                        <span data-translatekey="Experience.SubcategoryOrTag.day-trip">
+                          {" "}
+                          Day trip
+                        </span>
+                      </span>
+                    )}
+                  </div>
+                  <div className="experienceCard-bottomDetails">
+                    <Rated number={post.rated} />
+                  </div>
+                </div>
+              </div>
+            </li>
+          ));
+          return post;
+    }
+
+    handleCurrentPage = currentPage => {
+        let {guider_id } = this.state;
+        this.LoadPostGuider(guider_id, currentPage);
+        this.setState({
+          page: currentPage
+        });
+      };
+    
+    range = (start, end) => {
+        var ans = [];
+        for (let i = start; i <= end; i++) {
+            ans.push(i);
+        }
+        return ans;
+    };
+
     render() {
-        let {guider_id} = this.state;
+        let {guider_id,guider,pageCount, page} = this.state;
+        let post = this.RenderPostGuider(guider_id);
+
+        const range = this.range(0, pageCount - 1);
+        let renderPageNumbers = range.map(i => (
+        <button
+            key={i}
+            id={i}
+            onClick={() => this.handleCurrentPage(i)}
+            className={page === i ? "currentPage" : ""}
+        >
+            {i + 1}
+        </button>
+        ));
+
         return (
             <div>
                 <div>
@@ -107,21 +228,17 @@ class ProfileGuiders extends Component {
                         {/* intro content */}
                         <div className="intro">
                         <h2>Hi There ! Nice to meet you</h2>
-                        <video controls>
-                            <source
-                            src="/video/withlocals_originals_silvina_merino.mp4"
-                            type="video/mp4"
-                            />
-                        </video>
+                        <iframe
+                            src={guider.profile_video}
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                            ></iframe>
                         <div className="readMoreText">
                             <div id="section">
                             <div className="article">
                                 <p>
-                                The best way to make the most out of your stay. Enjoy the city
-                                like and with a local. Lisbon is a mix of wonderful
-                                architecture, lively streets, and colorful sights. Get answers
-                                to all questions and the best recommendations from your local
-                                insider!
+                                {guider.about_me}
                                 </p>
                                 <p className="moretext">
                                 Known as the city of the seven hills, its name comes from
@@ -150,26 +267,9 @@ class ProfileGuiders extends Component {
                             <h2>My passions</h2>
                             <ul>
                             <li>
-                            <i className="fa fa-cutlery" aria-hidden="true"></i>
-                                <p>
-                                My diet is mosly plant based and I love to discover new
-                                flavours, to try new recipes and to go to Veggie/Vegan
-                                Restaurants around the world!!! I feel better with this diet!
-                                I love cooking!
-                                </p>
-                            </li>
-                            <li>
-                                <i className="fa fa-globe" />
-                                <p>
-                                Because I love to discover new cultures!!! It is exciting to
-                                see different people, food, architeture, etc.
-                                </p>
-                            </li>
-                            <li>
                             <i className="fa fa-gratipay" aria-hidden="true"></i>
                                 <p>
-                                I love movies! Every week I go to cinema! We can forget about
-                                everything and just enjoy the experience! I like this feeling!
+                                {guider.passion}
                                 </p>
                             </li>
                             </ul>
@@ -179,439 +279,16 @@ class ProfileGuiders extends Component {
                         <div className="bookOffers">
                             <h2>Book one of my offers in Ha Noi</h2>
                             <ul>
-                            <li>
-                                <div className="sheet">
-                                <div className="imageFigure">
-                                    <img src="./img/1.jpg" alt="logo" width={42} height={42} />
-                                </div>
-                                <div className="experienceCard-details">
-                                    <div className="experienceAvatarCardContainer">
-                                    <div className="experienceAvatarCard1">
-                                        <img
-                                        src="./img/2.jpg"
-                                        alt="logo"
-                                        width={64}
-                                        height={64}
-                                        />
-                                    </div>
-                                    <div className="experienceAvatarCard2">
-                                        <img
-                                        src="./img/3.jpg"
-                                        alt="logo"
-                                        width={64}
-                                        height={64}
-                                        />
-                                    </div>
-                                    <div className="localAvailable">
-                                        7 others locals available
-                                    </div>
-                                    </div>
-                                    <span className="enjoy">
-                                    Enjoy Hanoi with <span className="withName">Amadio</span>
-                                    </span>
-                                    <h3 >Mysteries of Regaleira: Sintra</h3>
-                                    <div className="price">
-                                    <span>$57.50 pp</span>
-                                    <span className="experienceCard-topDetails-bullet">
-                                        ●
-                                    </span>
-                                    <span className="experienceCard-topDetails-duration">
-                                        8 hours
-                                    </span>
-                                    <span className="experienceCard-topDetails-bullet">
-                                        {" "}
-                                        ●
-                                    </span>
-                                    <span data-translatekey="Experience.SubcategoryOrTag.day-trip">
-                                        Day trip
-                                    </span>
-                                    </div>
-                                    <div className="experienceCard-bottomDetails">
-                                    <div className="rating">
-                                        <i className="fa fa-star" />
-                                        <i className="fa fa-star" />
-                                        <i className="fa fa-star" />
-                                        <i className="fa fa-star" />
-                                        <i className="fa fa-star" />
-                                    </div>
-                                    <span className="colorShared">1249 |</span>
-                                    <span className="colorShared">
-                                        <i className="fa fa-bolt" /> |
-                                    </span>
-                                    <span className="colorShared">
-                                        <i className="fa fa-car" />
-                                    </span>
-                                    </div>
-                                </div>
-                                </div>
-                              
-                            </li>
-                            <li>
-                                <div className="sheet">
-                                <button className="unlike">
-                                    <i className="fa fa-heart" />
-                                </button>
-                                <button className="like">
-                                    <i className="far fa-heart" />
-                                </button>
-                                <div className="imageFigure">
-                                    <img src="./img/1.jpg" alt="logo" width={42} height={42} />
-                                </div>
-                                <div className="experienceCard-details">
-                                    <div className="experienceAvatarCardContainer">
-                                    <div className="experienceAvatarCard1">
-                                        <img
-                                        src="./img/2.jpg"
-                                        alt="logo"
-                                        width={64}
-                                        height={64}
-                                        />
-                                    </div>
-                                    <div className="experienceAvatarCard2">
-                                        <img
-                                        src="./img/3.jpg"
-                                        alt="logo"
-                                        width={64}
-                                        height={64}
-                                        />
-                                    </div>
-                                    <div className="localAvailable">
-                                        7 others locals available
-                                    </div>
-                                    </div>
-                                    <span className="enjoy">
-                                    Enjoy Hanoi with <span className="withName">Amadio</span>
-                                    </span>
-                                    <h3 >Mysteries of Regaleira: Sintra</h3>
-                                    <div className="price">
-                                    <span>$57.50 pp</span>
-                                    <span className="experienceCard-topDetails-bullet">
-                                        ●
-                                    </span>
-                                    <span className="experienceCard-topDetails-duration">
-                                        8 hours
-                                    </span>
-                                    <span className="experienceCard-topDetails-bullet">
-                                        {" "}
-                                        ●
-                                    </span>
-                                    <span data-translatekey="Experience.SubcategoryOrTag.day-trip">
-                                        Day trip
-                                    </span>
-                                    </div>
-                                    <div className="experienceCard-bottomDetails">
-                                    <div className="rating">
-                                        <i className="fa fa-star" />
-                                        <i className="fa fa-star" />
-                                        <i className="fa fa-star" />
-                                        <i className="fa fa-star" />
-                                        <i className="fa fa-star" />
-                                    </div>
-                                    <span className="colorShared">1249 |</span>
-                                    <span className="colorShared">
-                                        <i className="fa fa-bolt" /> |
-                                    </span>
-                                    <span className="colorShared">
-                                        <i className="fa fa-car" />
-                                    </span>
-                                    </div>
-                                </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div className="sheet">
-                                <button className="unlike">
-                                    <i className="fa fa-heart" />
-                                </button>
-                                <button className="like">
-                                    <i className="far fa-heart" />
-                                </button>
-                                <div className="imageFigure">
-                                    <img src="./img/1.jpg" alt="logo" width={42} height={42} />
-                                </div>
-                                <div className="experienceCard-details">
-                                    <div className="experienceAvatarCardContainer">
-                                    <div className="experienceAvatarCard1">
-                                        <img
-                                        src="./img/2.jpg"
-                                        alt="logo"
-                                        width={64}
-                                        height={64}
-                                        />
-                                    </div>
-                                    <div className="experienceAvatarCard2">
-                                        <img
-                                        src="./img/3.jpg"
-                                        alt="logo"
-                                        width={64}
-                                        height={64}
-                                        />
-                                    </div>
-                                    <div className="localAvailable">
-                                        7 others locals available
-                                    </div>
-                                    </div>
-                                    <span className="enjoy">
-                                    Enjoy Hanoi with <span className="withName">Amadio</span>
-                                    </span>
-                                    <h3>Mysteries of Regaleira: Sintra</h3>
-                                    <div className="price">
-                                    <span>$57.50 pp</span>
-                                    <span className="experienceCard-topDetails-bullet">
-                                        ●
-                                    </span>
-                                    <span className="experienceCard-topDetails-duration">
-                                        8 hours
-                                    </span>
-                                    <span className="experienceCard-topDetails-bullet">
-                                        {" "}
-                                        ●
-                                    </span>
-                                    <span data-translatekey="Experience.SubcategoryOrTag.day-trip">
-                                        Day trip
-                                    </span>
-                                    </div>
-                                    <div className="experienceCard-bottomDetails">
-                                    <div className="rating">
-                                        <i className="fa fa-star" />
-                                        <i className="fa fa-star" />
-                                        <i className="fa fa-star" />
-                                        <i className="fa fa-star" />
-                                        <i className="fa fa-star" />
-                                    </div>
-                                    <span className="colorShared">1249 |</span>
-                                    <span className="colorShared">
-                                        <i className="fa fa-bolt" /> |
-                                    </span>
-                                    <span className="colorShared">
-                                        <i className="fa fa-car" />
-                                    </span>
-                                    </div>
-                                </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div className="sheet">
-                                <button className="unlike">
-                                    <i className="fa fa-heart" />
-                                </button>
-                                <button className="like">
-                                    <i className="far fa-heart" />
-                                </button>
-                                <div className="imageFigure">
-                                    <img src="./img/1.jpg" alt="logo" width={42} height={42} />
-                                </div>
-                                <div className="experienceCard-details">
-                                    <div className="experienceAvatarCardContainer">
-                                    <div className="experienceAvatarCard1">
-                                        <img
-                                        src="./img/2.jpg"
-                                        alt="logo"
-                                        width={64}
-                                        height={64}
-                                        />
-                                    </div>
-                                    <div className="experienceAvatarCard2">
-                                        <img
-                                        src="./img/3.jpg"
-                                        alt="logo"
-                                        width={64}
-                                        height={64}
-                                        />
-                                    </div>
-                                    <div className="localAvailable">
-                                        7 others locals available
-                                    </div>
-                                    </div>
-                                    <span className="enjoy">
-                                    Enjoy Hanoi with <span className="withName">Amadio</span>
-                                    </span>
-                                    <h3>Mysteries of Regaleira: Sintra</h3>
-                                    <div className="price">
-                                    <span>$57.50 pp</span>
-                                    <span className="experienceCard-topDetails-bullet">
-                                        ●
-                                    </span>
-                                    <span className="experienceCard-topDetails-duration">
-                                        8 hours
-                                    </span>
-                                    <span className="experienceCard-topDetails-bullet">
-                                        {" "}
-                                        ●
-                                    </span>
-                                    <span data-translatekey="Experience.SubcategoryOrTag.day-trip">
-                                        Day trip
-                                    </span>
-                                    </div>
-                                    <div className="experienceCard-bottomDetails">
-                                    <div className="rating">
-                                        <i className="fa fa-star" />
-                                        <i className="fa fa-star" />
-                                        <i className="fa fa-star" />
-                                        <i className="fa fa-star" />
-                                        <i className="fa fa-star" />
-                                    </div>
-                                    <span className="colorShared">1249 |</span>
-                                    <span className="colorShared">
-                                        <i className="fa fa-bolt" /> |
-                                    </span>
-                                    <span className="colorShared">
-                                        <i className="fa fa-car" />
-                                    </span>
-                                    </div>
-                                </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div className="sheet">
-                                <button className="unlike">
-                                    <i className="fa fa-heart" />
-                                </button>
-                                <button className="like">
-                                    <i className="far fa-heart" />
-                                </button>
-                                <div className="imageFigure">
-                                    <img src="./img/1.jpg" alt="logo" width={42} height={42} />
-                                </div>
-                                <div className="experienceCard-details">
-                                    <div className="experienceAvatarCardContainer">
-                                    <div className="experienceAvatarCard1">
-                                        <img
-                                        src="./img/2.jpg"
-                                        alt="logo"
-                                        width={64}
-                                        height={64}
-                                        />
-                                    </div>
-                                    <div className="experienceAvatarCard2">
-                                        <img
-                                        src="./img/3.jpg"
-                                        alt="logo"
-                                        width={64}
-                                        height={64}
-                                        />
-                                    </div>
-                                    <div className="localAvailable">
-                                        7 others locals available
-                                    </div>
-                                    </div>
-                                    <span className="enjoy">
-                                    Enjoy Hanoi with <span className="withName">Amadio</span>
-                                    </span>
-                                    <h3>Mysteries of Regaleira: Sintra</h3>
-                                    <div className="price">
-                                    <span>$57.50 pp</span>
-                                    <span className="experienceCard-topDetails-bullet">
-                                        ●
-                                    </span>
-                                    <span className="experienceCard-topDetails-duration">
-                                        8 hours
-                                    </span>
-                                    <span className="experienceCard-topDetails-bullet">
-                                        {" "}
-                                        ●
-                                    </span>
-                                    <span data-translatekey="Experience.SubcategoryOrTag.day-trip">
-                                        Day trip
-                                    </span>
-                                    </div>
-                                    <div className="experienceCard-bottomDetails">
-                                    <div className="rating">
-                                        <i className="fa fa-star" />
-                                        <i className="fa fa-star" />
-                                        <i className="fa fa-star" />
-                                        <i className="fa fa-star" />
-                                        <i className="fa fa-star" />
-                                    </div>
-                                    <span className="colorShared">1249 |</span>
-                                    <span className="colorShared">
-                                        <i className="fa fa-bolt" /> |
-                                    </span>
-                                    <span className="colorShared">
-                                        <i className="fa fa-car" />
-                                    </span>
-                                    </div>
-                                </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div className="sheet">
-                                <button className="unlike">
-                                    <i className="fa fa-heart" />
-                                </button>
-                                <button className="like">
-                                    <i className="far fa-heart" />
-                                </button>
-                                <div className="imageFigure">
-                                    <img src="./img/1.jpg" alt="logo" width={42} height={42} />
-                                </div>
-                                <div className="experienceCard-details">
-                                    <div className="experienceAvatarCardContainer">
-                                    <div className="experienceAvatarCard1">
-                                        <img
-                                        src="./img/2.jpg"
-                                        alt="logo"
-                                        width={64}
-                                        height={64}
-                                        />
-                                    </div>
-                                    <div className="experienceAvatarCard2">
-                                        <img
-                                        src="./img/3.jpg"
-                                        alt="logo"
-                                        width={64}
-                                        height={64}
-                                        />
-                                    </div>
-                                    <div className="localAvailable">
-                                        7 others locals available
-                                    </div>
-                                    </div>
-                                    <span className="enjoy">
-                                    Enjoy Hanoi with <span className="withName">Amadio</span>
-                                    </span>
-                                    <h3>Mysteries of Regaleira: Sintra</h3>
-                                    <div className="price">
-                                    <span>$57.50 pp</span>
-                                    <span className="experienceCard-topDetails-bullet">
-                                        ●
-                                    </span>
-                                    <span className="experienceCard-topDetails-duration">
-                                        8 hours
-                                    </span>
-                                    <span className="experienceCard-topDetails-bullet">
-                                        {" "}
-                                        ●
-                                    </span>
-                                    <span data-translatekey="Experience.SubcategoryOrTag.day-trip">
-                                        Day trip
-                                    </span>
-                                    </div>
-                                    <div className="experienceCard-bottomDetails">
-                                    <div className="rating">
-                                        <i className="fa fa-star" />
-                                        <i className="fa fa-star" />
-                                        <i className="fa fa-star" />
-                                        <i className="fa fa-star" />
-                                        <i className="fa fa-star" />
-                                    </div>
-                                    <span className="colorShared">1249 |</span>
-                                    <span className="colorShared">
-                                        <i className="fa fa-bolt" /> |
-                                    </span>
-                                    <span className="colorShared">
-                                        <i className="fa fa-car" />
-                                    </span>
-                                    </div>
-                                </div>
-                                </div>
-                            </li>
+                                 {post}
                             </ul>
+                        </div>
+                        <div className="pagination">
+                            <div className="paginationContent">{renderPageNumbers}</div>
                         </div>
                         {/* End bookOffers */}
                         <div className="requestForOffers">
                             <div className="requestForOffersContent">
-                            <img src="./img/2.jpg" alt="logo" />
+                            <img src={guider.avatar} alt="logo" />
                             <h2>
                                 Hi there!
                                 <br />I can personalize your experience
@@ -626,295 +303,8 @@ class ProfileGuiders extends Component {
                             </div>
                         </div>
                         {/* Review */}
-                        <ul className="listReview">
-                            <h2>Reviews</h2>
-                            <li>
-                            <div className="review">
-                                <div className="reviewContainer">
-                                <img
-                                    className="defaultLogo"
-                                    src="./img/defaultAvatarComment.webp"
-                                    alt="logo"
-                                />
-                                <div className="reviewInfo">
-                                    <div className="nickName">AnnaBanana</div>
-                                    <div className="rating">
-                                    <i className="fa fa-star" />
-                                    <i className="fa fa-star" />
-                                    <i className="fa fa-star" />
-                                    <i className="fa fa-star" />
-                                    <i className="fa fa-star" />
-                                    </div>
-                                    <div className="dateComment">1 October 2019</div>
-                                </div>
-                                <div className="commentDetails">
-                                    You can go to a city and explore it one time, two times,
-                                    maybe even lucky enough to go three times. You can research
-                                    that city on the internet and get so much information. But,
-                                    you will never know a city the way a local knows their city.
-                                    Laura showed us so many hidden treasures in Barcelona that
-                                    were not on the internet. We were with her for only three
-                                    hours. Yet we saw so much and learned so much about
-                                    Barcelona and Spain in that short period of time. Laura is
-                                    an amazing guide. Her English is easy to understand. And she
-                                    is truly a friendly, knowledgable person.
-                                </div>
-                                <span className="reviewTitle">Laura The Local!</span>
-                                </div>
-                            </div>
-                            </li>
-                            <li>
-                            <div className="review">
-                                <div className="reviewContainer">
-                                <img
-                                    className="defaultLogo"
-                                    src="./img/defaultAvatarComment.webp"
-                                    alt="logo"
-                                />
-                                <div className="reviewInfo">
-                                    <div className="nickName">AnnaBanana</div>
-                                    <div className="rating">
-                                    <i className="fa fa-star" />
-                                    <i className="fa fa-star" />
-                                    <i className="fa fa-star" />
-                                    <i className="fa fa-star" />
-                                    <i className="fa fa-star" />
-                                    </div>
-                                    <div className="dateComment">1 October 2019</div>
-                                </div>
-                                <div className="commentDetails">
-                                    You can go to a city and explore it one time, two times,
-                                    maybe even lucky enough to go three times. You can research
-                                    that city on the internet and get so much information. But,
-                                    you will never know a city the way a local knows their city.
-                                    Laura showed us so many hidden treasures in Barcelona that
-                                    were not on the internet. We were with her for only three
-                                    hours. Yet we saw so much and learned so much about
-                                    Barcelona and Spain in that short period of time. Laura is
-                                    an amazing guide. Her English is easy to understand. And she
-                                    is truly a friendly, knowledgable person.
-                                </div>
-                                <span className="reviewTitle">Laura The Local!</span>
-                                </div>
-                            </div>
-                            </li>
-                            <li>
-                            <div className="review">
-                                <div className="reviewContainer">
-                                <img
-                                    className="defaultLogo"
-                                    src="./img/defaultAvatarComment.webp"
-                                    alt="logo"
-                                />
-                                <div className="reviewInfo">
-                                    <div className="nickName">AnnaBanana</div>
-                                    <div className="rating">
-                                    <i className="fa fa-star" />
-                                    <i className="fa fa-star" />
-                                    <i className="fa fa-star" />
-                                    <i className="fa fa-star" />
-                                    <i className="fa fa-star" />
-                                    </div>
-                                    <div className="dateComment">1 October 2019</div>
-                                </div>
-                                <div className="commentDetails">
-                                    You can go to a city and explore it one time, two times,
-                                    maybe even lucky enough to go three times. You can research
-                                    that city on the internet and get so much information. But,
-                                    you will never know a city the way a local knows their city.
-                                    Laura showed us so many hidden treasures in Barcelona that
-                                    were not on the internet. We were with her for only three
-                                    hours. Yet we saw so much and learned so much about
-                                    Barcelona and Spain in that short period of time. Laura is
-                                    an amazing guide. Her English is easy to understand. And she
-                                    is truly a friendly, knowledgable person.
-                                </div>
-                                <span className="reviewTitle">Laura The Local!</span>
-                                </div>
-                            </div>
-                            </li>
-                            <li>
-                            <div className="review">
-                                <div className="reviewContainer">
-                                <img
-                                    className="defaultLogo"
-                                    src="./img/defaultAvatarComment.webp"
-                                    alt="logo"
-                                />
-                                <div className="reviewInfo">
-                                    <div className="nickName">AnnaBanana</div>
-                                    <div className="rating">
-                                    <i className="fa fa-star" />
-                                    <i className="fa fa-star" />
-                                    <i className="fa fa-star" />
-                                    <i className="fa fa-star" />
-                                    <i className="fa fa-star" />
-                                    </div>
-                                    <div className="dateComment">1 October 2019</div>
-                                </div>
-                                <div className="commentDetails">
-                                    You can go to a city and explore it one time, two times,
-                                    maybe even lucky enough to go three times. You can research
-                                    that city on the internet and get so much information. But,
-                                    you will never know a city the way a local knows their city.
-                                    Laura showed us so many hidden treasures in Barcelona that
-                                    were not on the internet. We were with her for only three
-                                    hours. Yet we saw so much and learned so much about
-                                    Barcelona and Spain in that short period of time. Laura is
-                                    an amazing guide. Her English is easy to understand. And she
-                                    is truly a friendly, knowledgable person.
-                                </div>
-                                <span className="reviewTitle">Laura The Local!</span>
-                                </div>
-                            </div>
-                            </li>
-                            <li>
-                            <div className="review">
-                                <div className="reviewContainer">
-                                <img
-                                    className="defaultLogo"
-                                    src="./img/defaultAvatarComment.webp"
-                                    alt="logo"
-                                />
-                                <div className="reviewInfo">
-                                    <div className="nickName">AnnaBanana</div>
-                                    <div className="rating">
-                                    <i className="fa fa-star" />
-                                    <i className="fa fa-star" />
-                                    <i className="fa fa-star" />
-                                    <i className="fa fa-star" />
-                                    <i className="fa fa-star" />
-                                    </div>
-                                    <div className="dateComment">1 October 2019</div>
-                                </div>
-                                <div className="commentDetails">
-                                    You can go to a city and explore it one time, two times,
-                                    maybe even lucky enough to go three times. You can research
-                                    that city on the internet and get so much information. But,
-                                    you will never know a city the way a local knows their city.
-                                    Laura showed us so many hidden treasures in Barcelona that
-                                    were not on the internet. We were with her for only three
-                                    hours. Yet we saw so much and learned so much about
-                                    Barcelona and Spain in that short period of time. Laura is
-                                    an amazing guide. Her English is easy to understand. And she
-                                    is truly a friendly, knowledgable person.
-                                </div>
-                                <span className="reviewTitle">Laura The Local!</span>
-                                </div>
-                            </div>
-                            </li>
-                            <li>
-                            <div className="review">
-                                <div className="reviewContainer">
-                                <img
-                                    className="defaultLogo"
-                                    src="./img/defaultAvatarComment.webp"
-                                    alt="logo"
-                                />
-                                <div className="reviewInfo">
-                                    <div className="nickName">AnnaBanana</div>
-                                    <div className="rating">
-                                    <i className="fa fa-star" />
-                                    <i className="fa fa-star" />
-                                    <i className="fa fa-star" />
-                                    <i className="fa fa-star" />
-                                    <i className="fa fa-star" />
-                                    </div>
-                                    <div className="dateComment">1 October 2019</div>
-                                </div>
-                                <div className="commentDetails">
-                                    You can go to a city and explore it one time, two times,
-                                    maybe even lucky enough to go three times. You can research
-                                    that city on the internet and get so much information. But,
-                                    you will never know a city the way a local knows their city.
-                                    Laura showed us so many hidden treasures in Barcelona that
-                                    were not on the internet. We were with her for only three
-                                    hours. Yet we saw so much and learned so much about
-                                    Barcelona and Spain in that short period of time. Laura is
-                                    an amazing guide. Her English is easy to understand. And she
-                                    is truly a friendly, knowledgable person.
-                                </div>
-                                <span className="reviewTitle">Laura The Local!</span>
-                                </div>
-                            </div>
-                            </li>
-                            <li>
-                            <div className="review">
-                                <div className="reviewContainer">
-                                <img
-                                    className="defaultLogo"
-                                    src="./img/defaultAvatarComment.webp"
-                                    alt="logo"
-                                />
-                                <div className="reviewInfo">
-                                    <div className="nickName">AnnaBanana</div>
-                                    <div className="rating">
-                                    <i className="fa fa-star" />
-                                    <i className="fa fa-star" />
-                                    <i className="fa fa-star" />
-                                    <i className="fa fa-star" />
-                                    <i className="fa fa-star" />
-                                    </div>
-                                    <div className="dateComment">1 October 2019</div>
-                                </div>
-                                <div className="commentDetails">
-                                    You can go to a city and explore it one time, two times,
-                                    maybe even lucky enough to go three times. You can research
-                                    that city on the internet and get so much information. But,
-                                    you will never know a city the way a local knows their city.
-                                    Laura showed us so many hidden treasures in Barcelona that
-                                    were not on the internet. We were with her for only three
-                                    hours. Yet we saw so much and learned so much about
-                                    Barcelona and Spain in that short period of time. Laura is
-                                    an amazing guide. Her English is easy to understand. And she
-                                    is truly a friendly, knowledgable person.
-                                </div>
-                                <span className="reviewTitle">Laura The Local!</span>
-                                </div>
-                            </div>
-                            </li>
-                            <li>
-                            <div className="review">
-                                <div className="reviewContainer">
-                                <img
-                                    className="defaultLogo"
-                                    src="./img/defaultAvatarComment.webp"
-                                    alt="logo"
-                                />
-                                <div className="reviewInfo">
-                                    <div className="nickName">AnnaBanana</div>
-                                    <div className="rating">
-                                    <i className="fa fa-star" />
-                                    <i className="fa fa-star" />
-                                    <i className="fa fa-star" />
-                                    <i className="fa fa-star" />
-                                    <i className="fa fa-star" />
-                                    </div>
-                                    <div className="dateComment">1 October 2019</div>
-                                </div>
-                                <div className="commentDetails">
-                                    You can go to a city and explore it one time, two times,
-                                    maybe even lucky enough to go three times. You can research
-                                    that city on the internet and get so much information. But,
-                                    you will never know a city the way a local knows their city.
-                                    Laura showed us so many hidden treasures in Barcelona that
-                                    were not on the internet. We were with her for only three
-                                    hours. Yet we saw so much and learned so much about
-                                    Barcelona and Spain in that short period of time. Laura is
-                                    an amazing guide. Her English is easy to understand. And she
-                                    is truly a friendly, knowledgable person.
-                                </div>
-                                <span className="reviewTitle">Laura The Local!</span>
-                                </div>
-                            </div>
-                            </li>
-                        </ul>
+                       
                         {/* End Review */}
-                        {/* Load Review button */}
-                        <div className="commentButton">
-                            <div id="loadMore">Show more reviews</div>
-                            <div id="showLess">Hide less reviews</div>
-                        </div>
                         {/* End Load Review button */}
                         <div className="thisIsTravel">
                             <h2>This is Withlocals</h2>
@@ -925,13 +315,7 @@ class ProfileGuiders extends Component {
                             />
                             </video>
                         </div>
-                        <div className="experienceInCity">
-                            <img src="./img/hanoi.jpg" alt="hanoi" />
-                            <div className="localExperience">
-                            Ha Noi
-                            <button>See all Ha Noi experience</button>
-                            </div>
-                        </div>
+                        
                         </div>
                     </div>
                     </div>

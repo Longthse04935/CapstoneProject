@@ -114,6 +114,8 @@ body{
     vertical-align: text-top;
     margin-left: 5px;
     margin-top: 3px;
+    height: 44px;
+    overflow: hidden;
 }
 .BtnContact{
     margin-top: 20px;

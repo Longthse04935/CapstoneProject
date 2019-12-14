@@ -11,7 +11,6 @@ class PostDetail extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      posts: [],
       currentPage: 1,
       todosPerPage: 4,
       postInfo: {
@@ -107,6 +106,7 @@ class PostDetail extends React.Component {
         pageCount
       });
       if (link_youtube.includes("youtu.be")) {
+        console.log('run here')
         link_youtube = link_youtube.replace("youtu.be", "youtube.com/embed");
         this.setState({ link_youtube });
       } else {
@@ -169,6 +169,19 @@ class PostDetail extends React.Component {
     this.setState({ including_service });
   };
 
+	loadPost = async (autheticate,page)=>{
+    let {guider} = this.state;
+		const response = await fetch(
+			Config.api_url + "guiderpost/allPostOfOneCategory/" + guider.guider_id + "/" + page,
+			autheticate);
+
+		if (!response.ok) {
+			throw Error(response.status + ": " + response.statusText);
+		}
+		const posts = await response.json();
+		this.setState({ posts});
+  }
+  
   handleCurrentPage = currentPage => {
     let { autheticate } = this.state;
     this.loadPost(autheticate, currentPage);
@@ -188,7 +201,6 @@ class PostDetail extends React.Component {
   render() {
     const { postInfo, pageCount, page } = this.state;
 	const post_id = this.props.match.params.post_id;
-	console.log(post_id);
     let guider_id = this.state.guider.guider_id;
 
     //pagination

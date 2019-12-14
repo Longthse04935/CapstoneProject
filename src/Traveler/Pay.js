@@ -5,7 +5,7 @@ import $ from "jquery";
 import Config from "../Config";
 import ReviewInPost from '../Guider/ReviewInPost';
 import GuiderInPost from '../Guider/GuiderInPost';
-
+import {connect} from 'react-redux';
 
 class Pay extends Component {
   constructor(props) {
@@ -108,9 +108,9 @@ class Pay extends Component {
       this.setState({ postInfo});
     
       //check infomation travel have exist
-      let user = JSON.parse(window.sessionStorage.getItem('user'));
+      //let user = JSON.parse(window.sessionStorage.getItem('user'));
       const res = await fetch(
-        Config.api_url + "Traveler/isLackingProfile?traveler_id="+user.id ,{
+        Config.api_url + "Traveler/isLackingProfile?traveler_id="+this.props.user.id ,{
           method: "GET",
           mode: "cors",
           credentials: "include"
@@ -195,12 +195,12 @@ class Pay extends Component {
 
   submitForm = async e => {
     e.preventDefault();
-    let {data} = this.state;
+    let {data} = this.state;  
     if(this.isValidate()) {
       return false;
     } 
-    let user = JSON.parse(window.sessionStorage.getItem('user'));
-    data.traveler_id = user.id;
+    // let user = JSON.parse(window.sessionStorage.getItem('user'));
+    data.traveler_id = this.props.user.id;
     try {
       const response = await fetch(Config.api_url + "Traveler/updateLackingProfile" ,{
         method: "POST",
@@ -239,13 +239,13 @@ class Pay extends Component {
     
     let tourDetail = JSON.parse(sessionStorage.getItem("tourDetail"));
   
-    let user = JSON.parse(sessionStorage.getItem("user"));
-    if (tourDetail === null || user === null) {
-      window.location.href = "/";
-      sessionStorage.setItem("messagePay", "Error user or tour inf");
-    } else {
-      sessionStorage.setItem("messagePay", "");
-    }
+    // let user = JSON.parse(sessionStorage.getItem("user"));
+    // if (tourDetail === null || user === null) {
+    //   window.location.href = "/";
+    //   sessionStorage.setItem("messagePay", "Error user or tour inf");
+    // } else {
+    //   sessionStorage.setItem("messagePay", "");
+    // }
     let begin_date = tourDetail.begin_date.split(" ");
     let end_date = tourDetail.end_date.split(" ");
     let {data,errors} = this.state;
@@ -492,10 +492,6 @@ Nothing in this Agreement shall be construed as making either party the partner,
                             {postInfo.including_service}
                           </span>
                         </div>
-
-                        <ReviewInPost postId={tourDetail.post_id} />
-
-                        {/* <PlanInPost postId={tourDetail.post_id} /> */}
                         
                       </div>
                     </div>
@@ -577,5 +573,8 @@ Nothing in this Agreement shall be construed as making either party the partner,
     );
   }
 }
-
-export default Pay;
+function mapStateToProps(state) {
+	const user = state.user;
+	return {  user };
+}
+export default connect(mapStateToProps)(Pay);

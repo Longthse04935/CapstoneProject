@@ -159,6 +159,7 @@ class LoggedGuider extends Component {
                                             <li><Link to="/schedule">Schedule</Link><i className="fa fa-handshake-o" aria-hidden="true"></i></li>
                                             <li><Link to="/changepassword">Change Password</Link><i className="fa fa-handshake-o" aria-hidden="true"></i></li>
                                             <li><Link to="/contract">Contract</Link><i className="fa fa-handshake-o" aria-hidden="true"></i></li>
+                                            <li><Link to="/chart">Your Income</Link><i className="fa fa-handshake-o" aria-hidden="true"></i></li>
                                         </span>
                                         <li onClick={() => {
                                             // console.log("log out");
@@ -168,7 +169,7 @@ class LoggedGuider extends Component {
                                             //   id: 0
                                             // };
                                             // this.props.reload.call(this, user);window.location.href = '/';
-                                            this.props.dispatch(wsDisconnect("http://localhost:8080/ws"));
+                                            //this.props.dispatch(wsDisconnect(Config.api_url+"ws"));
                                             this.props.dispatch(exit());
                                             window.location.href = '/';
                                             

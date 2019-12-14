@@ -5,7 +5,7 @@ import Footer from '../common/Footer';
 import $ from "jquery";
 import ReactDOMServer from 'react-dom/server';
 import Image from './Image';
-
+import SweetAlert from 'react-bootstrap-sweetalert';
 import Config from '../Config';
 class EditPost extends Component {
     constructor(props) {
@@ -22,6 +22,7 @@ class EditPost extends Component {
         }
 
         this.state = {
+            alert: null,
             post_id: 0,
             locations: initLocation,
             categories: initCategory,
@@ -52,7 +53,10 @@ class EditPost extends Component {
         this.inputOnChange = this.inputOnChange.bind(this);
         this.addReason = this.addReason.bind(this);
         this.removeReason = this.removeReason.bind(this);
-
+        this.onCancel = this.onCancel.bind(this);
+        this.notification = this.notification.bind(this);
+        this.onNotification = this.onNotification.bind(this);
+        this.statusProfile = this.statusProfile.bind(this);
     }
 
 
@@ -200,7 +204,50 @@ class EditPost extends Component {
         }
         return acts;
     }
+    onCancel() {
+        this.setState({
+            alert: null
+        });
+    }
+    //notification khi booking failed or success
+    onNotification() {
+        this.setState({ alert: null });
+    }
 
+    notification(notification) {
+        const getAlert = () => (
+            <SweetAlert
+                warning
+                confirmBtnText="Close"
+                confirmBtnBsStyle="danger"
+                title="Operation fails"
+                onConfirm={() => this.onNotification()}
+            >
+                {notification}
+            </SweetAlert>
+        );
+
+        this.setState({
+            alert: getAlert()
+        });
+    }
+
+
+    statusProfile(message) {
+        const getAlert = () => (
+            <SweetAlert
+                success
+                title="Done!"
+                onConfirm={() => this.onNotification()}
+            >
+                {message}
+            </SweetAlert>
+        );
+
+        this.setState({
+            alert: getAlert()
+        });
+    }
     async submitForm(eve) {
         eve.preventDefault();
         const copy = Object.assign({}, this.state);
@@ -270,8 +317,10 @@ class EditPost extends Component {
                 }
             );
             if (!response.ok) { throw Error(response.status + ": " + response.statusText); }
+            this.statusProfile("Thank you, your post has show up");
         } catch (err) {
             console.log(err);
+            this.notification("Sorry! Something went wrong, please try again later");
         }
     }
 
@@ -465,7 +514,7 @@ class EditPost extends Component {
 
         let serviceInput = this.state.services.map((service, index) =>
             <div className="dropdownCoverSelect" key={index}>
-                <input className="dropdown-select service" type="text" onChange={(eve) => { this.state.services[index] = eve.target.value; }} defaultValue={this.state.services[index]} />
+                <input className="dropdown-select service" type="text" required onChange={(eve) => { this.state.services[index] = eve.target.value; }} defaultValue={this.state.services[index]} />
                 <button type="button" className="btn btn-danger btn-add-service" onClick={this.removeService} id={index}>Delete</button>
             </div>
         );
@@ -473,8 +522,8 @@ class EditPost extends Component {
         let actInput = this.state.activities.map((act, index) =>
             <div className="activitiesInput" key={index}>
                 <div className="coverContent" key={index}>
-                    <div className="brief">Brief<input type="text" name="brief" onChange={(eve) => { act.brief = eve.target.value; }} defaultValue={act.brief} /></div>
-                    <div className="detail">Detail<textarea rows={4} cols={50} type="textarea" name="detail" onChange={(eve) => { act.detail = eve.target.value; }} defaultValue={act.detail} /></div>
+                    <div className="brief">Brief<input type="text" name="brief" required onChange={(eve) => { act.brief = eve.target.value; }} defaultValue={act.brief} /></div>
+                    <div className="detail">Detail<textarea rows={4} cols={50} type="textarea" required name="detail" onChange={(eve) => { act.detail = eve.target.value; }} defaultValue={act.detail} /></div>
                     <button type="button" className="btn btn-danger" onClick={this.removeActivity} id={index}>Delete</button>
                 </div>
             </div>
@@ -482,7 +531,7 @@ class EditPost extends Component {
 
         let reasonInput = this.state.reasons.map((reason, index) =>
             <div className="dropdownCoverSelect" key={index}>
-                <input className="dropdown-select reason" type="text" onChange={(eve) => { this.state.reasons[index] = eve.target.value; }} defaultValue={this.state.reasons[index]} />
+                <input className="dropdown-select reason" type="text" required onChange={(eve) => { this.state.reasons[index] = eve.target.value; }} defaultValue={this.state.reasons[index]} />
                 <button type="button" className="btn btn-danger btn-add-service" onClick={this.removeReason} id={index}>Delete</button>
             </div>
         );
@@ -518,25 +567,28 @@ class EditPost extends Component {
                                 </div>
                                 <div className="form-group row">
 
-                                    <label className="col-lg-3 col-form-label form-control-label">Price</label>
+                                    <label className="col-lg-3 col-form-label form-control-label">Trip Fee:  <b>$</b></label>
                                     <div className="col-lg-8">
-                                        <input onChange={this.inputOnChange} className="form-control" type="text" name="price" defaultValue={this.state.price} />
+                                        <input onChange={this.inputOnChange} className="form-control" type="number" name="price"
+                                         defaultValue={this.state.price} min="5" max="5000" required  />
                                     </div>
                                 </div>
                                 <div className="form-group row">
-                                    <label className="col-lg-3 col-form-label form-control-label">Title</label>
+                                    <label className="col-lg-3 col-form-label form-control-label">Post title:</label>
                                     <div className="col-lg-8">
-                                        <input onChange={this.inputOnChange} className="form-control" type="text" name="title" defaultValue={this.state.title} />
+                                        <input onChange={this.inputOnChange} className="form-control" type="text" name="title" 
+                                        required defaultValue={this.state.title} />
                                     </div>
                                 </div>
                                 <div className="form-group row">
-                                    <label onChange={this.inputOnChange} className="col-lg-3 col-form-label form-control-label">Video</label>
+                                    <label onChange={this.inputOnChange} className="col-lg-3 col-form-label form-control-label">Introduce video link:</label>
                                     <div className="col-lg-8">
-                                        <input onChange={this.inputOnChange} className="form-control" type="url" name="video_link" defaultValue={this.state.video_link} />
+                                        <input onChange={this.inputOnChange} className="form-control" type="url" name="video_link"
+                                        required defaultValue={this.state.video_link} />
                                     </div>
                                 </div>
                                 <div className="form-group row pictures">
-                                    <label className="col-lg-3 col-form-label form-control-label">Picture</label>
+                                    <label className="col-lg-3 col-form-label form-control-label">Introduce Pictures:</label>
                                     <div className="col-lg-7" id="picInput">
                                         <input
 
@@ -546,25 +598,27 @@ class EditPost extends Component {
                                             accept="image/png, image/jpeg. image/jpg"
                                             onChange={this.showImage}
                                             multiple
+                                            required
                                         />
                                         <Image bases={this.state.images} deleteImg={this.deleteImg} />
                                     </div>
 
                                 </div>
                                 <div className="form-group row">
-                                    <label className="col-lg-3 col-form-label form-control-label">Total hour</label>
+                                    <label className="col-lg-3 col-form-label form-control-label">Estimate trip duration:</label>
                                     <div className="col-lg-8">
-                                        <input onChange={this.inputOnChange} name="total_hour" className="form-control " type="text" defaultValue={this.state.total_hour} />
+                                        <input onChange={this.inputOnChange} name="total_hour" className="form-control " 
+                                        type="number" required min="1" max="24" defaultValue={this.state.total_hour} />
                                     </div>
                                 </div>
                                 <div className="form-group row">
-                                    <label className="col-lg-3 col-form-label form-control-label">Description</label>
+                                    <label className="col-lg-3 col-form-label form-control-label">Depicture your trip:</label>
                                     <div className="col-lg-8">
-                                        <input onChange={this.inputOnChange} name="description" className="form-control" type="text" defaultValue={this.state.description} />
+                                        <textarea onChange={this.inputOnChange} name="description" className="form-control" required  defaultValue={this.state.description} />
                                     </div>
                                 </div>
                                 <div className="form-group row">
-                                    <label className="col-lg-3 col-form-label form-control-label">Including service</label>
+                                    <label className="col-lg-3 col-form-label form-control-label">Including service:</label>
                                     <div className="col-lg-7" id="includeServiceCover"></div>
                                     <button type="button" className="btn btn-info" id="includeService" onClick={this.addService}>Add</button>
                                 </div>
@@ -574,13 +628,13 @@ class EditPost extends Component {
                                     {serviceInput}
                                 </div>
                                 <div className="form-group row">
-                                    <label className="col-lg-3 col-form-label form-control-label">Meeting point</label>
+                                    <label className="col-lg-3 col-form-label form-control-label">Meeting point: </label>
                                     <div className="col-lg-8">
-                                        <input onChange={this.inputOnChange} name="meeting_point" className="form-control " type="text" defaultValue={this.state.meeting_point} />
+                                        <input onChange={this.inputOnChange} name="meeting_point" className="form-control" required type="text" defaultValue={this.state.meeting_point} />
                                     </div>
                                 </div>
                                 <div className="form-group row">
-                                    <label className="col-lg-3 col-form-label form-control-label">Activities</label>
+                                    <label className="col-lg-3 col-form-label form-control-label">Activities in trip:</label>
                                     <div className="col-lg-7"></div>
 
                                     <button type="button" className="btn btn-info" id="activitiesAdd" onClick={this.addActivity}>Add</button>
@@ -590,7 +644,7 @@ class EditPost extends Component {
                                     {actInput}
                                 </div>
                                 <div className="form-group row">
-                                    <label className="col-lg-3 col-form-label form-control-label">Why to pick you   </label>
+                                    <label className="col-lg-3 col-form-label form-control-label">Why to pick you:   </label>
                                     <div className="col-lg-7"></div>
                                     <button type="button" className="btn btn-info" id="reasonAdd" onClick={this.addReason}>Add</button>
                                 </div>

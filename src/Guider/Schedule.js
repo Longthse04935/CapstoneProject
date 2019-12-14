@@ -15,38 +15,40 @@ class Schedule extends Component {
                   id: 0
             };
       }
-      componentWillMount() {
-            var user = JSON.parse(sessionStorage.getItem('user'));
-            if (user === null) {
-                  sessionStorage.setItem('messagePay', 'Error user or tour inf');
-                  window.location.href = '/';
-            } else if (user.role === 'TRAVELER') {
-                  sessionStorage.setItem('messagePay', 'You are TRAVELER');
-                  window.location.href = '/';
-            } else {
-                  this.state.id = user.id;
-            }
-      }
+      // componentWillMount() {
+      //       var user = JSON.parse(sessionStorage.getItem('user'));
+      //       if (user === null) {
+      //             sessionStorage.setItem('messagePay', 'Error user or tour inf');
+      //             window.location.href = '/';
+      //       } else if (user.role === 'TRAVELER') {
+      //             sessionStorage.setItem('messagePay', 'You are TRAVELER');
+      //             window.location.href = '/';
+      //       } else {
+      //             this.state.id = user.id;
+      //       }
+      // }
 
 
 
 
 
       render() {
-            let order = this.state.orders.map((order, index) =>
-                  // <li className="single-event" data-start={`${order.begin_date.getHours()}:${order.begin_date.getMinutes()}`} 
-                  // data-end={`${order.finish_date.getHours()}:${order.finish_date.getMinutes()}`}
-                  // time-start={`${order.begin_date.getHours()}:${order.begin_date.getMinutes()}`}
-                  // data-end={`${order.finish_date.getHours()}:${order.finish_date.getMinutes()}`}
-                  //  data-content="event-abs-circuit" data-event="event-1">
-                  //       <a >
-                  <em className="event-name">{order.object}</em>
-                  //       </a>
-                  //       <Link to={`/post/${order.post_id}`}>
-                  //             <em className="event-name">{order.postTitle}</em>
-                  //       </Link>
-                  // </li>
-            );
+            let dayInWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "thursday", "Friday", "Saturday"];
+            let order = this.state.orders.map((order, index) => {
+                  let hours = order.map((time, index) =>
+                        <li key={index} className="single-event" data-start={time.begin} data-end={time.finish} data-content="event-abs-circuit" data-event="event-1">
+                              <a >
+                                    <em className="event-name">{time.object}<br />{time.postTitle}</em>
+                              </a>
+                        </li>
+                  );
+
+                  return (
+                        <li className="events-group" key={index}>
+                              <div className="top-info"><span>{dayInWeek[index]}</span></div>
+                              <ul>{hours}</ul>
+                        </li>);
+            });
 
             return (
                   <div className="Schedule">
@@ -89,64 +91,7 @@ class Schedule extends Component {
                               </div>
 
                               <div className="events">
-                                    <ul>
-
-                                          <li className="events-group">
-                                                <div className="top-info"><span>Sunday</span></div>
-
-                                                <ul>
-                                                </ul>
-                                          </li>
-                                          <li className="events-group">
-                                                <div className="top-info"><span>Monday</span></div>
-
-                                                <ul>
-                                                      <li className="single-event" data-start="0:01" data-end="3:00"  data-content="event-abs-circuit" data-event="event-1">
-                                                            <a href="#0">
-                                                                  <em className="event-name">Abs Circuit</em>
-                                                            </a>
-                                                      </li>
-                                                </ul>
-                                          </li>
-
-                                          <li className="events-group">
-                                                <div className="top-info"><span>Tuesday</span></div>
-
-                                                <ul>
-                                                </ul>
-                                          </li>
-
-                                          <li className="events-group">
-                                                <div className="top-info"><span>Wednesday</span></div>
-
-                                                <ul>
-
-                                                </ul>
-                                          </li>
-
-                                          <li className="events-group">
-                                                <div className="top-info"><span>Thursday</span></div>
-
-                                                <ul>
-
-                                                </ul>
-                                          </li>
-
-                                          <li className="events-group">
-                                                <div className="top-info"><span>Friday</span></div>
-
-                                                <ul>
-
-                                                </ul>
-                                          </li>
-                                          <li className="events-group">
-                                                <div className="top-info"><span>Saturday</span></div>
-
-                                                <ul>
-
-                                                </ul>
-                                          </li>
-                                    </ul>
+                                    <ul>{order}</ul>
                               </div>
 
                               <div className="event-modal">
@@ -188,7 +133,7 @@ class Schedule extends Component {
                   },
                   body: JSON.stringify(date)
             };
-            let response = await fetch(Config.api_url + 'Order/getOrderByWeek/' + this.state.id, options);
+            let response = await fetch(Config.api_url + 'Order/getOrderByWeek/' + this.props.id, options);
             let order = await response.json();
             console.log(order);
             //this.setState({timeAvailable:response});
@@ -205,7 +150,7 @@ class Schedule extends Component {
                         },
                         body: JSON.stringify(new Date)
                   };
-                  let response = await fetch(Config.api_url + 'Order/getOrderByWeek/' + this.state.id, options);
+                  let response = await fetch(Config.api_url + 'Order/getOrderByWeek/' + this.props.id, options);
                   //console.log("schedule "+ await response);
                   let orders = await response.json();
                   console.log(orders);

@@ -11,6 +11,9 @@ class PostDetail extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			posts:[],
+			currentPage: 1,
+			todosPerPage: 4,		
 			postInfo: {
 				picture_link: []
 			},

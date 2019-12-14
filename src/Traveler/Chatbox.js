@@ -32,6 +32,9 @@ class Chatbox extends Component {
 			},
 			//plan in tour
 			plan: [],
+			post: {
+				total_hour: 1
+			},
 			//time can book tour
 			timeAvailable: [],
 			message: '',
@@ -41,6 +44,7 @@ class Chatbox extends Component {
 			valueItem: '',
 			user: props.user,
 			guider: {
+				name:"",
 				languages: ['']
 			},
 
@@ -48,9 +52,6 @@ class Chatbox extends Component {
 
 		};
 	}
-
-
-
 	option = (time) => {
 		var date = this.state.tourDate;
 		var getDate = parseInt(date.getDate()) < 10 ? "0" + parseInt(date.getDate()) : parseInt(date.getDate());
@@ -82,8 +83,6 @@ class Chatbox extends Component {
 		} else if (flag === "booking_fail") {
 			this.notification("Booking Fail")
 		}
-
-
 		// this.scrollToBottom();
 		let post_id = this.props.match.params.post_id;
 		let guiderId = this.props.match.params.guiderId;
@@ -97,30 +96,27 @@ class Chatbox extends Component {
 				mode: "cors",
 				credentials: "include"
 			});
-
 			if (!responsePosts.ok) {
 				throw Error(responsePosts.status + ": " + responsePosts.statusText);
 			}
-
 			const posts = await responsePosts.json();
-			numberInjoy.price = posts.price;
-			numberInjoy.totalPrice = numberInjoy.adult * posts.price;
-
-
 			//load time avilable
-			let avaiDates = await fetch(Config.api_url + 'Order//GetPossibleDayInMonth/'
-				+ this.props.match.params.guiderId + '/' + posts.total_hour, options);
-			let d = await avaiDates.json();
+			let avaiDates = await fetch(Config.api_url + 'Order/GetPossibleDayInMonth/'
+				+ this.props.match.params.guiderId + '/' + posts.total_hour, {
+				method: "POST",
+				mode: "cors",
+				credentials: "include",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify(new Date())
+			});
 			let options = this.option(" 00:00");
 			let response = await fetch(Config.api_url + 'Order/GetAvailableHours', options);
 			response = await response.json();
 			//load end time avilable	
 			let option = this.option(" " + response[0]);
 			let endTime = await fetch(Config.api_url + 'Order/GetExpectedTourEnd', option);
-			endTime = await endTime.text();
-
-			//get profile guider sessionStorage.getItem('guider_id')
-			this.setState({ numberInjoy, timeAvailable: response, hourBegin: response[0], endTime: endTime, avaiDate: d });
 
 			//get profile guider
 			const responseGuider = await fetch(Config.api_url + "Guider/" + guiderId, {
@@ -131,8 +127,17 @@ class Chatbox extends Component {
 			});
 			if (!responseGuider.ok) { throw Error(responseGuider.status + ": " + responseGuider.statusText); }
 			const guider = await responseGuider.json();
-			this.setState({ guider: guider });
+			
 
+			numberInjoy.price = posts.price;
+			numberInjoy.totalPrice = numberInjoy.adult * posts.price;
+
+			let d = await avaiDates.json();
+
+			endTime = await endTime.text();
+
+
+			this.setState({ post: posts, guider: guider, numberInjoy, timeAvailable: response, hourBegin: response[0], endTime: endTime, avaiDate: d });
 			$(".ratingChatbox img").hover(function () {
 				$('.tool-tip').show();
 			}, function () {
@@ -183,9 +188,6 @@ class Chatbox extends Component {
 			alert: null
 		});
 	}
-
-
-
 	//notification khi booking failed or success
 	onNotification() {
 		this.setState({ alert: null });
@@ -243,8 +245,8 @@ class Chatbox extends Component {
 			children_quantity: '',
 			price: '',
 			end_date: '',
-			guider_id: sessionStorage.getItem('guider_id'),
-			guider_name: sessionStorage.getItem('guider_name')
+			guider_id: this.props.match.params.guiderId,
+			guider_name: this.state.guider.name
 		};
 
 		tourDetail.traveler_id = "" + this.props.user.id;
@@ -253,18 +255,25 @@ class Chatbox extends Component {
 		tourDetail.adult_quantity = "" + data.numberInjoy.adult;
 		tourDetail.children_quantity = "" + data.numberInjoy.children;
 		tourDetail.price = data.numberInjoy.totalPrice;
-		tourDetail.end_date = this.state.endTime;
+		tourDetail.finish_date = this.state.endTime;
 		sessionStorage.setItem('tourDetail', JSON.stringify(tourDetail));
 		//add check here
+		delete tourDetail.price;
+		delete tourDetail.dateForBook;
+		delete tourDetail.hourForBook;
 		try {
-			let checkTime = await fetch(Config.api_url + 'Order/checktime',  {
-			method: "GET",
-			mode: "cors",
-			credentials: "include"
-		});
-			if(!checkTime.ok) { throw Error(checkTime.status + ": " + checkTime.statusText); }
+			let checkTime = await fetch(Config.api_url + 'Order/checktime', {
+				method: "POST",
+				mode: "cors",
+				credentials: "include",
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(tourDetail)
+			});
+			if (!checkTime.ok) { throw Error(checkTime.status + ": " + checkTime.statusText); }
 			window.location.href = "/book";
-		} catch (err) { 
+		} catch (err) {
 			this.notification("The time your choose have been booked by someone else, please reload and pick another time");
 		}
 	}
@@ -303,6 +312,7 @@ class Chatbox extends Component {
 	render() {
 		const { chatData, chatText, author, numberInjoy, plan, guider, avaiDate } = this.state;
 		let includeCalendates = avaiDate.map(date => { return new Date(date); });
+		//console.log(includeCalendates);
 		let languages = '';
 
 		for (var i = 0; i < guider.languages.length; i++) {
@@ -315,7 +325,7 @@ class Chatbox extends Component {
 		let selectHour = this.state.timeAvailable.map((value, index) => {
 			return <option key={index} value={value}>{value}</option>;
 		});
-	
+
 
 		return (
 			<div className="ChatRoom">
@@ -386,7 +396,7 @@ class Chatbox extends Component {
 									selected={this.state.tourDate}
 									onChange={this.dateChange}
 
-									minDate={new Date()}
+									minDate={(includeCalendates.length > 0)?includeCalendates[0]:new Date()}
 									includeDates={includeCalendates}
 								/>
 							</div>
@@ -399,6 +409,7 @@ class Chatbox extends Component {
 								</div>
 								<input value={this.state.endTime} readOnly name="endTime" />
 								<h5 className="closest_EndDate">{this.state.closest_EndDate}</h5>
+								<p>Estimate trip duration: {this.state.post.total_hour}{" hours"}</p>
 							</div>
 							<div className="numberTravel">
 								<span>

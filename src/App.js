@@ -31,6 +31,7 @@ import EditPost from './Guider/EditPost';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import Page404 from './Page404';
 import ReviewTraveler from './Guider/ReviewTraveler';
+import Config from './Config';
 class App extends Component {
 	constructor(props) {
 		super(props);
@@ -49,29 +50,7 @@ class App extends Component {
 	}
 	
 
-	reload = (user) => {
-
-		if (typeof (Storage) !== 'undefined') {
-			if (user.id === 0) {
-				this.props.dispatch(wsDisconnect("http://localhost:8080/ws"));
-
-				window.sessionStorage.clear();
-			}
-			else {
-				this.props.dispatch(wsConnect("http://localhost:8080/ws", user.userName));
-
-				window.sessionStorage.setItem('user', JSON.stringify(user));
-			}
-		} else {
-			alert('Browser not support!');
-		}
-		this.setState({
-			logedIn: !this.state.logedIn,
-			userName: user.userName,
-			role: user.role,
-			id: user.id
-		});
-	}
+	
 
 	componentDidMount() {
 
@@ -84,7 +63,7 @@ class App extends Component {
 		// }
 		let user = this.props.user;
 		if (user.logedIn) {
-			this.props.dispatch(wsConnect("http://localhost:8080/ws"));
+			this.props.dispatch(wsConnect(Config.api_url+"ws"));
 		} else {
 
 		}
@@ -127,7 +106,8 @@ class App extends Component {
 					<Route path='/' component={Home} exact />
 					<Route path='/guider/:guider_id' component={GuiderAllPost} exact />
 					<Route path='/post/:post_id' component={PostDetail} exact />
-					<Route exact path='/chatbox/:guiderId/:post_id' component={Chatbox} />
+					<Route exact path='/chatbox/:guiderId/:post_id/:message' component={Chatbox} />
+					<Route exact path='/chatbox/:guiderId/:post_id/' component={Chatbox} />
 					<Route path='/profileguiders'><GuiderProfile /> </Route>
 					<Route path='/tour' component={Tour} />
 					<Route path='/profiletraveller' component={ProfileTravaller} />

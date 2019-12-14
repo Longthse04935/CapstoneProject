@@ -90,10 +90,10 @@ class App extends Component {
 		let user = this.props.user;
 		if (user.logedIn) {
 			if (user.role === 'TRAVELER') {
-				present = <LoggedTvl reload={this.reload} />;
+				present = <LoggedTvl id={this.props.user.id} reload={this.reload} />;
 			}
 			else {
-				present = <LoggedGuider reload={this.reload} />;
+				present = <LoggedGuider id={this.props.user.id} reload={this.reload} />;
 			}
 		} else {
 			present = <Navbar reload={this.reload} />;

@@ -197,7 +197,7 @@ class Home extends Component {
 
 			const guiders = await responsePosts.json();
 
-			this.setState({ searchGuider: guiders, guiderPage: ++this.state.guiderPage });
+			this.setState({ searchGuider: guiders, guiderPage: this.state.guiderPage ,inputSearch:input});
 		} catch (err) {
 			console.log(err);
 		}
@@ -222,8 +222,7 @@ class Home extends Component {
 			}
 
 			const posts = await responsePosts.json();
-
-			this.setState({ searchPost: posts, postPage: ++this.state.postPage });
+			this.setState({ searchPost: posts, postPage: this.state.postPage,inputSearch:input});
 		} catch (err) {
 			console.log(err);
 		}
@@ -231,7 +230,9 @@ class Home extends Component {
 
 	render() {
 		let input = null;
-		let { currentIndex, slideShow } = this.state;
+		let { currentIndex, slideShow,inputSearch,searchGuider,searchPost } = this.state;
+		let guiderlength = searchGuider.length;
+		let location = searchPost.length;
 		let src = Config.api_url + slideShow[currentIndex];
 
 		let tour = this.state.category.map((tour, index) => {
@@ -284,69 +285,103 @@ class Home extends Component {
 		</div>);
 		
 		let postResult = (<div className="postResult">
-			<div className="bookOffers">
-				<h2>Search Result </h2>
-				<ul>
+			<div className="bookOffers guiderResult" id="searchResult">
+				<div className="headerGuiderResult">
+					<h2 className="h2SsearchResult">Search Results</h2>
+					<hr/>
+					<h3>All results related to <span className="spanSearhResult">{"'"+inputSearch+"'"}</span></h3>
+				</div>
+				
+				<ul className="ulSearchLocation">
 					{this.state.searchPost.map((post, index) => (
+						<Link to={"/post/" + post.post_id}>
 						<li key={index}>
 							<div className="sheet">
-								<div className="imageFigure">
-									<img src={post.picture_link[0]} alt="logo" width="42" height="42" />
-								</div>
-								<div className="experienceCard-details">
-									<span className="enjoy">
-										Enjoy <span className="withName">{post.post_id}</span>
+							<div className="imageFigure">
+								<img src={post.picture_link[0]} alt="logo" />
+							</div>
+							<div className="experienceCard-details">
+								{/* <span className="enjoy">
+								Enjoy <span className="withName">{post.title}</span>
+								</span> */}
+								<h3>
+									<span>
+									{post.title}
 									</span>
-									<h3>
-										<Link to={"/post/" + post.post_id}>{post.title}</Link>
-									</h3>
-									<div className="price">
-										<span>${post.price}</span>
-										<span className="experienceCard-topDetails-bullet">
-											{" "}
-											&#9679;{" "}
-										</span>
-										<span className="experienceCard-topDetails-duration">{post.total_hour} hours</span>
-										<span className="experienceCard-topDetails-bullet">
-											{" "}
-											&#9679;{" "}
-										</span>
-										<span data-translatekey="Experience.SubcategoryOrTag.day-trip">Day trip</span>
-									</div>
-									<div className="experienceCard-bottomDetails">
-										<Rated number="5" />
-										<span className="colorShared">1249 | </span>
-										<span className="colorShared"><i className="fa fa-bolt" /> |</span>
-										<span className="colorShared"><i className="fa fa-car" /></span>
-									</div>
+								</h3>
+								<div className="price">
+								<i className="fa fa-money" aria-hidden="true"></i><span>{" "+post.price}$</span>
+								<span className="experienceCard-topDetails-bullet">
+									{" "}
+									&#9679;{" "}
+								</span>
+								<i className="fa fa-hourglass-half" aria-hidden="true"></i>
+								<span className="experienceCard-topDetails-duration">
+									{" "+post.total_hour} hours
+								</span>
+								<span className="experienceCard-topDetails-bullet">
+									{" "}
+									&#9679;{" "}
+								</span>
+								{
+									post.total_hour > 24 ? 
+									<span>
+									<i className="fa fa-moon-o" aria-hidden="true"></i>
+									<span data-translatekey="Experience.SubcategoryOrTag.day-trip">
+									{" "}Long trip
+								</span>
+									</span>
+									:
+									<span>
+									<i className="fa fa-sun-o" aria-hidden="true"></i>
+									<span data-translatekey="Experience.SubcategoryOrTag.day-trip">
+									{" "} Day trip
+								</span>
+									</span>
+								}
+								
+								</div>
+								<div className="experienceCard-bottomDetails">
+								<Rated number="5" />
 								</div>
 							</div>
+							</div>
 						</li>
+						</Link>
 					))}
 				</ul>
 			</div>
 		</div>
 		);
 		//console.log(this.state.searchGuider);
-		let guiderResult = (<div className="guiderResult">
-			<h2>Search Result</h2>
-			<div className="content-left">
+		let guiderResult = (
+		<div className="guiderResult">
+			<div className="headerGuiderResult">
+				<h2 className="h2SsearchResult">Search Results</h2>
+				<hr/>
+				<h3>All results related to <span className="spanSearhResult">{"'"+inputSearch+"'"}</span></h3>
+			</div>
+			<div className="topGuider" id="SearchTopGuider">
+			<div className="topGuiderByRate">
+			<div className="content-left" id="searchGuider">
 				{this.state.searchGuider.map((post, index) => (
 					<div className="profile-box" key={index}>
 						<div className="pb-header header-stick">
 							<div className="header-pb">
-								<h1 className="TitlePb TileStickyPb">
+								<h1 className="TitlePb TileStickyPb searchGuiderName">
 									{post.first_name + "" + post.last_name}
 								</h1>
 							</div>
 						</div>
+						<img src={post.avatar} className="imgpb-header"></img>
 						<Rated number={post.rated} />
 						<Link to={"/guider/" + post.guider_id}>
-							<button className="contactMe">About me {post.guider_id}</button>
+							<button className="contactMe">Contract Me</button>
 						</Link>
-
 					</div>
 				))}
+			</div>
+			</div>
 			</div>
 		</div>
 		);
@@ -363,7 +398,7 @@ class Home extends Component {
 								<label>
 									<input
 										type="text"
-										placeholder="Welcome to my website"
+										placeholder="Where do you want to go?"
 										name="search"
 										autoComplete="off"
 										className="search-4ul6i"

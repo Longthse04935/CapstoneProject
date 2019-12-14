@@ -36,20 +36,24 @@ class LoggedGuider extends Component {
                 }
             });
         }
-        let user = JSON.parse(window.sessionStorage.getItem("user"));
-        if (user) {
-            const responseTraveller = await fetch(
-                Config.api_url + "Guider/getGuider/" + user.id,
-                {
-                    method: "GET",
-                    mode: "cors",
-                    credentials: "include"
-                }
-            );
-
-            const dataTraveller = await responseTraveller.json();
-            this.setState({ avatar: dataTraveller.avatar });
-        }
+        // let user = JSON.parse(window.sessionStorage.getItem("user"));
+     
+            try{
+                const responseTraveller = await fetch(
+                    Config.api_url + "Guider/getGuider/" + this.props.user.id,
+                    {
+                        method: "GET",
+                        mode: "cors",
+                        credentials: "include"
+                    }
+                );
+    
+                const dataTraveller = await responseTraveller.json();
+                this.setState({ avatar: dataTraveller.avatar });
+            }catch(err){
+                console.log(err)
+            }
+     
     }
 
     disableLoggedChoice = () => {
@@ -72,7 +76,7 @@ class LoggedGuider extends Component {
                         <label>
                             <input
                                 type="text"
-                                placeholder="Welcome to my website"
+                                placeholder="Where do you want to go?"
                                 name="search"
                                 autoComplete="off"
                             />
@@ -190,4 +194,9 @@ class LoggedGuider extends Component {
     }
 }
 
-export default connect()(LoggedGuider);
+function mapStateToProps(state) {
+	const user = state.user;
+      return {user};
+}
+
+export default connect(mapStateToProps)(LoggedGuider);

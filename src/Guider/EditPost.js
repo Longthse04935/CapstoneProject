@@ -598,7 +598,6 @@ class EditPost extends Component {
                                             accept="image/png, image/jpeg. image/jpg"
                                             onChange={this.showImage}
                                             multiple
-                                            required
                                         />
                                         <Image bases={this.state.images} deleteImg={this.deleteImg} />
                                     </div>

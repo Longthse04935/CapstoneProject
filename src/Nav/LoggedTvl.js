@@ -95,7 +95,7 @@ class LoggedTvl extends Component {
               <label>
                 <input
                   type="text"
-                  placeholder="Welcome to my website"
+                  placeholder="Where do you want to go?"
                   name="search"
                   autoComplete="off"
                 />

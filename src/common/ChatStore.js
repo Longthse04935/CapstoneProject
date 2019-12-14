@@ -35,7 +35,7 @@ class ChatList extends React.Component {
                               </li>
                         ))}
                   </ul>
-                  <div className="bottom_wrapper clearfix" style={{ maxWidth:"700px"}}>
+                  <div className="bottom_wrapper clearfix" >
                         <form onSubmit={e => {
                               e.preventDefault();
                               if (!input.value.trim()) {
@@ -43,9 +43,12 @@ class ChatList extends React.Component {
                               }
                               //console.log("send 2??");
                               let chatMessage = {
-                                    user: user,
+                                    sender: user,
                                     content: input.value,
-                                    receiver: receiver,
+                                    guider: "",
+                                    traveler: "",
+                                    type: "CHAT",
+                                    isSeen: false,
                                     dateReceived: Date.now()
                               };
                               this.props.dispatch(send(chatMessage));

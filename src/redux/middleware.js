@@ -1,9 +1,6 @@
 import * as actions from './webSocket';
 import SockJS from 'sockjs-client';
 import Stomp from 'stompjs';
-import Lo from 'lodash';
-import { updateGame, updateTimer, updateGamePlayer } from './chat';
-import { statement } from '@babel/template';
 
 const socketMiddleware = () => {
       let socket = null;
@@ -53,7 +50,7 @@ const socketMiddleware = () => {
                         socket = null;
                         break;
                   case 'SEND':
-                        
+                  
                         socket.send("/app/chat.sendMessage", {}, JSON.stringify(action.message));
                         // action.message.id = "0";
                         // store.dispatch(actions.save(action.message));

@@ -1,5 +1,6 @@
 import Config from '../Config';
-import {wsConnect} from './webSocket';
+import {wsConnect, wsDisconnect} from './webSocket';
+
 
 export const logIn = json => ({ type: 'LOGIN', data: json });
 export const exit = () => ({ type: 'LOGOUT' });
@@ -26,6 +27,7 @@ export const signIn = login => dispatch => fetch(`${Config.api_url}account/login
       })
       .then((json) => {
             dispatch({ type: 'LOGIN', data: json });
+            // dispatch(wsConnect(Config.api_url+"ws"));
       }).catch(err => {
             dispatch({type: 'ERROR', err: 'User name or password is wrong'});
       });
@@ -37,12 +39,15 @@ export const logOut = () => dispatch => fetch(`${Config.api_url}account/logout`,
 })
       .then(res => res.json(), error => {
             console.log('An error occurred.', error);
-            //throw new Error(error);
+            throw new Error(error);
       })
       .then(() => {
+            
+            dispatch(wsDisconnect(Config.api_url+"ws"));
             dispatch({ type: 'LOGOUT' });
+      }).catch(err => {
+            dispatch({type: 'ERROR', err: err});
       });
-
 
 
 
@@ -83,16 +88,16 @@ export const catchError = (state = { ...intialError }, action) => {
 export const gameReducer = (state = { ...gameInitialState }, action) => {
       switch (action.type) {
             case 'LOGIN':
-                  console.log(action.data);
+                  
                   return {
                         userName: action.data.userName,
                         role: action.data.role,
                         id: action.data.id,
                         logedIn: true,
                         avatar: ""
-
                   };
             case 'LOGOUT':
+                        console.log("byebye");
                   return gameInitialState ;
             
             default:

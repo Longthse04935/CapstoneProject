@@ -206,7 +206,7 @@ class LoggedTvl extends Component {
                         //   id: 0
                         // };
                         // this.props.reload.call(this, user);window.location.href = "/";
-                        this.props.dispatch(wsDisconnect("http://localhost:8080/ws"));
+                        //this.props.dispatch(wsDisconnect(Config.api_url+"ws"));
                         this.props.dispatch(exit());
                         window.location.href = "/";
                         

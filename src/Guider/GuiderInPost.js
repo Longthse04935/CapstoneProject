@@ -87,7 +87,7 @@ class GuiderInPost extends React.Component {
             }
         }
 
-        let checkPath = <button className="BtnContact" onClick={this.goToBook}>Come and joint me</button>;
+        let checkPath = <button className="BtnContact" onClick={this.goToBook}>Come and join me</button>;
             // <Link to={"/chatbox/" + this.props.guiderId + "/" + this.props.postId}></Link>
 
         return (

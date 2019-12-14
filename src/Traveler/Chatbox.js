@@ -33,7 +33,7 @@ class Chatbox extends Component {
 			//plan in tour
 			plan: [],
 			post: {
-				total_hour: 1
+				total_hour: 1,
 			},
 			//time can book tour
 			timeAvailable: [],
@@ -478,7 +478,7 @@ class Chatbox extends Component {
 					</div>
 
 					{/* End guider infor */}
-
+					<PlanInPost postId={this.props.match.params.post_id} />
 					{/* End plan of tour */}
 					<ChatList name={this.props.user.userName} messages={this.props.messages}
 						receiver={this.state.guider.name} />

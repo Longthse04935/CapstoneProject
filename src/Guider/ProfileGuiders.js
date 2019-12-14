@@ -1,8 +1,24 @@
 import React, { Component } from 'react';
 import "font-awesome/css/font-awesome.min.css";
 import $ from 'jquery';
-
+import GuiderInPost from './GuiderInPost';
+import Config from '../Config';
 class ProfileGuiders extends Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            guider_id:0,
+            guider:{},
+            autheticate: {
+                method: "GET",
+                mode: "cors",
+                credentials: "include",
+                headers: {
+                  Accept: "application/json"
+                }
+              }
+        }
+    }
     componentDidMount(){
         //add css with jquery
         $("head").append('<link href="/css/profile.css" rel="stylesheet"/>');
@@ -44,11 +60,33 @@ class ProfileGuiders extends Component {
                 $('#loadMore').show();
             }
         });
-    
+        //get guider id
+        let guider_id = this.props.match.params.guider_id; 
+        this.loadDataGuider(guider_id);
+        this.setState({guider_id});
     }
 
+    loadDataGuider = async(guider_id)=>{
+        let {autheticate} = this.state;
+        try {
+            const response = await fetch(
+              Config.api_url + "Guider/" + guider_id,
+              autheticate
+            );
+            if (!response.ok) {
+              throw Error(response.status + ": " + response.statusText);
+            }
+      
+            const guider = await response.json();
+            console.log(guider);
+            this.setState({ guider });
+        }catch(err){
+            console.log(err)
+        }
+    }
 
     render() {
+        let {guider_id} = this.state;
         return (
             <div>
                 <div>
@@ -58,59 +96,12 @@ class ProfileGuiders extends Component {
                     {/*  Content  */}
                     <div className="content">
                     <div className="content-left">
-                        <div className="profile-box">
-                        <div className="pb-header header-stick">
-                            <div className="header-pb">
-                            <h1 className="TitlePb TileStickyPb">Lucia</h1>
-                            <h2 className="TitlePb TileStickyPb">The Life Lover</h2>
-                            <div className="Rating">
-                                <i className="fa fa-star" />
-                                <i className="fa fa-star" />
-                                <i className="fa fa-star" />
-                                <i className="fa fa-star" />
-                                <i className="fa fa-star" />
-                                250 reviews
-                            </div>
-                            </div>
-                            <div>
-                            <img
-                                className="pf-avatar"
-                                src="https://withlocals-com-res.cloudinary.com/image/upload/w_80,h_80,c_thumb,q_auto,dpr_1.0,f_auto/956bda712df856f552fa7bfebbbcce8f"
-                            />
-                            </div>
-                        </div>
-                        <p className="ListItem">
-                            <span className="ListItemIcon">
-                          <i className="fa fa-map-marker" aria-hidden="true"></i>
-                            </span>
-                            <span className="ListItemText">I live in</span>
-                        </p>
-                        <p className="ListItem">
-                            <span className="ListItemIcon">
-                            <i className="fa fa-globe" />
-                            </span>
-                            <span className="ListItemText">I speak</span>
-                        </p>
-                        <p className="ListItem">
-                            <span className="ListItemIcon">
-                            <i className="fa fa-heart" />
-                            </span>
-                            <span className="ListItemText">My passions are</span>
-                        </p>
-                        <p className="ListItem">
-                            <span className="ListItemIcon">
-                            <i className="fa fa-shield" aria-hidden="true"></i>
-                            </span>
-                            <span className="ListItemText">Verified</span>
-                        </p>
-                        <p className="ListItem">
-                            <span className="ListItemIcon">
-                            <i className="fa fa-clock-o" aria-hidden="true"></i>
-                            </span>
-                            <span className="ListItemText">Response time</span>
-                        </p>
-                        <button className="BtnContact">Contact me</button>
-                        </div>
+                    {guider_id ? (
+                        <GuiderInPost
+                            guiderId={guider_id}
+                            postId={this.props.match.params.post_id}
+                        />
+                        ) : null}
                     </div>
                     <div className="content-right">
                         {/* intro content */}

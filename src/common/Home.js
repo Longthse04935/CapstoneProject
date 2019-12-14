@@ -227,7 +227,12 @@ class Home extends Component {
 			console.log(err);
 		}
 	}
-
+	 notFound = () =>{
+		 return <div className="searchNotFound">
+			 <h2 style={{fontWeight:'600'}}>No results</h2>
+			 <p>Your search did not return any results.</p>
+		 </div>
+	 }
 	render() {
 		let input = null;
 		let { currentIndex, slideShow,inputSearch,searchGuider,searchPost } = this.state;
@@ -293,7 +298,10 @@ class Home extends Component {
 				</div>
 				
 				<ul className="ulSearchLocation">
-					{this.state.searchPost.map((post, index) => (
+					{
+						location === 0 ? this.notFound()
+						:
+						this.state.searchPost.map((post, index) => (
 						<Link to={"/post/" + post.post_id}>
 						<li key={index}>
 							<div className="sheet">
@@ -304,7 +312,7 @@ class Home extends Component {
 								{/* <span className="enjoy">
 								Enjoy <span className="withName">{post.title}</span>
 								</span> */}
-								<h3>
+								<h3 className="h3PostResult">
 									<span>
 									{post.title}
 									</span>
@@ -348,7 +356,8 @@ class Home extends Component {
 							</div>
 						</li>
 						</Link>
-					))}
+					))
+					}
 				</ul>
 			</div>
 		</div>
@@ -364,7 +373,9 @@ class Home extends Component {
 			<div className="topGuider" id="SearchTopGuider">
 			<div className="topGuiderByRate">
 			<div className="content-left" id="searchGuider">
-				{this.state.searchGuider.map((post, index) => (
+				{guiderlength === 0 ? this.notFound()
+				:
+				this.state.searchGuider.map((post, index) => (
 					<div className="profile-box" key={index}>
 						<div className="pb-header header-stick">
 							<div className="header-pb">
@@ -379,7 +390,8 @@ class Home extends Component {
 							<button className="contactMe">Contract Me</button>
 						</Link>
 					</div>
-				))}
+				))
+				}
 			</div>
 			</div>
 			</div>
@@ -419,25 +431,6 @@ class Home extends Component {
 													this.state.filter = "location";
 												}}>Location</button>
 											</div>
-										</div>
-										<div className="popularDestination">
-											<h3 id="popularLabel">Popular Destinations</h3>
-											<ul>
-												{this.state.location.map((city, index) => (
-													<li key={index}>
-														<i
-															className="fa fa-map-marker"
-															aria-hidden="true"
-														></i>
-														<a onClick={(eve) => {
-															eve.preventDefault();
-
-															this.searchLocation(city.city);
-														}}>{city.city}</a>
-													</li>
-												))}
-
-											</ul>
 										</div>
 									</div>
 								</div>

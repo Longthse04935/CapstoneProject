@@ -146,7 +146,7 @@ class Navbar extends Component {
             }
             const user = await response.json();
             $('.signUpForm').hide();
-            this.statusProfile('We come to my website');
+            this.statusProfile('Welcome come to our website');
             // this.props.reload.call(this, await user);
         } catch (err) {
             console.log(err);

@@ -104,7 +104,7 @@ class App extends Component {
 				<Switch>
 
 					<Route path='/' component={Home} exact />
-					<Route path='/guider/:guider_id' component={GuiderAllPost} exact />
+					<Route path='/guider/:guider_id' component={ProfileGuiders} exact />
 					<Route path='/post/:post_id' component={PostDetail} exact />
 					<Route exact path='/chatbox/:guiderId/:post_id/:message' component={Chatbox} />
 					<Route exact path='/chatbox/:guiderId/:post_id/' component={Chatbox} />
@@ -125,7 +125,7 @@ class App extends Component {
 					<Route exact path={"/edit"}><ManagePost guiderId={this.props.user.id} /></Route>
 					<Route path={"/update/:guider/:post"} component={EditPost} />
 					<Route path='/reviewtvl/:id' component={ReviewTraveler} />
-					<Route path='/profileguider' component={ProfileGuiders} />
+					{/* <Route path='/profileguider' component={ProfileGuiders} /> */}
 					<Route path='*' component={Page404} />
 
 

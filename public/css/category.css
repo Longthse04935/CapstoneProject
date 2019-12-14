@@ -127,7 +127,7 @@
 
 .Search-2ul6i .Search-3ul6i .fillter{
     width: 396px;
-    height: 280px;
+    height: 100px;
     position: absolute;
     top: 53px;
     box-sizing: border-box;
@@ -135,7 +135,7 @@
     left: 1px;
     background-color: #ffffff;
     display: none;
-    border-radius: 6px;
+    overflow-y: hidden;
 }
 .homeSlide img{
     width: 100%;
@@ -486,6 +486,11 @@ a:focus, a:active, button:focus{
     margin-top: 20px;
 }
 
+.ulSearchLocation .h3PostResult{
+    color: black;
+    text-decoration: none;
+}
+
 #searchResult .ulSearchLocation a{
     color:black;
     text-decoration: none;
@@ -493,4 +498,9 @@ a:focus, a:active, button:focus{
 
 #searchResult .ulSearchLocation li:hover .sheet{
     width: 410px;
+    color: #08386B !important;
+}
+
+.searchNotFound {
+    height:300px;
 }

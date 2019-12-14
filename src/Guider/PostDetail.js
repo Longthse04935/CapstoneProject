@@ -13,7 +13,7 @@ class PostDetail extends React.Component {
 		this.state = {
 			posts:[],
 			currentPage: 1,
-			todosPerPage: 4,
+			todosPerPage: 4,		
 			postInfo: {
 				picture_link: []
 			},

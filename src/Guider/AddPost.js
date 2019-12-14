@@ -367,7 +367,7 @@ class AddPost extends Component {
         let serviceInput = this.state.services.map((service, index) =>
             <div className="dropdownCoverSelect" key={index}>
                 <input className="dropdown-select service" type="text" name="service" onChange={(eve) => { this.state.services[index] = eve.target.value; }} />
-                <button type="button" className="btn btn-danger btn-add-service" onClick={this.removeService} id={index}>Delete</button>
+                <button type="button" className="btn-add-service" onClick={this.removeService} id={index}><i class="fa fa-trash-o" aria-hidden="true"></i></button>
             </div>
         );
 
@@ -376,7 +376,7 @@ class AddPost extends Component {
                 <div className="coverContent" key={index}>
                     <div className="brief">Brief<input type="text" name="brief" onChange={(eve) => { act.brief = eve.target.value;}} /></div>
                     <div className="detail">Detail<textarea rows={4} cols={50} type="textarea" name="detail" onChange={(eve) => { act.detail = eve.target.value; }} /></div>
-                    <button type="button" className="btn btn-danger" onClick={this.removeActivity} id={index}>Delete</button>
+                    <button type="button" className="btn-add-service" onClick={this.removeActivity} id={index}><i class="fa fa-trash-o" aria-hidden="true"></i></button>
                 </div>
             </div>
         );
@@ -384,7 +384,7 @@ class AddPost extends Component {
         let reasonInput = this.state.reasons.map((reason, index) =>
             <div className="dropdownCoverSelect"  key={index}>
                 <input className="dropdown-select reason" type="text" name="reason" onChange={(eve) => { this.state.reasons[index] = eve.target.value;}} />
-                <button type="button" className="btn btn-danger btn-add-service" onClick={this.removeReason} id={index}>Delete</button>
+                <button type="button" className="btn-add-service" onClick={this.removeReason} id={index}><i class="fa fa-trash-o" aria-hidden="true"></i></button>
             </div>
         );
 
@@ -394,14 +394,13 @@ class AddPost extends Component {
                 <div className="container">
                     <div className="row m-y-2">
                         {/* edit form column */}
-                        <div className="col-lg-4 text-lg-center">
+                        <div className="col-lg-12 text-lg-center">
                             <h2>Create Post</h2>
                         </div>
-                        <div className="col-lg-8"></div>
-                        <div className="col-lg-7 push-lg-4 personal-info">
+                        <div className="col-lg-12 push-lg-4 personal-info">
                             <form role="form" onSubmit={this.formHandler}>
                                 <div className="form-group row">
-                                    <label className="col-lg-3 col-form-label form-control-label">Location</label>
+                                    <label className="col-lg-4 col-form-label form-control-label">Location</label>
                                     <div className="col-lg-8">
                                         <select className="custom-select" id="inputGroupSelect01">
                                             {locationOption}
@@ -409,7 +408,7 @@ class AddPost extends Component {
                                     </div>
                                 </div>
                                 <div className="form-group row">
-                                    <label className="col-lg-3 col-form-label form-control-label">Category</label>
+                                    <label className="col-lg-4 col-form-label form-control-label">Category</label>
                                     <div className="col-lg-8">
                                         <select className="custom-select" id="inputGroupSelect02">
                                             {categoryOption}
@@ -417,25 +416,25 @@ class AddPost extends Component {
                                     </div>
                                 </div>
                                 <div className="form-group row">
-                                    <label className="col-lg-3 col-form-label form-control-label">Price</label>
+                                    <label className="col-lg-4 col-form-label form-control-label">Price</label>
                                     <div className="col-lg-8">
                                         <input onChange={this.inputOnChange} className="form-control" type="text" name="price" />
                                     </div>
                                 </div>
                                 <div className="form-group row">
-                                    <label className="col-lg-3 col-form-label form-control-label">Title</label>
+                                    <label className="col-lg-4 col-form-label form-control-label">Title</label>
                                     <div className="col-lg-8">
                                         <input onChange={this.inputOnChange} className="form-control" type="text" name="title" />
                                     </div>
                                 </div>
                                 <div className="form-group row">
-                                    <label onChange={this.inputOnChange} className="col-lg-3 col-form-label form-control-label">Video</label>
+                                    <label onChange={this.inputOnChange} className="col-lg-4 col-form-label form-control-label">Video</label>
                                     <div className="col-lg-8">
                                         <input onChange={this.inputOnChange} className="form-control" type="url" name="video_link" />
                                     </div>
                                 </div>
                                 <div className="form-group row pictures">
-                                    <label className="col-lg-3 col-form-label form-control-label">Picture</label>
+                                    <label className="col-lg-4 col-form-label form-control-label">Picture</label>
                                     <div className="col-lg-7" id="picInput">
                                         <input
 
@@ -450,63 +449,63 @@ class AddPost extends Component {
                                     <Image bases={this.state.images} deleteImg={this.deleteImg}/>
                                 </div>
                                 <div className="form-group row">
-                                    <label className="col-lg-3 col-form-label form-control-label">Total hour</label>
+                                    <label className="col-lg-4 col-form-label form-control-label">Total hour</label>
                                     <div className="col-lg-8">
                                         <input onChange={this.inputOnChange} name="total_hour" className="form-control " type="text" />
                                     </div>
                                 </div>
                                 <div className="form-group row">
-                                    <label className="col-lg-3 col-form-label form-control-label">Description</label>
+                                    <label className="col-lg-4 col-form-label form-control-label">Description</label>
                                     <div className="col-lg-8">
                                         <input onChange={this.inputOnChange} name="description" className="form-control" type="text" />
                                     </div>
                                 </div>
-                                <div className="form-group row">
-                                    <label className="col-lg-3 col-form-label form-control-label">Including service</label>
-                                    <div className="col-lg-7" id="includeServiceCover"></div>
-                                    <button type="button" className="btn btn-info" id="includeService" onClick={this.addService}>Add</button>
+                                <div class="form-group row">
+                                    <div className="col-lg-4 group_IncludeSer">
+                                        <label className="col-form-label form-control-label">Including service</label>
+                                        {/* <div className="col-lg-7" id="includeServiceCover"></div> */}
+                                        <button type="button" className="style_BtnAdd" id="includeService" onClick={this.addService}>+</button>
+                                    </div>
+                                    <div className="col-lg-8 include-service" >
+                                        {serviceInput}
+                                    </div>
                                 </div>
-
-                                <div className="include-service" >
-                                    {serviceInput}
-                                </div>
                                 <div className="form-group row">
-                                    <label className="col-lg-3 col-form-label form-control-label">Meeting point</label>
+                                    <label className="col-lg-4 col-form-label form-control-label">Meeting point</label>
                                     <div className="col-lg-8">
                                         <input onChange={this.inputOnChange} name="meeting_point" className="form-control " type="text" />
                                     </div>
                                 </div>
                                 <div className="form-group row">
-                                    <label className="col-lg-3 col-form-label form-control-label">Activities</label>
-
-                                    <div className="col-lg-7"></div>
-
-                                    <button type="button" className="btn btn-info" id="activitiesAdd" onClick={this.addActivity}>Add</button>
-                                </div>
-
-                                <div className="">
-                                    {actInput}
-                                </div>
-                                <div className="form-group row">
-                                    <label className="col-lg-3 col-form-label form-control-label">Why to pick you   </label>
-                                    <div className="col-lg-7"></div>
-                                    <button type="button" className="btn btn-info" id="reasonAdd" onClick={this.addReason}>Add</button>
-                                </div>
-
-                                <div className="">
-                                    {reasonInput}
-                                </div>
-                                <div className="form-group row">
-                                    <label className="col-lg-3 col-form-label form-control-label" />
+                                    <div className="col-lg-4 group_IncludeSer">
+                                        <label className="col-form-label form-control-label">Activities</label>
+                                        <button type="button" className="style_BtnAdd" id="activitiesAdd" onClick={this.addActivity}>+</button>
+                                    </div>
                                     <div className="col-lg-8">
+                                        {actInput}
+                                    </div>
+                                </div>
+
+                                
+                                <div className="form-group row">
+                                    <div className="col-lg-4 group_IncludeSer">
+                                        <label className="col-form-label form-control-label">Why to pick you   </label>
+                                        <button type="button" className="style_BtnAdd" id="reasonAdd" onClick={this.addReason}>+</button>
+                                    </div>
+                                    <div className="col-lg-8">
+                                        {reasonInput}
+                                    </div>
+                                </div>
+                                <div className="form-group row">
+                                    <div className="submit_btn">
                                         <input
                                             type="reset"
-                                            className="btn btn-primary"
+                                            className="resetBtn btnSb"
                                             defaultValue="Reset Form"
                                         />
                                         <input
                                             type="submit"
-                                            className="btn btn-primary"
+                                            className="submitBtn btnSb"
                                             defaultValue="Save Changes"
                                         />
                                     </div>

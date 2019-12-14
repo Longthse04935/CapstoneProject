@@ -512,7 +512,6 @@ class Navbar extends Component {
                 {/* Menubar */}
                 <nav className="navbar" id="navbar">
                     <div className="menubar">
-
                         <div className="containerMain">
                             <div className="navLeft">
                                 <div className="logoContainer">

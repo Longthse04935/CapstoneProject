@@ -146,7 +146,7 @@ class Navbar extends Component {
             }
             const user = await response.json();
             $('.signUpForm').hide();
-            this.statusProfile('We come to my website');
+            this.statusProfile('Welcome come to our website');
             // this.props.reload.call(this, await user);
         } catch (err) {
             console.log(err);
@@ -204,7 +204,6 @@ class Navbar extends Component {
         const getAlert = () => (
             <SweetAlert
                 success
-                title="Woot!"
                 onConfirm={() => this.hideAlert()}
             >
                 {message}
@@ -493,7 +492,7 @@ class Navbar extends Component {
                                 </div>
                             </div>
                             <div className="forgotPass">
-                                <a href="javascrip:void(0)">I forgot my password</a>
+                                <a href="/forgotpassword">I forgot my password</a>
                             </div>
                             <div className="Submit-2es0L">
                                 <button type="submit" className="Button-2iSbC SubmitButton-3lXjw">
@@ -513,7 +512,6 @@ class Navbar extends Component {
                 {/* Menubar */}
                 <nav className="navbar" id="navbar">
                     <div className="menubar">
-
                         <div className="containerMain">
                             <div className="navLeft">
                                 <div className="logoContainer">
@@ -526,7 +524,7 @@ class Navbar extends Component {
                                     <label>
                                         <input
                                             type="text"
-                                            placeholder="Welcome to my website"
+                                            placeholder="Where do you want to go?"
                                             name="search"
                                             autoComplete="off"
                                         />

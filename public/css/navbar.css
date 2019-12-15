@@ -210,13 +210,14 @@ input[name="search"] {
 .navbarRightContent .logged .avatarLogged .dropContent{
   position: absolute;
   background-color: #f9f9f9;
-  min-width: 200px;
+  min-width: 240px;
   right: 20px;
   min-height: 250px;
   overflow-y: scroll;
   box-shadow: 0 2px 64px 0 hsla(0,0%,61.2%,.5);
   border-radius: 10px 0 0 10px;
-  
+  display: block;
+  max-height: 400px;
 }
 .navbarRightContent .avatarLogged img{
   width: 50px;
@@ -232,12 +233,21 @@ input[name="search"] {
 }
 
 .avatarLogged .dropContent li{
-  width: 90%;
-  border-bottom: 1px solid #9a9696;
-  height: 50px;
-  line-height: 50px;
+  width: 100%;
+  height: 70px;
+  line-height: 70px;
   position: relative;
   text-align: left;
+  display: block;
+  padding: 0 15px;
+}
+
+.avatarLogged .dropContent li:last-child{
+  border: 0;
+}
+
+.avatarLogged .dropContent .navUser li:last-child{
+  border-bottom: 1px solid #9a9696;
 }
 
 .navbarRightContent .logged > li:hover > a{
@@ -246,10 +256,11 @@ input[name="search"] {
 
 .avatarLogged .dropContent li i{
   position: absolute;
-  top: 8px;
-  right:4px;
+  top: 50%;
+  right: 15px;
+  transform: translate(0, -50%);
   font-size: 25px;
-  color:#e71755;
+  color: #e71755;
 }
 
 .avatarLogged .dropContent li:hover a{

@@ -68,6 +68,8 @@ padding-left: 10px;
 .infoTourBook .intro_tour .payImg{
     width: 100%;
     border-radius: 10px 10px 0 0;
+    height: 320px;
+    object-fit: cover;
 }
 
 .infoTourBook .intro_tour h2{

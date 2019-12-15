@@ -184,8 +184,19 @@
     font-size: 50px;
     border-bottom: 1px solid #eaeaea;
     padding-bottom: 30px;
+    max-width: 95%;
+    position: relative;
+}
+.content-right .intro  #favorite {
+  color:#e71575;
 }
 
+.content-right .intro .fa-heart{
+  position: absolute;
+  top:0;
+  right:-50px;
+  cursor: pointer;
+}
 .content-right .intro p{
     font-size: 20px;
     letter-spacing: 1.5px;

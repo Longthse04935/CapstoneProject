@@ -236,7 +236,7 @@ class Pay extends Component {
       );
     });
     let {postInfo} = this.state;
-    
+    console.log("postInfo",postInfo);
     let tourDetail = JSON.parse(sessionStorage.getItem("tourDetail"));
   
     // let user = JSON.parse(sessionStorage.getItem("user"));
@@ -247,7 +247,7 @@ class Pay extends Component {
     //   sessionStorage.setItem("messagePay", "");
     // }
     let begin_date = tourDetail.begin_date.split(" ");
-    let end_date = tourDetail.end_date.split(" ");
+    let end_date = tourDetail.finish_date.split(" ");
     let {data,errors} = this.state;
     
     return (
@@ -452,7 +452,7 @@ Nothing in this Agreement shall be construed as making either party the partner,
           {/* infoTourBook */}
           <div className="infoTourBook">
             <div className="intro_tour">
-              <img className="payImg" alt="natural" src={`${Config.api_url}images/${postInfo.picture_link}`} />
+              <img className="payImg" alt="natural" src={`${postInfo.picture_link}`} />
               <h2 className="titleTourPay">{postInfo.title}</h2>
               <div className="tool-tipPost">
                   {/* Post */}
@@ -506,22 +506,24 @@ Nothing in this Agreement shall be construed as making either party the partner,
                 <i className="fa fa-calendar-o celander" aria-hidden="true">
                   <span>Begin date: {begin_date[0]}</span>
                 </i>
+                <br/>
                 <i className="fa fa-clock-o" aria-hidden="true">
                   <span>Begin time: {begin_date[1]}</span>
                 </i>
-                <p></p>
+                <br/>
+                
                 <i className="fa fa-calendar-o celander" aria-hidden="true">
                   <span>End date: {end_date[0]}</span>
                 </i>
-                <p></p>
+                <br/>
                 <i className="fa fa-clock-o" aria-hidden="true">
                   <span>End time: {end_date[1]}</span>
                 </i>
-                <p></p>
+                <br/>
                 <i className="fa fa-clock-o" aria-hidden="true">
                   <span>Tour duration: {postInfo.total_hour} hour</span>
                 </i>
-                <p></p>
+                <br/>
                 <i className="fa fa-user" aria-hidden="true" style={{position:'relative'}}>
                   <span >
                     Guider: <span className="guiderNamePay">{tourDetail.guider_name}</span>
@@ -535,7 +537,7 @@ Nothing in this Agreement shall be construed as making either party the partner,
                     </div>
                   </div>
                 </i>
-                <p></p>
+                <br/>
                 <i className="fa fa-user" aria-hidden="true">
                   <span >
                     Amount people:

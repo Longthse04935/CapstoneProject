@@ -66,9 +66,13 @@ class ChatList extends React.Component {
             let repassword = null;
             let newpassword = null;
             return (
-                  <div className="col-lg-7 push-lg-4 personal-info">
+                  <div className="col-lg-7 push-lg-4 personal-info" style={{  
+                        width: '70%',
+                        margin: '0 auto',
+                        paddingTop: '1%'
+                    }}>
                         {this.state.alert}
-                        <h2>Change Password</h2>
+                        <h2 style={{paddingLeft:'10%'}}>Change Password</h2>
                         <form onSubmit={async (e) => {
                               e.preventDefault();
                               if (!password.value.trim()) {

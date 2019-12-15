@@ -3,11 +3,14 @@
 }
 
 .text-lg-center{
-    text-align: left!important;
+    margin-bottom: 30px;
 }
 
 .text-lg-center h2 {
     margin-bottom: 15px;
+    text-align: center;
+    font-weight: 600;
+    text-transform: uppercase;
 }
 
 .btn-info{
@@ -16,20 +19,73 @@
 .activitiesInput {
     border: 1px solid #ced4da;
     border-radius: .25rem;
-    width: 80%;
-    height: 190px;
+    width: 100%;
+    height: 200px;
     margin: 0 auto;
     margin-bottom: 2%;
-    margin-top: 2%;
-    margin-right: 8%;
+    border-bottom-style: dashed;
 }
+
+.style_BtnAdd{
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid #17a2b8;
+    background: none;
+    font-size: 20px;
+    margin-left: 15px;
+    color: #17a2b8;
+    transition: 0.3s;
+    float: right;
+    margin-top: 2px;
+}
+
+.style_BtnAdd:hover{
+    background: #17a2b8;
+    color: #fff;
+}
+
+input{
+    padding: 0 12px;
+}
+
+#picInput input{
+    padding: 0;
+}
+
+.personal-info form{
+    width: 80%;
+    padding: 50px 6%;
+    border: 1px solid #999;
+    margin: auto;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px -2px;
+    margin-bottom: 70px;
+}
+
+.dropdownCoverSelect{
+    position: relative;
+    display: flex;
+}
+
+/* .dropdownCoverSelect::before{
+    content: '';
+    display: inline-block;
+    height: 30px;
+    width: 1px;
+    top: 0;
+    left: 15px;
+    background: #ced4da;
+} */
+
 .actEditPost{
     border-bottom: none !important;
 }
 .coverContent{
-    width: 75%;
+    width: 100%;
     margin: 0 auto;
-    margin: 20px 40px;
+    padding: 20px 30px 30px 20px;
 }
 .coverContent .brief,.detail{
     margin-bottom: 15px;
@@ -69,22 +125,36 @@
 /* dropdown select */
 .dropdownCoverSelect{
     position: relative;
-    height: 50px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
 }
 
+.dropdownCoverSelect .btn-add-service, .activitiesInput .btn-add-service{
+    position: absolute;
+    right: 0;
+    background: none;
+    border: 0;
+    font-size: 22px;
+    color: #999;
+    transition: 0.3s;
+}
+
+.activitiesInput .btn-add-service{
+    right: 15px;
+    top: 12px;
+}
+
+.dropdownCoverSelect .btn-add-service:hover, .activitiesInput .btn-add-service:hover{
+    color: red;
+}
 
 .dropdown-select{
-    width: 50%;
+    width: calc(100% - 45px);
     height: 38px;
     border: 1px solid #ced4da;
     border-radius: .25rem;
-    position: absolute;
-    left: 167px;
-}
-
-.dropdownCoverSelect .btn-add-service{
-    position: absolute;
-    right: 53px;
+    
 }
 
 .form-controllerEditPost {
@@ -101,4 +171,37 @@
     border: 1px solid #ced4da;
     border-radius: 0.25rem;
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.submit_btn{
+    margin: auto;
+    margin-top: 30px;
+}
+
+.submit_btn .btnSb{
+    display: inline-block;
+    width: 100px;
+    height: 50px;
+    background: red;
+    border: 0;
+    border-radius: 10px;
+    color: #fff;
+    margin: 0 10px;
+    transition: 0.3s;
+}
+
+.submit_btn .btnSb:hover{
+    background: none;
+    border: 1px solid red;
+    color: red;
+}
+
+.submit_btn .submitBtn{
+    background: blue;
+}
+
+.submit_btn .submitBtn:hover{
+    background: none;
+    border: 1px solid blue;
+    color: blue;
 }

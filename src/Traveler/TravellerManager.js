@@ -4,6 +4,7 @@ import Config from '../Config';
 import { Link } from 'react-router-dom';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import {connect} from 'react-redux';
+import { stat } from "fs";
 class TravellerManager extends Component {
 
 	constructor(props) {
@@ -19,7 +20,8 @@ class TravellerManager extends Component {
 			rated: 0.0,
 			alert: null,
 			cmtExist: [],
-			status: ''
+			status: '',
+			first:0
 		};
 	}
 	//check xem ng đăng nhập là ai nếu là guider thì về trang home
@@ -132,7 +134,7 @@ class TravellerManager extends Component {
 	}
 
 	async tabList(status) {
-
+		this.setState({first:1});
 		//var user = JSON.parse(sessionStorage.getItem('user'));
 		let user = this.props.user;
 		try {
@@ -179,7 +181,30 @@ class TravellerManager extends Component {
 		});
 	}
 
+	handleCancle = async (trip,status) => {
+		try {
+			const orderResponse = await fetch(
+				Config.api_url + "Order/CancelOrderAsTraveler?trip_id=" + trip,
+				{
+					method: "GET",
+					mode: "cors",
+					credentials: "include",
+					headers: {
+						'Accept': 'application/json'
+					}
+				});
+
+			if (!orderResponse.ok) {
+				throw Error(orderResponse.status + ": " + orderResponse.statusText);
+			}
+			this.tabList(status);
+		} catch (err) {
+			console.log(err);
+		}
+	}
+
 	render() {
+		let {first} = this.state;
 		let order = this.state.orders.map((order, index) => {
 			let { status } = this.state;
 			return (
@@ -192,6 +217,9 @@ class TravellerManager extends Component {
 					<td className="cell100 ">{order.children_quantity}</td>
 					<td className="cell100 ">{order.fee_paid}$</td>
 					{status === "FINISHED" ? <td className="cell100 "><button type="button" className="btn btn-secondary" onClick={() => this.showReview(order.trip_id, order.guider_id, order.post_id)}>Review</button></td> : ''}
+					{status === "ONGOING" ? <td className="cell100 "><button type="button" className="btn btn-secondary" onClick={() => this.handleCancle(order.trip_id,status)}>Cancel</button></td> : ''}
+					{status === "WAITING" ? <td className="cell100 "><button type="button" className="btn btn-secondary" onClick={() => this.handleCancle(order.trip_id,status)}>Cancel</button></td> : ''}
+				
 				</tr>
 			)
 		});
@@ -276,6 +304,9 @@ class TravellerManager extends Component {
 											<th className="cell100 column7">Child quantiy</th>
 											<th className="cell100 column8">Price</th>
 											{status === "FINISHED" ? <th className="cell100 column8">Review</th> : ''}
+											{status === "ONGOING" ? <th className="cell100 column8">Cancel</th> : ''}
+											{status === "WAITING" ? <th className="cell100 column8">Cancel</th> : ''}
+											{first === 0 ? <th className="cell100 column8">Cancel</th> : ''}
 										</tr>
 									</thead>
 									<tbody>

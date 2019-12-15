@@ -32,6 +32,8 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 import Page404 from './Page404';
 import ReviewTraveler from './Guider/ReviewTraveler';
 import Config from './Config';
+import ForgotPassword from "./common/ForgotPassword";
+
 class App extends Component {
 	constructor(props) {
 		super(props);
@@ -90,10 +92,10 @@ class App extends Component {
 		let user = this.props.user;
 		if (user.logedIn) {
 			if (user.role === 'TRAVELER') {
-				present = <LoggedTvl reload={this.reload} />;
+				present = <LoggedTvl id={this.props.user.id} reload={this.reload} />;
 			}
 			else {
-				present = <LoggedGuider reload={this.reload} />;
+				present = <LoggedGuider id={this.props.user.id} reload={this.reload} />;
 			}
 		} else {
 			present = <Navbar reload={this.reload} />;
@@ -104,7 +106,7 @@ class App extends Component {
 				<Switch>
 
 					<Route path='/' component={Home} exact />
-					<Route path='/guider/:guider_id' component={GuiderAllPost} exact />
+					<Route path='/guider/:guider_id' component={ProfileGuiders} exact />
 					<Route path='/post/:post_id' component={PostDetail} exact />
 					<Route exact path='/chatbox/:guiderId/:post_id/:message' component={Chatbox} />
 					<Route exact path='/chatbox/:guiderId/:post_id/' component={Chatbox} />
@@ -117,6 +119,7 @@ class App extends Component {
 					<Route path='/tvlManager'> <TravellerManager id={this.state.id} /> </Route>
 					<Route path='/contract' component={GuiderContract} />
 					<Route path='/chart' component={Chart} />
+					<Route path='/forgotpassword' component={ForgotPassword} />
 					<Route path='/add' ><AddPost guiderId={this.props.user.id} /></Route>
 					<Route path='/managebook' ><Books id={this.props.user.id} /></Route>
 					<Route path='/schedule' ><Schedule id={this.props.user.id} /></Route>
@@ -125,7 +128,7 @@ class App extends Component {
 					<Route exact path={"/edit"}><ManagePost guiderId={this.props.user.id} /></Route>
 					<Route path={"/update/:guider/:post"} component={EditPost} />
 					<Route path='/reviewtvl/:id' component={ReviewTraveler} />
-					<Route path='/profileguider' component={ProfileGuiders} />
+					{/* <Route path='/profileguider' component={ProfileGuiders} /> */}
 					<Route path='*' component={Page404} />
 
 

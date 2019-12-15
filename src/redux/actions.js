@@ -42,9 +42,7 @@ export const logOut = () => dispatch => fetch(`${Config.api_url}account/logout`,
             throw new Error(error);
       })
       .then(() => {
-            
-            dispatch(wsDisconnect(Config.api_url+"ws"));
-            dispatch({ type: 'LOGOUT' });
+
       }).catch(err => {
             dispatch({type: 'ERROR', err: err});
       });

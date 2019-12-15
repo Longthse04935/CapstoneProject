@@ -183,6 +183,7 @@ class Navbar extends Component {
         //     }
         //     this.props.reload.call(this, await user);
             this.props.dispatch(signIn(login));
+            this.props.dispatch(wsConnect(Config.api_url+"ws"));
             //window.location.href = "/";
             
             // this.props.reload.call(this,  this.props.user);

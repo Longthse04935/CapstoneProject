@@ -197,7 +197,7 @@ class Home extends Component {
 
 			const guiders = await responsePosts.json();
 
-			this.setState({ searchGuider: guiders, guiderPage: ++this.state.guiderPage });
+			this.setState({ searchGuider: guiders, guiderPage: this.state.guiderPage });
 		} catch (err) {
 			console.log(err);
 		}
@@ -223,7 +223,7 @@ class Home extends Component {
 
 			const posts = await responsePosts.json();
 
-			this.setState({ searchPost: posts, postPage: ++this.state.postPage });
+			this.setState({ searchPost: posts, postPage: this.state.postPage });
 		} catch (err) {
 			console.log(err);
 		}
@@ -421,7 +421,7 @@ class Home extends Component {
 								} else {
 									console.log("search other filter");
 								}
-
+								
 							}}>Search</button>
 
 						</div>

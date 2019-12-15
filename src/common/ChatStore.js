@@ -4,6 +4,28 @@ import { send } from '../redux/webSocket';
 class ChatList extends React.Component {
       constructor(props) {
             super(props);
+            this.state = {
+                  messages: props.messages,
+                  page: 0
+            }
+      }
+
+      componentDidMount() {
+            try {
+                  let guests = await fetch(`${Config.api_url}messages/${this.props.user.userName}/${this.props.receiver}/${this.state.page}/${this.state.page+10}`, {
+                        method:"GET",
+                        mode: "cors",
+                        credentials: "include",
+                        headers: {
+                              'Content-Type': 'application/json',
+                        },
+                  });
+                  let show = await guests.json();  
+                  console.log(show);
+                  //this.setState({messages: show, page: this.state.page+10});
+            } catch(err) {
+                  console.log(err);
+            }
       }
 
 
@@ -18,9 +40,9 @@ class ChatList extends React.Component {
                         <div className="title">Chat</div>
                   </div>
                   <ul className="messages" >
-                        {this.props.messages.map((msg, index) => (
+                        {this.state.messages.map((msg, index) => (
                               <li
-                                    className={`message ${msg.user === user ? "right" : "left"} appeared`} key={index}>
+                                    className={`message ${msg.sender === user ? "right" : "left"} appeared`} key={index}>
                                     <div className="avatar"></div>
                                     <div className="text_wrapper">
                                           {msg.user}
@@ -45,8 +67,8 @@ class ChatList extends React.Component {
                               let chatMessage = {
                                     sender: user,
                                     content: input.value,
-                                    guider: "",
-                                    traveler: "",
+                                    guider: (this.props.user.role==='GUIDER')?user:receiver,
+                                    traveler: (this.props.user.role==='GUIDER')?receiver:user,
                                     type: "CHAT",
                                     isSeen: false,
                                     dateReceived: Date.now()
@@ -68,54 +90,9 @@ class ChatList extends React.Component {
             </div>);
       }
 }
-
-export default connect()(ChatList);
-{/* style={{ position: "relative", top: "500px", left: "500px" }}
-      <div className="top_menu">
-
-<div className="title">Chat</div>
-</div>
-<ul className="messages">
-{chatData.map(item => (
-      <li
-            className={`message ${
-                  item.type === "me" ? "right" : "left"
-                  } appeared`}
-            key={item.id}
-      >
-            <div className="avatar"></div>
-            <div className="text_wrapper">
-                  {author}
-                  <div className="text">{item.message}</div>
-            </div>
-            <div
-                  style={{ float: "left", clear: "both" }}
-                  ref={el => {
-                        this.messagesEnd = el;
-                  }}
-            ></div>
-      </li>
-))}
-</ul>
-<div className="bottom_wrapper clearfix">
-<form>
-      <div className="message_input_wrapper">
-            <input
-                  className="message_input"
-                  value={chatText}
-                  onChange={this.handleChange}
-                  placeholder="Type your message here..."
-            />
-      </div>
-      <div className="send_message">
-            <div className="icon"></div>
-            <button
-                  className="text"
-                  onClick={this.handleSend}
-                  type="submit"
-            >
-                  Send
-</button>
-      </div>
-</form>
-</div> */}
+function mapStateToProps(state) {
+      const user = state.user;
+      //const messages = state.messages;
+	return { user};
+}
+export default connect(mapStateToProps)(ChatList);

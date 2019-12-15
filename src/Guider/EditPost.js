@@ -317,7 +317,7 @@ class EditPost extends Component {
                 }
             );
             if (!response.ok) { throw Error(response.status + ": " + response.statusText); }
-            this.statusProfile("Thank you, your post has show up");
+            this.statusProfile("Thank you, your post has showed up");
         } catch (err) {
             console.log(err);
             this.notification("Sorry! Something went wrong, please try again later");

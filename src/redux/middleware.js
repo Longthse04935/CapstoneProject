@@ -18,7 +18,7 @@ const socketMiddleware = () => {
             // console.log(store);
             let payload = msg.body;
             store.dispatch(actions.save(JSON.parse(payload)));
-
+            store.dispatch(actions.arrange(JSON.parse(payload).sender));
       };
 
       return store => next => (action) => {

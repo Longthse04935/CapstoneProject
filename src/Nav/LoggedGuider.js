@@ -4,8 +4,8 @@ import "font-awesome/css/font-awesome.min.css";
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
 import Config from '../Config';
 import { connect } from 'react-redux';
-import { exit } from '../redux/actions';
-import {wsConnect, wsDisconnect, send} from '../redux/webSocket';
+import { logOut, exit } from '../redux/actions';
+import { wsConnect, wsDisconnect, send } from '../redux/webSocket';
 
 class LoggedGuider extends Component {
     constructor(props) {
@@ -62,92 +62,92 @@ class LoggedGuider extends Component {
                 {/* Menubar */}
 
                 <nav className="navbar">
-                <div className="menubar">
-                    <div className="logoContainer">
-                        <a href="/">
-                            <i className="fa fa-arrows" aria-hidden="true" />
-                        </a>
-                    </div>
-                    <div className="search">
-                        <label>
-                            <input
-                                type="text"
-                                placeholder="Welcome to my website"
-                                name="search"
-                                autoComplete="off"
-                            />
-                        </label>
-                        <div className="fillter">
-                            <div className="filter-Content">
-                                <div className="localsOrExperience">
-                                    <h3 className="explore">Explore TravelWlocals</h3>
-                                    <div className="button-group">
-                                        <button className="active">All</button>
-                                        <button>Locals</button>
-                                        <button>Experiences</button>
+                    <div className="menubar">
+                        <div className="logoContainer">
+                            <a href="/">
+                                <i className="fa fa-arrows" aria-hidden="true" />
+                            </a>
+                        </div>
+                        <div className="search">
+                            <label>
+                                <input
+                                    type="text"
+                                    placeholder="Welcome to my website"
+                                    name="search"
+                                    autoComplete="off"
+                                />
+                            </label>
+                            <div className="fillter">
+                                <div className="filter-Content">
+                                    <div className="localsOrExperience">
+                                        <h3 className="explore">Explore TravelWlocals</h3>
+                                        <div className="button-group">
+                                            <button className="active">All</button>
+                                            <button>Locals</button>
+                                            <button>Experiences</button>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="popularDestination">
-                                    <h3 id="popularLabel">Popular Destinations</h3>
-                                    <ul>
-                                        <li>
-                                            <i className="fa fa-map-marker" aria-hidden="true"></i>
-                                            <a>Ha Noi</a>
-                                        </li>
-                                        <li>
-                                            <i className="fa fa-map-marker" aria-hidden="true"></i>
-                                            <a>Ho Chi Minh</a>
-                                        </li>
-                                        <li>
-                                            <i className="fa fa-map-marker" aria-hidden="true"></i>
-                                            <a>Da Nang</a>
-                                        </li>
-                                        <li>
-                                            <i className="fa fa-map-marker" aria-hidden="true"></i>
-                                            <a>Bac Ninh</a>
-                                        </li>
-                                        <li>
-                                            <i className="fa fa-map-marker" aria-hidden="true"></i>
-                                            <a>Da Lat</a>
-                                        </li>
-                                        <li>
-                                            <i className="fa fa-map-marker" aria-hidden="true"></i>
-                                            <a>Hue</a>
-                                        </li>
-                                        <li>
-                                            <i className="fa fa-map-marker" aria-hidden="true"></i>
-                                            <a>Vung Tau</a>
-                                        </li>
-                                        <li>
-                                            <i className="fa fa-map-marker" aria-hidden="true"></i>
-                                            <a>Hai Phong</a>
-                                        </li>
-                                        <li>
-                                            <i className="fa fa-map-marker" aria-hidden="true"></i>
-                                            <a>Phu Quoc</a>
-                                        </li>
-                                        <li>
-                                            <i className="fa fa-map-marker" aria-hidden="true"></i>
-                                            <a>Sapa</a>
-                                        </li>
-                                        <li>
-                                            <i className="fa fa-map-marker" aria-hidden="true"></i>
-                                            <a>Ca Mau</a>
-                                        </li>
-                                    </ul>
+                                    <div className="popularDestination">
+                                        <h3 id="popularLabel">Popular Destinations</h3>
+                                        <ul>
+                                            <li>
+                                                <i className="fa fa-map-marker" aria-hidden="true"></i>
+                                                <a>Ha Noi</a>
+                                            </li>
+                                            <li>
+                                                <i className="fa fa-map-marker" aria-hidden="true"></i>
+                                                <a>Ho Chi Minh</a>
+                                            </li>
+                                            <li>
+                                                <i className="fa fa-map-marker" aria-hidden="true"></i>
+                                                <a>Da Nang</a>
+                                            </li>
+                                            <li>
+                                                <i className="fa fa-map-marker" aria-hidden="true"></i>
+                                                <a>Bac Ninh</a>
+                                            </li>
+                                            <li>
+                                                <i className="fa fa-map-marker" aria-hidden="true"></i>
+                                                <a>Da Lat</a>
+                                            </li>
+                                            <li>
+                                                <i className="fa fa-map-marker" aria-hidden="true"></i>
+                                                <a>Hue</a>
+                                            </li>
+                                            <li>
+                                                <i className="fa fa-map-marker" aria-hidden="true"></i>
+                                                <a>Vung Tau</a>
+                                            </li>
+                                            <li>
+                                                <i className="fa fa-map-marker" aria-hidden="true"></i>
+                                                <a>Hai Phong</a>
+                                            </li>
+                                            <li>
+                                                <i className="fa fa-map-marker" aria-hidden="true"></i>
+                                                <a>Phu Quoc</a>
+                                            </li>
+                                            <li>
+                                                <i className="fa fa-map-marker" aria-hidden="true"></i>
+                                                <a>Sapa</a>
+                                            </li>
+                                            <li>
+                                                <i className="fa fa-map-marker" aria-hidden="true"></i>
+                                                <a>Ca Mau</a>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="navbarRightContent">
-                        <ul className="logged" >
-                            <li>
-                                <Link to="/chat">Message</Link>
-                            </li>
-                            <li>
-                                <Link to={"/managebook"}>Bookings</Link>
-                            </li>
-                            <li className="avatarLogged" onClick={this.disableLoggedChoice}>
+                        <div className="navbarRightContent">
+                            <ul className="logged" >
+                                <li>
+                                    <Link to="/chat">Message</Link>
+                                </li>
+                                <li>
+                                    <Link to={"/managebook"}>Bookings</Link>
+                                </li>
+                                <li className="avatarLogged" onClick={this.disableLoggedChoice}>
 
                                     <img src={`${this.state.avatar}`} />
 
@@ -170,19 +170,21 @@ class LoggedGuider extends Component {
                                             // };
                                             // this.props.reload.call(this, user);window.location.href = '/';
                                             //this.props.dispatch(wsDisconnect(Config.api_url+"ws"));
+                                            this.props.dispatch(logOut());
+                                            this.props.dispatch(wsDisconnect(Config.api_url + "ws"));
                                             this.props.dispatch(exit());
                                             window.location.href = '/';
-                                            
+
                                         }}>Log out<i className="fa fa-sign-out" aria-hidden="true"></i></li>
 
 
-                                </ul>
+                                    </ul>
 
-                            </li>
-                        </ul>
+                                </li>
+                            </ul>
+                        </div>
+
                     </div>
-
-                </div>
                 </nav>
                 {/* End MenuBar */}
             </div>

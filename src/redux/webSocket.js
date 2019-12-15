@@ -15,8 +15,6 @@ const websocketInitialState = {};
 const messageInitState = [];
 const clients = [];
 
-
-
 export const websocketReducer = (state = { ...websocketInitialState }, action) => {
       switch (action.type) {
             case 'WS_CONNECTED':
@@ -49,11 +47,11 @@ export const arrangeClients = (state = clients, action) => {
       switch (action.type) {
             case 'ARRANGE':
                   let queue = Object.assign([], state);
-                  if (queue.indexOf(action.message.user) >= 0) {
-                        queue.splice(queue.indexOf(action.message.user), 1);
-                        queue.unshift(action.message.user);
+                  if (queue.indexOf(action.user) >= 0) {
+                        queue.splice(queue.indexOf(action.user), 1);
+                        queue.unshift(action.user);
                   } else {
-                        queue.unshift(action.message.user);
+                        queue.unshift(action.user);
                   }
                   return queue;
             case 'GET':
@@ -63,3 +61,41 @@ export const arrangeClients = (state = clients, action) => {
                   return state;
       }
 }
+
+export const loadGuest = guest => dispatch => fetch(`${Config.api_url}messages/${guest}`, {
+      method: "GET",
+      mode: "cors",
+      credentials: "include",
+      headers: {
+            'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(login)
+})
+      .then(res => res.json(), error => {
+            console.log('An error occurred.', error);
+            throw new Error(error);
+      })
+      .then((json) => {
+            json.array.forEach(element => {
+                  dispatch({ type: 'ARRANGE', user: element });      
+            });
+      }).catch(err => {
+            dispatch({ type: 'ERROR', err: 'websocket error' });
+      });
+
+export const loadMsg = () => dispatch => fetch(`${Config.api_url}messages/${guest}`, {
+      method: "GET",
+      mode: "cors",
+      credentials: "include",
+})
+      .then(res => res.json(), error => {
+            console.log('An error occurred.', error);
+            throw new Error(error);
+      })
+      .then(() => {
+            json.array.forEach(element => {
+                  dispatch({ type: 'SAVE', message: element });      
+            });
+      }).catch(err => {
+            dispatch({ type: 'ERROR', err: 'websocket error' });
+      });

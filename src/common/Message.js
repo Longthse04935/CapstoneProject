@@ -12,21 +12,7 @@ class Message extends React.Component {
       }
 
       async componentDidMount() {
-            try {
-                  let guests = await fetch(`${Config.api_url}messages/${this.props.user.userName}/0/10`, {
-                        method:"POST",
-                        mode: "cors",
-                        credentials: "include",
-                        headers: {
-                              'Content-Type': 'application/json',
-
-                        },
-                  });
-                  guests = guests.json();  
-                  console.log(guests);    
-            } catch(err) {
-                  console.log(err);
-            }
+            
             
       }
 
@@ -45,7 +31,7 @@ class Message extends React.Component {
                               <div className="plan" style={{ height: "800px", width: "300px", left: "-300px" }}>
                                     <div className="planContent">
                                           <h1>Chat</h1>
-                                          <div style={{ marginBottom: "30px" }} />
+                                          <div style={{ marginBottom: "30px" }} />  
                                           {
                                                 this.props.clients.map((value, index) => (
                                                       <a key={index} onClick={this.load} >
@@ -58,7 +44,8 @@ class Message extends React.Component {
                                     </div>
                               </div>
                               <ChatList name={this.props.user.userName} receiver={this.state.sender}
-                                    messages={this.props.messages} />
+                                    messages={this.props.messages.filter(msg => msg.guider === this.props.user.userName 
+                                    || this.props.traveler === this.props.user.userName)} />
                               {/*    */}
                         </div>
                   </div>);

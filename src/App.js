@@ -70,7 +70,7 @@ class App extends Component {
 
 	}
 
-
+	
 	render() {
 		// let present;
 		// let user = JSON.parse(window.sessionStorage.getItem('user'));
@@ -141,7 +141,7 @@ function mapStateToProps(state) {
 	const messages = state.messages;
 	const clients = state.clients;
 	const user = state.user;
-	const error = state.logInError;
+	const error = state.Error;
 	return { messages, clients, user, error };
 }
 App = connect(mapStateToProps)(App);

@@ -511,7 +511,7 @@ class AddPost extends Component {
                                             accept="image/png, image/jpeg. image/jpg"
                                             onChange={this.showImage}
                                             multiple
-                                            required
+                                            // required
                                         />
 
                                     </div>

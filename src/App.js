@@ -32,6 +32,8 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 import Page404 from './Page404';
 import ReviewTraveler from './Guider/ReviewTraveler';
 import Config from './Config';
+import ForgotPassword from "./common/ForgotPassword";
+
 class App extends Component {
 	constructor(props) {
 		super(props);
@@ -117,6 +119,7 @@ class App extends Component {
 					<Route path='/tvlManager'> <TravellerManager id={this.state.id} /> </Route>
 					<Route path='/contract' component={GuiderContract} />
 					<Route path='/chart' component={Chart} />
+					<Route path='/forgotpassword' component={ForgotPassword} />
 					<Route path='/add' ><AddPost guiderId={this.props.user.id} /></Route>
 					<Route path='/managebook' ><Books id={this.props.user.id} /></Route>
 					<Route path='/schedule' ><Schedule id={this.props.user.id} /></Route>

@@ -43,17 +43,6 @@ class GuiderContract extends Component {
   
   }
 
-  componentWillMount(){
-    //check user and user role
-    var user = JSON.parse(sessionStorage.getItem('user'));
-    if(user === null){
-      sessionStorage.setItem('messagePay','You are Traveler');
-      window.location.href = '/';
-    }else if(user.role === 'TRAVELER'){
-      sessionStorage.setItem('messagePay','You are Traveler');
-      window.location.href = '/';
-    }
-  }
 
   onFileChangeHandler = (e) => {
     e.preventDefault();

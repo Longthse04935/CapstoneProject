@@ -203,7 +203,6 @@ class Navbar extends Component {
         const getAlert = () => (
             <SweetAlert
                 success
-                title="Woot!"
                 onConfirm={() => this.hideAlert()}
             >
                 {message}
@@ -492,7 +491,7 @@ class Navbar extends Component {
                                 </div>
                             </div>
                             <div className="forgotPass">
-                                <a href="javascrip:void(0)">I forgot my password</a>
+                                <a href="/forgotpassword">I forgot my password</a>
                             </div>
                             <div className="Submit-2es0L">
                                 <button type="submit" className="Button-2iSbC SubmitButton-3lXjw">

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Config from '../Config';
 import { thisExpression } from "@babel/types";
+import {connect} from 'react-redux';
 class ReviewTraveler extends Component {
     constructor(props){
         super(props);
@@ -15,18 +16,16 @@ class ReviewTraveler extends Component {
             review:''
         }
     }
+
     componentWillMount(){
-      var user = JSON.parse(sessionStorage.getItem('user'));
-              if(user === null){
-                sessionStorage.setItem('messagePay','Error user or tour inf');
-                window.location.href = '/';
-                return false;
-              }else if(user.role === 'TRAVELER'){
-                sessionStorage.setItem('messagePay','You are Traveler');
-                window.location.href = '/';
-                return false;
-              }
+      // let user = this.props.user;
+      //   if(user.role === 'TRAVELER'){
+      //       sessionStorage.setItem('messagePay','You are Traveler');
+      //       window.location.href = '/';
+      //       return false;
+      //     }
     }
+
     componentDidMount(){
       
         var param = this.props.match.params.id;
@@ -117,7 +116,7 @@ class ReviewTraveler extends Component {
 
      handleSubmit = async () => {
         let {data,param,reviews} = this.state;
-        let user = JSON.parse(window.sessionStorage.getItem('user'));
+        let user = this.props.user;
         data.traveler_id = param;
         data.guider_id = user.id;
         let response = await fetch(Config.api_url+"review/createTravelerReview",
@@ -255,5 +254,8 @@ class ReviewTraveler extends Component {
     );
   }
 }
-
-export default ReviewTraveler;
+function mapStateToProps(state) {
+	const user = state.user;
+      return {user};
+}
+export default connect(mapStateToProps)(ReviewTraveler);

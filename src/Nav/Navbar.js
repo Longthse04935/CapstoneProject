@@ -146,7 +146,7 @@ class Navbar extends Component {
             }
             const user = await response.json();
             $('.signUpForm').hide();
-            this.statusProfile('We come to my website');
+            this.statusProfile('Welcome come to our website');
             // this.props.reload.call(this, await user);
         } catch (err) {
             console.log(err);
@@ -161,27 +161,27 @@ class Navbar extends Component {
         eve.preventDefault();
         let { login, errors } = this.state;
         try {
-            const response = await fetch(Config.api_url + "account/login",
-                {
-                    method: "POST",
-                    mode: "cors",
-                    credentials: "include",
-                    headers: {
-                        'Content-Type': 'application/json',
+        //     const response = await fetch(Config.api_url + "account/login",
+        //         {
+        //             method: "POST",
+        //             mode: "cors",
+        //             credentials: "include",
+        //             headers: {
+        //                 'Content-Type': 'application/json',
 
-                    },
-                    body: JSON.stringify(login)
-                }
-            );
-            if (!response.ok) { throw Error(response.status + ": " + response.statusText); }
-            const user = await response.json();
-            // console.log(await user);
-            if(user.role !== login.role){
-                errors['role'] = 'Role is wrong';
-                this.setState({errors});
-                return false;
-            }
-            this.props.reload.call(this, await user);
+        //             },
+        //             body: JSON.stringify(login)
+        //         }
+        //     );
+        //     if (!response.ok) { throw Error(response.status + ": " + response.statusText); }
+        //     const user = await response.json();
+        //     // console.log(await user);
+        //     if(user.role !== login.role){
+        //         errors['role'] = 'Role is wrong';
+        //         this.setState({errors});
+        //         return false;
+        //     }
+        //     this.props.reload.call(this, await user);
             this.props.dispatch(signIn(login));
             //window.location.href = "/";
             
@@ -524,7 +524,7 @@ class Navbar extends Component {
                                     <label>
                                         <input
                                             type="text"
-                                            placeholder="Welcome to my website"
+                                            placeholder="Where do you want to go?"
                                             name="search"
                                             autoComplete="off"
                                         />

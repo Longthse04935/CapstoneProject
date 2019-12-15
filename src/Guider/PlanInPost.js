@@ -17,6 +17,7 @@ class PlanInPost extends React.Component {
   
   async componentDidMount() {
     try {
+      console.log("plan "+this.props.postId);
       const response = await fetch(
         Config.api_url + "plan/" + this.props.postId,
         {

@@ -50,10 +50,9 @@ class LoggedTvl extends Component {
     });
 
 
-    let user = JSON.parse(window.sessionStorage.getItem("user"));
-    if (user) {
+
       const responseTraveller = await fetch(
-        Config.api_url + "Traveler/GetTraveler?traveler_id=" + user.id,
+        Config.api_url + "Traveler/GetTraveler?traveler_id=" + this.props.user.id,
         {
           method: "GET",
           mode: "cors",
@@ -62,8 +61,8 @@ class LoggedTvl extends Component {
       );
 
       const dataTraveller = await responseTraveller.json();
+      console.log(dataTraveller);
       this.setState({ avatar: dataTraveller.avatar_link });
-    }
   }
 
   disableLoggedChoice = () => {
@@ -95,7 +94,7 @@ class LoggedTvl extends Component {
               <label>
                 <input
                   type="text"
-                  placeholder="Welcome to my website"
+                  placeholder="Where do you want to go?"
                   name="search"
                   autoComplete="off"
                 />
@@ -105,59 +104,9 @@ class LoggedTvl extends Component {
                   <div className="localsOrExperience">
                     <h3 className="explore">Explore TravelWlocals</h3>
                     <div className="button-group">
-                      <button className="active">All</button>
-                      <button>Locals</button>
-                      <button>Experiences</button>
+                      <button className="active">Guider</button>
+                      <button>Location</button>
                     </div>
-                  </div>
-                  <div className="popularDestination">
-                    <h3 id="popularLabel">Popular Destinations</h3>
-                    <ul>
-                      <li>
-                        <i className="fa fa-map-marker" aria-hidden="true"></i>
-                        <a>Ha Noi</a>
-                      </li>
-                      <li>
-                        <i className="fa fa-map-marker" aria-hidden="true"></i>
-                        <a>Ho Chi Minh</a>
-                      </li>
-                      <li>
-                        <i className="fa fa-map-marker" aria-hidden="true"></i>
-                        <a>Da Nang</a>
-                      </li>
-                      <li>
-                        <i className="fa fa-map-marker" aria-hidden="true"></i>
-                        <a>Bac Ninh</a>
-                      </li>
-                      <li>
-                        <i className="fa fa-map-marker" aria-hidden="true"></i>
-                        <a>Da Lat</a>
-                      </li>
-                      <li>
-                        <i className="fa fa-map-marker" aria-hidden="true"></i>
-                        <a>Hue</a>
-                      </li>
-                      <li>
-                        <i className="fa fa-map-marker" aria-hidden="true"></i>
-                        <a>Vung Tau</a>
-                      </li>
-                      <li>
-                        <i className="fa fa-map-marker" aria-hidden="true"></i>
-                        <a>Hai Phong</a>
-                      </li>
-                      <li>
-                        <i className="fa fa-map-marker" aria-hidden="true"></i>
-                        <a>Phu Quoc</a>
-                      </li>
-                      <li>
-                        <i className="fa fa-map-marker" aria-hidden="true"></i>
-                        <a>Sapa</a>
-                      </li>
-                      <li>
-                        <i className="fa fa-map-marker" aria-hidden="true"></i>
-                        <a>Ca Mau</a>
-                      </li>
-                    </ul>
                   </div>
                 </div>
               </div>
@@ -206,7 +155,7 @@ class LoggedTvl extends Component {
                         //   id: 0
                         // };
                         // this.props.reload.call(this, user);window.location.href = "/";
-                        this.props.dispatch(wsDisconnect("http://localhost:8080/ws"));
+                        //this.props.dispatch(wsDisconnect(Config.api_url+"ws"));
                         this.props.dispatch(exit());
                         window.location.href = "/";
                         
@@ -226,5 +175,8 @@ class LoggedTvl extends Component {
     );
   }
 }
-
-export default connect()(LoggedTvl);
+function mapStateToProps(state) {
+	const user = state.user;
+      return {user};
+}
+export default connect(mapStateToProps)(LoggedTvl);

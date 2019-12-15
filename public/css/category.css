@@ -127,7 +127,7 @@
 
 .Search-2ul6i .Search-3ul6i .fillter{
     width: 396px;
-    height: 280px;
+    height: 100px;
     position: absolute;
     top: 53px;
     box-sizing: border-box;
@@ -135,7 +135,7 @@
     left: 1px;
     background-color: #ffffff;
     display: none;
-    border-radius: 6px;
+    overflow-y: hidden;
 }
 .homeSlide img{
     width: 100%;
@@ -430,4 +430,78 @@ a:focus, a:active, button:focus{
 }
 ::-webkit-scrollbar-thumb:hover {
     background: #ccc; 
+}
+#SearchTopGuider{
+    margin: 0 auto;
+    width: 70%;
+}
+.guiderResult .headerGuiderResult {
+    margin: 0 auto;
+    width: 68%;
+}
+.guiderResult .h2SsearchResult{
+    margin: 40px 0 15px;
+    font-weight: 600;
+    font-size: 42px;
+    line-height: 1.2272727273;
+}
+
+.guiderResult .spanSearhResult{
+    font-weight: 600;
+    font-size: 30px;
+}
+
+#SearchTopGuider #searchGuider .profile-box:hover img{
+    width: 370px;
+    height: 470px;
+    background: #fff;
+}
+
+.topGuiderByRate #searchGuider{
+    overflow-y: none;
+    overflow-x: none;
+    white-space: normal;
+    border: none;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 35px 0 65px 0;
+}
+
+.topGuiderByRate .searchGuiderName{
+    color: black;
+    z-index: 6;
+    position: absolute;
+    top: -35px;
+    color:#fff;
+}
+
+#searchResult .ulSearchLocation {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    /* justify-content: space-between; */
+    width: 68%;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+.ulSearchLocation .h3PostResult{
+    color: black;
+    text-decoration: none;
+}
+
+#searchResult .ulSearchLocation a{
+    color:black;
+    text-decoration: none;
+}
+
+#searchResult .ulSearchLocation li:hover .sheet{
+    width: 410px;
+    color: #08386B !important;
+}
+
+.searchNotFound {
+    height:300px;
 }

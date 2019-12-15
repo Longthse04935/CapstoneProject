@@ -36,20 +36,24 @@ class LoggedGuider extends Component {
                 }
             });
         }
-        let user = JSON.parse(window.sessionStorage.getItem("user"));
-        if (user) {
-            const responseTraveller = await fetch(
-                Config.api_url + "Guider/getGuider/" + user.id,
-                {
-                    method: "GET",
-                    mode: "cors",
-                    credentials: "include"
-                }
-            );
-
-            const dataTraveller = await responseTraveller.json();
-            this.setState({ avatar: dataTraveller.avatar });
-        }
+        // let user = JSON.parse(window.sessionStorage.getItem("user"));
+     
+            try{
+                const responseTraveller = await fetch(
+                    Config.api_url + "Guider/getGuider/" + this.props.user.id,
+                    {
+                        method: "GET",
+                        mode: "cors",
+                        credentials: "include"
+                    }
+                );
+    
+                const dataTraveller = await responseTraveller.json();
+                this.setState({ avatar: dataTraveller.avatar });
+            }catch(err){
+                console.log(err)
+            }
+     
     }
 
     disableLoggedChoice = () => {
@@ -139,6 +143,7 @@ class LoggedGuider extends Component {
                                                 </ul>
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -184,6 +189,52 @@ class LoggedGuider extends Component {
                             </div>
                         </div>
                     </div>
+
+                    <div className="navbarRightContent">
+                        <ul className="logged" >
+                            <li>
+                                <Link to="/chat">Message</Link>
+                            </li>
+                            <li>
+                                <Link to={"/managebook"}>Bookings</Link>
+                            </li>
+                            <li className="avatarLogged" onClick={this.disableLoggedChoice}>
+
+                                    <img src={`${this.state.avatar}`} />
+
+                                    <ul className="dropContent" style={this.state.disable ? { display: 'none' } : { display: 'block' }}>
+                                        <span>
+                                            <li><Link to="/profileguiders">Profile</Link><i className="fa fa-address-card-o" aria-hidden="true"></i></li>
+                                            <li><Link to="/edit">Edit Post</Link><i className="fa fa-pencil" aria-hidden="true"></i></li>
+                                            <li><Link to="/add">Add Post</Link><i className="fa fa-user" aria-hidden="true"></i></li>
+                                            <li><Link to="/schedule">Schedule</Link><i className="fa fa-handshake-o" aria-hidden="true"></i></li>
+                                            <li><Link to="/changepassword">Change Password</Link><i className="fa fa-handshake-o" aria-hidden="true"></i></li>
+                                            <li><Link to="/contract">Contract</Link><i className="fa fa-handshake-o" aria-hidden="true"></i></li>
+                                            <li><Link to="/chart">Your Income</Link><i className="fa fa-handshake-o" aria-hidden="true"></i></li>
+                                        </span>
+                                        <li onClick={() => {
+                                            // console.log("log out");
+                                            // const user = {
+                                            //   userName: "Guest",
+                                            //   role: "GUEST",
+                                            //   id: 0
+                                            // };
+                                            // this.props.reload.call(this, user);window.location.href = '/';
+                                            //this.props.dispatch(wsDisconnect(Config.api_url+"ws"));
+                                            this.props.dispatch(exit());
+                                            window.location.href = '/';
+                                            
+                                        }}>Log out<i className="fa fa-sign-out" aria-hidden="true"></i></li>
+
+
+                                </ul>
+
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+
                 </nav>
                 {/* End MenuBar */}
             </div>
@@ -191,4 +242,9 @@ class LoggedGuider extends Component {
     }
 }
 
-export default connect()(LoggedGuider);
+function mapStateToProps(state) {
+	const user = state.user;
+      return {user};
+}
+
+export default connect(mapStateToProps)(LoggedGuider);

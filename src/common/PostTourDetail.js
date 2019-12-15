@@ -99,39 +99,75 @@ class PostTourDetail extends Component {
 
 		let category_name = window.sessionStorage.getItem('category_name');
 
-		let showTour = data.map((post, index) => {
-			let link_youtube = post.video_link;
-			if (link_youtube.includes('youtu.be')) {
-				link_youtube = link_youtube.replace("youtu.be", "youtube.com/embed");
-
-			} else {
-				link_youtube = link_youtube.split("&");
-				link_youtube = link_youtube[0].replace("watch?v=", "embed/");
-			}
-			let imgSrc = post.picture_link[0];
-			let result = locations.find(location => location.location_id === post.location_id);
-
-			return (
-				<div className="contentTourDetail" key={index}>
-					<iframe
-						src={link_youtube}
-						frameBorder="0"
-						allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-						allowFullScreen
-					></iframe>
-					<img src={imgSrc} className="imgTourDetail" />
-					<h2 style={{ height: '72px', overflow: 'hidden' }}>{post.title}</h2>
-					<p className="postDestTour">{post.description}</p>
-					<p>Price of trip:<span style={{ color: 'rgb(59, 241, 3)', fontWeight: '600' }}>{" " + post.price}$</span></p>
-					<p>Meeting Location:<span style={{ color: 'rgb(59, 241, 3)', fontWeight: '600' }}>{" " + result.location}</span></p>
-					<div className="RatingTour">
-						<span style={{ fontWeight: '600' }}>Rated:</span>
-						<Rated number={post.rated} />
-					</div>
-					<Link to={"/post/" + post.post_id}>Watch my post</Link>
-				</div>
-			)
-		})
+		let showTour = (
+			<div className="postResult" style={{width:'100%'}}>
+			<div className="bookOffers guiderResult" id="searchResult">	
+				<ul className="ulSearchLocation" style={{width:'100%'}}>
+					{
+						this.state.dataPostOneCategory.map((post, index) => (
+						<Link to={"/post/" + post.post_id}>
+						<li key={index}>
+							<div className="sheet" id="sheetInTour" style={{width:"370px"}}>
+							<div className="imageFigure">
+								<img src={post.picture_link[0]} alt="logo" />
+							</div>
+							<div className="experienceCard-details">
+								<span className="enjoy" style={{whiteSpace: "normal"}}>
+								Enjoy <span className="withName">{post.title}</span>
+								</span>
+								<h3>
+								<span
+									// onClick={() => this.handleGotoPage(post.post_id, guider_id)}
+								>
+									{post.description}
+								</span>
+								</h3>
+								<div className="price">
+								<i className="fa fa-money" aria-hidden="true"></i>
+								<span>{" " + post.price}$</span>
+								<span className="experienceCard-topDetails-bullet">
+									{" "}
+									&#9679;{" "}
+								</span>
+								<i className="fa fa-hourglass-half" aria-hidden="true"></i>
+								<span className="experienceCard-topDetails-duration">
+									{" " + post.total_hour} hours
+								</span>
+								<span className="experienceCard-topDetails-bullet">
+									{" "}
+									&#9679;{" "}
+								</span>
+								{post.total_hour > 24 ? (
+									<span>
+									<i className="fa fa-moon-o" aria-hidden="true"></i>
+									<span data-translatekey="Experience.SubcategoryOrTag.day-trip">
+										{" "}
+										Long trip
+									</span>
+									</span>
+								) : (
+									<span>
+									<i className="fa fa-sun-o" aria-hidden="true"></i>
+									<span data-translatekey="Experience.SubcategoryOrTag.day-trip">
+										{" "}
+										Day trip
+									</span>
+									</span>
+								)}
+								</div>
+								<div className="experienceCard-bottomDetails">
+								<Rated number={post.rated} />
+								</div>
+							</div>
+							</div>
+						</li>
+						</Link>
+					))
+					}
+				</ul>
+			</div>
+		</div>
+		)
 
 		return (
 			<div>
@@ -147,11 +183,9 @@ class PostTourDetail extends Component {
 							{renderPageNumbers}
 						</div>
 					</div>
-				</div>
-
-				<div className="categoryTour">
-
+					<div className="categoryTour">
 					<TopGuider />
+				</div>
 				</div>
 			</div>
 		);

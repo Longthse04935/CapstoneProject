@@ -184,7 +184,7 @@ class TravellerManager extends Component {
 	handleCancle = async (trip,status) => {
 		try {
 			const orderResponse = await fetch(
-				Config.api_url + "CancelOrderAsTraveler?trip_id=" + trip,
+				Config.api_url + "Order/CancelOrderAsTraveler?trip_id=" + trip,
 				{
 					method: "GET",
 					mode: "cors",

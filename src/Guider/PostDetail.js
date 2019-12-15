@@ -13,6 +13,7 @@ class PostDetail extends React.Component {
     this.state = {
       currentPage: 1,
       todosPerPage: 4,
+      statusFavorite:false,
       postInfo: {
         picture_link: []
       },
@@ -190,6 +191,11 @@ class PostDetail extends React.Component {
     });
   };
 
+  handleFavorite = () =>{
+    let {statusFavorite} = this.state;
+    this.setState({statusFavorite:!statusFavorite})
+  }
+
   range = (start, end) => {
     var ans = [];
     for (let i = start; i <= end; i++) {
@@ -199,7 +205,7 @@ class PostDetail extends React.Component {
   };
 
   render() {
-    const { postInfo, pageCount, page } = this.state;
+    const { postInfo, pageCount, page,statusFavorite } = this.state;
 	const post_id = this.props.match.params.post_id;
     let guider_id = this.state.guider.guider_id;
 
@@ -296,7 +302,8 @@ class PostDetail extends React.Component {
       </div>
     );
     //<img className="imgPostInfo" src={postInfo.picture_link} />;
-
+    const favorite = statusFavorite ? "favorite" :'';
+    console.log(favorite);
     return (
       <div>
         <div>
@@ -320,7 +327,7 @@ class PostDetail extends React.Component {
                       allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
                     ></iframe>
-                    <h2 className="titleTour">{postInfo.title}</h2>
+                    <h2 className="titleTour">{postInfo.title}<i class="fa fa-heart" id={favorite} onClick={this.handleFavorite} aria-hidden="true"></i></h2>
                     <p className="introduceTour">{postInfo.description}</p>
                   </div>
                   <div className="activities">

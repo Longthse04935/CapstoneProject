@@ -190,7 +190,7 @@ class LoggedGuider extends Component {
                         </div>
                     </div>
 
-                    <div className="navbarRightContent">
+                    {/* <div className="navbarRightContent">
                         <ul className="logged" >
                             <li>
                                 <Link to="/chat">Message</Link>
@@ -231,10 +231,7 @@ class LoggedGuider extends Component {
 
                             </li>
                         </ul>
-                    </div>
-
-                </div>
-
+                </div> */}
                 </nav>
                 {/* End MenuBar */}
             </div>

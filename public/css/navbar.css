@@ -234,7 +234,6 @@ input[name="search"] {
 
 .avatarLogged .dropContent li{
   width: 100%;
-  border-bottom: 1px solid #9a9696;
   height: 70px;
   line-height: 70px;
   position: relative;

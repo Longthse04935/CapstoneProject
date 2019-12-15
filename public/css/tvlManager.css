@@ -42,7 +42,10 @@
 .table100 {
     margin-top: 8%;
 }
-
+.wrap-table100-nextcols {
+  width: 90%;
+  margin:0 auto;
+}
 .table100 .table100-nextcols{
     text-align: center;
 }

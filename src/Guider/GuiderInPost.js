@@ -135,12 +135,6 @@ class GuiderInPost extends React.Component {
                     </span>
                     <span className="ListItemText">Verified</span>
                 </p>
-                <p className="ListItem">
-                    <span className="ListItemIcon">
-                        <i className="fa fa-info-circle" aria-hidden="true"></i>
-                    </span>
-                    <span className="ListItemText">About me:{guide.about_me}</span>
-                </p>
                 {
                     checkPath
                 }

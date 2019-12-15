@@ -208,14 +208,6 @@ class ReviewTraveler extends Component {
                   </p>
                   <p className="ListItem">
                     <span className="ListItemIcon">
-                    <i className="fa fa-phone" aria-hidden="true"></i>
-                    </span>
-                    <span className="ListItemText">
-                      Phone number: {tvl.phone}
-                    </span>
-                  </p>
-                  <p className="ListItem">
-                    <span className="ListItemIcon">
                         <i className="fa fa-birthday-cake" aria-hidden="true"></i>
                     </span>
                     <span className="ListItemText">Date of birth: {tvl.date_of_birth}</span>

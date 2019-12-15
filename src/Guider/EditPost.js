@@ -514,25 +514,29 @@ class EditPost extends Component {
 
         let serviceInput = this.state.services.map((service, index) =>
             <div className="dropdownCoverSelect" key={index}>
+
                 <input className="dropdown-select service" type="text" required onChange={(eve) => { this.state.services[index] = eve.target.value; }} defaultValue={this.state.services[index]} />
-                <button type="button" className="btn btn-danger btn-add-service" onClick={this.removeService} id={index}>Delete</button>
+                <button type="button" className="btn-add-service" onClick={this.removeService} id={index}><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+
             </div>
         );
 
         let actInput = this.state.activities.map((act, index) =>
             <div className="activitiesInput" key={index}>
                 <div className="coverContent" key={index}>
-                    <div className="brief">Brief<input type="text" name="brief" required onChange={(eve) => { act.brief = eve.target.value; }} defaultValue={act.brief} /></div>
+                    <div className="brief">Brief<input type="text" name="brief" onChange={(eve) => { act.brief = eve.target.value; }} defaultValue={act.brief} /></div>
                     <div className="detail">Detail<textarea rows={4} cols={50} type="textarea" required name="detail" onChange={(eve) => { act.detail = eve.target.value; }} defaultValue={act.detail} /></div>
-                    <button type="button" className="btn btn-danger" onClick={this.removeActivity} id={index}>Delete</button>
+                    <button type="button" className="btn-add-service" onClick={this.removeActivity} id={index}><i class="fa fa-trash-o" aria-hidden="true"></i></button>
                 </div>
             </div>
         );
 
         let reasonInput = this.state.reasons.map((reason, index) =>
             <div className="dropdownCoverSelect" key={index}>
+
                 <input className="dropdown-select reason" type="text" required onChange={(eve) => { this.state.reasons[index] = eve.target.value; }} defaultValue={this.state.reasons[index]} />
-                <button type="button" className="btn btn-danger btn-add-service" onClick={this.removeReason} id={index}>Delete</button>
+                <button type="button" className="btn-add-service" onClick={this.removeReason} id={index}><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+
             </div>
         );
 
@@ -541,15 +545,14 @@ class EditPost extends Component {
                 <div className="container">
                     <div className="row m-y-2">
                         {/* edit form column */}
-                        <div className="col-lg-4 text-lg-center">
+                        <div className="col-lg-12 text-lg-center">
                             <h2>Edit Post</h2>
                             {/* {service} */}
                         </div>
-                        <div className="col-lg-8"></div>
-                        <div className="col-lg-7 push-lg-4 personal-info">
+                        <div className="col-lg-12 push-lg-4 personal-info">
                             <form role="form" onSubmit={this.formHandler}>
                                 <div className="form-group row">
-                                    <label className="col-lg-3 col-form-label form-control-label">Location</label>
+                                    <label className="col-lg-4 col-form-label form-control-label">Location</label>
                                     <div className="col-lg-8">
                                         <select className="custom-select" id="inputGroupSelect01" defaultValue={this.state.location} >
                                             {locationOption}
@@ -558,7 +561,7 @@ class EditPost extends Component {
                                 </div>
                                 <div className="form-group row">
 
-                                    <label className="col-lg-3 col-form-label form-control-label">Category</label>
+                                    <label className="col-lg-4 col-form-label form-control-label">Category</label>
                                     <div className="col-lg-8">
                                         <select className="custom-select" id="inputGroupSelect02" defaultValue={this.state.category} >
                                             {categoryOption}
@@ -567,28 +570,33 @@ class EditPost extends Component {
                                 </div>
                                 <div className="form-group row">
 
-                                    <label className="col-lg-3 col-form-label form-control-label">Trip Fee:  <b>$</b></label>
+                                    <label className="col-lg-4 col-form-label form-control-label">Trip Fee:  <b>$</b></label>
+
                                     <div className="col-lg-8">
                                         <input onChange={this.inputOnChange} className="form-control" type="number" name="price"
                                          defaultValue={this.state.price} min="5" max="5000" required  />
                                     </div>
                                 </div>
                                 <div className="form-group row">
-                                    <label className="col-lg-3 col-form-label form-control-label">Post title:</label>
+                                    <label className="col-lg-4 col-form-label form-control-label">Post title:</label>
+
                                     <div className="col-lg-8">
                                         <input onChange={this.inputOnChange} className="form-control" type="text" name="title" 
                                         required defaultValue={this.state.title} />
                                     </div>
                                 </div>
                                 <div className="form-group row">
-                                    <label onChange={this.inputOnChange} className="col-lg-3 col-form-label form-control-label">Introduce video link:</label>
+
+                                    <label onChange={this.inputOnChange} className="col-lg-4 col-form-label form-control-label">Introduce video link</label>
+
                                     <div className="col-lg-8">
                                         <input onChange={this.inputOnChange} className="form-control" type="url" name="video_link"
                                         required defaultValue={this.state.video_link} />
                                     </div>
                                 </div>
                                 <div className="form-group row pictures">
-                                    <label className="col-lg-3 col-form-label form-control-label">Introduce Pictures:</label>
+                                    <label className="col-lg-4 col-form-label form-control-label">Introduce Pictures:</label>
+
                                     <div className="col-lg-7" id="picInput">
                                         <input
 
@@ -604,22 +612,27 @@ class EditPost extends Component {
 
                                 </div>
                                 <div className="form-group row">
-                                    <label className="col-lg-3 col-form-label form-control-label">Estimate trip duration:</label>
+                                    <label className="col-lg-4 col-form-label form-control-label">Estimate trip duration:</label>
+
                                     <div className="col-lg-8">
                                         <input onChange={this.inputOnChange} name="total_hour" className="form-control " 
                                         type="number" required min="1" max="24" defaultValue={this.state.total_hour} />
                                     </div>
                                 </div>
                                 <div className="form-group row">
-                                    <label className="col-lg-3 col-form-label form-control-label">Depicture your trip:</label>
+
+                                    <label className="col-lg-4 col-form-label form-control-label">Description your trip:</label>
+
                                     <div className="col-lg-8">
                                         <textarea onChange={this.inputOnChange} name="description" className="form-control" required  defaultValue={this.state.description} />
                                     </div>
                                 </div>
                                 <div className="form-group row">
-                                    <label className="col-lg-3 col-form-label form-control-label">Including service:</label>
-                                    <div className="col-lg-7" id="includeServiceCover"></div>
-                                    <button type="button" className="btn btn-info" id="includeService" onClick={this.addService}>Add</button>
+
+                                    <label className="col-lg-4 col-form-label form-control-label">Including service</label>
+                                    {/* <div className="col-lg-7" id="includeServiceCover"></div> */}
+                                    <button type="button" className="style_BtnAdd" id="includeService" onClick={this.addService}>+</button>
+
                                 </div>
 
 
@@ -627,33 +640,35 @@ class EditPost extends Component {
                                     {serviceInput}
                                 </div>
                                 <div className="form-group row">
-                                    <label className="col-lg-3 col-form-label form-control-label">Meeting point: </label>
+                                    <label className="col-lg-4 col-form-label form-control-label">Meeting point</label>
+
                                     <div className="col-lg-8">
                                         <input onChange={this.inputOnChange} name="meeting_point" className="form-control" required type="text" defaultValue={this.state.meeting_point} />
                                     </div>
                                 </div>
                                 <div className="form-group row">
-                                    <label className="col-lg-3 col-form-label form-control-label">Activities in trip:</label>
+                                    <label className="col-lg-4 col-form-label form-control-label">Activities in trip:</label>
+
                                     <div className="col-lg-7"></div>
 
-                                    <button type="button" className="btn btn-info" id="activitiesAdd" onClick={this.addActivity}>Add</button>
+                                    <button type="button" className="style_BtnAdd" id="activitiesAdd" onClick={this.addActivity}>+</button>
                                 </div>
 
                                 <div className="">
                                     {actInput}
                                 </div>
                                 <div className="form-group row">
-                                    <label className="col-lg-3 col-form-label form-control-label">Why to pick you:   </label>
+                                    <label className="col-lg-4 col-form-label form-control-label">Why to pick you   </label>
+
                                     <div className="col-lg-7"></div>
-                                    <button type="button" className="btn btn-info" id="reasonAdd" onClick={this.addReason}>Add</button>
+                                    <button type="button" className="style_BtnAdd" id="reasonAdd" onClick={this.addReason}>+</button>
                                 </div>
 
                                 <div className="">
                                     {reasonInput}
                                 </div>
                                 <div className="form-group row">
-                                    <label className="col-lg-3 col-form-label form-control-label" />
-                                    <div className="col-lg-8">
+                                    <div className="submit_btn">
                                         <input
                                             type="reset"
                                             className="btn btn-primary"

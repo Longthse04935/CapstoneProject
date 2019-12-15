@@ -317,6 +317,7 @@
 }
 
 .coverTopTour {
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
     margin: 0 -10px;
@@ -340,7 +341,7 @@
 
 .bg_Gradient{
     position: relative;
-    height: 100%;
+    height: 400px;
     width: 100%;
 }
 

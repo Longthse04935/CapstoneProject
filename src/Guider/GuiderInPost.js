@@ -58,10 +58,9 @@ class GuiderInPost extends React.Component {
                 onCancel={() => this.onCancel()}
                 focusCancelBtn
             >
-                You are not logged in. Please login or register to book this tour!!
+                You are not traveler. Please login as traveler to book this tour!!
       </SweetAlert>
         );
-        console.log("hello2");
         this.setState({
             alert: getAlert()
         });
@@ -69,8 +68,7 @@ class GuiderInPost extends React.Component {
     goToBook = eve => {
         //eve.preventDefault();
         
-        if(!this.props.user.logedIn) {
-            console.log("hello");
+        if(this.props.user.role !== "TRAVELER") {
             this.alertAccount();
         } else {
             window.location.href=("/chatbox/" + this.props.guiderId + "/" + this.props.postId);
@@ -96,7 +94,7 @@ class GuiderInPost extends React.Component {
                 {this.state.alert}
                 <div className="pb-header header-stick">
                     <div className="header-pb">
-                        <h1 className="TitlePb TileStickyPb">{guide.first_name + " " + guide.last_name}</h1>
+                        <Link to={`/guider/${guide.guider_id}`}><h1 className="TitlePb TileStickyPb">{guide.first_name + " " + guide.last_name}</h1></Link>
                         <Rated number={guide.rated} />
                     </div>
                     <div>

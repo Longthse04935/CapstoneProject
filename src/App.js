@@ -101,7 +101,7 @@ class App extends Component {
 			present = <Navbar reload={this.reload} />;
 		}
 		return (
-			<div>
+			<div className="App">
 				{present}
 				<Switch>
 
@@ -130,8 +130,6 @@ class App extends Component {
 					<Route path='/reviewtvl/:id' component={ReviewTraveler} />
 					{/* <Route path='/profileguider' component={ProfileGuiders} /> */}
 					<Route path='*' component={Page404} />
-
-
 				</Switch>
 				<Footer />
 			</div>

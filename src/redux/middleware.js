@@ -1,4 +1,5 @@
 import * as actions from './webSocket';
+import * as act from './actions';
 import SockJS from 'sockjs-client';
 import Stomp from 'stompjs';
 
@@ -10,15 +11,22 @@ const socketMiddleware = () => {
       };
 
       const onClose = store => () => {
+            console.log("test disconnect");
             store.dispatch(actions.wsDisconnected());
+            //store.dispatch(act.logOut());
       };
 
       const onMessage = (store) => (msg) => {
             // console.log(msg.body);
             // console.log(store);
             let payload = msg.body;
-            store.dispatch(actions.save(JSON.parse(payload)));
-            store.dispatch(actions.arrange(JSON.parse(payload).sender));
+            if(payload.type==='CHAT') {
+                  store.dispatch(actions.save(JSON.parse(payload)));
+                  store.dispatch(actions.arrange(JSON.parse(payload).sender));
+            } else {
+                  store.dispatch(actions.announce(JSON.parse(payload)));
+            }
+           
       };
 
       return store => next => (action) => {

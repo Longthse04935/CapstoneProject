@@ -455,7 +455,7 @@ class Navbar extends Component {
                                     />{" "}
                                     Guider
                                 </div>
-                                {errors['login'] ? <p style={{ color: "red" }} className="errorInput">{errors['login']}</p> : ''}
+                                {this.props.error.flag ? <p style={{ color: "red" }} className="errorInput">{errors['login']}</p> : ''}
                                 <div className="firstName">
                                     <label className="InputLabel-Tch5j InputLabelConditionalHide-24VTo">
                                         Nick name *
@@ -596,9 +596,7 @@ class Navbar extends Component {
                             <div className="navRight">
                                 <div className="navbarRightContent">
                                     <ul>
-                                        <li>
-                                            <a style={{cursor:"pointer"}}>Become a host</a>
-                                        </li>
+                                        
                                         <li>
                                             <a style={{cursor:"pointer"}} className="login">
                                                 Log in

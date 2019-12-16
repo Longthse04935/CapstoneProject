@@ -13,6 +13,7 @@ class ChatList extends React.Component {
 
       async componentDidMount() {
             try {
+                  //if(this.props.receiver === '') return;
                   let guests = await fetch(`${Config.api_url}messages/${this.props.user.userName}/${this.props.receiver}/${this.state.page}/${this.state.page+10}`, {
                         method:"GET",
                         mode: "cors",

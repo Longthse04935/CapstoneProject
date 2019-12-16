@@ -12,9 +12,11 @@ export const save = message => ({ type: 'SAVE', message });
 export const load = () => ({ type: 'LOAD' });
 export const arrange = user => ({ type: 'ARRANGE', user });
 export const clear = () => ({ type: 'CLEAR' });
+export const announce = noti => ({type: 'ANNOUNCE', noti});
 const websocketInitialState = {};
 const messageInitState = [];
 const clients = [];
+const notifications = []
 
 export const websocketReducer = (state = { ...websocketInitialState }, action) => {
       switch (action.type) {
@@ -22,7 +24,7 @@ export const websocketReducer = (state = { ...websocketInitialState }, action) =
                   console.log("test connect");
                   return { ...state, connected: true };
             case 'WS_DISCONNECTED':
-                  console.log("test disconnect");
+                  
                   clear();
                   return { state, connected: false };
             default:
@@ -61,6 +63,10 @@ export const arrangeClients = (state = clients, action) => {
             default:
                   return state;
       }
+};
+
+export const receiveNoti = (state = [...notifications], action) => {
+      
 }
 
 export const loadGuest = guest => dispatch => fetch(`${Config.api_url}messages/${guest}`, {

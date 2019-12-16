@@ -7,7 +7,7 @@ class Message extends React.Component {
       constructor(props) {
             super(props);
             this.state = {
-                  sender: ""
+                  client: ""
             }
       }
 
@@ -19,7 +19,7 @@ class Message extends React.Component {
       load = (eve) => {
             eve.preventDefault();
             //console.log(eve.target);
-            this.setState({ sender: eve.target.id });
+            this.setState({ client: eve.target.id });
       }
 
       render() {
@@ -43,10 +43,11 @@ class Message extends React.Component {
 
                                     </div>
                               </div>
-                              <ChatList name={this.props.user.userName} receiver={this.state.sender}
-                                    messages={this.props.messages.filter(msg => msg.guider === this.props.user.userName 
-                                    || this.props.traveler === this.props.user.userName)} />
-                              {/*    */}
+                              <ChatList name={this.props.user.userName} receiver={this.state.client}
+                                    messages={this.props.messages.filter(msg => this.props.user.role === 'GUIDER'?
+                                          ( msg.guider === this.props.user.userName && msg.traveler === this.state.client) :
+                                    ( msg.guider === this.state.client && msg.traveler === this.props.user.userName))} />
+                              
                         </div>
                   </div>);
       }

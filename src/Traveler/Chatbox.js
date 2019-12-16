@@ -10,7 +10,7 @@ import $ from 'jquery';
 import ChatList from "../common/ChatStore";
 import { connect } from 'react-redux';
 import PlanInPost from "../Guider/PlanInPost";
-
+import Rated from '../Guider/Rated';
 import { Redirect } from "react-router-dom";
 import { thisExpression } from "@babel/types";
 class Chatbox extends Component {
@@ -44,7 +44,7 @@ class Chatbox extends Component {
 			valueItem: '',
 			user: props.user,
 			guider: {
-				name:"",
+				name: '',
 				languages: ['']
 			},
 
@@ -52,12 +52,13 @@ class Chatbox extends Component {
 
 		};
 	}
-	option = (time) => {
-		var date = this.state.tourDate;
-		var getDate = parseInt(date.getDate()) < 10 ? "0" + parseInt(date.getDate()) : parseInt(date.getDate());
-		var getMonth = parseInt(date.getMonth() + 1) < 10 ? "0" + parseInt(date.getMonth() + 1) : parseInt(date.getMonth() + 1);
+	option = (date, time) => {
+		//let date = this.state.tourDate;
+		let getDate = parseInt(date.getDate()) < 10 ? "0" + parseInt(date.getDate()) : parseInt(date.getDate());
+		let getMonth = parseInt(date.getMonth() + 1) < 10 ? "0" + parseInt(date.getMonth() + 1) : parseInt(date.getMonth() + 1);
 		//window.sessionStorage.getItem("guider_id")
-		var data = {
+		console.log(date);
+		let data = {
 			"guider_id": "" + this.props.user.id,
 			"post_id": "" + this.props.match.params.post_id,
 			"begin_date": "" + getMonth + "/" + getDate + "/" + date.getFullYear() + time
@@ -111,12 +112,9 @@ class Chatbox extends Component {
 				},
 				body: JSON.stringify(new Date())
 			});
-			let options = this.option(" 00:00");
-			let response = await fetch(Config.api_url + 'Order/GetAvailableHours', options);
-			response = await response.json();
-			//load end time avilable	
-			let option = this.option(" " + response[0]);
-			let endTime = await fetch(Config.api_url + 'Order/GetExpectedTourEnd', option);
+			let d = await avaiDates.json();
+
+			let newTourDate = (d.length > 0) ? new Date(d[0]) : new Date();
 
 			//get profile guider
 			const responseGuider = await fetch(Config.api_url + "Guider/" + guiderId, {
@@ -127,17 +125,23 @@ class Chatbox extends Component {
 			});
 			if (!responseGuider.ok) { throw Error(responseGuider.status + ": " + responseGuider.statusText); }
 			const guider = await responseGuider.json();
-			
+
 
 			numberInjoy.price = posts.price;
 			numberInjoy.totalPrice = numberInjoy.adult * posts.price;
 
-			let d = await avaiDates.json();
 
+
+
+			this.setState({ tourDate: newTourDate, post: posts, guider: guider, numberInjoy, avaiDate: d });
+			let options = this.option(newTourDate, " 00:00");
+			let response = await fetch(Config.api_url + 'Order/GetAvailableHours', options);
+			response = await response.json();
+			//load end time avilable	
+			let option = this.option(newTourDate, " " + response[0]);
+			let endTime = await fetch(Config.api_url + 'Order/GetExpectedTourEnd', option);
 			endTime = await endTime.text();
-
-
-			this.setState({ post: posts, guider: guider, numberInjoy, timeAvailable: response, hourBegin: response[0], endTime: endTime, avaiDate: d });
+			this.setState({ timeAvailable: response, hourBegin: response[0], endTime: endTime });
 			$(".ratingChatbox img").hover(function () {
 				$('.tool-tip').show();
 			}, function () {
@@ -150,20 +154,20 @@ class Chatbox extends Component {
 	}
 
 	dateChange = async date => {
-		let tourDate = new Date() > date ? new Date() : date;
-		this.setState({
-			tourDate: tourDate,
-			closest_EndDate: ""
-		});
+		// let tourDate = new Date() > date ? new Date() : date;
+		// this.setState({
+		// 	tourDate: date,
+		// 	closest_EndDate: ""
+		// });
 
-		let options = this.option(" 00:00")
+		let options = this.option(date, " 00:00")
 		let response = await fetch(Config.api_url + 'Order/GetAvailableHours', options);
 		response = await response.json();
 		//load end time avilable
-		let option = this.option(" " + response[0]);
+		let option = this.option(date, " " + response[0]);
 		let endTime = await fetch(Config.api_url + 'Order/GetExpectedTourEnd', option);
 		endTime = await endTime.text();
-		this.setState({ timeAvailable: response, endTime: endTime, valueItem: response[0] });
+		this.setState({ timeAvailable: response, endTime: endTime, valueItem: response[0], tourDate: date, closest_EndDate: "" });
 
 	}
 
@@ -174,7 +178,7 @@ class Chatbox extends Component {
 			valueItem: e.target.value
 		});
 
-		let options = this.option(" " + e.target.value);
+		let options = this.option(this.state.tourDate, " " + e.target.value);
 		let response = await fetch(Config.api_url + 'Order/GetClosestFinishDate', options);
 		let closest_EndDate = await response.text();
 		response = await fetch(Config.api_url + 'Order/GetExpectedTourEnd', options);
@@ -234,7 +238,7 @@ class Chatbox extends Component {
 		let getDate = parseInt(today.getDate()) < 10 ? "0" + parseInt(today.getDate()) : parseInt(today.getDate());
 		let getMonth = parseInt(today.getMonth() + 1) < 10 ? "0" + parseInt(today.getMonth() + 1) : parseInt(today.getMonth() + 1);
 
-		let options = this.option(" " + this.state.hourBegin);
+		let options = this.option(today , " " + this.state.hourBegin);
 
 
 		let tourDetail = {
@@ -244,7 +248,7 @@ class Chatbox extends Component {
 			adult_quantity: '',
 			children_quantity: '',
 			price: '',
-			end_date: '',
+			end_date: this.state.endTime,
 			guider_id: this.props.match.params.guiderId,
 			guider_name: this.state.guider.name
 		};
@@ -256,6 +260,7 @@ class Chatbox extends Component {
 		tourDetail.children_quantity = "" + data.numberInjoy.children;
 		tourDetail.price = data.numberInjoy.totalPrice;
 		tourDetail.finish_date = this.state.endTime;
+		console.log(tourDetail);
 		sessionStorage.setItem('tourDetail', JSON.stringify(tourDetail));
 		//add check here
 		delete tourDetail.price;
@@ -326,6 +331,11 @@ class Chatbox extends Component {
 			return <option key={index} value={value}>{value}</option>;
 		});
 
+		let chat = (this.state.guider.name === "") ? <div /> : <ChatList name={this.props.user.userName}
+			messages={this.props.messages.filter(msg => msg.traveler === this.props.user.userName
+				&& msg.guider === this.state.guider.name)}
+			receiver={this.state.guider.name} />
+
 
 		return (
 			<div className="ChatRoom">
@@ -345,11 +355,7 @@ class Chatbox extends Component {
 
 							<div className="rating ratingChatbox">
 								<img src={guider.avatar} />
-								<i className="fa fa-star" aria-hidden="true"></i>
-								<i className="fa fa-star" aria-hidden="true"></i>
-								<i className="fa fa-star" aria-hidden="true"></i>
-								<i className="fa fa-star" aria-hidden="true"></i>
-								<i className="fa fa-star" aria-hidden="true"></i>
+								<Rated number={guider.rated} />
 								<div className="tool-tip">
 									<p className="tool-tipItem">
 										<span className="tool-tipItemIcon">
@@ -395,8 +401,7 @@ class Chatbox extends Component {
                 <DatePicker
 									selected={this.state.tourDate}
 									onChange={this.dateChange}
-
-									minDate={(includeCalendates.length > 0)?includeCalendates[0]:new Date()}
+									minDate={(includeCalendates.length > 0) ? includeCalendates[0] : new Date()}
 									includeDates={includeCalendates}
 								/>
 							</div>
@@ -480,8 +485,7 @@ class Chatbox extends Component {
 					{/* End guider infor */}
 					<PlanInPost postId={this.props.match.params.post_id} />
 					{/* End plan of tour */}
-					<ChatList name={this.props.user.userName} messages={this.props.messages}
-						receiver={this.state.guider.name} />
+					{chat}
 
 				</div>
 

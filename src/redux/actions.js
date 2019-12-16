@@ -6,8 +6,6 @@ export const logIn = json => ({ type: 'LOGIN', data: json });
 export const exit = () => ({ type: 'LOGOUT' });
 export const firErr = err => ({ type: 'ERROR', err });
 export const visit = json => ({ type: 'VISIT', guider:json });
-export const makeMove = move => ({ type: 'MAKE_MOVE', move });
-export const updateGamePlayer = player => ({ type: 'UPDATE_GAME_PLAYER', player });
 
 
 export const signIn = login => dispatch => fetch(`${Config.api_url}account/login`, {
@@ -27,9 +25,10 @@ export const signIn = login => dispatch => fetch(`${Config.api_url}account/login
       })
       .then((json) => {
             dispatch({ type: 'LOGIN', data: json });
-            // dispatch(wsConnect(Config.api_url+"ws"));
+            dispatch(wsConnect(Config.api_url+"ws"));
+            dispatch({type: 'ERROR', err: {msg: '', flag: false}});
       }).catch(err => {
-            dispatch({type: 'ERROR', err: 'User name or password is wrong'});
+            dispatch({type: 'ERROR', err: {msg: 'User name or password is wrong', flag: true}});
       });
 
 export const logOut = () => dispatch => fetch(`${Config.api_url}account/logout`, {
@@ -42,9 +41,9 @@ export const logOut = () => dispatch => fetch(`${Config.api_url}account/logout`,
             throw new Error(error);
       })
       .then(() => {
-
+            dispatch(exit());
       }).catch(err => {
-            dispatch({type: 'ERROR', err: err});
+            dispatch({type: 'ERROR', err:  {msg: err, flag: true}});
       });
 
 
@@ -74,8 +73,8 @@ export const catchError = (state = { ...intialError }, action) => {
       switch (action.type) {
             case 'ERROR':
                   return {
-                        msg: action.err,
-                        flag: true
+                        msg: action.err.msg,
+                        flag: !action.err.flag
                   };
             
             default:

@@ -13,28 +13,28 @@ const responsive = {
 		// the naming can be any, depends on you.
 		breakpoint: { max: 4000, min: 3000 },
 		items: 5,
-	  },
+	},
 	desktop: {
-	  breakpoint: { max: 3000, min: 1024 },
-	  items: 3,
-	  slidesToSlide: 3, // optional, default to 1.
+		breakpoint: { max: 3000, min: 1024 },
+		items: 3,
+		slidesToSlide: 3, // optional, default to 1.
 	},
 	tablet: {
-	  breakpoint: { max: 1024, min: 464 },
-	  items: 2,
-	  slidesToSlide: 2, // optional, default to 1.
+		breakpoint: { max: 1024, min: 464 },
+		items: 2,
+		slidesToSlide: 2, // optional, default to 1.
 	},
 	mobile: {
-	  breakpoint: { max: 464, min: 0 },
-	  items: 1,
-	  slidesToSlide: 1, // optional, default to 1.
+		breakpoint: { max: 464, min: 0 },
+		items: 1,
+		slidesToSlide: 1, // optional, default to 1.
 	},
-  };
+};
 class Home extends Component {
 
 	constructor(props) {
 		super(props);
-		
+
 		this.state = {
 			category: [],
 			alert: null,
@@ -56,7 +56,7 @@ class Home extends Component {
 			guiderPage: 0
 		};
 	}
-	
+
 
 	onNotification() {
 		this.setState({ alert: null });
@@ -136,7 +136,7 @@ class Home extends Component {
 				);
 			} else if (messagePay === "You are Guider") {
 				this.notification("Guider do not have access to here");
-			}else if (messagePay === "You are Traveler") {
+			} else if (messagePay === "You are Traveler") {
 				this.notification("Traveler do not have access to here");
 			}
 		}
@@ -198,7 +198,7 @@ class Home extends Component {
 			const guiders = await responsePosts.json();
 
 
-			this.setState({ searchGuider: guiders, guiderPage: this.state.guiderPage ,inputSearch:input});
+			this.setState({ searchGuider: guiders, guiderPage: this.state.guiderPage, inputSearch: input });
 		} catch (err) {
 			console.log(err);
 		}
@@ -224,20 +224,20 @@ class Home extends Component {
 
 			const posts = await responsePosts.json();
 
-			this.setState({ searchPost: posts, postPage: this.state.postPage,inputSearch:input});
+			this.setState({ searchPost: posts, postPage: this.state.postPage, inputSearch: input });
 		} catch (err) {
 			console.log(err);
 		}
 	}
-	 notFound = () =>{
-		 return <div className="searchNotFound">
-			 <h2 style={{fontWeight:'600'}}>No results</h2>
-			 <p>Your search did not return any results.</p>
-		 </div>
-	 }
+	notFound = () => {
+		return <div className="searchNotFound">
+			<h2 style={{ fontWeight: '600' }}>No results</h2>
+			<p>Your search did not return any results.</p>
+		</div>
+	}
 	render() {
 		let input = null;
-		let { currentIndex, slideShow,inputSearch,searchGuider,searchPost } = this.state;
+		let { currentIndex, slideShow, inputSearch, searchGuider, searchPost } = this.state;
 		let guiderlength = searchGuider.length;
 		let location = searchPost.length;
 		let src = Config.api_url + slideShow[currentIndex];
@@ -273,92 +273,92 @@ class Home extends Component {
 		));
 		let home = (<div className="categoryTour">
 			<div className="containerMain">
-			<h1>Explore Withlocals</h1>
-			<h2 className="sectionSubtitle">
-				<span data-translatekey="Homepage.Categories.subTitle">
-					All of our tours and activities are:{" "}
-					<span>• Private • Personalized • </span>{" "}
-					<span>With the local of your choice</span>
-				</span>
-			</h2>
-			<div className="tourDetail"><ItemsCarousel>
-				{tour}
-			</ItemsCarousel></div>
-			{this.state.alert}
-			<h1>The travel is most appreciated</h1>
-			<div className="coverTopTour">{slide}</div>
-			<TopGuider />
+				<h1>Explore Withlocals</h1>
+				<h2 className="sectionSubtitle">
+					<span data-translatekey="Homepage.Categories.subTitle">
+						All of our tours and activities are:{" "}
+						<span>• Private • Personalized • </span>{" "}
+						<span>With the local of your choice</span>
+					</span>
+				</h2>
+				<div className="tourDetail"><ItemsCarousel>
+					{tour}
+				</ItemsCarousel></div>
+				{this.state.alert}
+				<h1>The travel is most appreciated</h1>
+				<div className="coverTopTour">{slide}</div>
+				<TopGuider />
 			</div>
 		</div>);
-		
+
 		let postResult = (<div className="postResult">
 			<div className="bookOffers guiderResult" id="searchResult">
 				<div className="headerGuiderResult">
 					<h2 className="h2SsearchResult">Search Results</h2>
-					<hr/>
-					<h3>All results related to <span className="spanSearhResult">{"'"+inputSearch+"'"}</span></h3>
+					<hr />
+					<h3>All results related to <span className="spanSearhResult">{"'" + inputSearch + "'"}</span></h3>
 				</div>
-				
+
 				<ul className="ulSearchLocation">
 					{
 						location === 0 ? this.notFound()
-						:
-						this.state.searchPost.map((post, index) => (
-						<Link to={"/post/" + post.post_id}>
-						<li key={index}>
-							<div className="sheet">
-							<div className="imageFigure">
-								<img src={post.picture_link[0]} alt="logo" />
-							</div>
-							<div className="experienceCard-details">
-								{/* <span className="enjoy">
+							:
+							this.state.searchPost.map((post, index) => (
+								<Link to={"/post/" + post.post_id}>
+									<li key={index}>
+										<div className="sheet">
+											<div className="imageFigure">
+												<img src={post.picture_link[0]} alt="logo" />
+											</div>
+											<div className="experienceCard-details">
+												{/* <span className="enjoy">
 								Enjoy <span className="withName">{post.title}</span>
 								</span> */}
-								<h3 className="h3PostResult">
-									<span>
-									{post.title}
-									</span>
-								</h3>
-								<div className="price">
-								<i className="fa fa-money" aria-hidden="true"></i><span>{" "+post.price}$</span>
-								<span className="experienceCard-topDetails-bullet">
-									{" "}
-									&#9679;{" "}
+												<h3 className="h3PostResult">
+													<span>
+														{post.title}
+													</span>
+												</h3>
+												<div className="price">
+													<i className="fa fa-money" aria-hidden="true"></i><span>{" " + post.price}$</span>
+													<span className="experienceCard-topDetails-bullet">
+														{" "}
+														&#9679;{" "}
+													</span>
+													<i className="fa fa-hourglass-half" aria-hidden="true"></i>
+													<span className="experienceCard-topDetails-duration">
+														{" " + post.total_hour} hours
 								</span>
-								<i className="fa fa-hourglass-half" aria-hidden="true"></i>
-								<span className="experienceCard-topDetails-duration">
-									{" "+post.total_hour} hours
+													<span className="experienceCard-topDetails-bullet">
+														{" "}
+														&#9679;{" "}
+													</span>
+													{
+														post.total_hour > 24 ?
+															<span>
+																<i className="fa fa-moon-o" aria-hidden="true"></i>
+																<span data-translatekey="Experience.SubcategoryOrTag.day-trip">
+																	{" "}Long trip
 								</span>
-								<span className="experienceCard-topDetails-bullet">
-									{" "}
-									&#9679;{" "}
+															</span>
+															:
+															<span>
+																<i className="fa fa-sun-o" aria-hidden="true"></i>
+																<span data-translatekey="Experience.SubcategoryOrTag.day-trip">
+																	{" "} Day trip
 								</span>
-								{
-									post.total_hour > 24 ? 
-									<span>
-									<i className="fa fa-moon-o" aria-hidden="true"></i>
-									<span data-translatekey="Experience.SubcategoryOrTag.day-trip">
-									{" "}Long trip
-								</span>
-									</span>
-									:
-									<span>
-									<i className="fa fa-sun-o" aria-hidden="true"></i>
-									<span data-translatekey="Experience.SubcategoryOrTag.day-trip">
-									{" "} Day trip
-								</span>
-									</span>
-								}
-								
-								</div>
-								<div className="experienceCard-bottomDetails">
-								<Rated number="5" />
-								</div>
-							</div>
-							</div>
-						</li>
-						</Link>
-					))
+															</span>
+													}
+
+												</div>
+												<div className="experienceCard-bottomDetails">
+													<Rated number="5" />
+												</div>
+											</div>
+										</div>
+									</li>
+								</Link>
+							))
 					}
 				</ul>
 			</div>
@@ -366,38 +366,38 @@ class Home extends Component {
 		);
 		//console.log(this.state.searchGuider);
 		let guiderResult = (
-		<div className="guiderResult">
-			<div className="headerGuiderResult">
-				<h2 className="h2SsearchResult">Search Results</h2>
-				<hr/>
-				<h3>All results related to <span className="spanSearhResult">{"'"+inputSearch+"'"}</span></h3>
-			</div>
-			<div className="topGuider" id="SearchTopGuider">
-			<div className="topGuiderByRate">
-			<div className="content-left" id="searchGuider">
-				{guiderlength === 0 ? this.notFound()
-				:
-				this.state.searchGuider.map((post, index) => (
-					<div className="profile-box" key={index}>
-						<div className="pb-header header-stick">
-							<div className="header-pb">
-								<h1 className="TitlePb TileStickyPb searchGuiderName">
-									{post.first_name + "" + post.last_name}
-								</h1>
-							</div>
+			<div className="guiderResult">
+				<div className="headerGuiderResult">
+					<h2 className="h2SsearchResult">Search Results</h2>
+					<hr />
+					<h3>All results related to <span className="spanSearhResult">{"'" + inputSearch + "'"}</span></h3>
+				</div>
+				<div className="topGuider" id="SearchTopGuider">
+					<div className="topGuiderByRate">
+						<div className="content-left" id="searchGuider">
+							{guiderlength === 0 ? this.notFound()
+								:
+								this.state.searchGuider.map((post, index) => (
+									<div className="profile-box" key={index}>
+										<div className="pb-header header-stick">
+											<div className="header-pb">
+												<h1 className="TitlePb TileStickyPb searchGuiderName">
+													{post.first_name + "" + post.last_name}
+												</h1>
+											</div>
+										</div>
+										<img src={post.avatar} className="imgpb-header"></img>
+										<Rated number={post.rated} />
+										<Link to={"/guider/" + post.guider_id}>
+											<button className="contactMe">Contract Me</button>
+										</Link>
+									</div>
+								))
+							}
 						</div>
-						<img src={post.avatar} className="imgpb-header"></img>
-						<Rated number={post.rated} />
-						<Link to={"/guider/" + post.guider_id}>
-							<button className="contactMe">Contract Me</button>
-						</Link>
 					</div>
-				))
-				}
+				</div>
 			</div>
-			</div>
-			</div>
-		</div>
 		);
 
 		let visible = (this.state.filter === "none") ? home : (this.state.filter === "guider") ? guiderResult : postResult;
@@ -443,7 +443,7 @@ class Home extends Component {
 									return;
 								}
 								this.state.filter = (this.state.filter === "none") ? "guider" : this.state.filter;
-							
+
 								if (this.state.filter === "guider") {
 									this.searchGuider(input.value);
 								} else if (this.state.filter === "location") {
@@ -451,7 +451,7 @@ class Home extends Component {
 								} else {
 									console.log("search other filter");
 								}
-								
+
 							}}>Search</button>
 
 						</div>

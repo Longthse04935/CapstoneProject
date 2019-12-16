@@ -4,6 +4,7 @@ import $ from 'jquery';
 import GuiderInPost from './GuiderInPost';
 import Config from '../Config';
 import Rated from './Rated';
+import {  Link } from "react-router-dom";
 class ProfileGuiders extends Component {
     constructor(props){
         super(props);
@@ -118,7 +119,7 @@ class ProfileGuiders extends Component {
         let {posts} = this.state;
         let post = posts.map((post, index) => (
             <li key={index}>
-              <div className="sheet">
+              <Link to={"/post/"+ post.post_id}><div className="sheet">
                 <div className="imageFigure">
                   <img src={post.picture_link[0]} alt="logo" />
                 </div>
@@ -128,7 +129,7 @@ class ProfileGuiders extends Component {
                   </span>
                   <h3>
                     <span
-                      onClick={() => this.handleGotoPage(post.post_id, guider_id)}
+                      //onClick={() => this.handleGotoPage(post.post_id, guider_id)}
                     >
                       {post.description}
                     </span>
@@ -171,6 +172,7 @@ class ProfileGuiders extends Component {
                   </div>
                 </div>
               </div>
+              </Link>
             </li>
           ));
           return post;
@@ -217,12 +219,7 @@ class ProfileGuiders extends Component {
                     {/*  Content  */}
                     <div className="content">
                     <div className="content-left">
-                    {guider_id ? (
-                        <GuiderInPost
-                            guiderId={guider_id}
-                            postId={this.props.match.params.post_id}
-                        />
-                        ) : null}
+                    
                     </div>
                     <div className="content-right">
                         {/* intro content */}

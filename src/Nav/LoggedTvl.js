@@ -201,7 +201,7 @@ class LoggedTvl extends Component {
                           </li>
                           <li>
                             <Link to="/changepassword">Change password</Link>
-                            <i class="fa fa-key" aria-hidden="true"></i>
+                            <i className="fa fa-key" aria-hidden="true"></i>
                           </li>
                         </span>
                         <li

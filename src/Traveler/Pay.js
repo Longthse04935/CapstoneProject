@@ -108,7 +108,6 @@ class Pay extends Component {
       this.setState({ postInfo});
     
       //check infomation travel have exist
-      //let user = JSON.parse(window.sessionStorage.getItem('user'));
       const res = await fetch(
         Config.api_url + "Traveler/isLackingProfile?traveler_id="+this.props.user.id ,{
           method: "GET",
@@ -128,6 +127,7 @@ class Pay extends Component {
     delete data.price;
     delete data.dateForBook;
     delete data.hourForBook;
+    $(".coverLoader").show();
     let options = {
       method: "POST",
       mode: "cors",
@@ -140,7 +140,6 @@ class Pay extends Component {
     };
     let response = await fetch(Config.api_url + "Payment/Pay", options);
     response = await response.text();
-    $(".coverLoader").show();
     window.location.href = response;
     sessionStorage.setItem("link", response);
   }

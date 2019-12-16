@@ -48,7 +48,6 @@ class GuiderAllPost extends Component {
 
 			const posts = await respone.json();
 			pageCount = await totalPage.json();
-			pageCount++;
 			this.setState({ posts:posts,pageCount});
 		} catch (err) {
 			console.log(err);

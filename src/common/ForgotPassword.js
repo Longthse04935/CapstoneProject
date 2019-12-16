@@ -64,7 +64,7 @@ class ForgotPassword extends Component {
                     </div>
                 </div>
                 <div className="col-lg-2 group_IncludeSer">
-                    <div class="submit_btn" style={{marginTop:'0'}}><button class="submitBtn btnSb" onClick={this.handleSubmit}>Send</button></div>
+                    <div className="submit_btn" style={{marginTop:'0'}}><button className="submitBtn btnSb" onClick={this.handleSubmit}>Send</button></div>
                 </div>
                 </div>
             </div>

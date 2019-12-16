@@ -481,12 +481,21 @@ a:focus, a:active, button:focus{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    /* justify-content: space-between; */
+    justify-content: space-evenly;
     width: 68%;
     margin: 0 auto;
     margin-top: 20px;
 }
 
+#tourDetailList.ulSearchLocation {
+    justify-content: space-evenly;
+}
+#tourDetailList.ulSearchLocation > a {
+    /* margin-right: 50px; */
+}
+#tourDetailList.ulSearchLocation > a:last-child {
+    /* margin-right: 0px; */
+}
 .ulSearchLocation .h3PostResult{
     color: black;
     text-decoration: none;

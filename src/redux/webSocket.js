@@ -1,8 +1,5 @@
 import Config from '../Config';
-<<<<<<< HEAD
-=======
 
->>>>>>> 552d0ce3ea223ddc7b9c18082589eb4d68896eec
 
 export const wsConnect = (host, name) => ({ type: 'WS_CONNECT', host, name });
 export const wsConnecting = host => ({ type: 'WS_CONNECTING', host });
@@ -72,14 +69,10 @@ export const loadGuest = guest => dispatch => fetch(`${Config.api_url}messages/$
       credentials: "include",
       headers: {
             'Content-Type': 'application/json',
-<<<<<<< HEAD
       },
-      body: JSON.stringify(login)
+      // body: JSON.stringify(login)
       })
-=======
-      }
-})
->>>>>>> 552d0ce3ea223ddc7b9c18082589eb4d68896eec
+
       .then(res => res.json(), error => {
             console.log('An error occurred.', error);
             throw new Error(error);

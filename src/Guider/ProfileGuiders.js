@@ -3,6 +3,7 @@ import "font-awesome/css/font-awesome.min.css";
 import $ from 'jquery';
 import GuiderInPost from './GuiderInPost';
 import Config from '../Config';
+import {Link} from 'react-router-dom';
 import Rated from './Rated';
 class ProfileGuiders extends Component {
     constructor(props){
@@ -13,7 +14,7 @@ class ProfileGuiders extends Component {
             guider:{
             },
             page:0,
-            pageCount:0,
+            totalPage:0,
             autheticate: {
                 method: "GET",
                 mode: "cors",
@@ -99,6 +100,7 @@ class ProfileGuiders extends Component {
 
     LoadPostGuider = async (guider_id,page) =>{
         let {autheticate,posts} = this.state;
+         try {
           const response= await fetch(
             Config.api_url +
             "guiderpost/postOfOneGuider/" +guider_id +
@@ -106,18 +108,25 @@ class ProfileGuiders extends Component {
             page,
             autheticate
         );
-
-        if (!response.ok) {
-            throw Error(response.status + ": " + response.statusText);
-        }
+          const pageCount= await fetch(
+            Config.api_url +
+            "guiderpost/postOfOneGuiderPageCount/" +guider_id,
+            autheticate
+        );
+        
+        const totalPage = await pageCount.json();
         posts = await response.json();
-        this.setState({posts})
+        this.setState({posts,totalPage})
+         } catch (error) {
+           console.log(error)
+         }
     }
 
     RenderPostGuider = (guider_id) =>{
         let {posts} = this.state;
         let post = posts.map((post, index) => (
-            <li key={index}>
+           <Link to={'/post/'+post.post_id} style={{textDecoration:'none'}}>
+              <li key={index}>
               <div className="sheet">
                 <div className="imageFigure">
                   <img src={post.picture_link[0]} alt="logo" />
@@ -128,12 +137,11 @@ class ProfileGuiders extends Component {
                   </span>
                   <h3>
                     <span
-                      onClick={() => this.handleGotoPage(post.post_id, guider_id)}
                     >
                       {post.description}
                     </span>
                   </h3>
-                  <div className="price">
+                  <div className="price" style={{color:'black'}}>
                     <i className="fa fa-money" aria-hidden="true"></i>
                     <span>{" " + post.price}$</span>
                     <span className="experienceCard-topDetails-bullet">
@@ -172,6 +180,7 @@ class ProfileGuiders extends Component {
                 </div>
               </div>
             </li>
+           </Link>
           ));
           return post;
     }
@@ -193,20 +202,22 @@ class ProfileGuiders extends Component {
     };
 
     render() {
-        let {guider_id,guider,pageCount, page} = this.state;
+        let {guider_id,guider,totalPage, page} = this.state;
         let post = this.RenderPostGuider(guider_id);
-
-        const range = this.range(0, pageCount - 1);
-        let renderPageNumbers = range.map(i => (
-        <button
-            key={i}
-            id={i}
-            onClick={() => this.handleCurrentPage(i)}
-            className={page === i ? "currentPage" : ""}
-        >
-            {i + 1}
-        </button>
-        ));
+        console.log(totalPage);
+        const range = this.range(0, totalPage - 1);
+        let renderPageNumbers = totalPage === 1 ? '' :
+        range.map(i => (
+          <button
+              key={i}
+              id={i}
+              onClick={() => this.handleCurrentPage(i)}
+              className={page === i ? "currentPage" : ""}
+          >
+              {i + 1}
+          </button>
+          ))
+        ;
 
         return (
             <div>
@@ -297,9 +308,6 @@ class ProfileGuiders extends Component {
                                 Just let me know your preferences for a private and personalize
                                 experience!
                             </p>
-                            <button className="Button-3JfKU">
-                                Request a personalized offer
-                            </button>
                             </div>
                         </div>
                         {/* Review */}

@@ -1,12 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { send } from '../redux/webSocket';
-<<<<<<< HEAD
+
 import Config from '../Config';
 
-=======
-import Config from '../Config'; 
->>>>>>> 552d0ce3ea223ddc7b9c18082589eb4d68896eec
 class ChatList extends React.Component {
       constructor(props) {
             super(props);

@@ -52,8 +52,16 @@ class Home extends Component {
 			currentIndex: 0,
 			filter: "none",
 			location: [],
-			postPage: 0,
-			guiderPage: 0
+			page: 0,
+			guiderPage: 0,
+			authenticate:{
+				method: "GET",
+				mode: "cors",
+				credentials: "include",
+				headers: {
+					'Accept': 'application/json'
+				},
+			}
 		};
 	}
 	
@@ -82,6 +90,7 @@ class Home extends Component {
 	}
 
 	async componentDidMount() {
+		let {authenticate} = this.state;
 		$(".search-4ul6i").focus(function () {
 			$(".fillter-4ul6i").show();
 		});
@@ -97,22 +106,14 @@ class Home extends Component {
 		});
 
 		try {
-			const locate = await fetch(Config.api_url + "location/findAll", {
-				method: "GET",
-				mode: "cors",
-				credentials: "include"
-			});
+			const locate = await fetch(Config.api_url + "location/findAll", authenticate);
 			if (!locate.ok) {
 				throw Error(responseTour.status + ": " + responseTour.statusText);
 			}
 			const cities = await locate.json();
 
 
-			const responseTour = await fetch(Config.api_url + "guiderpost/getTopTour", {
-				method: "GET",
-				mode: "cors",
-				credentials: "include"
-			});
+			const responseTour = await fetch(Config.api_url + "guiderpost/getTopTour", authenticate);
 			if (!responseTour.ok) {
 				throw Error(responseTour.status + ": " + responseTour.statusText);
 			}
@@ -177,70 +178,106 @@ class Home extends Component {
 		window.sessionStorage.setItem("category_name", category_name);
 	};
 
-	searchGuider = async (input) => {
+	searchGuider = async (input,page) => {
 		try {
 			const responsePosts = await fetch(
-				Config.api_url + "Guider/Search/" + input + "/" + this.state.guiderPage,
-				{
-					method: "GET",
-					mode: "cors",
-					credentials: "include",
-					headers: {
-						'Accept': 'application/json'
-					},
-				}
+				Config.api_url + "Guider/Search/" + input + "/" + page,
+				this.state.authenticate
+			);
+			const pageCount = await fetch(
+				Config.api_url + "Guider/SearchPageCoun/" + input ,
+				this.state.authenticate
 			);
 
 			if (!responsePosts.ok) {
 				throw Error(responsePosts.status + ": " + responsePosts.statusText);
 			}
-
+			
 			const guiders = await responsePosts.json();
+			const totalPage = await pageCount.json();
 
-
-			this.setState({ searchGuider: guiders, guiderPage: this.state.guiderPage ,inputSearch:input});
+			this.setState({ searchGuider: guiders,inputSearch:input,totalPage});
 		} catch (err) {
 			console.log(err);
 		}
 	}
-	searchLocation = async (input) => {
+
+	searchLocation = async (input,page) => {
 		try {
 			//let guider_id = this.props.id;
 			const responsePosts = await fetch(
-				Config.api_url + "guiderpost/findAllPostWithLocationName/" + input + "/" + this.state.postPage,
-				{
-					method: "GET",
-					mode: "cors",
-					credentials: "include",
-					headers: {
-						'Accept': 'application/json'
-					},
-				}
+				Config.api_url + "guiderpost/findAllPostWithLocationName/" + input + "/" + page,
+				this.state.authenticate
+			);
+			const pageCount = await fetch(
+				Config.api_url + "guiderpost/findAllPostWithLocationNamePageCount/" + input ,
+				this.state.authenticate
 			);
 
 			if (!responsePosts.ok) {
 				throw Error(responsePosts.status + ": " + responsePosts.statusText);
 			}
-
+			if (!pageCount.ok) {
+				throw Error(pageCount.status + ": " + pageCount.statusText);
+			}
+			let totalPage = await pageCount.json();
 			const posts = await responsePosts.json();
-
-			this.setState({ searchPost: posts, postPage: this.state.postPage,inputSearch:input});
+			this.setState({ searchPost: posts,inputSearch:input,totalPage});
 		} catch (err) {
 			console.log(err);
 		}
 	}
+
+	range = (start, end) => {
+		var ans = [];
+		for (let i = start; i <= end; i++) {
+			ans.push(i);
+		}
+		return ans;
+	}
+
+	handleCurrentPage = (currentPage) => {
+		let {inputSearch,filter} = this.state;
+		if(filter === "guider"){
+			this.searchGuider(inputSearch,currentPage);
+		}else if(filter === "location"){
+			this.searchLocation(inputSearch,currentPage);
+		}
+		
+		this.setState({
+			page: currentPage
+		});
+		
+	}
+
 	 notFound = () =>{
 		 return <div className="searchNotFound">
 			 <h2 style={{fontWeight:'600'}}>No results</h2>
 			 <p>Your search did not return any results.</p>
 		 </div>
 	 }
+
 	render() {
 		let input = null;
-		let { currentIndex, slideShow,inputSearch,searchGuider,searchPost } = this.state;
+		let { currentIndex, slideShow,inputSearch,searchGuider,searchPost,page,totalPage } = this.state;
 		let guiderlength = searchGuider.length;
 		let location = searchPost.length;
 		let src = Config.api_url + slideShow[currentIndex];
+		
+		//pagination
+		const range = this.range(0, totalPage - 1);
+		let renderPageNumbers = totalPage === 1 ? '' :
+		range.map((i) => (
+			<button
+				key={i}
+				id={i}
+				onClick={()=>this.handleCurrentPage(i)}
+				className={page === i ? "currentPage" : ''}
+			>
+				{i+1}
+			</button>
+		)
+	);
 
 		let tour = this.state.category.map((tour, index) => {
 			return (
@@ -362,6 +399,11 @@ class Home extends Component {
 					}
 				</ul>
 			</div>
+			<div className="pagination">
+				<div className="paginationContent">
+					{renderPageNumbers}
+				</div>
+			</div>
 		</div>
 		);
 		//console.log(this.state.searchGuider);
@@ -445,9 +487,9 @@ class Home extends Component {
 								this.state.filter = (this.state.filter === "none") ? "guider" : this.state.filter;
 							
 								if (this.state.filter === "guider") {
-									this.searchGuider(input.value);
+									this.searchGuider(input.value,0);
 								} else if (this.state.filter === "location") {
-									this.searchLocation(input.value);
+									this.searchLocation(input.value,0);
 								} else {
 									console.log("search other filter");
 								}

@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { send } from '../redux/webSocket';
+import Config from '../Config'; 
 class ChatList extends React.Component {
       constructor(props) {
             super(props);
@@ -10,7 +11,7 @@ class ChatList extends React.Component {
             }
       }
 
-      componentDidMount() {
+      async componentDidMount() {
             try {
                   let guests = await fetch(`${Config.api_url}messages/${this.props.user.userName}/${this.props.receiver}/${this.state.page}/${this.state.page+10}`, {
                         method:"GET",

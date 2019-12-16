@@ -1,4 +1,8 @@
 import Config from '../Config';
+<<<<<<< HEAD
+=======
+
+>>>>>>> 552d0ce3ea223ddc7b9c18082589eb4d68896eec
 
 export const wsConnect = (host, name) => ({ type: 'WS_CONNECT', host, name });
 export const wsConnecting = host => ({ type: 'WS_CONNECTING', host });
@@ -8,7 +12,7 @@ export const wsDisconnected = host => ({ type: 'WS_DISCONNECTED', host });
 export const send = message => ({ type: 'SEND', message });
 export const get = () => ({ type: 'GET' });
 export const save = message => ({ type: 'SAVE', message });
-export const loadGuest = () => ({ type: 'LOAD' });
+export const load = () => ({ type: 'LOAD' });
 export const arrange = user => ({ type: 'ARRANGE', user });
 export const clear = () => ({ type: 'CLEAR' });
 const websocketInitialState = {};
@@ -68,9 +72,14 @@ export const loadGuest = guest => dispatch => fetch(`${Config.api_url}messages/$
       credentials: "include",
       headers: {
             'Content-Type': 'application/json',
+<<<<<<< HEAD
       },
       body: JSON.stringify(login)
       })
+=======
+      }
+})
+>>>>>>> 552d0ce3ea223ddc7b9c18082589eb4d68896eec
       .then(res => res.json(), error => {
             console.log('An error occurred.', error);
             throw new Error(error);
@@ -83,7 +92,7 @@ export const loadGuest = guest => dispatch => fetch(`${Config.api_url}messages/$
             dispatch({ type: 'ERROR', err: 'websocket error' });
       });
 
-export const loadMsg = () => dispatch => fetch(`${Config.api_url}messages/${guest}`, {
+export const loadMsg  = guest => dispatch => fetch(`${Config.api_url}messages/${guest}`, {
       method: "GET",
       mode: "cors",
       credentials: "include",
@@ -92,7 +101,7 @@ export const loadMsg = () => dispatch => fetch(`${Config.api_url}messages/${gues
             console.log('An error occurred.', error);
             throw new Error(error);
       })
-      .then(() => {
+      .then((json) => {
             json.array.forEach(element => {
                   dispatch({ type: 'SAVE', message: element });      
             });

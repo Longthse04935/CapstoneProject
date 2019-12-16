@@ -378,7 +378,7 @@ class GuiderProfile extends Component {
                                           </div>
 
                                           <div className="last-information">
-                                                <h1 className="h2-introduce">Some thing about you</h1>
+                                                <h2 className="h2-introduce">Some thing about you</h2>
                                                 <div className="label-information">Your language</div>
                                                 <div style={{ marginLeft: 30 }}>
                                                       {languageOption}

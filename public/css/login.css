@@ -237,3 +237,15 @@
     color:#e71575;
     font-size: 13px;
 }
+
+
+/* Css change password */
+.changePassword{
+    margin: auto;
+    margin-top: 40px;
+}
+
+.changePassword h2{
+    text-align: center;
+    margin-bottom: 30px;
+}

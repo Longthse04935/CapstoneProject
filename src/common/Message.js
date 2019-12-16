@@ -40,9 +40,9 @@ class Message extends React.Component {
             //let messages = this.props.getState().messages;
             //console.log(this.props);
             return (
-                  <div className="ChatRoom" style={{ height: "800px" }}>
-                        <div className="chat_window" style={{ height: "800px" }}>
-                              <div className="plan" style={{ height: "800px", width: "300px", left: "-300px" }}>
+                  <div className="messageRoom">
+                        <div className="chat_window">
+                              <div className="plan">
                                     <div className="planContent">
                                           <h1>Chat</h1>
                                           <div style={{ marginBottom: "30px" }} />

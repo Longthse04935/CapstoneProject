@@ -66,7 +66,7 @@ class ChatList extends React.Component {
             let repassword = null;
             let newpassword = null;
             return (
-                  <div className="col-lg-7 push-lg-4 personal-info">
+                  <div className="col-lg-7 push-lg-4 personal-info changePassword">
                         {this.state.alert}
                         <h2>Change Password</h2>
                         <form onSubmit={async (e) => {
@@ -115,31 +115,31 @@ class ChatList extends React.Component {
                         }}>
 
                               <div className="form-group row">
-                                    <label className="col-lg-3 col-form-label form-control-label">Old password: </label>
-                                    <div className="col-lg-5">
+                                    <label className="col-lg-4 col-form-label form-control-label">Old password: </label>
+                                    <div className="col-lg-8">
                                           <input ref={node => { password = node; }} className="form-control"
                                                 required type="password" min="8" min="24" />
 
                                     </div>
                               </div>
                               <div className="form-group row">
-                                    <label className="col-lg-3 col-form-label form-control-label">New password: </label>
-                                    <div className="col-lg-5">
+                                    <label className="col-lg-4 col-form-label form-control-label">New password: </label>
+                                    <div className="col-lg-8">
                                           <input ref={node => { newpassword = node; }} required className="form-control" type="password"
                                                 min="8" min="24" />
 
                                     </div>
                               </div>
                               <div className="form-group row">
-                                    <label className="col-lg-3 col-form-label form-control-label">Confirm New password:</label>
-                                    <div className="col-lg-5">
+                                    <label className="col-lg-4 col-form-label form-control-label">Confirm New password:</label>
+                                    <div className="col-lg-8">
                                           <input ref={node => { repassword = node; }} className="form-control"
                                                 type="password" required min="8" min="24" />
                                     </div>
                               </div>
 
                               <div className="form-group row">
-                                    <label className="col-lg-3 col-form-label form-control-label" />
+                                    <label className="col-lg-4 col-form-label form-control-label" />
                                     <div className="col-lg-8">
 
                                           <input

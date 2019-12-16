@@ -44,7 +44,7 @@ class PlanInPost extends React.Component {
     let { plans } = this.state;
   
     return (
-      <div id="planInPost">
+      <div id="planInPost" className="planInfo">
         <h2>This is our plan</h2>
         <p>
           Check out the plan below to see what you'll get up to with your local

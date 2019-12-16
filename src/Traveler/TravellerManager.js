@@ -20,7 +20,7 @@ class TravellerManager extends Component {
 			rated: 0.0,
 			alert: null,
 			cmtExist: [],
-			status: '',
+			status: 'WAITING',
 			first:0
 		};
 	}
@@ -41,7 +41,7 @@ class TravellerManager extends Component {
 		let user = this.props.user;
 		try {
 			const orderResponse = await fetch(
-				Config.api_url + "Order/GetOrderByStatus?role=" + "TRAVELER" + "&id=" + user.id + "&status=UNCONFIRMED",
+				Config.api_url + "Order/GetOrderByStatus?role=" + "TRAVELER" + "&id=" + user.id + "&status=WAITING",
 
 				{
 					method: "GET",
@@ -134,8 +134,6 @@ class TravellerManager extends Component {
 	}
 
 	async tabList(status) {
-		this.setState({first:1});
-		//var user = JSON.parse(sessionStorage.getItem('user'));
 		let user = this.props.user;
 		try {
 			const orderResponse = await fetch(
@@ -182,6 +180,7 @@ class TravellerManager extends Component {
 	}
 
 	handleCancle = async (trip,status) => {
+		$(".coverLoader").show();
 		try {
 			const orderResponse = await fetch(
 				Config.api_url + "Order/CancelOrderAsTraveler?trip_id=" + trip,
@@ -197,7 +196,8 @@ class TravellerManager extends Component {
 			if (!orderResponse.ok) {
 				throw Error(orderResponse.status + ": " + orderResponse.statusText);
 			}
-			this.tabList(status);
+			$(".coverLoader").hide();
+			this.tabList(status)
 		} catch (err) {
 			console.log(err);
 		}
@@ -233,6 +233,9 @@ class TravellerManager extends Component {
 		return (
 			<div>
 				{this.state.alert}
+				<div className="coverLoader">
+					<div className="loader"></div>
+				</div>
 				{isDisable ? <div className="layout_comment">
 					<div id="comment_form">
 						<div>
@@ -306,7 +309,7 @@ class TravellerManager extends Component {
 											{status === "FINISHED" ? <th className="cell100 column8">Review</th> : ''}
 											{status === "ONGOING" ? <th className="cell100 column8">Cancel</th> : ''}
 											{status === "WAITING" ? <th className="cell100 column8">Cancel</th> : ''}
-											{first === 0 ? <th className="cell100 column8">Cancel</th> : ''}
+											{/* {first === 0 ? <th className="cell100 column8">Cancel</th> : ''} */}
 										</tr>
 									</thead>
 									<tbody>

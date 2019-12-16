@@ -3,7 +3,6 @@ import Chatbox from "./Traveler/Chatbox";
 import ProfileGuiders from "./Guider/ProfileGuiders";
 import Home from "./common/Home";
 import ProfileTravaller from './Traveler/ProfileTraveller';
-import GuiderAllPost from './Guider/GuiderAllPost';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { BrowserRouter } from "react-router-dom";
 import Navbar from './Nav/Navbar';

@@ -42,7 +42,6 @@ class PostTourDetail extends Component {
 				throw Error(totalPage.status + ": " + totalPage.statusText);
 			}
 			pageCount = await totalPage.json();
-			pageCount++;
 
 			const locations = await response.json();
 			this.setState({locations,pageCount});
@@ -85,24 +84,26 @@ class PostTourDetail extends Component {
 		const data = this.state.dataPostOneCategory;
 		const {locations,pageCount,page} = this.state;
 		const range = this.range(0, pageCount - 1);
-		let renderPageNumbers = range.map((i) => (
-				<button
-					key={i}
-					id={i}
-					onClick={()=>this.handleCurrentPage(i)}
-					className={page === i ? "currentPage" : ''}
-				>
-					{i+1}
-				</button>
+		let renderPageNumbers = pageCount === 1 ? '':
+				range.map((i) => (
+					<button
+						key={i}
+						id={i}
+						onClick={()=>this.handleCurrentPage(i)}
+						className={page === i ? "currentPage" : ''}
+					>
+						{i+1}
+					</button>
+				)
 			)
-		);
+		;
 
 		let category_name = window.sessionStorage.getItem('category_name');
 
 		let showTour = (
 			<div className="postResult" style={{width:'100%'}}>
 			<div className="bookOffers guiderResult" id="searchResult">	
-				<ul className="ulSearchLocation" style={{width:'100%'}}>
+				<ul id="tourDetailList" className="ulSearchLocation" style={{width:'100%'}}>
 					{
 						this.state.dataPostOneCategory.map((post, index) => (
 						<Link to={"/post/" + post.post_id}>

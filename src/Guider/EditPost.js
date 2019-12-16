@@ -516,7 +516,7 @@ class EditPost extends Component {
             <div className="dropdownCoverSelect" key={index}>
 
                 <input className="dropdown-select service" type="text" required onChange={(eve) => { this.state.services[index] = eve.target.value; }} defaultValue={this.state.services[index]} />
-                <button type="button" className="btn-add-service" onClick={this.removeService} id={index}><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                <button type="button" className="btn-add-service" onClick={this.removeService} id={index}><i className="fa fa-trash-o" aria-hidden="true"></i></button>
 
             </div>
         );
@@ -526,7 +526,7 @@ class EditPost extends Component {
                 <div className="coverContent" key={index}>
                     <div className="brief">Brief<input type="text" name="brief" onChange={(eve) => { act.brief = eve.target.value; }} defaultValue={act.brief} /></div>
                     <div className="detail">Detail<textarea rows={4} cols={50} type="textarea" required name="detail" onChange={(eve) => { act.detail = eve.target.value; }} defaultValue={act.detail} /></div>
-                    <button type="button" className="btn-add-service" onClick={this.removeActivity} id={index}><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                    <button type="button" className="btn-add-service" onClick={this.removeActivity} id={index}><i className="fa fa-trash-o" aria-hidden="true"></i></button>
                 </div>
             </div>
         );
@@ -535,7 +535,7 @@ class EditPost extends Component {
             <div className="dropdownCoverSelect" key={index}>
 
                 <input className="dropdown-select reason" type="text" required onChange={(eve) => { this.state.reasons[index] = eve.target.value; }} defaultValue={this.state.reasons[index]} />
-                <button type="button" className="btn-add-service" onClick={this.removeReason} id={index}><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                <button type="button" className="btn-add-service" onClick={this.removeReason} id={index}><i className="fa fa-trash-o" aria-hidden="true"></i></button>
 
             </div>
         );

@@ -75,8 +75,10 @@ export const loadGuest = guest => dispatch => fetch(`${Config.api_url}messages/$
       credentials: "include",
       headers: {
             'Content-Type': 'application/json',
-      }
-})
+      },
+      // body: JSON.stringify(login)
+      })
+
       .then(res => res.json(), error => {
             console.log('An error occurred.', error);
             throw new Error(error);

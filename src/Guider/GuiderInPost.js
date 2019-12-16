@@ -74,6 +74,15 @@ class GuiderInPost extends React.Component {
             window.location.href=("/chatbox/" + this.props.guiderId + "/" + this.props.postId);
         }
     }
+
+    checkPath = () =>{
+        let pathname = window.location.pathname;
+        if(pathname.includes('guider')){
+            return (<button className="BtnContact" onClick={()=>{window.location.href='/'}}>Go Home</button>)
+        }else if(pathname.includes('post')){
+            return (<button className="BtnContact" onClick={this.goToBook}>Come and join me</button>);
+        }
+    }
     render() {
         let guide = this.state.guider;
         let languages = '';
@@ -84,8 +93,8 @@ class GuiderInPost extends React.Component {
                 languages += guide.languages[i].toUpperCase() + ',';
             }
         }
-
-        let checkPath = <button className="BtnContact" onClick={this.goToBook}>Come and join me</button>;
+        
+        let checkPath = this.checkPath();
             // <Link to={"/chatbox/" + this.props.guiderId + "/" + this.props.postId}></Link>
 
         return (

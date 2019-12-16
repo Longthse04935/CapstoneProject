@@ -178,6 +178,7 @@ class PostDetail extends React.Component {
 
 	loadPost = async (autheticate, page) => {
 		let { guider } = this.state;
+
 		const response = await fetch(
 			Config.api_url + "guiderpost/allPostOfOneCategory/" + guider.guider_id + "/" + page,
 			autheticate);
@@ -314,6 +315,7 @@ class PostDetail extends React.Component {
 							<i className="fa fa-hourglass-half" aria-hidden="true"></i>
 							<span className="experienceCard-topDetails-duration">
 								{" " + post.total_hour} hours
+
               </span>
 							<span className="experienceCard-topDetails-bullet">
 								{" "}
@@ -454,6 +456,7 @@ class PostDetail extends React.Component {
 			</div>
 		);
 	}
+
 }
 function mapStateToProps(state) {
 	const user = state.user;

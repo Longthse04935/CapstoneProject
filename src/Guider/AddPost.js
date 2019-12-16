@@ -421,7 +421,7 @@ class AddPost extends Component {
             <div className="dropdownCoverSelect" key={index}>
 
                 <input className="dropdown-select service" type="text" required name="service" onChange={(eve) => { this.state.services[index] = eve.target.value; }} />
-                <button type="button" className="btn-add-service" onClick={this.removeService} id={index}><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                <button type="button" className="btn-add-service" onClick={this.removeService} id={index}><i className="fa fa-trash-o" aria-hidden="true"></i></button>
 
             </div>
         );
@@ -432,7 +432,7 @@ class AddPost extends Component {
 
                     <div className="brief">Brief<input type="text" name="brief" onChange={(eve) => { act.brief = eve.target.value;}} /></div>
                     <div className="detail">Detail<textarea rows={4} required cols={50} type="textarea" name="detail" onChange={(eve) => { act.detail = eve.target.value; }} /></div>
-                    <button type="button" className="btn-add-service" onClick={this.removeActivity} id={index}><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                    <button type="button" className="btn-add-service" onClick={this.removeActivity} id={index}><i className="fa fa-trash-o" aria-hidden="true"></i></button>
 
                 </div>
             </div>
@@ -442,7 +442,7 @@ class AddPost extends Component {
             <div className="dropdownCoverSelect"  key={index}>
 
                 <input className="dropdown-select reason" type="text" name="reason" required onChange={(eve) => { this.state.reasons[index] = eve.target.value;}} />
-                <button type="button" className="btn-add-service" onClick={this.removeReason} id={index}><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                <button type="button" className="btn-add-service" onClick={this.removeReason} id={index}><i className="fa fa-trash-o" aria-hidden="true"></i></button>
 
             </div>
         );
@@ -534,7 +534,7 @@ class AddPost extends Component {
                                     </div>
                                 </div>
 
-                                <div class="form-group row">
+                                <div className="form-group row">
                                     <div className="col-lg-4 group_IncludeSer">
                                         <label className="col-form-label form-control-label">Including service</label>
                                         {/* <div className="col-lg-7" id="includeServiceCover"></div> */}

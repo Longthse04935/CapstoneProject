@@ -1,4 +1,4 @@
-
+import Config from '../Config';
 
 export const wsConnect = (host, name) => ({ type: 'WS_CONNECT', host, name });
 export const wsConnecting = host => ({ type: 'WS_CONNECTING', host });
@@ -70,7 +70,7 @@ export const loadGuest = guest => dispatch => fetch(`${Config.api_url}messages/$
             'Content-Type': 'application/json',
       },
       body: JSON.stringify(login)
-})
+      })
       .then(res => res.json(), error => {
             console.log('An error occurred.', error);
             throw new Error(error);

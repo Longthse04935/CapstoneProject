@@ -7,20 +7,18 @@ body {
   font-family: "Calibri", "Roboto", sans-serif;
 }
 .ChatRoom{
-  position: relative;
-  height: 966px;
+  width: 46%;
+  order: 2;
+  border-left: 1px solid #dedede;
+  border-right: 1px solid #dedede;
 }
 .chat_window {
-  position: absolute;
-  width: calc(100% - 20px);
-  max-width: 800px;
-  height: 800px;
-  background-color: #fff;
-  left: 50%;
-  top: 52%;
-  transform: translateX(-50%) translateY(-50%);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-  background-color: #f8f8f8;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 3px 7px -1px;
 }
 
 .top_menu {
@@ -63,6 +61,8 @@ body {
   margin: 0;
   height: 640px;
   overflow-y: scroll;
+  background: #e6e4e4;
+  box-shadow: 1px 1px 30px rgba(0, 0, 0, 0.1);
 }
 .messages .message {
   clear: both;
@@ -145,12 +145,9 @@ body {
 }
 
 .bottom_wrapper {
-  position: relative;
   width: 100%;
   background-color: #fff;
   padding: 20px 20px;
-  position: absolute;
-  bottom: 0;
 }
 .bottom_wrapper .message_input_wrapper {
   display: inline-block;
@@ -261,16 +258,16 @@ body {
 /* guider info */
 
 .guiderInfo {
-  position: absolute;
-  padding-bottom: 30px;
-  border-bottom: 1px solid #eaeaea;
-  height: 800px;
-  background: #fff;
-  width: 450px;
-  right: -44%;
-  border-radius: 0 10px 10px 0;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  width: 27%;
+  order: 3;
 }
+
+.planInfo{
+  width: 27%;
+  order: 1;
+  padding: 0 15px 0 15px;
+}
+
 .guiderContent {
   margin: 0 20px;
 }
@@ -390,6 +387,7 @@ body {
 
 .react-datepicker-wrapper{
   width: 86% !important;
+  margin-top: 10px;
 }
 
 #viewNummberChat {
@@ -408,17 +406,25 @@ body {
   position: relative;
 }
 
+.selectTime .timeEnd{
+  position: absolute;
+  right: 0;
+}
+
+
+
 .selectTime input[name='endTime']{
     border: 1px solid #ccc;
-    width: 165px;
+    width: 145px;
     border-radius: 3px;
     padding: 5px 8px;
     position: absolute;
     margin-left: 22px;
+    right: 0;
 }
 .select-style {
   border: 1px solid #ccc;
-  width: 165px;
+  width: 145px;
   border-radius: 3px;
   overflow: hidden;
   display: inline-block;
@@ -470,4 +476,14 @@ body {
 
 .tool-tip .tool-tipItem .tool-tipItemText {
   margin-left:10px;
+}
+
+
+/* Css for Message */
+.messageRoom .chat_window .plan{
+  position: static;
+}
+
+.messageRoom .chat_window .ChatRoom{
+  width: calc(100% - 450px);
 }

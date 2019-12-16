@@ -51,71 +51,74 @@ class Schedule extends Component {
             });
 
             return (
-                  <div className="Schedule">
-                        <div className="pickdate">
-                              Pick Date Start:
-                <DatePicker
-                                    selected={this.state.tourDate}
-                                    onChange={this.dateChange}
-                              />
-                        </div>
-                        <div className="cd-schedule loading">
-                              <div className="timeline">
-                                    <ul>
-                                          <li><span>00:00</span></li>
-                                          <li><span>01:00</span></li>
-                                          <li><span>02:00</span></li>
-                                          <li><span>03:00</span></li>
-                                          <li><span>04:00</span></li>
-                                          <li><span>05:00</span></li>
-                                          <li><span>06:00</span></li>
-                                          <li><span>07:00</span></li>
-                                          <li><span>08:00</span></li>
-                                          <li><span>09:00</span></li>
-                                          <li><span>10:00</span></li>
-                                          <li><span>11:00</span></li>
-                                          <li><span>12:00</span></li>
-                                          <li><span>13:00</span></li>
-                                          <li><span>14:00</span></li>
-                                          <li><span>15:00</span></li>
-                                          <li><span>16:00</span></li>
-                                          <li><span>17:00</span></li>
-                                          <li><span>18:00</span></li>
-                                          <li><span>19:00</span></li>
-                                          <li><span>20:00</span></li>
-                                          <li><span>21:00</span></li>
-                                          <li><span>22:00</span></li>
-                                          <li><span>23:00</span></li>
-                                          <li><span>24:00</span></li>
-                                    </ul>
+                  <div className="containerMain">
+                        <div className="Schedule">
+                              <h1 className="title_Schedule">Schedule</h1>
+                              <div className="pickdate">
+                                    Pick Date Start:
+                                    <DatePicker
+                                          selected={this.state.tourDate}
+                                          onChange={this.dateChange}
+                                    />
                               </div>
-
-                              <div className="events">
-                                    <ul>{order}</ul>
-                              </div>
-
-                              <div className="event-modal">
-                                    <header className="header">
-                                          <div className="content">
-                                                <span className="event-date"></span>
-
-
-
-                                                <h3 className="event-name"></h3>
-                                          </div>
-
-                                          <div className="header-bg"></div>
-                                    </header>
-
-                                    <div className="body">
-                                          <div className="event-info"></div>
-                                          <div className="body-bg"></div>
+                              <div className="cd-schedule loading">
+                                    <div className="timeline">
+                                          <ul>
+                                                <li><span>00:00</span></li>
+                                                <li><span>01:00</span></li>
+                                                <li><span>02:00</span></li>
+                                                <li><span>03:00</span></li>
+                                                <li><span>04:00</span></li>
+                                                <li><span>05:00</span></li>
+                                                <li><span>06:00</span></li>
+                                                <li><span>07:00</span></li>
+                                                <li><span>08:00</span></li>
+                                                <li><span>09:00</span></li>
+                                                <li><span>10:00</span></li>
+                                                <li><span>11:00</span></li>
+                                                <li><span>12:00</span></li>
+                                                <li><span>13:00</span></li>
+                                                <li><span>14:00</span></li>
+                                                <li><span>15:00</span></li>
+                                                <li><span>16:00</span></li>
+                                                <li><span>17:00</span></li>
+                                                <li><span>18:00</span></li>
+                                                <li><span>19:00</span></li>
+                                                <li><span>20:00</span></li>
+                                                <li><span>21:00</span></li>
+                                                <li><span>22:00</span></li>
+                                                <li><span>23:00</span></li>
+                                                <li><span>24:00</span></li>
+                                          </ul>
                                     </div>
 
-                                    <a href="#0" className="close">Close</a>
-                              </div>
+                                    <div className="events">
+                                          <ul>{order}</ul>
+                                    </div>
 
-                              <div className="cover-layer"></div>
+                                    <div className="event-modal">
+                                          <header className="header">
+                                                <div className="content">
+                                                      <span className="event-date"></span>
+
+
+
+                                                      <h3 className="event-name"></h3>
+                                                </div>
+
+                                                <div className="header-bg"></div>
+                                          </header>
+
+                                          <div className="body">
+                                                <div className="event-info"></div>
+                                                <div className="body-bg"></div>
+                                          </div>
+
+                                          <a href="#0" className="close">Close</a>
+                                    </div>
+
+                                    <div className="cover-layer"></div>
+                              </div>
                         </div>
                   </div>
             );

@@ -338,7 +338,7 @@ class Chatbox extends Component {
 
 
 		return (
-			<div className="ChatRoom">
+			<div className="">
 				{this.state.alert}
 				<Notification message={this.state.message} isError={this.state.isError} />
 				{/* Chat form */}
@@ -406,7 +406,7 @@ class Chatbox extends Component {
 								/>
 							</div>
 							<div className="selectTime">
-								<p style={{ position: 'relative' }}>Time Start: <span style={{ position: 'absolute', right: '145px' }}>Time End</span></p>
+								<p style={{ position: 'relative' }}>Time Start: <span className="timeEnd">Time End:</span></p>
 								<div className="select-style">
 									<select value={this.state.valueItem} onChange={(e) => this.handleChangeHour(e)}>
 										{selectHour}

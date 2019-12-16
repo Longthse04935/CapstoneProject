@@ -128,8 +128,11 @@
 .form-control{
     border: none;
     border: 0.5px solid #ccc;
-    width: 100px;
     height: 33px;
+}
+
+.information_Main .form-control{
+    width: 100px;
 }
 
 .DOB{

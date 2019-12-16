@@ -84,17 +84,36 @@ Main Components
 
 -------------------------------- */
 .cd-schedule {
+  width: 100%;
   position: relative;
-  height:100%;
+  height:unset !important;
   margin: 2em 0;
-  top: 200px;
+  top: 0;
   overflow:auto;
   
 }
 .pickdate {
-	position:relative;
-	top:100px;
+	
 }
+
+.title_Schedule{
+    font-size: 36px;
+    color: #000;
+    margin-top: 50px;
+    text-align: center;
+    text-transform: uppercase;
+    display: block;
+    width: 100%;
+    margin-bottom: 0;
+    font-weight: 600;
+    margin-bottom: 30px;
+}
+
+.title_Schedule{
+  text-align: center;
+
+}
+
 .react-datepicker-wrapper{
 	width:100px;
 }
@@ -105,11 +124,15 @@ Main Components
   display: none;
 }
 
+.Schedule{
+  width: 100%;
+}
+
 @media only screen and (min-width: 800px) {
   .cd-schedule {
-    width: 90%;
+    /* width: 90%;
     max-width: 1400px;
-    margin: 2em auto;
+    margin: 2em auto; */
   }
   .cd-schedule::after {
     clear: both;

@@ -36,7 +36,7 @@ class Chatbox extends Component {
 				total_hour: 1,
 			},
 			//time can book tour
-			timeAvailable: [],
+			timeAvailable: [''],
 			message: '',
 			isError: false,
 			closest_EndDate: "",
@@ -137,6 +137,7 @@ class Chatbox extends Component {
 			let options = this.option(newTourDate, " 00:00");
 			let response = await fetch(Config.api_url + 'Order/GetAvailableHours', options);
 			response = await response.json();
+			console.log(response);
 			//load end time avilable	
 			let option = this.option(newTourDate, " " + response[0]);
 			let endTime = await fetch(Config.api_url + 'Order/GetExpectedTourEnd', option);
@@ -315,7 +316,7 @@ class Chatbox extends Component {
 	};
 
 	render() {
-		const { chatData, chatText, author, numberInjoy, plan, guider, avaiDate } = this.state;
+		const {numberInjoy, plan, guider, avaiDate } = this.state;
 		let includeCalendates = avaiDate.map(date => { return new Date(date); });
 		//console.log(includeCalendates);
 		let languages = '';

@@ -358,6 +358,7 @@
 #planInPost {
   padding-bottom: 30px;
   border-bottom: 1px solid #eaeaea;
+  width: 100%;
 }
 #planInPost h2{
   padding: 30px 0;

@@ -129,7 +129,9 @@ input{
     flex-wrap: wrap;
     margin-bottom: 1rem;
 }
-
+.inputUserNamePassword{
+    padding-top:10px;
+}
 .dropdownCoverSelect .btn-add-service, .activitiesInput .btn-add-service{
     position: absolute;
     right: 0;

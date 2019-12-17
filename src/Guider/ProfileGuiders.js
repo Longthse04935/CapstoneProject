@@ -5,6 +5,7 @@ import GuiderInPost from './GuiderInPost';
 import Config from '../Config';
 import { Link } from 'react-router-dom';
 import Rated from './Rated';
+import GuiderInShort from './GuiderInShort';
 class ProfileGuiders extends Component {
   constructor(props) {
     super(props);
@@ -232,7 +233,12 @@ class ProfileGuiders extends Component {
             {/*  Content  */}
             <div className="content">
               <div className="content-left">
-
+              {guider_id ? (
+									<GuiderInShort
+										guiderId={guider_id}
+										postId={this.props.match.params.post_id}
+									/>
+								) : null}
               </div>
               <div className="content-right">
                 {/* intro content */}

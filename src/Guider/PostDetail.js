@@ -92,7 +92,6 @@ class PostDetail extends React.Component {
 				throw Error(totalPage.status + ": " + totalPage.statusText);
 			}
 			pageCount = await totalPage.json();
-			pageCount++;
 
 			//lấy ra category
 			const responseCategories = await fetch(
@@ -187,6 +186,7 @@ class PostDetail extends React.Component {
 			throw Error(response.status + ": " + response.statusText);
 		}
 		const posts = await response.json();
+		console.log(posts);
 		this.setState({ posts });
 	}
 
@@ -273,12 +273,11 @@ class PostDetail extends React.Component {
 		const { postInfo, pageCount, page, statusFavorite } = this.state;
 		const post_id = this.props.match.params.post_id;
 		let guider_id = this.state.guider.guider_id;
-
 		//pagination
 
 		const data = this.state.posts;
 		const range = this.range(0, pageCount - 1);
-		let renderPageNumbers = range.map(i => (
+		let renderPageNumbers = pageCount === 1 ? '' : range.map(i => (
 			<button
 				key={i}
 				id={i}
@@ -288,6 +287,7 @@ class PostDetail extends React.Component {
 				{i + 1}
 			</button>
 		));
+
 		let posts = data.map((post, index) => (
 			<li key={index}>
 				<div className="sheet">
@@ -394,7 +394,7 @@ class PostDetail extends React.Component {
 											allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
 											allowFullScreen
 										></iframe>
-										<h2 className="titleTour">{postInfo.title}<i class="fa fa-heart" id={favorite} onClick={this.handleFavorite} aria-hidden="true"></i></h2>
+										<h2 className="titleTour">{postInfo.title}<i className="fa fa-heart" id={favorite} onClick={this.handleFavorite} aria-hidden="true"></i></h2>
 										<p className="introduceTour">{postInfo.description}</p>
 									</div>
 									<div className="activities">

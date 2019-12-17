@@ -168,64 +168,68 @@ class LoggedTvl extends Component {
                             <div className="navRight">
                                 <div className="navbarRightContent">
                                 <ul className="logged">
-                <li>
-                  <Link to="/chat">Message</Link>
-                </li>
-                <li>
-                  <Link to={"/tvlManager"}>Bookings</Link>
-                </li>
-                <li className="avatarLogged" onClick={this.disableLoggedChoice}>
-                  {
-                    avatar_link
-                  }
-
-
-                    <ul
-                      className="dropContent"
-                      style={
-                        this.state.disable
-                          ? { display: "none" }
-                          : { display: "block" }
-                      }
-                    >
-                      <span>
-                        <li>
-                          <Link to="/profiletraveller">Profile traveller</Link>
-                          <i
-                            className="fa fa-address-card-o"
-                            aria-hidden="true"
-                          ></i>
-                        </li>
-                        <li>
-                          <Link to="/tvlManager">Traveler manage</Link>
-                          <i className="fa fa-suitcase" aria-hidden="true"></i>
-                        </li>
-                        <li>
-                          <Link to="/changepassword">Change password</Link>
-                          <i class="fa fa-key" aria-hidden="true"></i>
-                        </li>
-                      </span>
-                      <li
-                        onClick={() => {
-                          // console.log("log out");
-                          // const user = {
-                          //   userName: "Guest",
-                          //   role: "GUEST",
-                          //   id: 0
-                          // };
-                          // this.props.reload.call(this, user);window.location.href = "/";
-                          //this.props.dispatch(wsDisconnect(Config.api_url+"ws"));
-                          this.props.dispatch(exit());
-                          window.location.href = "/";
-                          
-                        }}
-                      >
-                        Log out
-                        <i className="fa fa-sign-out" aria-hidden="true"></i>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
+                                  <li>
+                                      <Link to="/"><i className="fa fa-users" aria-hidden="true"></i></Link>
+                                  </li>
+                                  <li>
+                                      <Link to="/chat"><i className="fa fa-comments" aria-hidden="true"></i></Link>
+                                  </li>
+                                  <li>
+                                      <Link to="/"><i className="fa fa-bell" aria-hidden="true"></i></Link>
+                                  </li>
+                                  <li>
+                                    <Link to={"/tvlManager"}>Bookings</Link>
+                                  </li>
+                                  <li className="avatarLogged" onClick={this.disableLoggedChoice}>
+                                    {
+                                      avatar_link
+                                    }
+                                      <ul
+                                        className="dropContent"
+                                        style={
+                                          this.state.disable
+                                            ? { display: "none" }
+                                            : { display: "block" }
+                                        }
+                                      >
+                                        <span>
+                                          <li>
+                                            <Link to="/profiletraveller">Profile traveller</Link>
+                                            <i
+                                              className="fa fa-address-card-o"
+                                              aria-hidden="true"
+                                            ></i>
+                                          </li>
+                                          <li>
+                                            <Link to="/tvlManager">Traveler manage</Link>
+                                            <i className="fa fa-suitcase" aria-hidden="true"></i>
+                                          </li>
+                                          <li>
+                                            <Link to="/changepassword">Change password</Link>
+                                            <i class="fa fa-key" aria-hidden="true"></i>
+                                          </li>
+                                        </span>
+                                        <li
+                                          onClick={() => {
+                                            // console.log("log out");
+                                            // const user = {
+                                            //   userName: "Guest",
+                                            //   role: "GUEST",
+                                            //   id: 0
+                                            // };
+                                            // this.props.reload.call(this, user);window.location.href = "/";
+                                            //this.props.dispatch(wsDisconnect(Config.api_url+"ws"));
+                                            this.props.dispatch(exit());
+                                            window.location.href = "/";
+                                            
+                                          }}
+                                        >
+                                          Log out
+                                          <i className="fa fa-sign-out" aria-hidden="true"></i>
+                                        </li>
+                                      </ul>
+                                    </li>
+                                  </ul>
                                 </div>
                             </div>
                         </div>

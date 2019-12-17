@@ -151,7 +151,13 @@ class LoggedGuider extends Component {
                                 <div className="navbarRightContent">
                                     <ul className="logged" >
                                         <li>
-                                            <Link to="/chat">Message</Link>
+                                            <Link to="/"><i className="fa fa-users" aria-hidden="true"></i></Link>
+                                        </li>
+                                        <li>
+                                            <Link to="/chat"><i className="fa fa-comments" aria-hidden="true"></i></Link>
+                                        </li>
+                                        <li>
+                                            <Link to="/"><i className="fa fa-bell" aria-hidden="true"></i></Link>
                                         </li>
                                         <li>
                                             <Link to={"/managebook"}>Bookings</Link>

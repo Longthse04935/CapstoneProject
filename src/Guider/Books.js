@@ -168,7 +168,7 @@ class GuiderBooks extends Component {
     let order = this.state.orders.map((order, index) => (
       <tr className="row100 body" key={index}>
         <td className="cell100 column2">
-          <Link to={`/rumor/${order.traveler_id}`}>{order.object}</Link>
+          <Link to={`/reviewtvl/10`}>{order.object}</Link>
         </td>
         <td className="cell100 column3">{order.begin_date}</td>
         <td className="cell100 column4">{order.finish_date}</td>

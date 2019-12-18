@@ -17,7 +17,6 @@ class PlanInPost extends React.Component {
   
   async componentDidMount() {
     try {
-      console.log("plan "+this.props.postId);
       const response = await fetch(
         Config.api_url + "plan/" + this.props.postId,
         {
@@ -40,11 +39,21 @@ class PlanInPost extends React.Component {
       console.log(err);
     }
   }
+  checkPath = () =>{
+    let pathname = window.location.pathname;
+    if(pathname.includes('/chatbox')){
+      return 'planInfo planWidthChatBox';
+    }else{
+      return 'planInfo';
+    }
+    
+  }
+
   render() {
     let { plans } = this.state;
-  
+    let planInPost = this.checkPath();
     return (
-      <div id="planInPost" className="planInfo">
+      <div id="planInPost" className={planInPost} >
         <h2>This is our plan</h2>
         <p>
           Check out the plan below to see what you'll get up to with your local

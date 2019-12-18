@@ -105,9 +105,12 @@ class ProfileTraveller extends Component {
   }
 
     const { data } = this.state;
-    data[name] = value;
-    if(name ==="language"){
-      data[name] = [value];
+    
+    if(name === "language"){
+      console.log('run here');
+      data.language[0] = value;
+    }else{
+      data[name] = value;
     }
     this.setState({ data });
   }
@@ -218,7 +221,7 @@ class ProfileTraveller extends Component {
 
   async submitForm(e){
     e.preventDefault();
-    var user = JSON.parse(sessionStorage.getItem('user'));
+    var user = this.props.user;
     if(this.isValidate()) {
       return false;
     } 
@@ -231,8 +234,6 @@ class ProfileTraveller extends Component {
     }else{
       data.avatar_link = avatar_link;
     }
-    // console.log(data.avatar_link);
-    // return false;
     if(errorAPI === 200){
       let options = {
         method: 'POST',
@@ -444,7 +445,7 @@ class ProfileTraveller extends Component {
                 {errors['slogan'] ? <p style={{color: "red"}} className="errorInput">{errors['slogan']}</p> : ''}
               </div>
             </div>
-            <div style={{ textAlign: "center" }}>
+            <div style={{ textAlign: "center",width:'100%' }}>
               <button className="btn-save" onClick={(e)=>{this.submitForm(e)}}>Save Your Profile</button>
             </div>
           </div>

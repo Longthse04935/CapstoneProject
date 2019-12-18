@@ -47,14 +47,19 @@ class ReviewTraveler extends Component {
             {
               method: "GET",
               mode: "cors",
-              credentials: "include"
+              credentials: "include",
+              headers: {
+                Accept: "application/json"
+              }
           });
       
           if (!response.ok) {
+            window.location.href = '/page404';
             throw Error(response.status + ": " + response.statusText);
           }
 
           const tvl = await response.json();
+          console.log(tvl);
           tvl.date_of_birth = tvl.date_of_birth.split(" ")[0];
           this.setState({tvl});
     }

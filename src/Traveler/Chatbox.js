@@ -239,7 +239,7 @@ class Chatbox extends Component {
 		let getDate = parseInt(today.getDate()) < 10 ? "0" + parseInt(today.getDate()) : parseInt(today.getDate());
 		let getMonth = parseInt(today.getMonth() + 1) < 10 ? "0" + parseInt(today.getMonth() + 1) : parseInt(today.getMonth() + 1);
 
-		let options = this.option(today , " " + this.state.hourBegin);
+		let options = this.option(today, " " + this.state.hourBegin);
 
 
 		let tourDetail = {
@@ -331,10 +331,11 @@ class Chatbox extends Component {
 		let selectHour = this.state.timeAvailable.map((value, index) => {
 			return <option key={index} value={value}>{value}</option>;
 		});
-
 		let chat = (this.state.guider.name === "") ? <div /> : <ChatList name={this.props.user.userName}
-			messages={this.props.messages.filter(msg => msg.traveler === this.props.user.userName
-				&& msg.guider === this.state.guider.name)}
+			messages={this.props.messages
+				//.filter(msg =>  msg.traveler === this.props.user.userName
+				//|| msg.guider === this.state.guider.name)
+			}
 			receiver={this.state.guider.name} />
 
 
@@ -487,7 +488,7 @@ class Chatbox extends Component {
 					<PlanInPost postId={this.props.match.params.post_id} />
 					{/* End plan of tour */}
 					{chat}
-
+					
 				</div>
 
 				{/*End  Chat form */}

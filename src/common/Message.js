@@ -44,9 +44,11 @@ class Message extends React.Component {
                                     </div>
                               </div>
                               <ChatList name={this.props.user.userName} receiver={this.state.client}
-                                    messages={this.props.messages.filter(msg => this.props.user.role === 'GUIDER'?
-                                          ( msg.guider === this.props.user.userName && msg.traveler === this.state.client) :
-                                    ( msg.guider === this.state.client && msg.traveler === this.props.user.userName))} />
+                                    messages={this.props.messages
+                                          //.filter(msg => this.props.user.role === 'GUIDER'
+                                    //?( msg.guider === this.props.user.userName && msg.traveler === this.state.client)
+                                   // :( msg.guider === this.state.client && msg.traveler === this.props.user.userName))
+                              } />
                               
                         </div>
                   </div>);

@@ -202,6 +202,7 @@ class AddPost extends Component {
             "reasons": ReactDOMServer.renderToString(this.reasonToHTML(copy.reasons))
         };
         let plan = ReactDOMServer.renderToString(this.planToHTML(copy.activities));
+        console.log(plan);
         try {
             let response = await fetch(Config.api_url+"guiderpost/add/post?guider_id=" + this.props.guiderId,
                 {
@@ -450,6 +451,7 @@ class AddPost extends Component {
 
         return (
             <div className="addPost">
+                {this.state.alert}
                 <div className="container">
                     <div className="row m-y-2">
                         {/* edit form column */}

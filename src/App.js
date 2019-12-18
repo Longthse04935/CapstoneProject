@@ -142,7 +142,8 @@ function mapStateToProps(state) {
 	const clients = state.clients;
 	const user = state.user;
 	const error = state.Error;
-	return { messages, clients, user, error };
+	const notifications = state.notifications; 
+	return { messages, clients, user, error, notifications };
 }
 App = connect(mapStateToProps)(App);
 

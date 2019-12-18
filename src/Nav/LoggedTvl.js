@@ -83,6 +83,7 @@ class LoggedTvl extends Component {
         {/* Menubar */}
 
         <nav className="navbar">
+
           <div className="menubar">
             <div className="containerMain">
               <div className="navLeft">
@@ -168,7 +169,13 @@ class LoggedTvl extends Component {
                 <div className="navbarRightContent">
                   <ul className="logged">
                     <li>
-                      <Link to="/chat">Message</Link>
+                      <Link to="/"><i className="fa fa-users" aria-hidden="true"></i></Link>
+                    </li>
+                    <li>
+                      <Link to="/chat"><i className="fa fa-comments" aria-hidden="true"></i></Link>
+                    </li>
+                    <li>
+                      <Link to="/"><i className="fa fa-bell" aria-hidden="true"></i></Link>
                     </li>
                     <li>
                       <Link to={"/tvlManager"}>Bookings</Link>
@@ -177,7 +184,6 @@ class LoggedTvl extends Component {
                       {
                         avatar_link
                       }
-
                       <ul
                         className="dropContent"
                         style={
@@ -200,7 +206,7 @@ class LoggedTvl extends Component {
                           </li>
                           <li>
                             <Link to="/changepassword">Change password</Link>
-                            <i className="fa fa-key" aria-hidden="true"></i>
+                            <i class="fa fa-key" aria-hidden="true"></i>
                           </li>
                         </span>
                         <li
@@ -212,18 +218,15 @@ class LoggedTvl extends Component {
                             //   id: 0
                             // };
                             // this.props.reload.call(this, user);window.location.href = "/";
-                            //this.props.dispatch(wsDisconnect(Config.api_url+"ws"));
                             this.props.dispatch(logOut());
                             this.props.dispatch(wsDisconnect(Config.api_url + "ws"));
                             this.props.dispatch(exit());
-                            window.location.href = "/";
+                            //window.location.href = "/";
 
                           }}
                         >
-
-
                           Log out
-                        <i className="fa fa-sign-out" aria-hidden="true"></i>
+                                          <i className="fa fa-sign-out" aria-hidden="true"></i>
                         </li>
                       </ul>
                     </li>
@@ -232,11 +235,9 @@ class LoggedTvl extends Component {
               </div>
             </div>
           </div>
-
-
         </nav>
         {/* End MenuBar */}
-      </div>
+      </div >
     );
   }
 }

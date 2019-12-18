@@ -80,7 +80,6 @@ class ProfileTraveller extends Component {
     dataTraveller.year = res[0];
     dataTraveller.month = res[1];
     dataTraveller.day = res[2].split(" ")[0];
-
     this.setState({data:dataTraveller,avatar_link:dataTraveller.avatar_link});
     }else{
       this.setState({avatar_link:Config.api_url+"images/"+"account.jpg"});
@@ -107,7 +106,6 @@ class ProfileTraveller extends Component {
     const { data } = this.state;
     
     if(name === "language"){
-      console.log('run here');
       data.language[0] = value;
     }else{
       data[name] = value;
@@ -150,7 +148,7 @@ class ProfileTraveller extends Component {
     }
     if(data.about_me === ''){
       isError = true;
-      errors['about_me'] = 'Introduce yourself a bit, bro';
+      errors['about_me'] = 'Introduce yourself a bit please';
     }
 
 
@@ -225,6 +223,8 @@ class ProfileTraveller extends Component {
     if(this.isValidate()) {
       return false;
     } 
+    $(".coverLoader").css("height", "1800px");
+    $('.coverLoader').show();
     var errorAPI = JSON.parse(sessionStorage.getItem('errorAPI'));
     var {data,avatar_link,avtImage} = this.state;
     data.traveler_id = user.id;
@@ -247,6 +247,7 @@ class ProfileTraveller extends Component {
       };
       let response = await fetch(Config.api_url +'Traveler/Update', options);
       response = await response.text();
+      $('.coverLoader').hide();
       this.statusProfile('Update success!!');
     }else if(errorAPI !== 200){
         let options = {
@@ -262,9 +263,11 @@ class ProfileTraveller extends Component {
         let response = await fetch(Config.api_url+'Traveler/Create', options);
         response = await response.text();  
         if(response ==="true"){
+          $('.coverLoader').hide();
           this.createComplete('Create done!!');
         }
     }
+    $(".coverLoader").css("height", "1200px");
   }
 
   render() {
@@ -313,11 +316,14 @@ class ProfileTraveller extends Component {
     return (
       <div>
         {this.state.alert}
+        <div className="coverLoader">
+            <div className="loader"></div>
+        </div>
         <div className="containerMain">
           <h1 className="h1-profile">Your profile</h1>
           <div className="content-profile">
             <div className="profile-image">
-              <h1 className="h1-introduce">Doan Anh</h1>
+              <h1 className="h1-introduce">{data.first_name +" "+ data.last_name}</h1>
               <img
                 alt="profile avatar"
                 height={150}
@@ -436,7 +442,7 @@ class ProfileTraveller extends Component {
 
                 <div className="label-information">Your sologan</div>
                 <input
-                  placeholder="Please write your sologan !!!"
+                  placeholder="Please write your slogan !!!"
                   className="input-something"
                   name="slogan"
                   onChange={(e)=>{this.handleChange(e)}}

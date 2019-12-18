@@ -151,16 +151,11 @@ class LoggedGuider extends Component {
                             <div className="navRight">
                                 <div className="navbarRightContent">
                                     <ul className="logged" >
-                                        <li>
-                                            <Link to="/"><i className="fa fa-users" aria-hidden="true"></i></Link>
-                                        </li>
-                                        <li>
-                                            <Link to="/chat"><i className="fa fa-comments" aria-hidden="true"></i></Link>
-                                        </li>
+
                                         <li>
                                             <Link to="/"><i className="fa fa-bell" aria-hidden="true"></i></Link>
                                         </li>
-                                        <li>
+                                        <li style={{width:'145px'}}>
                                             <Link to={"/managebook"}>Bookings</Link>
                                         </li>
                                         <li className="avatarLogged" onClick={this.disableLoggedChoice}>

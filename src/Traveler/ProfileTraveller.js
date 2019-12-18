@@ -147,7 +147,7 @@ class ProfileTraveller extends Component {
     }
     if(data.about_me === ''){
       isError = true;
-      errors['about_me'] = 'Introduce yourself a bit, bro';
+      errors['about_me'] = 'Introduce yourself a bit';
     }
 
 
@@ -169,7 +169,7 @@ class ProfileTraveller extends Component {
     const getAlert = () => (
       <SweetAlert 
         success 
-        title="Woot!" 
+        title="Thank you!" 
         onConfirm={() => this.hideAlert()}
       >
         {message}
@@ -316,7 +316,7 @@ class ProfileTraveller extends Component {
           <h1 className="h1-profile">Your profile</h1>
           <div className="content-profile">
             <div className="profile-image">
-              <h1 className="h1-introduce">Doan Anh</h1>
+              <h1 className="h1-introduce">{data.last_name + " "+ data.first_name}</h1>
               <img
                 alt="profile avatar"
                 height={150}

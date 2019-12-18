@@ -12,7 +12,7 @@ export const save = message => ({ type: 'SAVE', message });
 export const load = () => ({ type: 'LOAD' });
 export const arrange = user => ({ type: 'ARRANGE', user });
 export const clear = () => ({ type: 'CLEAR' });
-export const announce = noti => ({type: 'ANNOUNCE', noti});
+export const announce = noti => ({ type: 'ANNOUNCE', noti });
 const websocketInitialState = {};
 const messageInitState = [];
 const clients = [];
@@ -24,7 +24,7 @@ export const websocketReducer = (state = { ...websocketInitialState }, action) =
                   console.log("test connect");
                   return { ...state, connected: true };
             case 'WS_DISCONNECTED':
-                  
+
                   clear();
                   return { state, connected: false };
             default:
@@ -66,7 +66,12 @@ export const arrangeClients = (state = clients, action) => {
 };
 
 export const receiveNoti = (state = [...notifications], action) => {
-      
+      switch (action.type) {
+            case 'ANNOUNCE':
+                  return [...state, action.noti];
+            default:
+                  return state;
+      }
 }
 
 export const loadGuest = guest => dispatch => fetch(`${Config.api_url}messages/${guest}`, {
@@ -77,7 +82,7 @@ export const loadGuest = guest => dispatch => fetch(`${Config.api_url}messages/$
             'Content-Type': 'application/json',
       },
       // body: JSON.stringify(login)
-      })
+})
 
       .then(res => res.json(), error => {
             console.log('An error occurred.', error);
@@ -85,13 +90,13 @@ export const loadGuest = guest => dispatch => fetch(`${Config.api_url}messages/$
       })
       .then((json) => {
             json.array.forEach(element => {
-                  dispatch({ type: 'ARRANGE', user: element });      
+                  dispatch({ type: 'ARRANGE', user: element });
             });
       }).catch(err => {
             dispatch({ type: 'ERROR', err: 'websocket error' });
       });
 
-export const loadMsg  = guest => dispatch => fetch(`${Config.api_url}messages/${guest}`, {
+export const loadMsg = guest => dispatch => fetch(`${Config.api_url}messages/${guest}`, {
       method: "GET",
       mode: "cors",
       credentials: "include",
@@ -102,7 +107,7 @@ export const loadMsg  = guest => dispatch => fetch(`${Config.api_url}messages/${
       })
       .then((json) => {
             json.array.forEach(element => {
-                  dispatch({ type: 'SAVE', message: element });      
+                  dispatch({ type: 'SAVE', message: element });
             });
       }).catch(err => {
             dispatch({ type: 'ERROR', err: 'websocket error' });

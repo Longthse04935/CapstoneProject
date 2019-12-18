@@ -25,7 +25,7 @@ export const signIn = login => dispatch => fetch(`${Config.api_url}account/login
       })
       .then((json) => {
             dispatch({ type: 'LOGIN', data: json });
-            dispatch(wsConnect(Config.api_url+"ws"));
+            //dispatch(wsConnect(Config.api_url+"ws"));
             dispatch({type: 'ERROR', err: {msg: '', flag: false}});
       }).catch(err => {
             dispatch({type: 'ERROR', err: {msg: 'User name or password is wrong', flag: true}});

@@ -175,7 +175,7 @@ class LoggedGuider extends Component {
                                                         this.props.dispatch(logOut());
                                                         this.props.dispatch(wsDisconnect(Config.api_url + "ws"));
                                                         this.props.dispatch(exit());
-                                                        window.location.href = '/';
+                                                        //window.location.href = '/';
                                                         
                                                     }}>Log out<i className="fa fa-sign-out" aria-hidden="true"></i></li>
                                             </ul>

@@ -8,25 +8,27 @@ class ChatList extends React.Component {
       constructor(props) {
             super(props);
             this.state = {
-                  messages: props.messages,
+                  //messages: props.messages,
                   page: 0
             }
       }
 
       async componentDidMount() {
             try {
+                  //console.log(this.props);
                   //if(this.props.receiver === '') return;
-                  let guests = await fetch(`${Config.api_url}messages/${this.props.user.userName}/${this.props.receiver}/${this.state.page}/${this.state.page+10}`, {
-                        method:"GET",
-                        mode: "cors",
-                        credentials: "include",
-                        headers: {
-                              'Content-Type': 'application/json',
-                        },
-                  });
-                  let show = await guests.json();  
-                  console.log(show);
+                  // let guests = await fetch(`${Config.api_url}messages/${this.props.user.userName}/${this.props.receiver}/${this.state.page}/${this.state.page+10}`, {
+                  //       method:"GET",
+                  //       mode: "cors",
+                  //       credentials: "include",
+                  //       headers: {
+                  //             'Content-Type': 'application/json',
+                  //       },
+                  // });
+                  // let show = await guests.json();  
+                  // console.log(show);
                   //this.setState({messages: show, page: this.state.page+10});
+                  //this.setState({messages: this.props.messages});
             } catch(err) {
                   console.log(err);
             }
@@ -44,7 +46,7 @@ class ChatList extends React.Component {
                         <div className="title">Chat</div>
                   </div>
                   <ul className="messages" >
-                        {this.state.messages.map((msg, index) => (
+                        {this.props.messages.map((msg, index) => (
                               <li
                                     className={`message ${msg.sender === user ? "right" : "left"} appeared`} key={index}>
                                     <div className="avatar"></div>
@@ -79,6 +81,7 @@ class ChatList extends React.Component {
                               };
                               this.props.dispatch(send(chatMessage));
                               input.value = '';
+                              //this.setState({});
                         }}>
                               <div className="message_input_wrapper">
                                     <input ref={node => { input = node; }} className="message_input" placeholder="Type your message here..." />
@@ -96,7 +99,7 @@ class ChatList extends React.Component {
 }
 function mapStateToProps(state) {
       const user = state.user;
-      //const messages = state.messages;
-	return { user};
+      const msg = state.messages;
+	return { user, msg};
 }
 export default connect(mapStateToProps)(ChatList);

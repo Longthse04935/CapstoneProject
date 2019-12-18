@@ -543,6 +543,7 @@ class EditPost extends Component {
         return (
             <div>
                 <div className="container">
+                {this.state.alert}
                     <div className="row m-y-2">
                         {/* edit form column */}
                         <div className="col-lg-12 text-lg-center">

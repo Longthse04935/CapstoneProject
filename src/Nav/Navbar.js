@@ -178,7 +178,7 @@ class Navbar extends Component {
         //     // console.log(await user);
         //     if(user.role !== login.role){
         //         errors['role'] = 'Role is wrong';
-        //         this.setState({errors});
+        //         this.setState({errors}); 
         //         return false;
         //     }
         //     this.props.reload.call(this, await user);

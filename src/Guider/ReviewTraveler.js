@@ -182,7 +182,7 @@ class ReviewTraveler extends Component {
         <div>
           <div id="reactContainer">
             {/*  Content  */}
-            <div className="content">
+            <div className="content" style={{minHeight:'500px'}}>
               <div className="content-left">
                 <div className="profile-box">
                   <div className="pb-header header-stick">

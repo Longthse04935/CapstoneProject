@@ -193,23 +193,24 @@ class LoggedTvl extends Component {
                         }
                       >
                         <span>
-                          <li>
+                          <li className="userChoice">
                             <Link to="/profiletraveller">Profile traveller</Link>
                             <i
                               className="fa fa-address-card-o"
                               aria-hidden="true"
                             ></i>
                           </li>
-                          <li>
+                          <li className="userChoice">
                             <Link to="/tvlManager">Traveler manage</Link>
                             <i className="fa fa-suitcase" aria-hidden="true"></i>
                           </li>
-                          <li>
+                          <li className="userChoice">
                             <Link to="/changepassword">Change password</Link>
                             <i class="fa fa-key" aria-hidden="true"></i>
                           </li>
                         </span>
                         <li
+                         className="userChoice"
                           onClick={() => {
                             // console.log("log out");
                             // const user = {

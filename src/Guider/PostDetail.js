@@ -48,6 +48,7 @@ class PostDetail extends React.Component {
 				autheticate
 			);
 			if (!response2.ok) {
+				window.location.href = '/page404';
 				throw Error(response2.status + ": " + response2.statusText);
 			}
 
@@ -112,7 +113,6 @@ class PostDetail extends React.Component {
 				pageCount
 			});
 			if (link_youtube.includes("youtu.be")) {
-				console.log('run here')
 				link_youtube = link_youtube.replace("youtu.be", "youtube.com/embed");
 				this.setState({ link_youtube });
 			} else {
@@ -186,7 +186,6 @@ class PostDetail extends React.Component {
 			throw Error(response.status + ": " + response.statusText);
 		}
 		const posts = await response.json();
-		console.log(posts);
 		this.setState({ posts });
 	}
 

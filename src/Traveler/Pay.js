@@ -385,6 +385,7 @@ Nothing in this Agreement shall be construed as making either party the partner,
                 <span>Paypal</span>
                 <img src="/img/paypal.png" alt="paypal" />
               </div>
+              <button className="payBack" onClick={()=>{window.location.href = '/chatbox/'+tourDetail.guider_id+'/'+tourDetail.post_id}}>Go back</button>
             </div>
             <div
               className={this.state.isDisabledPay ? "" : "paypal_pay hidden"}

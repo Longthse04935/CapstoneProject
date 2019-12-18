@@ -7,7 +7,10 @@ class ReviewTraveler extends Component {
         super(props);
         this.state = {
             tvl:{
-                language:['']
+                gender: 0,
+                date_of_birth: "1970-01-01",
+                language:['Vietnamese'],
+                country: "Vietnam"
             },
             reviews:[],
             page:0,
@@ -59,7 +62,7 @@ class ReviewTraveler extends Component {
           }
 
           const tvl = await response.json();
-          console.log(tvl);
+          // console.log(tvl);
           tvl.date_of_birth = tvl.date_of_birth.split(" ")[0];
           this.setState({tvl});
     }
@@ -74,7 +77,7 @@ class ReviewTraveler extends Component {
         }
       }
       if(count === 0) reviews.push(value);
-      console.log(reviews);
+      // console.log(reviews);
       this.setState({reviews});
     }
 

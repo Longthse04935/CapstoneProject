@@ -82,6 +82,7 @@ class ProfileGuiders extends Component {
         autheticate
       );
       if (!response.ok) {
+        window.location.href = '/page404';
         throw Error(response.status + ": " + response.statusText);
       }
 
@@ -92,7 +93,7 @@ class ProfileGuiders extends Component {
         guider.profile_video = guider.profile_video.split("&");
         guider.profile_video = guider.profile_video[0].replace("watch?v=", "embed/");
       }
-      console.log(guider);
+      // console.log(guider);
       this.setState({ guider });
     } catch (err) {
       console.log(err)
@@ -209,7 +210,7 @@ class ProfileGuiders extends Component {
   render() {
     let { guider_id, guider, totalPage, page } = this.state;
     let post = this.RenderPostGuider(guider_id);
-    console.log(totalPage);
+    // console.log(totalPage);
     const range = this.range(0, totalPage - 1);
     let renderPageNumbers = totalPage === 1 ? '' :
       range.map(i => (

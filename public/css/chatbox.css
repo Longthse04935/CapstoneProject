@@ -408,6 +408,7 @@ body {
   font-size: 18px;
   margin-top:20px;
   position: relative;
+  width:86%;
 }
 
 .selectTime .timeEnd{
@@ -419,7 +420,7 @@ body {
 
 .selectTime input[name='endTime']{
     border: 1px solid #ccc;
-    width: 145px;
+    width: 160px;
     border-radius: 3px;
     padding: 5px 8px;
     position: absolute;

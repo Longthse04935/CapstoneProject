@@ -78,7 +78,7 @@ class GuiderProfile extends Component {
             dataTraveller.day = res[2].split(" ")[0];
             let link = dataTraveller.avatar;
             dataTraveller.avatar = this.fromDataURL(dataTraveller.avatar);
-            console.log(dataTraveller);
+            // console.log(dataTraveller);
             this.setState({ data: dataTraveller, avatar_link: link });
 
 
@@ -229,7 +229,7 @@ class GuiderProfile extends Component {
             delete data.month;
             delete data.day;
             data.languages = this.state.language;
-            console.log(data);
+            // console.log(data);
 
             let options = {
                   method: 'POST',

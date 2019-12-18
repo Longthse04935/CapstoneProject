@@ -125,7 +125,6 @@ class GuiderBooks extends Component {
       }
 
       const order = await orderResponse.json();
-      console.log(order);
       this.setState({ orders: order });
     } catch (err) {
       console.log(err);

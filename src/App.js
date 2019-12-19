@@ -144,7 +144,7 @@ class App extends Component {
 					
 					
 					<Route exact path={"/edit"} render={()=>this.checkPathWithRoleGuider(<ManagePost guiderId={this.props.user.id} />)} />
-					<Route path={"/update/:guider/:post"} render={()=>this.checkPathWithRoleGuider(<EditPost />)} />
+					<Route path={"/update/:guider/:post"} render={(props)=>this.checkPathWithRoleGuider(<EditPost {...props}/>)} />
 					<Route path='/reviewtvl/:id' render={(props)=>this.checkPathWithRoleGuider(<ReviewTraveler {...props}/>)} />
 
 					{/* route traveler */}
@@ -153,8 +153,8 @@ class App extends Component {
 					<Route path='/book' render={()=>this.checkPathWithRoleTraveler(<Pay/>)} /> 
 				
 					{/* check login */}
-					<Route exact path='/chatbox/:guiderId/:post_id/:message' render={()=>this.checkPathWithoutLogin(<Chatbox/>)} />
-					<Route exact path='/chatbox/:guiderId/:post_id/' render={()=>this.checkPathWithoutLogin(<Chatbox/>)} />
+					<Route exact path='/chatbox/:guiderId/:post_id/:message' render={(props)=>this.checkPathWithoutLogin(<Chatbox {...props}/>)} />
+					<Route exact path='/chatbox/:guiderId/:post_id/' render={(props)=>this.checkPathWithoutLogin(<Chatbox {...props}/>)} />
 					<Route path='/changepassword' render={()=>this.checkPathWithoutLogin(<ChangePassword guiderId={this.props.user.id} />)}/>
 					<Route path='/chat' render={()=>this.checkPathWithoutLogin(<Message />)}/>
 					{/* <Route path='/tour' component={Tour} /> */}

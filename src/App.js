@@ -145,7 +145,7 @@ class App extends Component {
 					
 					<Route exact path={"/edit"} render={()=>this.checkPathWithRoleGuider(<ManagePost guiderId={this.props.user.id} />)} />
 					<Route path={"/update/:guider/:post"} render={()=>this.checkPathWithRoleGuider(<EditPost />)} />
-					<Route path='/reviewtvl/:id' render={()=>this.checkPathWithRoleGuider(<ReviewTraveler />)} />
+					<Route path='/reviewtvl/:id' render={(props)=>this.checkPathWithRoleGuider(<ReviewTraveler {...props}/>)} />
 
 					{/* route traveler */}
 					<Route path='/profiletraveller' render={()=>this.checkPathWithRoleTraveler(<ProfileTravaller/>)} />

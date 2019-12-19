@@ -23,16 +23,10 @@ class ReviewTraveler extends Component {
     componentDidMount(){
       
         var param = this.props.match.params.id;
-        let result = /^\+?(0|[1-9]\d*)$/.test(param);
-        
-        if(result){
+       
             this.setState({param});
           this.loadData(param);
-          this.loadReview(param,0);
-        }else {
-            window.location.href = '/page404'
-        }
-       
+          this.loadReview(param,0);       
    }
  
     loadData = async (param) =>{

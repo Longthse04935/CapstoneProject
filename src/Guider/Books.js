@@ -172,7 +172,7 @@ class GuiderBooks extends Component {
         <td className="cell100 column3">{order.begin_date}</td>
         <td className="cell100 column4">{order.finish_date}</td>
         <td className="cell100 column5">
-          <Link to={`/posttour/${order.post_id}`}>{order.postTitle}</Link>
+          <Link to={`/post/${order.post_id}`}>{order.postTitle}</Link>
         </td>
         <td className="cell100 column6">{order.adult_quantity}</td>
         <td className="cell100 column7">{order.children_quantity}</td>

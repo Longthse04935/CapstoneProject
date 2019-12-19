@@ -20,15 +20,6 @@ class ReviewTraveler extends Component {
         }
     }
 
-    componentWillMount(){
-      // let user = this.props.user;
-      //   if(user.role === 'TRAVELER'){
-      //       sessionStorage.setItem('messagePay','You are Traveler');
-      //       window.location.href = '/';
-      //       return false;
-      //     }
-    }
-
     componentDidMount(){
       
         var param = this.props.match.params.id;

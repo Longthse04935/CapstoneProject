@@ -313,7 +313,6 @@ class ProfileTraveller extends Component {
     var languageOption = language.map((value,index) => (
       <option value={value} key={index}>{value}</option>
     ))
-    var message = this.props.match.params.message;
     return (
       <div>
         {this.state.alert}

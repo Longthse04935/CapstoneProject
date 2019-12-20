@@ -41,9 +41,18 @@
   box-shadow: 0 6px 13px 0 rgba(56, 42, 42, 0.25);
 }
 
+
+table, th, td {
+  border: 1px solid #999;
+  border-collapse: collapse;
+}
+
 .table100 {
     margin-top: 8%;
 }
+
+
+
 .wrap-table100-nextcols {
   width: 90%;
   margin:0 auto;
@@ -51,7 +60,9 @@
 .table100 .table100-nextcols{
     text-align: center;
 }
-
+.table100 .table100-nextcols h1{
+  font-weight: 600;
+}
 .table100 .table100-nextcols th{
     width: 160px;
 }

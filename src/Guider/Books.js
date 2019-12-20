@@ -163,8 +163,9 @@ class GuiderBooks extends Component {
   }
 
   render() {
-    let { status } = this.state;
-    let order = this.state.orders.map((order, index) => (
+    let { status,orders } = this.state;
+    
+    let order = orders.map((order, index) => (
       <tr className="row100 body" key={index}>
         <td className="cell100 column2">
           <Link to={`/reviewtvl/`+order.traveler_id}>{order.object}</Link>
@@ -235,7 +236,7 @@ class GuiderBooks extends Component {
     return (
       <div className="tvlManager_Container">
         <div className="tvlManager_title">
-          <ul className="tvlTab">{tab}</ul>
+          <ul className="tvlTab" id="bookManage">{tab}</ul>
         </div>
 
         <div className="table100 ver1">
@@ -251,7 +252,10 @@ class GuiderBooks extends Component {
           </div>
           <div className="wrap-table100-nextcols js-pscroll ps ps--active-x">
             <div className="table100-nextcols">
-              <table>
+              {
+                orders.length === 0 ?  <h1>You don't have any booking on that list</h1>
+               :
+               <table>
                 <thead>
                   <tr className="row100 head">
                     <th className="cell100 column2">Traverler</th>
@@ -266,6 +270,7 @@ class GuiderBooks extends Component {
                 </thead>
                 <tbody>{order}</tbody>
               </table>
+              }
             </div>
 
             <div className="wrap-table100-nextcols js-pscroll"></div>

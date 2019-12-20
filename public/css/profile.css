@@ -497,3 +497,29 @@ body{
   height:310px;
 }
 
+.bookOffers .postOneGuider {
+  display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: normal;
+}
+
+.bookOffers .postOneGuider a{
+  margin-left:30px;
+  text-decoration: none !important;
+  color:black;
+}
+#managePost{
+  margin-bottom: 5%;
+}
+#managePost > h2{
+  margin-left:30px;
+  font-size:38px;
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+
+#managePost .h3PostResult{
+  text-decoration: none !important;
+  color:black;
+}

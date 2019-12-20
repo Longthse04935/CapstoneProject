@@ -196,7 +196,7 @@ class Home extends Component {
 			const guiders = await responsePosts.json();
 			const totalPage = await pageCount.json();
 
-
+			
 			this.setState({ searchGuider: guiders,inputSearch:input,totalPage});
 		} catch (err) {
 			console.log(err);
@@ -391,7 +391,7 @@ class Home extends Component {
 
 												</div>
 												<div className="experienceCard-bottomDetails">
-													<Rated number="5" />
+													<Rated number={post.rated} />
 												</div>
 											</div>
 										</div>
@@ -408,7 +408,7 @@ class Home extends Component {
 			</div>
 		</div>
 		);
-		//console.log(this.state.searchGuider);
+		
 		let guiderResult = (
 			<div className="guiderResult">
 				<div className="headerGuiderResult">

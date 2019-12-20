@@ -205,7 +205,9 @@ class TravellerManager extends Component {
 
 	render() {
 		let {first} = this.state;
-		let order = this.state.orders.map((order, index) => {
+		let {orders} = this.state;
+		
+		let order = orders.map((order, index) => {
 			let { status } = this.state;
 			return (
 				<tr className="row100 body" key={index}>
@@ -296,9 +298,13 @@ class TravellerManager extends Component {
 					<div className="table100 ver1">
 						<div className="wrap-table100-nextcols">
 							<div className="table100-nextcols">
-								<table>
-									<thead>
-										<tr className="row100 head">
+								{
+									order.length === 0 ? <h1>You don't have any booking on that list</h1>
+									:
+									<table>
+									{
+										<thead>
+											<tr className="row100 head">
 											<th className="cell100 column2">Guider</th>
 											<th className="cell100 column3">Start time</th>
 											<th className="cell100 column4">End time</th>
@@ -310,12 +316,14 @@ class TravellerManager extends Component {
 											{status === "ONGOING" ? <th className="cell100 column8">Cancel</th> : ''}
 											{status === "WAITING" ? <th className="cell100 column8">Cancel</th> : ''}
 											{/* {first === 0 ? <th className="cell100 column8">Cancel</th> : ''} */}
-										</tr>
+										    </tr>
 									</thead>
+									}
 									<tbody>
 										{order}
 									</tbody>
 								</table>
+								}
 							</div>
 
 							<div className="wrap-table100-nextcols js-pscroll"></div>

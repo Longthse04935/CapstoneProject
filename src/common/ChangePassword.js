@@ -13,9 +13,7 @@ class ChatList extends React.Component {
             this.onNotification = this.onNotification.bind(this);
             this.statusProfile = this.statusProfile.bind(this);
       }
-      componentDidMount() {
-            $("head").append('<link href="/css/editPost.css" rel="stylesheet"/>');
-      }
+
       onCancel() {
 		this.setState({
 			alert: null
@@ -104,6 +102,7 @@ class ChatList extends React.Component {
                                     //console.log("change password: " + );
                                     response = await response.text()
                                     if (response === 'true') {
+                                          
                                           this.statusProfile("Your password has been change successful");
                                     } else {
                                           this.notification("Something Wrong! Please try again");

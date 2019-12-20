@@ -197,7 +197,7 @@ class ReviewTraveler extends Component {
                      
                       <i className="fa fa-language" aria-hidden="true"></i>
                     </span>
-                    <span className="ListItemText">I speak {tvl.language[0].toUpperCase()}</span>
+                    <span className="ListItemText">I speak {tvl.language[0]}</span>
                   </p>
                   <p className="ListItem">
                     <span className="ListItemIcon">

@@ -9,7 +9,15 @@ class GuiderBooks extends Component {
     this.state = {
       orders: [],
       status: "WAITING",
-      page: 0
+      page: 0,
+      cors:{
+        method: "GET",
+        mode: "cors",
+        credentials: "include",
+        headers: {
+          Accept: "application/json"
+        }
+      }
     };
 
     this.accept = this.accept.bind(this);
@@ -19,14 +27,10 @@ class GuiderBooks extends Component {
   async accept(eve) {
     try {
       const remain = this.state.orders.splice(eve.target.id, 1);
-
+      let {cors} = this.state;
       const orderResponse = await fetch(
         Config.api_url + "Order/AcceptOrder/" + eve.target.value,
-        {
-          method: "GET",
-          mode: "cors",
-          credentials: "include"
-        }
+        cors
       );
 
       if (!orderResponse.ok) {
@@ -102,6 +106,7 @@ class GuiderBooks extends Component {
     // $("head").append('<link href="/css/books.css" rel="stylesheet"/>');
     // $("head").append('<link href="/css/util.css" rel="stylesheet"/>');
     let user = this.props.user;
+    let {cors} = this.state;
     try {
       const orderResponse = await fetch(
         Config.api_url +
@@ -111,14 +116,7 @@ class GuiderBooks extends Component {
           user.id +
           "&status=" +
           this.state.status+"&page=0",
-        {
-          method: "GET",
-          mode: "cors",
-          credentials: "include",
-          headers: {
-            Accept: "application/json"
-          }
-        }
+          cors
       );
 
 
@@ -130,16 +128,9 @@ class GuiderBooks extends Component {
           user.id +
           "&status=" +
           this.state.status,
-        {
-          method: "GET",
-          mode: "cors",
-          credentials: "include",
-          headers: {
-            Accept: "application/json"
-          }
-        }
+          cors
       );
-      
+
       const order = await orderResponse.json();
       const totalPage = await respone.json();
       this.setState({ orders: order,totalPage});
@@ -150,6 +141,7 @@ class GuiderBooks extends Component {
 
   async tabList(status,currentPage = 0) {
     let user = this.props.user;
+    let {cors} = this.state;
     try {
       const orderResponse = await fetch(
         Config.api_url +
@@ -159,14 +151,7 @@ class GuiderBooks extends Component {
           user.id +
           "&status=" +
           status+"&page="+currentPage,
-        {
-          method: "GET",
-          mode: "cors",
-          credentials: "include",
-          headers: {
-            Accept: "application/json"
-          }
-        }
+          cors
       );
 
       if (!orderResponse.ok) {
@@ -180,14 +165,7 @@ class GuiderBooks extends Component {
           user.id +
           "&status=" +
           status,
-        {
-          method: "GET",
-          mode: "cors",
-          credentials: "include",
-          headers: {
-            Accept: "application/json"
-          }
-        }
+          cors
       );
 
       if (!orderResponse.ok) {

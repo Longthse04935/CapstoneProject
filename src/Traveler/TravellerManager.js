@@ -22,7 +22,15 @@ class TravellerManager extends Component {
 			cmtExist: [],
 			status: 'WAITING',
 			first:0,
-			page:0
+			page:0,
+			cors:{
+				method: "GET",
+				mode: "cors",
+				credentials: "include",
+				headers: {
+					'Accept': 'application/json'
+				}
+			}
 		};
 	}
 	//check xem ng đăng nhập là ai nếu là guider thì về trang home
@@ -40,34 +48,15 @@ class TravellerManager extends Component {
 
 	async componentDidMount() {//var user = JSON.parse(sessionStorage.getItem('user'));
 		let user = this.props.user;
+		let {cors} = this.state;
 		try {
 			const orderResponse = await fetch(
 				Config.api_url + "Order/GetOrderByStatus?role=" + "TRAVELER" + "&id=" + user.id + "&status=WAITING"+"&page=0",
-
-				{
-					method: "GET",
-					mode: "cors",
-					credentials: "include",
-					headers: {
-						'Accept': 'application/json'
-					}
-				});
-
-			if (!orderResponse.ok) {
-				throw Error(orderResponse.status + ": " + orderResponse.statusText);
-			}
+				cors);
 
 			const respone = await fetch(
 				Config.api_url + "Order/GetOrderByStatus?role=" + "TRAVELER" + "&id=" + user.id + "&status=WAITING",
-
-				{
-					method: "GET",
-					mode: "cors",
-					credentials: "include",
-					headers: {
-						'Accept': 'application/json'
-					}
-				});
+				cors);
 
 			const order = await orderResponse.json();
 			const totalPage = await respone.json();
@@ -113,16 +102,10 @@ class TravellerManager extends Component {
 	}
 
 	async showReview(order_id, guider_id, post_id) {
+		let {cors} = this.state;
 		let commentRespone = await fetch(
 			"http://localhost:8080/review/checkExist?trip_id=" + order_id,
-			{
-				method: "GET",
-				mode: "cors",
-				credentials: "include",
-				headers: {
-					'Accept': 'application/json'
-				}
-			});
+			cors);
 		if (commentRespone.status === 404) {
 
 			var { info } = this.state;
@@ -149,6 +132,7 @@ class TravellerManager extends Component {
 
 	async tabList(status,currentPage = 0) {
 		let user = this.props.user;
+		let {cors} = this.state;
 		try {
 		  const orderResponse = await fetch(
 			Config.api_url +
@@ -158,14 +142,7 @@ class TravellerManager extends Component {
 			  user.id +
 			  "&status=" +
 			  status+"&page="+currentPage,
-			{
-			  method: "GET",
-			  mode: "cors",
-			  credentials: "include",
-			  headers: {
-				Accept: "application/json"
-			  }
-			}
+			  cors
 		  );
 	
 		  if (!orderResponse.ok) {
@@ -179,14 +156,7 @@ class TravellerManager extends Component {
 			  user.id +
 			  "&status=" +
 			  status,
-			{
-			  method: "GET",
-			  mode: "cors",
-			  credentials: "include",
-			  headers: {
-				Accept: "application/json"
-			  }
-			}
+			  cors
 		  );
 	
 		  if (!orderResponse.ok) {
@@ -224,17 +194,11 @@ class TravellerManager extends Component {
 
 	handleCancle = async (trip,status) => {
 		$(".coverLoader").show();
+		let {cors} = this.state;
 		try {
 			const orderResponse = await fetch(
 				Config.api_url + "Order/CancelOrderAsTraveler?trip_id=" + trip,
-				{
-					method: "GET",
-					mode: "cors",
-					credentials: "include",
-					headers: {
-						'Accept': 'application/json'
-					}
-				});
+				cors);
 
 			if (!orderResponse.ok) {
 				throw Error(orderResponse.status + ": " + orderResponse.statusText);

@@ -8,7 +8,8 @@ class GuiderBooks extends Component {
     super(props);
     this.state = {
       orders: [],
-      status: "WAITING"
+      status: "WAITING",
+      page: 0
     };
 
     this.accept = this.accept.bind(this);
@@ -17,8 +18,7 @@ class GuiderBooks extends Component {
   }
   async accept(eve) {
     try {
-      const remain = this.state.orders;
-      remain.splice(eve.target.id, 1);
+      const remain = this.state.orders.splice(eve.target.id, 1);
 
       const orderResponse = await fetch(
         Config.api_url + "Order/AcceptOrder/" + eve.target.value,
@@ -45,8 +45,7 @@ class GuiderBooks extends Component {
     eve.preventDefault();
     try {
       const denied = this.state.orders[eve.target.id];
-      const remain = this.state.orders;
-      remain.splice(eve.target.id, 1);
+      const remain = this.state.orders.splice(eve.target.id, 1);
       const orderResponse = await fetch(
         Config.api_url + "Order/refuseTrip/" + eve.target.value,
         {
@@ -74,8 +73,7 @@ class GuiderBooks extends Component {
     try {
       //console.log(this.state.orders);
       const denied = this.state.orders[eve.target.id];
-      const remain = this.state.orders;
-      remain.splice(eve.target.id, 1);
+      const remain = this.state.orders.splice(eve.target.id, 1);
       const orderResponse = await fetch(
         Config.api_url +
           "Order/CancelOrderAsGuider?trip_id=" +
@@ -112,7 +110,55 @@ class GuiderBooks extends Component {
           "&id=" +
           user.id +
           "&status=" +
+          this.state.status+"&page=0",
+        {
+          method: "GET",
+          mode: "cors",
+          credentials: "include",
+          headers: {
+            Accept: "application/json"
+          }
+        }
+      );
+
+
+      const respone = await fetch(
+        Config.api_url +
+          "Order/GetOrderByStatusPageCount?role=" +
+          "GUIDER" +
+          "&id=" +
+          user.id +
+          "&status=" +
           this.state.status,
+        {
+          method: "GET",
+          mode: "cors",
+          credentials: "include",
+          headers: {
+            Accept: "application/json"
+          }
+        }
+      );
+      
+      const order = await orderResponse.json();
+      const totalPage = await respone.json();
+      this.setState({ orders: order,totalPage});
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async tabList(status,currentPage = 0) {
+    let user = this.props.user;
+    try {
+      const orderResponse = await fetch(
+        Config.api_url +
+          "Order/GetOrderByStatus?role=" +
+          "GUIDER" +
+          "&id=" +
+          user.id +
+          "&status=" +
+          status+"&page="+currentPage,
         {
           method: "GET",
           mode: "cors",
@@ -126,20 +172,9 @@ class GuiderBooks extends Component {
       if (!orderResponse.ok) {
         throw Error(orderResponse.status + ": " + orderResponse.statusText);
       }
-
-      const order = await orderResponse.json();
-      this.setState({ orders: order });
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  async tabList(status) {
-    let user = this.props.user;
-    try {
-      const orderResponse = await fetch(
+      const respone = await fetch(
         Config.api_url +
-          "Order/GetOrderByStatus?role=" +
+          "Order/GetOrderByStatusPageCount?role=" +
           "GUIDER" +
           "&id=" +
           user.id +
@@ -159,15 +194,48 @@ class GuiderBooks extends Component {
         throw Error(orderResponse.status + ": " + orderResponse.statusText);
       }
       const order = await orderResponse.json();
-      this.setState({ orders: order, status: status });
+      const totalPage = await respone.json();
+      this.setState({ orders: order, status: status,totalPage});
     } catch (err) {
       console.log(err);
     }
   }
 
+	range = (start, end) => {
+		var ans = [];
+		for (let i = start; i <= end; i++) {
+			ans.push(i);
+		}
+		return ans;
+  }
+
+  handleCurrentPage = (currentPage) => {
+      let{status} = this.state;
+			this.tabList(status,currentPage);
+		
+		this.setState({
+			page: currentPage
+		});
+		
+  }
+  
   render() {
-    let { status,orders } = this.state;
-    
+    let { status,orders,totalPage,page } = this.state;
+	//pagination
+  const range = this.range(0, totalPage - 1);
+    let renderPageNumbers = totalPage === 1 ? '' :
+    range.map((i) => (
+      <button
+        key={i}
+        id={i}
+        onClick={()=>this.handleCurrentPage(i)}
+        className={page === i ? "currentPage" : ''}
+      >
+        {i+1}
+      </button>
+    )
+  );
+
     let order = orders.map((order, index) => (
       <tr className="row100 body" key={index}>
         <td className="cell100 column2">
@@ -276,7 +344,11 @@ class GuiderBooks extends Component {
               }
             </div>
 
-            <div className="wrap-table100-nextcols js-pscroll"></div>
+            <div className="pagination">
+            <div className="paginationContent">
+              {renderPageNumbers}
+            </div>
+		    	</div>
           </div>
         </div>
         <div></div>

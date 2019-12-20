@@ -21,7 +21,8 @@ class TravellerManager extends Component {
 			alert: null,
 			cmtExist: [],
 			status: 'WAITING',
-			first:0
+			first:0,
+			page:0
 		};
 	}
 	//check xem ng đăng nhập là ai nếu là guider thì về trang home
@@ -41,7 +42,7 @@ class TravellerManager extends Component {
 		let user = this.props.user;
 		try {
 			const orderResponse = await fetch(
-				Config.api_url + "Order/GetOrderByStatus?role=" + "TRAVELER" + "&id=" + user.id + "&status=WAITING",
+				Config.api_url + "Order/GetOrderByStatus?role=" + "TRAVELER" + "&id=" + user.id + "&status=WAITING"+"&page=0",
 
 				{
 					method: "GET",
@@ -56,8 +57,21 @@ class TravellerManager extends Component {
 				throw Error(orderResponse.status + ": " + orderResponse.statusText);
 			}
 
+			const respone = await fetch(
+				Config.api_url + "Order/GetOrderByStatus?role=" + "TRAVELER" + "&id=" + user.id + "&status=WAITING",
+
+				{
+					method: "GET",
+					mode: "cors",
+					credentials: "include",
+					headers: {
+						'Accept': 'application/json'
+					}
+				});
+
 			const order = await orderResponse.json();
-			this.setState({ orders: order });
+			const totalPage = await respone.json();
+			this.setState({ orders: order,totalPage });
 		} catch (err) {
 			console.log(err);
 		}
@@ -133,29 +147,58 @@ class TravellerManager extends Component {
 		this.setState({ comment: value, isError: false });
 	}
 
-	async tabList(status) {
+	async tabList(status,currentPage = 0) {
 		let user = this.props.user;
 		try {
-			const orderResponse = await fetch(
-				Config.api_url + "Order/GetOrderByStatus?role=" + "TRAVELER" + "&id=" + user.id + "&status=" + status,
-				{
-					method: "GET",
-					mode: "cors",
-					credentials: "include",
-					headers: {
-						'Accept': 'application/json'
-					}
-				});
-
-			if (!orderResponse.ok) {
-				throw Error(orderResponse.status + ": " + orderResponse.statusText);
+		  const orderResponse = await fetch(
+			Config.api_url +
+			  "Order/GetOrderByStatus?role=" +
+			  "TRAVELER" +
+			  "&id=" +
+			  user.id +
+			  "&status=" +
+			  status+"&page="+currentPage,
+			{
+			  method: "GET",
+			  mode: "cors",
+			  credentials: "include",
+			  headers: {
+				Accept: "application/json"
+			  }
 			}
-			const order = await orderResponse.json();
-			this.setState({ orders: order, status: status });
+		  );
+	
+		  if (!orderResponse.ok) {
+			throw Error(orderResponse.status + ": " + orderResponse.statusText);
+		  }
+		  const respone = await fetch(
+			Config.api_url +
+			  "Order/GetOrderByStatusPageCount?role=" +
+			  "TRAVELER" +
+			  "&id=" +
+			  user.id +
+			  "&status=" +
+			  status,
+			{
+			  method: "GET",
+			  mode: "cors",
+			  credentials: "include",
+			  headers: {
+				Accept: "application/json"
+			  }
+			}
+		  );
+	
+		  if (!orderResponse.ok) {
+			throw Error(orderResponse.status + ": " + orderResponse.statusText);
+		  }
+		  const order = await orderResponse.json();
+		  const totalPage = await respone.json();
+		  this.setState({ orders: order, status: status,totalPage});
 		} catch (err) {
-			console.log(err);
+		  console.log(err);
 		}
-	}
+	  }
 
 	hideAlert() {
 		this.setState({
@@ -202,11 +245,41 @@ class TravellerManager extends Component {
 			console.log(err);
 		}
 	}
+		range = (start, end) => {
+			var ans = [];
+			for (let i = start; i <= end; i++) {
+				ans.push(i);
+			}
+			return ans;
+	}
+
+	handleCurrentPage = (currentPage) => {
+		let{status} = this.state;
+			this.tabList(status,currentPage);
+			this.setState({
+				page: currentPage
+			});
+			
+	}
 
 	render() {
-		let {first} = this.state;
-		let {orders} = this.state;
-		
+		let {orders,totalPage,page} = this.state;
+
+		//pagination
+		const range = this.range(0, totalPage - 1);
+		let renderPageNumbers = totalPage === 1 ? '' :
+		range.map((i) => (
+		  <button
+			key={i}
+			id={i}
+			onClick={()=>this.handleCurrentPage(i)}
+			className={page === i ? "currentPage" : ''}
+		  >
+			{i+1}
+		  </button>
+		)
+	  );
+
 		let order = orders.map((order, index) => {
 			let { status } = this.state;
 			return (
@@ -326,7 +399,11 @@ class TravellerManager extends Component {
 								}
 							</div>
 
-							<div className="wrap-table100-nextcols js-pscroll"></div>
+							<div className="pagination" style={{marginTop:'20px'}}>
+								<div className="paginationContent">
+								{renderPageNumbers}
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>

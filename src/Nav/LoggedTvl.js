@@ -61,7 +61,6 @@ class LoggedTvl extends Component {
     );
 
     const dataTraveller = await responseTraveller.json();
-    console.log(dataTraveller);
     this.setState({ avatar: dataTraveller.avatar_link });
   }
 
@@ -169,16 +168,16 @@ class LoggedTvl extends Component {
               <div className="navRight">
                 <div className="navbarRightContent">
                   <ul className="logged">
-                    <li>
+                    {/* <li>
                       <Link to="/"><i className="fa fa-users" aria-hidden="true"></i></Link>
                     </li>
                     <li>
                       <Link to="/chat"><i className="fa fa-comments" aria-hidden="true"></i></Link>
-                    </li>
+                    </li> */}
                     <li>
                       <Link to="/"><i className="fa fa-bell" aria-hidden="true"></i></Link>
                     </li>
-                    <li>
+                    <li style={{width:'145px'}}>
                       <Link to={"/tvlManager"}>Bookings</Link>
                     </li>
                     <li className="avatarLogged" onClick={this.disableLoggedChoice}>
@@ -194,23 +193,24 @@ class LoggedTvl extends Component {
                         }
                       >
                         <span>
-                          <li>
+                          <li className="userChoice">
                             <Link to="/profiletraveller">Profile traveller</Link>
                             <i
                               className="fa fa-address-card-o"
                               aria-hidden="true"
                             ></i>
                           </li>
-                          <li>
+                          <li className="userChoice">
                             <Link to="/tvlManager">Traveler manage</Link>
                             <i className="fa fa-suitcase" aria-hidden="true"></i>
                           </li>
-                          <li>
+                          <li className="userChoice">
                             <Link to="/changepassword">Change password</Link>
-                            <i class="fa fa-key" aria-hidden="true"></i>
+                            <i className="fa fa-key" aria-hidden="true"></i>
                           </li>
                         </span>
                         <li
+                         className="userChoice"
                           onClick={() => {
                             // console.log("log out");
                             // const user = {

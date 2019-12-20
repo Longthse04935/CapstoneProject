@@ -110,6 +110,14 @@
   width: 50px;
 }
 
+.navbarRightContent .dropContent .userChoice{
+  width:100%;
+}
+
+.navbarRightContent .ulRegister .userRegister{
+  width: 120px;
+}
+
 .navbarRightContent ul li a{
     text-decoration: none;
     color:#4A4A4A;

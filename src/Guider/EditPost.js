@@ -128,7 +128,10 @@ class EditPost extends Component {
                         'Accept': 'application/json'
                     },
                 });
-            if (!post.ok) { throw Error(post.status + ": " + post.statusText); }
+            if (!post.ok) { 
+                window.location.href = "/page404"
+                throw Error(post.status + ": " + post.statusText); 
+            }
             const edit = await post.json();
             //console.log(edit);
             const plans = await fetch(Config.api_url + "plan/" + this.props.match.params.post,

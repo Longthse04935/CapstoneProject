@@ -7,7 +7,10 @@ class ReviewTraveler extends Component {
         super(props);
         this.state = {
             tvl:{
-                language:['']
+                gender: 0,
+                date_of_birth: "1970-01-01",
+                language:['Vietnamese'],
+                country: "Vietnam"
             },
             reviews:[],
             page:0,
@@ -17,28 +20,13 @@ class ReviewTraveler extends Component {
         }
     }
 
-    componentWillMount(){
-      // let user = this.props.user;
-      //   if(user.role === 'TRAVELER'){
-      //       sessionStorage.setItem('messagePay','You are Traveler');
-      //       window.location.href = '/';
-      //       return false;
-      //     }
-    }
-
     componentDidMount(){
       
         var param = this.props.match.params.id;
-        let result = /^\+?(0|[1-9]\d*)$/.test(param);
-        
-        if(result){
+       
             this.setState({param});
           this.loadData(param);
-          this.loadReview(param,0);
-        }else {
-            window.location.href = '/page404'
-        }
-       
+          this.loadReview(param,0);       
    }
  
     loadData = async (param) =>{
@@ -59,7 +47,7 @@ class ReviewTraveler extends Component {
           }
 
           const tvl = await response.json();
-          console.log(tvl);
+          // console.log(tvl);
           tvl.date_of_birth = tvl.date_of_birth.split(" ")[0];
           this.setState({tvl});
     }
@@ -74,7 +62,7 @@ class ReviewTraveler extends Component {
         }
       }
       if(count === 0) reviews.push(value);
-      console.log(reviews);
+      // console.log(reviews);
       this.setState({reviews});
     }
 
@@ -182,7 +170,7 @@ class ReviewTraveler extends Component {
         <div>
           <div id="reactContainer">
             {/*  Content  */}
-            <div className="content">
+            <div className="content" style={{minHeight:'500px'}}>
               <div className="content-left">
                 <div className="profile-box">
                   <div className="pb-header header-stick">

@@ -33,6 +33,7 @@ class ReviewInPost extends React.Component {
                   });
                   if (!response.ok) { throw Error(response.status + ": " + response.statusText); }
                   const review = await response.json();
+                  // console.log(review);
                   this.setState({ reviews: review });
             } catch (err) {
                   console.log(err);
@@ -48,9 +49,9 @@ class ReviewInPost extends React.Component {
                         <li key={index}>
                               <div className="review">
                                     <div className="reviewContainer">
-                                          <img className="defaultLogo" src="/img/defaultAvatarComment.webp" alt="logo" />
+                                          <img className="defaultLogo" src={review.traveler_image} alt="logo" />
                                           <div className="reviewInfo">
-                                                <div className="nickName">AnnaBanana</div>
+                                                <div className="nickName">{review.traveler_name}</div>
                                                 <Rated number={review.rated} />
                                                 <div className="dateComment">{review.post_date}</div>
                                           </div>

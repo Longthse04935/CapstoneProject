@@ -128,7 +128,6 @@ class GuiderBooks extends Component {
       }
 
       const order = await orderResponse.json();
-      console.log(order);
       this.setState({ orders: order });
     } catch (err) {
       console.log(err);
@@ -171,12 +170,12 @@ class GuiderBooks extends Component {
     let order = this.state.orders.map((order, index) => (
       <tr className="row100 body" key={index}>
         <td className="cell100 column2">
-          <Link to={`/reviewtvl/10`}>{order.object}</Link>
+          <Link to={`/reviewtvl/`+order.traveler_id}>{order.object}</Link>
         </td>
         <td className="cell100 column3">{order.begin_date}</td>
         <td className="cell100 column4">{order.finish_date}</td>
         <td className="cell100 column5">
-          <Link to={`/posttour/${order.post_id}`}>{order.postTitle}</Link>
+          <Link to={`/post/${order.post_id}`}>{order.postTitle}</Link>
         </td>
         <td className="cell100 column6">{order.adult_quantity}</td>
         <td className="cell100 column7">{order.children_quantity}</td>
@@ -205,7 +204,8 @@ class GuiderBooks extends Component {
             </button>
 		   </div>
           </td>
-        ) : (
+        ) : null}
+        {status === 'ONGOING' ? (
           <td className="cell100 column1">
             <button
               className="cancel btn btn-secondary"
@@ -217,64 +217,11 @@ class GuiderBooks extends Component {
               Cancel
             </button>
           </td>
-        )}
+        ):null}
       </tr>
     ));
 
-    // let action = this.state.orders.map((order, index) => {
-    //   switch (this.state.status) {
-    //     case "WAITING":
-    //       return (
-    //         <tr className="row100 body" key={index}>
-    //           <td className="cell100 column1">
-    //             <button
-    //               className="accept"
-    //               value={order.trip_id}
-    //               id={index}
-    //               onClick={this.accept}
-    //               type="button"
-    //             >
-    //               Accept
-    //             </button>
-    //             <button
-    //               onClick={this.deny}
-    //               value={order.trip_id}
-    //               id={index}
-    //               className="refuse"
-    //               type="button"
-    //             >
-    //               Refuse
-    //             </button>
-    //           </td>
-    //         </tr>
-    //       );
-    //     case "ONGOING":
-    //       return (
-    //         <tr className="row100 body" key={index}>
-    //           <td className="cell100 column1">
-    //             <button
-    //               className="cancel"
-    //               value={order.trip_id}
-    //               id={index}
-    //               onClick={this.cancel}
-    //               type="button"
-    //             >
-    //               Cancel
-    //             </button>
-    //           </td>
-    //         </tr>
-    //       );
-    //     case "FINISH":
-    //       return (
-    //         <tr className="row100 body" key={index}>
-    //           {/* <td className="cell100 column1"><Link to={`comment/${this.orders.traveler_id}`}>Comment</Link></td> */}
-    //         </tr>
-    //       );
-    //     default:
-    //       return;
-    //   }
-    // });
-
+    
     let arr = ["WAITING", "ONGOING", "FINISHED", "CANCELLED"];
 
     let tab = arr.map((value, index) => (
@@ -317,7 +264,7 @@ class GuiderBooks extends Component {
                     <th className="cell100 column6">Adult quantity</th>
                     <th className="cell100 column7">Child quantiy</th>
                     <th className="cell100 column8">Price</th>
-                    <th className="cell100 column8">Action</th>
+                    {status === 'WAITING' || status === 'ONGOING' ? <th className="cell100 column8">Action</th> : null}
                   </tr>
                 </thead>
                 <tbody>{order}</tbody>

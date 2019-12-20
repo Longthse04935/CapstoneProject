@@ -151,16 +151,11 @@ class LoggedGuider extends Component {
                             <div className="navRight">
                                 <div className="navbarRightContent">
                                     <ul className="logged" >
-                                        <li>
-                                            <Link to="/"><i className="fa fa-users" aria-hidden="true"></i></Link>
-                                        </li>
-                                        <li>
-                                            <Link to="/chat"><i className="fa fa-comments" aria-hidden="true"></i></Link>
-                                        </li>
+
                                         <li>
                                             <Link to="/"><i className="fa fa-bell" aria-hidden="true"></i></Link>
                                         </li>
-                                        <li>
+                                        <li style={{width:'145px'}}>
                                             <Link to={"/managebook"}>Bookings</Link>
                                         </li>
                                         <li className="avatarLogged" onClick={this.disableLoggedChoice}>
@@ -169,15 +164,16 @@ class LoggedGuider extends Component {
 
                                                 <ul className="dropContent" style={this.state.disable ? { display: 'none' } : { display: 'block' }}>
                                                     <div className="navUser">
-                                                        <li><Link to="/profileguiders">Profile</Link><i className="fa fa-address-card-o" aria-hidden="true"></i></li>
-                                                        <li><Link to="/edit">Edit Post</Link><i className="fa fa-pencil" aria-hidden="true"></i></li>
-                                                        <li><Link to="/add">Add Post</Link><i className="fa fa-user" aria-hidden="true"></i></li>
-                                                        <li><Link to="/schedule">Schedule</Link><i className="fa fa-handshake-o" aria-hidden="true"></i></li>
-                                                        <li><Link to="/changepassword">Change Password</Link><i className="fa fa-handshake-o" aria-hidden="true"></i></li>
-                                                        <li><Link to="/chart">Your Revenues</Link><i className="fa fa-handshake-o" aria-hidden="true"></i></li>
-                                                        <li><Link to="/contract">Contract</Link><i className="fa fa-handshake-o" aria-hidden="true"></i></li>
+                                                        <li className="userChoice"><Link to="/profileguiders">Profile</Link><i className="fa fa-address-card-o" aria-hidden="true"></i></li>
+                                                        <li className="userChoice"><Link to="/edit">Edit Post</Link><i className="fa fa-pencil" aria-hidden="true"></i></li>
+                                                        <li className="userChoice"><Link to="/add">Add Post</Link><i className="fa fa-user" aria-hidden="true"></i></li>
+                                                        <li className="userChoice"><Link to="/schedule">Schedule</Link><i className="fa fa-handshake-o" aria-hidden="true"></i></li>
+                                                        <li className="userChoice"><Link to="/changepassword">Change Password</Link><i className="fa fa-handshake-o" aria-hidden="true"></i></li>
+                                                        <li className="userChoice"><Link to="/chart">Your Revenues</Link><i className="fa fa-handshake-o" aria-hidden="true"></i></li>
+                                                        <li className="userChoice"><Link to="/contract">Contract</Link><i className="fa fa-handshake-o" aria-hidden="true"></i></li>
                                                     </div>
-                                                    <li onClick={() => {
+                                                    <li className="userChoice"
+                                                    onClick={() => {
                                                         this.props.dispatch(logOut());
                                                         this.props.dispatch(wsDisconnect(Config.api_url + "ws"));
                                                         this.props.dispatch(exit());

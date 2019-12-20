@@ -57,7 +57,7 @@ class Chatbox extends Component {
 		let getDate = parseInt(date.getDate()) < 10 ? "0" + parseInt(date.getDate()) : parseInt(date.getDate());
 		let getMonth = parseInt(date.getMonth() + 1) < 10 ? "0" + parseInt(date.getMonth() + 1) : parseInt(date.getMonth() + 1);
 		//window.sessionStorage.getItem("guider_id")
-		console.log(date);
+		// console.log(date);
 		let data = {
 			"guider_id": "" + this.props.match.params.guiderId,
 			"post_id": "" + this.props.match.params.post_id,
@@ -98,6 +98,7 @@ class Chatbox extends Component {
 				credentials: "include"
 			});
 			if (!responsePosts.ok) {
+				window.location.href = '/page404';
 				throw Error(responsePosts.status + ": " + responsePosts.statusText);
 			}
 			const posts = await responsePosts.json();
@@ -137,7 +138,7 @@ class Chatbox extends Component {
 			let options = this.option(newTourDate, " 00:00");
 			let response = await fetch(Config.api_url + 'Order/GetAvailableHours', options);
 			response = await response.json();
-			console.log(response);
+			// console.log(response);
 			//load end time avilable	
 			let option = this.option(newTourDate, " " + response[0]);
 			let endTime = await fetch(Config.api_url + 'Order/GetExpectedTourEnd', option);

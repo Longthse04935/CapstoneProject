@@ -29,7 +29,7 @@ class ChatList extends React.Component {
                   // console.log(show);
                   //this.setState({messages: show, page: this.state.page+10});
                   //this.setState({messages: this.props.messages});
-            } catch(err) {
+            } catch (err) {
                   console.log(err);
             }
       }
@@ -43,7 +43,7 @@ class ChatList extends React.Component {
             //console.log(this.props);
             return (<div className="ChatRoom" >
                   <div className="top_menu" >
-                        <div className="title">Chat</div>
+                        <div className="title" style={{ color: 'Black' }}>{receiver}</div>
                   </div>
                   <ul className="messages" >
                         {this.props.messages.map((msg, index) => (
@@ -66,15 +66,15 @@ class ChatList extends React.Component {
                   <div className="bottom_wrapper clearfix" >
                         <form onSubmit={e => {
                               e.preventDefault();
-                              if (!input.value.trim()) {
+                              if (!input.value.trim() || !receiver.trim()) {
                                     return;
                               }
                               //console.log("send 2??");
                               let chatMessage = {
                                     sender: user,
                                     content: input.value,
-                                    guider: (this.props.user.role==='GUIDER')?user:receiver,
-                                    traveler: (this.props.user.role==='GUIDER')?receiver:user,
+                                    guider: (this.props.user.role === 'GUIDER') ? user : receiver,
+                                    traveler: (this.props.user.role === 'GUIDER') ? receiver : user,
                                     type: "CHAT",
                                     isSeen: false,
                                     dateReceived: Date.now()
@@ -90,7 +90,7 @@ class ChatList extends React.Component {
                                     <div className="icon"></div>
                                     <button type="submit" className="text">Send</button>
                               </div>
-                              
+
                         </form>
                   </div>
 
@@ -100,6 +100,6 @@ class ChatList extends React.Component {
 function mapStateToProps(state) {
       const user = state.user;
       const msg = state.messages;
-	return { user, msg};
+      return { user, msg };
 }
 export default connect(mapStateToProps)(ChatList);

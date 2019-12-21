@@ -69,23 +69,21 @@ class App extends Component {
 
 	checkPathWithRoleGuider = (component) => {
 		let user = this.props.user;
+		
 		if(user.userName === '' || user.role === 'TRAVELER'){
            return <Redirect to="/" />
-		}else{
-			return component;
+		}else if(user.role === 'GUIDER'){
+			if(user.isContractExist === false || user.isGuiderActive === false){
+				return <GuiderContract message={'Waiting'}/>;
+			}else{
+                return component;
+			}
+			
 		}
 		
 	}
 
 	componentDidMount() {
-
-		// if (typeof (Storage) !== 'undefined') {
-		// 	// get sessionStorage
-		// 	let user = window.sessionStorage.getItem('user');
-		// 	if (user !== null) this.reload(JSON.parse(user));
-		// } else {
-		// 	alert('Browser not support!');
-		// }
 		let user = this.props.user;
 		if (user.logedIn) {
 			this.props.dispatch(wsConnect(Config.api_url+"ws"));
@@ -94,6 +92,7 @@ class App extends Component {
 		}
 
 	}
+
 
 	
 	render() {

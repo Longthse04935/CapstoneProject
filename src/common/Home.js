@@ -433,7 +433,7 @@ class Home extends Component {
 										<img src={post.avatar} className="imgpb-header"></img>
 										<Rated number={post.rated} />
 										<Link to={"/guider/" + post.guider_id}>
-											<button className="contactMe">Contract Me</button>
+											<button className="contactMe">Contact Me</button>
 										</Link>
 									</div>
 								))

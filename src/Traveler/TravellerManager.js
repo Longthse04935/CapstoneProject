@@ -104,7 +104,7 @@ class TravellerManager extends Component {
 	async showReview(order_id, guider_id, post_id) {
 		let {cors} = this.state;
 		let commentRespone = await fetch(
-			"http://localhost:8080/review/checkExist?trip_id=" + order_id,
+			Config.api_url+"review/checkExist?trip_id=" + order_id,
 			cors);
 		if (commentRespone.status === 404) {
 

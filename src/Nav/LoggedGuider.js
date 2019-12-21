@@ -59,8 +59,11 @@ class LoggedGuider extends Component {
     disableLoggedChoice = () => {
         this.setState({ disable: !this.state.disable });
     }
-
+    toggleBox = () => {
+        this.setState(prevState => ({ isBoxVisible: !prevState.isBoxVisible }));
+    };
     render() {
+        const { isBoxVisible } = this.state;
         return (
             <div>
                 {/* Menubar */}
@@ -151,16 +154,29 @@ class LoggedGuider extends Component {
                             <div className="navRight">
                                 <div className="navbarRightContent">
                                     <ul className="logged" >
-
-                                        <li>
-                                            <Link to="/"><i className="fa fa-bell" aria-hidden="true"></i></Link>
-                                        </li>
-                                        <li>
-                                             <Link to="/chat"><i className="fa fa-comments" aria-hidden="true"></i></Link>
-                                        </li>
                                         <li style={{width:'145px'}}>
                                             <Link to={"/managebook"}>Bookings</Link>
                                         </li>
+                                        <li>
+                                            <Link to="/chat"><i className="fa fa-comments" aria-hidden="true"></i></Link>
+                                        </li>
+                                        <div className="noti">
+                                            <li>
+                                                <Link to="/" onClick={this.toggleBox}><i className="fa fa-bell" aria-hidden="true"></i></Link>
+                                            </li>
+                                            <div className={`box_noti ${isBoxVisible ? "" : "hidden"}`}>
+                                                <ul className="list_noti">
+                                                    <li><a href="/"><span>Canceled </span>The order on tour "Vietnamese war" was canceled by traveler Dung Nguyen</a></li>
+                                                    <li><a href="/"><span>Accepted </span>The order on tour "Vietnamese war" was canceled by guider Duc Trinh</a></li>
+                                                    <li><a href="/"><span>Waiting </span>You have a booking reservation on tour "Vietnamese war" was canceled by traveler Dung Nguyen</a></li>
+                                                    <li><a href="/"><span>Canceled </span>The order on tour "Vietnamese war" was canceled by traveler Dung Nguyen</a></li>
+                                                    <li><a href="/"><span>Waiting </span>You have a booking reservation on tour "Vietnamese war" was canceled by traveler Dung Nguyen</a></li>
+                                                </ul>
+                                                <a href="/" className="showMore">Show more</a>
+                                            </div>
+                                        </div>
+                                        
+                                        
                                         <li className="avatarLogged" onClick={this.disableLoggedChoice}>
 
                                             <img src={`${this.state.avatar}`} />

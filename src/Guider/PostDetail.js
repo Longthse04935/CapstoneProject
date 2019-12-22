@@ -13,8 +13,6 @@ class PostDetail extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			currentPage: 1,
-			todosPerPage: 4,
 			statusFavorite: false,
 			postInfo: {
 				picture_link: []
@@ -32,12 +30,23 @@ class PostDetail extends React.Component {
 					Accept: "application/json"
 				}
 			},
-			alert: null
+			alert: null,
+			slideShow: [
+				'/img/natural1.jpg',
+				'/img/nature2.jpg',
+				'/img/nature3.jpg',
+				'/img/nature4.jpg',
+				'/img/nature5.jpg',
+				'/img/nature6.jpg',
+			  ],
+			  currentIndex: 0,
+			  intervalId: null
 		};
 		this.onCancel = this.onCancel.bind(this);
 		this.alertAccount = this.alertAccount.bind(this);
 		this.onLogin = this.onLogin.bind(this);
 	}
+
 	async componentDidMount() {
 		$("html").animate({ scrollTop: 0 }, 500, "swing");
 		try {
@@ -110,7 +119,8 @@ class PostDetail extends React.Component {
 				postInfo: postInfo,
 				posts: posts,
 				guider: guider,
-				pageCount
+				pageCount,
+				slideShow:postInfo.picture_link
 			});
 			if (link_youtube.includes("youtu.be")) {
 				link_youtube = link_youtube.replace("youtu.be", "youtube.com/embed");
@@ -126,7 +136,14 @@ class PostDetail extends React.Component {
 		} catch (err) {
 			console.log(err);
 		}
+		this.setupInterval();
 	}
+// slide
+	timer = () => {
+		// setState method is used to update the state
+		this.commonNext();
+	 }
+
 	commonNext = () => {
 		let { currentIndex, slideShow } = this.state;
 		currentIndex++;
@@ -152,10 +169,19 @@ class PostDetail extends React.Component {
 		this.setState({ currentIndex });
 		this.setupInterval();
 	};
+
+	handleChoose = (index) => {
+		clearInterval(this.state.intervalId);
+		this.setState({ currentIndex: index });
+		this.setupInterval();
+	  }
+
 	setupInterval = () => {
 		let intervalId = setInterval(this.timer, 3000);
 		this.setState({ intervalId: intervalId });
 	};
+	// end slide
+
 	handleGotoPage = (post_id, guider_id) => {
 		this.props.history.push("/post/" + post_id);
 		window.location.reload();
@@ -273,7 +299,6 @@ class PostDetail extends React.Component {
 		const post_id = this.props.match.params.post_id;
 		let guider_id = this.state.guider.guider_id;
 		//pagination
-
 		const data = this.state.posts;
 		const range = this.range(0, pageCount - 1);
 		let renderPageNumbers = pageCount === 1 ? '' : range.map(i => (
@@ -368,7 +393,6 @@ class PostDetail extends React.Component {
 		);
 		//<img className="imgPostInfo" src={postInfo.picture_link} />;
 		const favorite = statusFavorite ? "favorite" : '';
-		console.log(favorite);
 		return (
 			<div>
 				{this.state.alert}
@@ -437,8 +461,35 @@ class PostDetail extends React.Component {
 
 									<ReviewInPost postId={post_id} />
 									<PlanInPost postId={post_id} />
+									<div dangerouslySetInnerHTML={{__html: postInfo.reasons}} />
 								</div>
-
+								{/* slideshow */}
+									<div className="slideshow">
+										<div className="slideshow-container">
+										<h2>What you can expect</h2>
+										{this.state.slideShow.map((link, i) => (
+											<div className={`mySlides${i === this.state.currentIndex ? ' active' : ''}`} key={i}>
+											<img src={link} />
+											</div>
+										))}
+										<a className="prev" onClick={this.handlePrev}>
+											❮
+										</a>
+										<a className="next" onClick={this.handleNext}>
+											❯
+										</a>
+										</div>
+										<br />
+										<div
+										className="navigation"
+										style={{ textAlign: "center", marginBottom: 30 }}
+										>
+										{this.state.slideShow.map((link, i) => (
+										<span className={`dot${i === this.state.currentIndex ? ' active' : ''}`} key={i} onClick={() => this.handleChoose(i)} />
+										))}
+										</div>
+									</div>
+									{/* end slideshow */}
 								<div className="bookOffers">
 									<h2 style={{ marginBottom: "20px" }}>Watch one of my trip</h2>
 									<ul>{posts}</ul>

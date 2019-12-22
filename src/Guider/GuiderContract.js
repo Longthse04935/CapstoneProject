@@ -43,7 +43,7 @@ class GuiderContract extends Component {
     this.setState({ country });
     let messages = this.props.message;
      if(messages === 'Waiting'){
-       this.statusProfile('If you have complete contract, waiting contract was accept. Else complete your contract!','Notification');
+       this.statusProfile("If you have sent us a contract, please wait while we processing it.If you haven't sent one then please fills in the form and sends it to us.",'Notification');
      }
   }
 

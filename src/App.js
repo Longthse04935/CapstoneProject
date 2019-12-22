@@ -156,7 +156,7 @@ class App extends Component {
 					<Route exact path='/chatbox/:guiderId/:post_id/' render={(props)=>this.checkPathWithoutLogin(<Chatbox {...props}/>)} />
 					<Route path='/changepassword' render={()=>this.checkPathWithoutLogin(<ChangePassword guiderId={this.props.user.id} />)}/>
 					<Route path='/chat' render={()=>this.checkPathWithoutLogin(<Message />)}/>
-					{/* <Route path='/tour' component={Tour} /> */}
+					<Route path='/tour' component={Tour} />
 					
 					{/* <Route path='/tour/:id' component={PostTourDetail} exact />*/}
 					

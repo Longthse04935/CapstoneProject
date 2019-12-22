@@ -227,7 +227,9 @@
 .activities span{
     padding-left: 15px;
 }
-
+.reason{
+  padding-bottom: 0;
+}
 .reason h2{
     margin-top: 30px;
     font-size: 32px;
@@ -241,7 +243,7 @@
 }
 
 .reason i{
-    color:#6fbe44;
+    color:#e71575;
     position: absolute;
 }
 

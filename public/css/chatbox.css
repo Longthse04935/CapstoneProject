@@ -19,6 +19,8 @@ body {
   border: 1px solid #ccc;
   border-radius: 4px;
   box-shadow: 0 3px 7px -1px;
+  margin-bottom: 3%;
+  margin-top:3%;
 }
 
 .top_menu {
@@ -270,6 +272,8 @@ body {
 
 .chat_window .planWidthChatBox{
   width: 27% !important;
+  overflow-y: scroll;
+  height: 815px;
 }
 
 .guiderContent {

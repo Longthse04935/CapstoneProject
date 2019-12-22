@@ -36,8 +36,6 @@ import ForgotPassword from "./common/ForgotPassword";
 class App extends Component {
 	constructor(props) {
 		super(props);
-		console.log("constructor app");
-		console.log(props);
 		this.state = {
 			userName: "Guest",
 			role: "GUEST",

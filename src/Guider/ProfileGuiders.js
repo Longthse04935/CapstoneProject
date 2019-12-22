@@ -13,6 +13,7 @@ class ProfileGuiders extends Component {
       guider_id: 0,
       posts: [],
       guider: {
+       
       },
       page: 0,
       totalPage: 0,
@@ -23,7 +24,8 @@ class ProfileGuiders extends Component {
         headers: {
           Accept: "application/json"
         }
-      }
+      },
+      about_me:[""]
     }
   }
   componentDidMount() {
@@ -87,6 +89,7 @@ class ProfileGuiders extends Component {
       }
 
       const guider = await response.json();
+      const about_me = guider.about_me.split(".");
       if (guider.profile_video.includes("youtu.be")) {
         guider.profile_video = guider.profile_video.replace("youtu.be", "youtube.com/embed");
       } else {
@@ -94,7 +97,7 @@ class ProfileGuiders extends Component {
         guider.profile_video = guider.profile_video[0].replace("watch?v=", "embed/");
       }
       // console.log(guider);
-      this.setState({ guider });
+      this.setState({ guider,about_me });
     } catch (err) {
       console.log(err)
     }
@@ -208,9 +211,8 @@ class ProfileGuiders extends Component {
   };
 
   render() {
-    let { guider_id, guider, totalPage, page } = this.state;
+    let { guider_id, guider, totalPage, page,about_me } = this.state;
     let post = this.RenderPostGuider(guider_id);
-    // console.log(totalPage);
     const range = this.range(0, totalPage - 1);
     let renderPageNumbers = totalPage === 1 ? '' :
       range.map(i => (
@@ -255,20 +257,18 @@ class ProfileGuiders extends Component {
                     <div id="section">
                       <div className="article">
                         <p>
-                          {guider.about_me}
+                          {
+                            about_me.slice(0,4).map((value)=>(
+                              <span>{value}.</span>
+                            ))
+                          }
                         </p>
                         <p className="moretext">
-                          Known as the city of the seven hills, its name comes from
-                          Olisipo, name that the town already had before the Roman
-                          occupation, in 205 BC Located in zone of strong seismic
-                          intensity, suffered several earthquakes throughout the
-                          centuries, having the earthquake of 1755 , followed by tsunami
-                          and fire, totally destroying the riverside area of the city.
-                          The reconstruction plan of the city implemented by Marquês de
-                          Pombal is still visible today in the streets of Lisbon, mainly
-                          in downtown Lisbon. Lisbon was one of the main centers of
-                          introduction and development of Christianity in the Iberian
-                          Peninsula.
+                        {
+                            about_me.slice(4,about_me.length).map((value)=>(
+                              <span>{value}.</span>
+                            ))
+                          }
                                 </p>
                       </div>
                       <a className="moreless-button" onClick={e => e.preventDefault()}>

@@ -319,7 +319,7 @@ class PostDetail extends React.Component {
 						<img src={post.picture_link[0]} alt="logo" />
 					</div>
 					<div className="experienceCard-details">
-						<span className="enjoy">
+						<span className="enjoy" style={{whiteSpace:'normal'}}>
 							Enjoy <span className="withName">{post.title}</span>
 						</span>
 						<h3>

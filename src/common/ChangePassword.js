@@ -108,6 +108,9 @@ class ChatList extends React.Component {
                                     } else {
                                           this.notification("Something Wrong! Please try again");
                                     }
+                                    password.value = '';
+                                    repassword.value = '';
+                                    newpassword.value = '';
                               } catch (err) {
                                     this.notification("Something Wrong! Please try again");
                                     console.log(err);

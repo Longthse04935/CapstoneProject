@@ -317,7 +317,7 @@ class Navbar extends Component {
         if (this.props.error.flag) {
 			errors['login'] = 'User name or password is wrong';
 		}
-        
+        console.log(this.props.error.flag);
         let path = window.location.pathname;
         return (
             <div>
@@ -455,7 +455,7 @@ class Navbar extends Component {
                                     />{" "}
                                     Guider
                                 </div>
-                                {this.props.error.flag ? <p style={{ color: "red" }} className="errorInput">{errors['login']}</p> : ''}
+                                {this.props.error.flag === true ? <p style={{ color: "red" }} className="errorInput">{errors['login']}</p> : ''}
                                 <div className="firstName">
                                     <label className="InputLabel-Tch5j InputLabelConditionalHide-24VTo">
                                         Nick name *
@@ -621,6 +621,7 @@ class Navbar extends Component {
 }
 function mapStateToProps(state) {
     const error = state.Error;
-    return { error};
+    const user = state.user;
+    return { error, user};
 }
 export default connect(mapStateToProps)(Navbar);

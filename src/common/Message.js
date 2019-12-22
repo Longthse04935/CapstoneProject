@@ -3,15 +3,19 @@ import { connect } from 'react-redux';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import ChatList from "./ChatStore";
 import Config from '../Config'
+import {loadGuest} from '../redux/webSocket'
 class Message extends React.Component {
       constructor(props) {
             super(props);
             this.state = {
-                  client: ""
+                  client: "",
+                  page: 0
             }
       }
 
       async componentDidMount() {
+            this.props.dispatch(loadGuest(`${this.props.user.userName}/${this.props.receiver}/${this.state.page}/${this.state.page+10}`));
+            this.setState({ page: this.state.page+10 });
       }
 
       load = (eve) => {

@@ -39,6 +39,7 @@ class TravellerManager extends Component {
 
 	async componentDidMount() {//var user = JSON.parse(sessionStorage.getItem('user'));
 		let user = this.props.user;
+		$('.tvlTab li[value="WAITING"]').addClass('selected');
 		try {
 			const orderResponse = await fetch(
 				Config.api_url + "Order/GetOrderByStatus?role=" + "TRAVELER" + "&id=" + user.id + "&status=WAITING",
@@ -226,7 +227,7 @@ class TravellerManager extends Component {
 		var arr = ['WAITING', 'ONGOING', 'FINISHED', 'CANCELLED'];
 
 		var tab = arr.map((value, index) =>
-			<li key={index} onClick={() => { this.tabList(value) }}>{value}</li>
+			<li key={index} onClick={() => { this.tabList(value) }} value={value}>{value}</li>
 		);
 		var { isDisable, isError, errorRate, hideAddComment, rated, status } = this.state;
 

@@ -115,7 +115,7 @@ class Chatbox extends Component {
 			});
 			let d = await avaiDates.json();
 
-			let newTourDate = (d.length > 0) ? new Date(d[0]) : new Date();
+
 
 			//get profile guider
 			const responseGuider = await fetch(Config.api_url + "Guider/" + guiderId, {
@@ -133,7 +133,8 @@ class Chatbox extends Component {
 
 
 
-
+			d = d.filter(date => date > new Date().getTime());
+			let newTourDate = (d.length > 0) ? new Date(d[0]) : new Date();
 			this.setState({ tourDate: newTourDate, post: posts, guider: guider, numberInjoy, avaiDate: d });
 			let options = this.option(newTourDate, " 00:00");
 			let response = await fetch(Config.api_url + 'Order/GetAvailableHours', options);
@@ -161,7 +162,18 @@ class Chatbox extends Component {
 		// 	tourDate: date,
 		// 	closest_EndDate: ""
 		// });
-
+		let avaiDates = await fetch(Config.api_url + 'Order/GetPossibleDayInMonth/'
+			+ this.props.match.params.guiderId + '/' + this.state.post.total_hour, {
+			method: "POST",
+			mode: "cors",
+			credentials: "include",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify(date)
+		});
+		let d = await avaiDates.json();
+		d = d.filter(date => date > new Date().getTime());
 		let options = this.option(date, " 00:00")
 		let response = await fetch(Config.api_url + 'Order/GetAvailableHours', options);
 		response = await response.json();
@@ -169,7 +181,7 @@ class Chatbox extends Component {
 		let option = this.option(date, " " + response[0]);
 		let endTime = await fetch(Config.api_url + 'Order/GetExpectedTourEnd', option);
 		endTime = await endTime.text();
-		this.setState({ timeAvailable: response, endTime: endTime, valueItem: response[0], tourDate: date, closest_EndDate: "" });
+		this.setState({ timeAvailable: response, endTime: endTime, valueItem: response[0], tourDate: date, closest_EndDate: "",avaiDate: d  });
 
 	}
 
@@ -317,9 +329,10 @@ class Chatbox extends Component {
 	};
 
 	render() {
-		const {numberInjoy, plan, guider, avaiDate } = this.state;
+		const { numberInjoy, plan, guider, avaiDate } = this.state;
 		let includeCalendates = avaiDate.map(date => { return new Date(date); });
-		//console.log(includeCalendates);
+
+		console.log(includeCalendates);
 		let languages = '';
 
 		for (var i = 0; i < guider.languages.length; i++) {
@@ -334,8 +347,8 @@ class Chatbox extends Component {
 		});
 		let chat = (this.state.guider.name === "") ? <div /> : <ChatList name={this.props.user.userName}
 			messages={this.props.messages
-				.filter(msg =>  msg.traveler === this.props.user.userName
-				|| msg.guider === this.state.guider.name)
+				.filter(msg => msg.traveler === this.props.user.userName
+					|| msg.guider === this.state.guider.name)
 			}
 			receiver={this.state.guider.name} />
 
@@ -404,7 +417,8 @@ class Chatbox extends Component {
                 <DatePicker
 									selected={this.state.tourDate}
 									onChange={this.dateChange}
-									minDate={(includeCalendates.length > 0) ? includeCalendates[0] : new Date()}
+									minDate={new Date()}
+									//{(includeCalendates.length > 0) ? includeCalendates[0] : new Date()}
 									includeDates={includeCalendates}
 								/>
 							</div>
@@ -489,7 +503,7 @@ class Chatbox extends Component {
 					<PlanInPost postId={this.props.match.params.post_id} />
 					{/* End plan of tour */}
 					{chat}
-					
+
 				</div>
 
 				{/*End  Chat form */}

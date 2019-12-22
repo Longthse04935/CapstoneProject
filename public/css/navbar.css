@@ -109,8 +109,74 @@
   font-size: 20px;
 }
 
-.navbarRightContent ul li:nth-child(1), .navbarRightContent ul li:nth-child(2), .navbarRightContent ul li:nth-child(3){
+.navbarRightContent ul .noti, .navbarRightContent ul li:nth-child(1), .navbarRightContent ul li:nth-child(2), .navbarRightContent ul li:nth-child(3){
   width: 60px;
+}
+
+.navbarRightContent ul .noti{
+  position: relative;
+  display: inline-block;
+}
+
+.navbarRightContent ul .noti .box_noti{
+  position: absolute;
+  width: 400px;
+  top: 100%;
+  right: 0;
+  background: #fff;
+  box-shadow: 0 6px 13px 0 rgba(56, 42, 42, 0.25);
+  border: 1px solid #ccc;
+  opacity: 1;
+  transition: 0.3s;
+  z-index: 10;
+}
+
+.navbarRightContent ul .noti .box_noti.hidden{
+  opacity: 0;
+}
+
+.navbarRightContent ul .noti .box_noti ul{
+  max-height: 303px;
+  overflow-y: scroll;
+}
+
+.navbarRightContent ul .noti .box_noti ul li{
+  width: 100%;
+  text-align: left;
+  display: block;
+  line-height: 20px;
+  padding: 15px;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.navbarRightContent ul .noti .box_noti ul li:hover{
+  background: linear-gradient(rgba(29, 33, 41, .04), rgba(29, 33, 41, .04));
+}
+
+.navbarRightContent ul .noti .box_noti ul li a{
+  font-size: 14px;
+}
+
+.navbarRightContent ul .noti .box_noti ul li a span{
+  font-weight: 600;
+}
+
+.navbarRightContent ul .noti .showMore{
+  text-align: center;
+  width: 100%;
+  display: block;
+  line-height: 38px;
+  color: #365899;
+  border-top: 1px solid #ccc;
+  font-size: 15px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.navbarRightContent ul .noti .showMore:hover{
+  color: #e71575;
 }
 
 .navbarRightContent .dropContent .userChoice{

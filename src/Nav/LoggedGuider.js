@@ -155,6 +155,9 @@ class LoggedGuider extends Component {
                                         <li>
                                             <Link to="/"><i className="fa fa-bell" aria-hidden="true"></i></Link>
                                         </li>
+                                        <li>
+                                             <Link to="/chat"><i className="fa fa-comments" aria-hidden="true"></i></Link>
+                                        </li>
                                         <li style={{width:'145px'}}>
                                             <Link to={"/managebook"}>Bookings</Link>
                                         </li>
@@ -165,7 +168,7 @@ class LoggedGuider extends Component {
                                                 <ul className="dropContent" style={this.state.disable ? { display: 'none' } : { display: 'block' }}>
                                                     <div className="navUser">
                                                         <li className="userChoice"><Link to="/profileguiders">Profile</Link><i className="fa fa-address-card-o" aria-hidden="true"></i></li>
-                                                        <li className="userChoice"><Link to="/edit">Edit Post</Link><i className="fa fa-pencil" aria-hidden="true"></i></li>
+                                                        <li className="userChoice"><Link to="/edit">Manage Post</Link><i className="fa fa-pencil" aria-hidden="true"></i></li>
                                                         <li className="userChoice"><Link to="/add">Add Post</Link><i className="fa fa-user" aria-hidden="true"></i></li>
                                                         <li className="userChoice"><Link to="/schedule">Schedule</Link><i className="fa fa-handshake-o" aria-hidden="true"></i></li>
                                                         <li className="userChoice"><Link to="/changepassword">Change Password</Link><i className="fa fa-handshake-o" aria-hidden="true"></i></li>

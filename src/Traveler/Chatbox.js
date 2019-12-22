@@ -414,7 +414,7 @@ class Chatbox extends Component {
 
 							<div className="pickdate">
 								Pick Date Start:
-                <DatePicker
+                            <DatePicker
 									selected={this.state.tourDate}
 									onChange={this.dateChange}
 									minDate={new Date()}

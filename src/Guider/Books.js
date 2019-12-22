@@ -8,7 +8,16 @@ class GuiderBooks extends Component {
     super(props);
     this.state = {
       orders: [],
-      status: "WAITING"
+      status: "WAITING",
+      page: 0,
+      cors:{
+        method: "GET",
+        mode: "cors",
+        credentials: "include",
+        headers: {
+          Accept: "application/json"
+        }
+      }
     };
 
     this.accept = this.accept.bind(this);
@@ -17,16 +26,11 @@ class GuiderBooks extends Component {
   }
   async accept(eve) {
     try {
-      const remain = this.state.orders;
-      remain.splice(eve.target.id, 1);
-
+      const remain = this.state.orders.splice(eve.target.id, 1);
+      let {cors} = this.state;
       const orderResponse = await fetch(
         Config.api_url + "Order/AcceptOrder/" + eve.target.value,
-        {
-          method: "GET",
-          mode: "cors",
-          credentials: "include"
-        }
+        cors
       );
 
       if (!orderResponse.ok) {
@@ -45,8 +49,7 @@ class GuiderBooks extends Component {
     eve.preventDefault();
     try {
       const denied = this.state.orders[eve.target.id];
-      const remain = this.state.orders;
-      remain.splice(eve.target.id, 1);
+      const remain = this.state.orders.splice(eve.target.id, 1);
       const orderResponse = await fetch(
         Config.api_url + "Order/refuseTrip/" + eve.target.value,
         {
@@ -74,8 +77,7 @@ class GuiderBooks extends Component {
     try {
       //console.log(this.state.orders);
       const denied = this.state.orders[eve.target.id];
-      const remain = this.state.orders;
-      remain.splice(eve.target.id, 1);
+      const remain = this.state.orders.splice(eve.target.id, 1);
       const orderResponse = await fetch(
         Config.api_url +
           "Order/CancelOrderAsGuider?trip_id=" +
@@ -103,6 +105,7 @@ class GuiderBooks extends Component {
   async componentDidMount() {
     let user = this.props.user;
     $('.tvlTab li[value="WAITING"]').addClass('selected');
+    let {cors} = this.state;
     try {
       const orderResponse = await fetch(
         Config.api_url +
@@ -111,23 +114,25 @@ class GuiderBooks extends Component {
           "&id=" +
           user.id +
           "&status=" +
-          this.state.status,
-        {
-          method: "GET",
-          mode: "cors",
-          credentials: "include",
-          headers: {
-            Accept: "application/json"
-          }
-        }
+          this.state.status+"&page=0",
+          cors
       );
 
-      if (!orderResponse.ok) {
-        throw Error(orderResponse.status + ": " + orderResponse.statusText);
-      }
+
+      const respone = await fetch(
+        Config.api_url +
+          "Order/GetOrderByStatusPageCount?role=" +
+          "GUIDER" +
+          "&id=" +
+          user.id +
+          "&status=" +
+          this.state.status,
+          cors
+      );
 
       const order = await orderResponse.json();
-      this.setState({ orders: order });
+      const totalPage = await respone.json();
+      this.setState({ orders: order,totalPage});
     } catch (err) {
       console.log(err);
     }
@@ -137,8 +142,9 @@ class GuiderBooks extends Component {
 		});
   }
 
-  async tabList(status) {
+  async tabList(status,currentPage = 0) {
     let user = this.props.user;
+    let {cors} = this.state;
     try {
       const orderResponse = await fetch(
         Config.api_url +
@@ -147,30 +153,71 @@ class GuiderBooks extends Component {
           "&id=" +
           user.id +
           "&status=" +
+          status+"&page="+currentPage,
+          cors
+      );
+
+      if (!orderResponse.ok) {
+        throw Error(orderResponse.status + ": " + orderResponse.statusText);
+      }
+      const respone = await fetch(
+        Config.api_url +
+          "Order/GetOrderByStatusPageCount?role=" +
+          "GUIDER" +
+          "&id=" +
+          user.id +
+          "&status=" +
           status,
-        {
-          method: "GET",
-          mode: "cors",
-          credentials: "include",
-          headers: {
-            Accept: "application/json"
-          }
-        }
+          cors
       );
 
       if (!orderResponse.ok) {
         throw Error(orderResponse.status + ": " + orderResponse.statusText);
       }
       const order = await orderResponse.json();
-      this.setState({ orders: order, status: status });
+      const totalPage = await respone.json();
+      this.setState({ orders: order, status: status,totalPage});
     } catch (err) {
       console.log(err);
     }
   }
 
+	range = (start, end) => {
+		var ans = [];
+		for (let i = start; i <= end; i++) {
+			ans.push(i);
+		}
+		return ans;
+  }
+
+  handleCurrentPage = (currentPage) => {
+      let{status} = this.state;
+			this.tabList(status,currentPage);
+		
+		this.setState({
+			page: currentPage
+		});
+		
+  }
+  
   render() {
-    let { status } = this.state;
-    let order = this.state.orders.map((order, index) => (
+    let { status,orders,totalPage,page } = this.state;
+	//pagination
+  const range = this.range(0, totalPage - 1);
+    let renderPageNumbers = totalPage === 1 ? '' :
+    range.map((i) => (
+      <button
+        key={i}
+        id={i}
+        onClick={()=>this.handleCurrentPage(i)}
+        className={page === i ? "currentPage" : ''}
+      >
+        {i+1}
+      </button>
+    )
+  );
+
+    let order = orders.map((order, index) => (
       <tr className="row100 body" key={index}>
         <td className="cell100 column2">
           <Link to={`/reviewtvl/`+order.traveler_id}>{order.object}</Link>
@@ -236,7 +283,7 @@ class GuiderBooks extends Component {
     return (
       <div className="tvlManager_Container">
         <div className="tvlManager_title">
-          <ul className="tvlTab">{tab}</ul>
+          <ul className="tvlTab" id="bookManage">{tab}</ul>
         </div>
 
         <div className="table100 ver1">
@@ -252,7 +299,10 @@ class GuiderBooks extends Component {
           </div>
           <div className="wrap-table100-nextcols js-pscroll ps ps--active-x">
             <div className="table100-nextcols">
-              <table>
+              {
+                orders.length === 0 ?  <h1>You don't have any booking on that list</h1>
+               :
+               <table>
                 <thead>
                   <tr className="row100 head">
                     <th className="cell100 column2">Traverler</th>
@@ -267,9 +317,14 @@ class GuiderBooks extends Component {
                 </thead>
                 <tbody>{order}</tbody>
               </table>
+              }
             </div>
 
-            <div className="wrap-table100-nextcols js-pscroll"></div>
+            <div className="pagination">
+            <div className="paginationContent">
+              {renderPageNumbers}
+            </div>
+		    	</div>
           </div>
         </div>
         <div></div>

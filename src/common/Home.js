@@ -180,24 +180,25 @@ class Home extends Component {
 
 	searchGuider = async (input,page) => {
 		try {
-			const responsePosts = await fetch(
-				Config.api_url + "Guider/Search/" + input + "/" + page,
-				this.state.authenticate
-			);
-			const pageCount = await fetch(
-				Config.api_url + "Guider/SearchPageCoun/" + input ,
-				this.state.authenticate
-			);
-
-			if (!responsePosts.ok) {
-				throw Error(responsePosts.status + ": " + responsePosts.statusText);
-			}
+				const responsePosts = await fetch(
+					Config.api_url + "Guider/Search/" + input + "/" + page,
+					this.state.authenticate
+				);
+				const pageCount = await fetch(
+					Config.api_url + "Guider/SearchPageCoun/" + input ,
+					this.state.authenticate
+				);
+	
+				if (!responsePosts.ok) {
+					throw Error(responsePosts.status + ": " + responsePosts.statusText);
+				}
+				
+				const guiders = await responsePosts.json();
+				const totalPage = await pageCount.json();
+	
+				
+				this.setState({ searchGuider: guiders,inputSearch:input,totalPage});
 			
-			const guiders = await responsePosts.json();
-			const totalPage = await pageCount.json();
-
-
-			this.setState({ searchGuider: guiders,inputSearch:input,totalPage});
 		} catch (err) {
 			console.log(err);
 		}
@@ -391,7 +392,7 @@ class Home extends Component {
 
 												</div>
 												<div className="experienceCard-bottomDetails">
-													<Rated number="5" />
+													<Rated number={post.rated} />
 												</div>
 											</div>
 										</div>
@@ -408,7 +409,7 @@ class Home extends Component {
 			</div>
 		</div>
 		);
-		//console.log(this.state.searchGuider);
+		
 		let guiderResult = (
 			<div className="guiderResult">
 				<div className="headerGuiderResult">
@@ -433,7 +434,7 @@ class Home extends Component {
 										<img src={post.avatar} className="imgpb-header"></img>
 										<Rated number={post.rated} />
 										<Link to={"/guider/" + post.guider_id}>
-											<button className="contactMe">Contract Me</button>
+											<button className="contactMe">Contact Me</button>
 										</Link>
 									</div>
 								))
@@ -484,10 +485,10 @@ class Home extends Component {
 							<button className="Button-2i" onClick={(eve) => {
 								eve.preventDefault();
 								if (!input.value.trim()) {
-									return;
+									this.setState({inputSearch:''});
+									return ;
 								}
 								this.state.filter = (this.state.filter === "none") ? "guider" : this.state.filter;
-
 								if (this.state.filter === "guider") {
 									this.searchGuider(input.value,0);
 								} else if (this.state.filter === "location") {

@@ -385,33 +385,6 @@ class Tour extends Component {
           <span className={`dot${i === this.state.currentIndex ? ' active' : ''}`} key={i} onClick={() => this.handleChoose(i)} />
         ))}
         </div>
-        <div className="readMoreText expect">
-          <div id="section">
-            <div className="slideshow">
-              <p>
-                The best way to make the most out of your stay. Enjoy the city
-                like and with a local. Lisbon is a mix of wonderful
-                architecture, lively streets, and colorful sights. Get answers
-                to all questions and the best recommendations from your local
-                insider!
-              </p>
-              <p className="moretext">
-                Hop from town to town discovering monuments and fascinating
-                stories. Go to Óbidos and step back in time at this medieval
-                town. Not only you will see UNESCO heritage monuments, you'll
-                also have a taste of the best 'ginginja' in Portugal!
-              </p>
-              <p className="moretext">
-                Follow the pilgrimage road that leads to Fátima. Discover its
-                fascinating story and the reason why many people decide to visit
-                this town for religious reasons and blessings.
-              </p>
-            </div>
-            <a className="moreless-button" href="javascript:void(0)">
-              Read more
-            </a>
-          </div>
-        </div>
       </div>
       {/* end slideshow */}
       {/* plan */}

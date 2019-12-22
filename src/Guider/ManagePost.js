@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import "font-awesome/css/font-awesome.min.css";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Rated from "./Rated";
-import GuiderInPost from './GuiderInPost';
-import EditPost from './EditPost';
-import Config from '../Config';
-import { connect } from 'react-redux';
+import GuiderInPost from "./GuiderInPost";
+import EditPost from "./EditPost";
+import Config from "../Config";
+import { connect } from "react-redux";
 class ManagePost extends Component {
       constructor(props) {
             super(props);
@@ -17,13 +17,6 @@ class ManagePost extends Component {
                   page: 0
             };
       }
-      // componentWillMount() {
-      //       console.log(this.props);
-      // 	var user = JSON.parse(sessionStorage.getItem('user'));
-      // 	if (user !== null) {
-      // 		console.log("session storage");
-      // 	} 
-      // }
 
       async componentDidMount() {
             //console.log(this.props);
@@ -154,5 +147,6 @@ class ManagePost extends Component {
 function mapStateToProps(state) {
       const user = state.user;
       return { user };
+
 }
 export default connect(mapStateToProps)(ManagePost);

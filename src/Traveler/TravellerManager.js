@@ -21,7 +21,16 @@ class TravellerManager extends Component {
 			alert: null,
 			cmtExist: [],
 			status: 'WAITING',
-			first:0
+			first:0,
+			page:0,
+			cors:{
+				method: "GET",
+				mode: "cors",
+				credentials: "include",
+				headers: {
+					'Accept': 'application/json'
+				}
+			}
 		};
 	}
 	//check xem ng đăng nhập là ai nếu là guider thì về trang home
@@ -40,25 +49,19 @@ class TravellerManager extends Component {
 	async componentDidMount() {//var user = JSON.parse(sessionStorage.getItem('user'));
 		let user = this.props.user;
 		$('.tvlTab li[value="WAITING"]').addClass('selected');
+		let {cors} = this.state;
 		try {
 			const orderResponse = await fetch(
+				Config.api_url + "Order/GetOrderByStatus?role=" + "TRAVELER" + "&id=" + user.id + "&status=WAITING"+"&page=0",
+				cors);
+
+			const respone = await fetch(
 				Config.api_url + "Order/GetOrderByStatus?role=" + "TRAVELER" + "&id=" + user.id + "&status=WAITING",
-
-				{
-					method: "GET",
-					mode: "cors",
-					credentials: "include",
-					headers: {
-						'Accept': 'application/json'
-					}
-				});
-
-			if (!orderResponse.ok) {
-				throw Error(orderResponse.status + ": " + orderResponse.statusText);
-			}
+				cors);
 
 			const order = await orderResponse.json();
-			this.setState({ orders: order });
+			const totalPage = await respone.json();
+			this.setState({ orders: order,totalPage });
 		} catch (err) {
 			console.log(err);
 		}
@@ -100,16 +103,10 @@ class TravellerManager extends Component {
 	}
 
 	async showReview(order_id, guider_id, post_id) {
+		let {cors} = this.state;
 		let commentRespone = await fetch(
-			"http://localhost:8080/review/checkExist?trip_id=" + order_id,
-			{
-				method: "GET",
-				mode: "cors",
-				credentials: "include",
-				headers: {
-					'Accept': 'application/json'
-				}
-			});
+			Config.api_url+"review/checkExist?trip_id=" + order_id,
+			cors);
 		if (commentRespone.status === 404) {
 
 			var { info } = this.state;
@@ -134,29 +131,45 @@ class TravellerManager extends Component {
 		this.setState({ comment: value, isError: false });
 	}
 
-	async tabList(status) {
+	async tabList(status,currentPage = 0) {
 		let user = this.props.user;
+		let {cors} = this.state;
 		try {
-			const orderResponse = await fetch(
-				Config.api_url + "Order/GetOrderByStatus?role=" + "TRAVELER" + "&id=" + user.id + "&status=" + status,
-				{
-					method: "GET",
-					mode: "cors",
-					credentials: "include",
-					headers: {
-						'Accept': 'application/json'
-					}
-				});
-
-			if (!orderResponse.ok) {
-				throw Error(orderResponse.status + ": " + orderResponse.statusText);
-			}
-			const order = await orderResponse.json();
-			this.setState({ orders: order, status: status });
+		  const orderResponse = await fetch(
+			Config.api_url +
+			  "Order/GetOrderByStatus?role=" +
+			  "TRAVELER" +
+			  "&id=" +
+			  user.id +
+			  "&status=" +
+			  status+"&page="+currentPage,
+			  cors
+		  );
+	
+		  if (!orderResponse.ok) {
+			throw Error(orderResponse.status + ": " + orderResponse.statusText);
+		  }
+		  const respone = await fetch(
+			Config.api_url +
+			  "Order/GetOrderByStatusPageCount?role=" +
+			  "TRAVELER" +
+			  "&id=" +
+			  user.id +
+			  "&status=" +
+			  status,
+			  cors
+		  );
+	
+		  if (!orderResponse.ok) {
+			throw Error(orderResponse.status + ": " + orderResponse.statusText);
+		  }
+		  const order = await orderResponse.json();
+		  const totalPage = await respone.json();
+		  this.setState({ orders: order, status: status,totalPage});
 		} catch (err) {
-			console.log(err);
+		  console.log(err);
 		}
-	}
+	  }
 
 	hideAlert() {
 		this.setState({
@@ -182,17 +195,11 @@ class TravellerManager extends Component {
 
 	handleCancle = async (trip,status) => {
 		$(".coverLoader").show();
+		let {cors} = this.state;
 		try {
 			const orderResponse = await fetch(
 				Config.api_url + "Order/CancelOrderAsTraveler?trip_id=" + trip,
-				{
-					method: "GET",
-					mode: "cors",
-					credentials: "include",
-					headers: {
-						'Accept': 'application/json'
-					}
-				});
+				cors);
 
 			if (!orderResponse.ok) {
 				throw Error(orderResponse.status + ": " + orderResponse.statusText);
@@ -203,10 +210,42 @@ class TravellerManager extends Component {
 			console.log(err);
 		}
 	}
+		range = (start, end) => {
+			var ans = [];
+			for (let i = start; i <= end; i++) {
+				ans.push(i);
+			}
+			return ans;
+	}
+
+	handleCurrentPage = (currentPage) => {
+		let{status} = this.state;
+			this.tabList(status,currentPage);
+			this.setState({
+				page: currentPage
+			});
+			
+	}
 
 	render() {
-		let {first} = this.state;
-		let order = this.state.orders.map((order, index) => {
+		let {orders,totalPage,page} = this.state;
+
+		//pagination
+		const range = this.range(0, totalPage - 1);
+		let renderPageNumbers = totalPage === 1 ? '' :
+		range.map((i) => (
+		  <button
+			key={i}
+			id={i}
+			onClick={()=>this.handleCurrentPage(i)}
+			className={page === i ? "currentPage" : ''}
+		  >
+			{i+1}
+		  </button>
+		)
+	  );
+
+		let order = orders.map((order, index) => {
 			let { status } = this.state;
 			return (
 				<tr className="row100 body" key={index}>
@@ -297,9 +336,13 @@ class TravellerManager extends Component {
 					<div className="table100 ver1">
 						<div className="wrap-table100-nextcols">
 							<div className="table100-nextcols">
-								<table>
-									<thead>
-										<tr className="row100 head">
+								{
+									order.length === 0 ? <h1>You don't have any booking on that list</h1>
+									:
+									<table>
+									{
+										<thead>
+											<tr className="row100 head">
 											<th className="cell100 column2">Guider</th>
 											<th className="cell100 column3">Start time</th>
 											<th className="cell100 column4">End time</th>
@@ -311,15 +354,21 @@ class TravellerManager extends Component {
 											{status === "ONGOING" ? <th className="cell100 column8">Cancel</th> : ''}
 											{status === "WAITING" ? <th className="cell100 column8">Cancel</th> : ''}
 											{/* {first === 0 ? <th className="cell100 column8">Cancel</th> : ''} */}
-										</tr>
+										    </tr>
 									</thead>
+									}
 									<tbody>
 										{order}
 									</tbody>
 								</table>
+								}
 							</div>
 
-							<div className="wrap-table100-nextcols js-pscroll"></div>
+							<div className="pagination" style={{marginTop:'20px'}}>
+								<div className="paginationContent">
+								{renderPageNumbers}
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>

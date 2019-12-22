@@ -432,16 +432,17 @@ class ProfileTraveller extends Component {
                   </select>
                 </div>
                 <div className="label-information">Description</div>
-                <input
+                <textarea
                   placeholder="Write something about you pls !!!"
                   className="input-something"
                   name="about_me"
                   onChange={(e)=>{this.handleChange(e)}}
                   value={data.about_me}
+                  style={{height:"130px"}}
                 />
                   {errors['about_me'] ? <p style={{color: "red"}} className="errorInput">{errors['about_me']}</p> : ''}
 
-                <div className="label-information">Your sologan</div>
+                <div className="label-information">Your slogan</div>
                 <input
                   placeholder="Please write your slogan !!!"
                   className="input-something"

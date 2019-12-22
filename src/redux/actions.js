@@ -96,7 +96,9 @@ export const gameReducer = (state = { ...gameInitialState }, action) => {
                         role: action.data.role,
                         id: action.data.id,
                         logedIn: true,
-                        avatar: ""
+                        avatar: "",
+                        isGuiderActive:action.data.isGuiderActive,
+                        isContractExist:action.data.isContractExist
                   };
             case 'LOGOUT':
                         console.log("byebye");

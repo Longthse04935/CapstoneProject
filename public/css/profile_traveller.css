@@ -149,6 +149,11 @@
     border-radius: 5px;
 }
 
+.languageOption{
+    height: 200px;
+    overflow-y: hidden;
+}
+
 .input-something{
     width: 400px;
     height: 35px;

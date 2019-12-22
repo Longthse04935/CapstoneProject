@@ -105,9 +105,12 @@
     color: #4A4A4A;
     
 }
+.navbarRightContent .logged li .fa{
+  font-size: 20px;
+}
 
 .navbarRightContent ul li:nth-child(1), .navbarRightContent ul li:nth-child(2), .navbarRightContent ul li:nth-child(3){
-  width: 50px;
+  width: 60px;
 }
 
 .navbarRightContent .dropContent .userChoice{

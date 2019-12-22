@@ -36,8 +36,6 @@ import ForgotPassword from "./common/ForgotPassword";
 class App extends Component {
 	constructor(props) {
 		super(props);
-		console.log("constructor app");
-		console.log(props);
 		this.state = {
 			userName: "Guest",
 			role: "GUEST",
@@ -70,16 +68,21 @@ class App extends Component {
 
 	checkPathWithRoleGuider = (component) => {
 		let user = this.props.user;
+		
 		if(user.userName === '' || user.role === 'TRAVELER'){
            return <Redirect to="/" />
-		}else{
-			return component;
+		}else if(user.role === 'GUIDER'){
+			if(user.isContractExist === false || user.isGuiderActive === false){
+				return <GuiderContract message={'Waiting'}/>;
+			}else{
+                return component;
+			}
+			
 		}
 		
 	}
 
 	componentDidMount() {
-
 		let user = this.props.user;
 		if (user.logedIn) {
 			this.props.dispatch(wsConnect(Config.api_url+"ws"));
@@ -89,6 +92,7 @@ class App extends Component {
 
 
 	}
+
 
 	
 	render() {
@@ -138,7 +142,7 @@ class App extends Component {
 					<Route exact path='/chatbox/:guiderId/:post_id/' render={(props)=>this.checkPathWithoutLogin(<Chatbox {...props}/>)} />
 					<Route path='/changepassword' render={()=>this.checkPathWithoutLogin(<ChangePassword guiderId={this.props.user.id} />)}/>
 					<Route path='/chat' render={()=>this.checkPathWithoutLogin(<Message />)}/>
-					{/* <Route path='/tour' component={Tour} /> */}
+					<Route path='/tour' component={Tour} />
 					
 					{/* <Route path='/tour/:id' component={PostTourDetail} exact />*/}
 					

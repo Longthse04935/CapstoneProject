@@ -113,14 +113,11 @@ class PostTourDetail extends Component {
 								<img src={post.picture_link[0]} alt="logo" />
 							</div>
 							<div className="experienceCard-details">
-								<span className="enjoy" style={{whiteSpace: "normal"}}>
-								Enjoy <span className="withName">{post.title}</span>
-								</span>
-								<h3>
+								<h3 style={{textDecoration:'none',color:'black'}}>
 								<span
 									// onClick={() => this.handleGotoPage(post.post_id, guider_id)}
 								>
-									{post.description}
+									{post.title}
 								</span>
 								</h3>
 								<div className="price">

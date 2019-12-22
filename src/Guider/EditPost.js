@@ -377,7 +377,7 @@ class EditPost extends Component {
 
     reasonToHTML = reasons => {
         return (<div className="activities reason">
-            <h2>{reasons.length} reasons to book this tour</h2>
+            <h2>Reasons to book this tour</h2>
             <ul>
                 {reasons.map((reason, index) =>
                     <li key={index}><i className="fas fa-check"></i>

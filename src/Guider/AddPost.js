@@ -307,7 +307,7 @@ class AddPost extends Component {
 
     reasonToHTML = reasons => {
         return (<div className="activities reason">
-            <h2>{reasons.length} reasons to book this tour</h2>
+            <h2>Reasons to book this tour</h2>
             <ul>
                 {reasons.map((reason, index) =>
                     <li key={index}><i className="fas fa-check"></i>
@@ -479,7 +479,8 @@ class AddPost extends Component {
             <div className="activitiesInput" key={index}>
                 <div className="coverContent" key={index}>
                     <div className="brief">Brief:<input type="text" name="brief" onChange={(eve) => { act.brief = eve.target.value; }} defaultValue={act.brief} required /></div>
-                    <div className="detail">Detail:<textarea rows={4} cols={50} type="textarea" required name="detail" onChange={(eve) => { act.detail = eve.target.value; }} defaultValue={act.detail} /></div>
+                    <div className="detail">Detail:<textarea rows={4} cols={50} type="textarea" maxLength={2500} required name="detail" onChange={(eve) => { act.detail = eve.target.value; }} defaultValue={act.detail} /></div>
+
                     <button type="button" className="btn-add-service" onClick={this.removeActivity} id={index}><i className="fa fa-trash-o" aria-hidden="true"></i></button>
                 </div>
             </div>

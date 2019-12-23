@@ -185,7 +185,7 @@ class Home extends Component {
 					this.state.authenticate
 				);
 				const pageCount = await fetch(
-					Config.api_url + "Guider/SearchPageCoun/" + input ,
+					Config.api_url + "Guider/SearchPageCount/" + input ,
 					this.state.authenticate
 				);
 	
@@ -195,7 +195,8 @@ class Home extends Component {
 				
 				const guiders = await responsePosts.json();
 				const totalPage = await pageCount.json();
-	
+				console.log(guiders);
+				console.log(totalPage);
 				
 				this.setState({ searchGuider: guiders,inputSearch:input,totalPage});
 			
@@ -442,6 +443,11 @@ class Home extends Component {
 						</div>
 					</div>
 				</div>
+				<div className="pagination">
+				<div className="paginationContent">
+					{renderPageNumbers}
+				</div>
+			</div>
 			</div>
 		);
 

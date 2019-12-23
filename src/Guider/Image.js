@@ -35,18 +35,10 @@ class Image extends Component {
                         <button type="button" onClick={(eve) => {
 
                               eve.preventDefault();
-                              // const dom = ReactDOM.findDOMNode(this);
-                              // if (dom instanceof HTMLElement) {
-                              //       //query image
-                              //       const im = dom.querySelector(`#image${index}`);
-                              //       //im.setAttribute("style", "display: none;");
-                              //       im.remove();
-                              // } else {
-                              //       console.log("find DOM do not work");
-                              // }
-                              this.props.deleteImg.call(index);
+                              this.props.deleteImg(index);
 
-                        }} />
+                        }} style={{borderRadius:'30px', cursor:'pointer ',border:' 1px solid',
+                         width:'30px', height:'30px',justifyContent: 'center', alignItems: 'center'}} >X</button>
                   </li>);
 
             return (

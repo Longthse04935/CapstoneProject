@@ -103,9 +103,8 @@ class GuiderBooks extends Component {
   }
 
   async componentDidMount() {
-    // $("head").append('<link href="/css/books.css" rel="stylesheet"/>');
-    // $("head").append('<link href="/css/util.css" rel="stylesheet"/>');
     let user = this.props.user;
+    $('.tvlTab li[value="WAITING"]').addClass('selected');
     let {cors} = this.state;
     try {
       const orderResponse = await fetch(
@@ -137,6 +136,10 @@ class GuiderBooks extends Component {
     } catch (err) {
       console.log(err);
     }
+    let $li = $('.tvlTab li').click(function () {
+			$li.removeClass('selected');
+			$(this).addClass('selected');
+		});
   }
 
   async tabList(status,currentPage = 0) {
@@ -247,7 +250,7 @@ class GuiderBooks extends Component {
               type="button"
 			  style={{marginLeft:'10px'}}
             >
-              Refuse
+              Deny
             </button>
 		   </div>
           </td>
@@ -272,12 +275,7 @@ class GuiderBooks extends Component {
     let arr = ["WAITING", "ONGOING", "FINISHED", "CANCELLED"];
 
     let tab = arr.map((value, index) => (
-      <li
-        key={index}
-        onClick={() => {
-          this.tabList(value);
-        }}
-      >
+      <li key={index} onClick={() => {this.tabList(value);}} value={value} >
         {value}
       </li>
     ));

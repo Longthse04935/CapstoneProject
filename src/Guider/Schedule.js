@@ -138,7 +138,7 @@ class Schedule extends Component {
             };
             let response = await fetch(Config.api_url + 'Order/getOrderByWeek/' + this.props.id, options);
             let order = await response.json();
-            console.log(order);
+            this.setState({ orders: order });
             //this.setState({timeAvailable:response});
 
       }

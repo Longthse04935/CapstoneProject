@@ -45,6 +45,7 @@ class App extends Component {
 			alert: null,
 		};
 
+		this.setTimeOut();
 	}
 	
 	checkPathWithoutLogin = (component) => (
@@ -89,25 +90,12 @@ class App extends Component {
 
 		}
 
+
 	}
 
 
 	
 	render() {
-		// let present;
-		// let user = JSON.parse(window.sessionStorage.getItem('user'));
-		// if (this.state.logedIn) {
-		// 	if (user.role === 'TRAVELER') {
-		// 		present = <LoggedTvl reload={this.reload} />;
-		// 	}
-		// 	else {
-		// 		present = <LoggedGuider reload={this.reload} />;
-		// 	}
-		// } else {
-		// 	present = <Navbar reload={this.reload} user={this.props.user}/>;
-		// }
-		
-
 		let present;
 		let user = this.props.user;
 		if (user.logedIn) {
@@ -168,6 +156,13 @@ class App extends Component {
 			</div>
 
 		);
+	}
+	setTimeOut() {
+		setInterval(()=>{fetch(`${Config.api_url}account/refresh`, {
+			method: "GET",
+			mode: "cors",
+			credentials: "include"
+		})}, 60*60*1000);
 	}
 }
 function mapStateToProps(state) {

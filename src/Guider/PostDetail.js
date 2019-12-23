@@ -131,6 +131,14 @@ class PostDetail extends React.Component {
 					link_youtube: link_youtube[0].replace("watch?v=", "embed/")
 				});
 			}
+			let saved = await fetch(
+				Config.api_url +
+				"Traveler/saved?traveler_id=" + this.props.user.id
+				+ "&post_id=" + this.props.match.params.post_id,
+				this.state.autheticate
+			);
+			if(!saved.ok) throw new Error(saved.status + ": " + saved.statusText);
+			this.setState({ statusFavorite: true });
 
 			this.including_service();
 		} catch (err) {

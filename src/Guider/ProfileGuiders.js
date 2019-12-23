@@ -111,7 +111,7 @@ class ProfileGuiders extends Component {
         Config.api_url +
         "guiderpost/postOfOneGuider/" + guider_id +
         "/" +
-        page,
+        0,
         autheticate
       );
       const pageCount = await fetch(
@@ -122,6 +122,7 @@ class ProfileGuiders extends Component {
 
       const totalPage = await pageCount.json();
       posts = await response.json();
+      console.log('posts',posts);
       this.setState({ posts, totalPage })
     } catch (error) {
       console.log(error)
@@ -140,14 +141,11 @@ class ProfileGuiders extends Component {
               <img src={post.picture_link[0]} alt="logo" />
             </div>
             <div className="experienceCard-details">
-              <span className="enjoy">
-                Enjoy <span className="withName">{post.title}</span>
-              </span>
-              <h3>
+              <h3 style={{color:'black',textDecoration:'none'}}>
                 <span
                 //onClick={() => this.handleGotoPage(post.post_id, guider_id)}
                 >
-                  {post.description}
+                  {post.title}
                 </span>
               </h3>
               <div className="price" style={{ color: 'black' }}>
@@ -214,6 +212,7 @@ class ProfileGuiders extends Component {
   render() {
     let { guider_id, guider, totalPage, page,about_me } = this.state;
     let post = this.RenderPostGuider(guider_id);
+    console.log(post);
     const range = this.range(0, totalPage - 1);
     let renderPageNumbers = totalPage === 1 ? '' :
       range.map(i => (

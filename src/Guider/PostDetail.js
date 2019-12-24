@@ -131,6 +131,7 @@ class PostDetail extends React.Component {
 					link_youtube: link_youtube[0].replace("watch?v=", "embed/")
 				});
 			}
+			this.including_service();
 			let saved = await fetch(
 				Config.api_url +
 				"Traveler/saved?traveler_id=" + this.props.user.id
@@ -139,8 +140,7 @@ class PostDetail extends React.Component {
 			);
 			if(!saved.ok) throw new Error(saved.status + ": " + saved.statusText);
 			this.setState({ statusFavorite: true });
-
-			this.including_service();
+			
 		} catch (err) {
 			console.log(err);
 		}
@@ -199,6 +199,7 @@ class PostDetail extends React.Component {
 	including_service = () => {
 		let { postInfo } = this.state;
 		let arr = postInfo.including_service;
+		console.log('including'+arr);
 		let including_service = "";
 		for (let i = 0; i < arr.length; i++) {
 			if (i === arr.length - 1) {

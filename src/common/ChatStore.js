@@ -25,7 +25,7 @@ class ChatList extends React.Component {
                   <div className="top_menu" >
                         <div className="title" style={{ color: 'Black' }}>{receiver}</div>
                   </div>
-                  <div className={`box_noti`}>
+                  <div className={`box_noti`} style={{textAlign:'center',cursor:'pointer'}}>
                         <a className="showMore" onClick={() => { this.props.dispatch(loadMsg(`${this.props.user.userName}/${this.props.receiver}/${this.props.messages.length}/${this.props.messages.length+10}`)); }} >Show more</a>
                   </div>
                   <ul className="messages" >

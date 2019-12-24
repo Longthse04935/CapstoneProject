@@ -12,10 +12,7 @@ class Footer extends Component {
                 <div className="footer-content">
                     <div className="socialMedia">
                         <div className="webLogo">
-                            <a href="/">
-                                <i className="fa fa-arrows" aria-hidden="true" />
-                            </a>
-                            Travel
+                            Travel with Locals
 
                         </div>
                     </div>

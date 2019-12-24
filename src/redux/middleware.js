@@ -20,13 +20,14 @@ const socketMiddleware = () => {
             // console.log(msg.body);
             // console.log(store);
             let payload = msg.body;
+            console.log(payload);
             if(JSON.parse(payload).type=="CHAT") {
                   store.dispatch(actions.save(JSON.parse(payload)));
                   store.dispatch(actions.arrange(JSON.parse(payload).sender));
             } else {
                   store.dispatch(actions.announce(JSON.parse(payload)));
             }
-           
+            
       };
 
       return store => next => (action) => {

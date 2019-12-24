@@ -317,7 +317,7 @@ class Navbar extends Component {
         if (this.props.error.flag) {
 			errors['login'] = 'User name or password is wrong';
 		}
-        console.log(this.props.error.flag);
+        //console.log(this.props.error.flag);
         let path = window.location.pathname;
         return (
             <div>

@@ -76,7 +76,7 @@ const initGuider = {
 
 
 export const catchError = (state = { ...intialError }, action) => {
-      console.log(action);
+      //console.log(action);
       switch (action.type) {
             
             case 'ERROR':

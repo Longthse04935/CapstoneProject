@@ -81,7 +81,6 @@ export const loadGuest = guest => dispatch => fetch(`${Config.api_url}messages/$
       headers: {
             'Content-Type': 'application/json',
       },
-      // body: JSON.stringify(login)
 })
 
       .then(res => res.json(), error => {
@@ -89,11 +88,11 @@ export const loadGuest = guest => dispatch => fetch(`${Config.api_url}messages/$
             throw new Error(error);
       })
       .then((json) => {
-            json.array.forEach(element => {
-                  dispatch({ type: 'ARRANGE', user: element });
+            json.forEach(element => {
+                  dispatch({ type: 'ARRANGE', user: element.sender });
             });
       }).catch(err => {
-            dispatch({ type: 'ERROR', err: 'websocket error' });
+            dispatch({ type: 'ERROR', err: 'guest websocket error' });
       });
 
 export const loadMsg = guest => dispatch => fetch(`${Config.api_url}messages/${guest}`, {
@@ -106,9 +105,29 @@ export const loadMsg = guest => dispatch => fetch(`${Config.api_url}messages/${g
             throw new Error(error);
       })
       .then((json) => {
-            json.array.forEach(element => {
+            json.forEach(element => {
                   dispatch({ type: 'SAVE', message: element });
             });
       }).catch(err => {
-            dispatch({ type: 'ERROR', err: 'websocket error' });
+            dispatch({ type: 'ERROR', err: 'message websocket error' });
       });
+
+
+      export const loadNoti = guest => dispatch => fetch(`${Config.api_url}notification/${guest}`, {
+            method: "POST",
+            mode: "cors",
+            credentials: "include",
+      })
+            .then(res => res.json(), error => {
+                  console.log('An error occurred.', error);
+                  throw new Error(error);
+            })
+            .then((json) => {
+                  
+                  json.forEach(element => {
+                        
+                        dispatch({ type: 'ANNOUNCE', noti: element });
+                  });
+            }).catch(err => {
+                  dispatch({ type: 'ERROR', err: 'noti websocket error' });
+            });

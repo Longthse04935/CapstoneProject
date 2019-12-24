@@ -3,7 +3,7 @@ import Chatbox from "./Traveler/Chatbox";
 import ProfileGuiders from "./Guider/ProfileGuiders";
 import Home from "./common/Home";
 import ProfileTravaller from './Traveler/ProfileTraveller';
-import { BrowserRouter as Router, Switch, Route, Link,Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
 import { BrowserRouter } from "react-router-dom";
 import Navbar from './Nav/Navbar';
 import Footer from './common/Footer';
@@ -47,45 +47,46 @@ class App extends Component {
 
 		this.setTimeOut();
 	}
-	
+
 	checkPathWithoutLogin = (component) => (
 		this.props.user.userName === '' ? (
 			<Redirect to="/" />
 		) : (
-			component
-		)
-	)
-	
+				component
+			)
+	)	
+
 	checkPathWithRoleTraveler = (component) => {
 		let user = this.props.user;
-		if(user.userName === '' || user.role === 'GUIDER'){
-           return <Redirect to="/" />
-		}else{
+		if (user.userName === '' || user.role === 'GUIDER') {
+			return <Redirect to="/" />
+		} else {
 			return component;
 		}
-		
+
 	}
 
 	checkPathWithRoleGuider = (component) => {
 		let user = this.props.user;
-		
-		if(user.userName === '' || user.role === 'TRAVELER'){
-           return <Redirect to="/" />
-		}else if(user.role === 'GUIDER'){
-			if(user.isContractExist === false || user.isGuiderActive === false){
-				return <GuiderContract message={'Waiting'}/>;
-			}else{
-                return component;
+
+		if (user.userName === '' || user.role !== 'GUIDER') {
+			console.log("dm thg long");
+			return <Redirect to="/" />
+		} else if (user.role === 'GUIDER') {
+			if (user.isContractExist === false || user.isGuiderActive === false) {
+				return <GuiderContract message={'Waiting'} />;
+			} else {
+				return component;
 			}
 			
 		}
-		
+
 	}
 
 	componentDidMount() {
 		let user = this.props.user;
 		if (user.logedIn) {
-			this.props.dispatch(wsConnect(Config.api_url+"ws"));
+			this.props.dispatch(wsConnect(Config.api_url + "ws"));
 		} else {
 
 		}
@@ -94,7 +95,7 @@ class App extends Component {
 	}
 
 
-	
+
 	render() {
 		let present;
 		let user = this.props.user;
@@ -112,7 +113,7 @@ class App extends Component {
 			<div className="App">
 				{present}
 				<Switch>
-				    {/* route public */}
+					{/* route public */}
 					<Route path='/' component={Home} exact />
 					<Route path='/posttour/:id' component={PostTourDetail} />
 					<Route path='/forgotpassword' component={ForgotPassword} />
@@ -120,35 +121,35 @@ class App extends Component {
 					<Route path='/post/:post_id' component={PostDetail} exact />
 
 					{/* route guider */}
-					<Route path='/profileguiders' render={()=>this.checkPathWithRoleGuider(<GuiderProfile />)}/>
-					<Route path='/contract' render={()=>this.checkPathWithRoleGuider(<GuiderContract />)} />
-					<Route path='/chart' render={()=>this.checkPathWithRoleGuider(<Chart />)} />
-					<Route path='/add' render={()=>this.checkPathWithRoleGuider(<AddPost guiderId={this.props.user.id} />)} />
-					<Route path='/managebook' render={()=>this.checkPathWithRoleGuider(<Books id={this.props.user.id} />)} />
-					<Route path='/schedule' render={()=>this.checkPathWithRoleGuider(<Schedule id={this.props.user.id} />)} />
-					
-					
-					<Route exact path={"/edit"} render={()=>this.checkPathWithRoleGuider(<ManagePost guiderId={this.props.user.id} />)} />
-					<Route path={"/update/:guider/:post"} render={(props)=>this.checkPathWithRoleGuider(<EditPost {...props}/>)} />
-					<Route path='/reviewtvl/:id' render={(props)=>this.checkPathWithRoleGuider(<ReviewTraveler {...props}/>)} />
+					<Route exact path='/profileguiders' render={() => this.checkPathWithRoleGuider(<GuiderProfile />)} />
+					<Route path='/contract' render={() => this.checkPathWithRoleGuider(<GuiderContract />)} />
+					<Route path='/chart' render={() => this.checkPathWithRoleGuider(<Chart />)} />
+					<Route path='/add' render={() => this.checkPathWithRoleGuider(<AddPost guiderId={this.props.user.id} />)} />
+					<Route exact path='/managebook' render={() => this.checkPathWithRoleGuider(<Books id={this.props.user.id} />)} />
+					<Route path='/schedule' render={() => this.checkPathWithRoleGuider(<Schedule id={this.props.user.id} />)} />
+
+
+					<Route exact path={"/edit"} render={() => this.checkPathWithRoleGuider(<ManagePost guiderId={this.props.user.id} />)} />
+					<Route path={"/update/:guider/:post"} render={(props) => this.checkPathWithRoleGuider(<EditPost {...props} />)} />
+					<Route path='/reviewtvl/:id' render={(props) => this.checkPathWithRoleGuider(<ReviewTraveler {...props} />)} />
 
 					{/* route traveler */}
-					<Route path='/profiletraveller' render={()=>this.checkPathWithRoleTraveler(<ProfileTravaller/>)} />
-					<Route path='/tvlManager' render={()=>this.checkPathWithRoleTraveler(<TravellerManager id={this.state.id} />)}></Route>
-					<Route path='/book' render={()=>this.checkPathWithRoleTraveler(<Pay/>)} /> 
-				
+					<Route path='/profiletraveller' render={() => this.checkPathWithRoleTraveler(<ProfileTravaller />)} />
+					<Route path='/tvlManager' render={() => this.checkPathWithRoleTraveler(<TravellerManager id={this.state.id} />)}></Route>
+					<Route path='/book' render={() => this.checkPathWithRoleTraveler(<Pay />)} />
+
 					{/* check login */}
-					<Route exact path='/chatbox/:guiderId/:post_id/:message' render={(props)=>this.checkPathWithoutLogin(<Chatbox {...props}/>)} />
-					<Route exact path='/chatbox/:guiderId/:post_id/' render={(props)=>this.checkPathWithoutLogin(<Chatbox {...props}/>)} />
-					<Route path='/changepassword' render={()=>this.checkPathWithoutLogin(<ChangePassword guiderId={this.props.user.id} />)}/>
-					<Route path='/chat' render={()=>this.checkPathWithoutLogin(<Message />)}/>
+					<Route exact path='/chatbox/:guiderId/:post_id/:message' render={(props) => this.checkPathWithoutLogin(<Chatbox {...props} />)} />
+					<Route exact path='/chatbox/:guiderId/:post_id/' render={(props) => this.checkPathWithoutLogin(<Chatbox {...props} />)} />
+					<Route path='/changepassword' render={() => this.checkPathWithoutLogin(<ChangePassword guiderId={this.props.user.id} />)} />
+					<Route path='/chat' render={() => this.checkPathWithoutLogin(<Message />)} />
 					<Route path='/tour' component={Tour} />
-					
+
 					{/* <Route path='/tour/:id' component={PostTourDetail} exact />*/}
-					
-					
+
+
 					{/* <Route path='/tvlManager' render={this.checkPathWithRoleTraveler(<ProfileTravaller/>)}> <TravellerManager id={this.state.id} /> </Route> */}
-					
+
 					{/* <Route path='/profileguider' component={ProfileGuiders} /> */}
 					<Route path='*' component={Page404} />
 				</Switch>
@@ -158,11 +159,13 @@ class App extends Component {
 		);
 	}
 	setTimeOut() {
-		setInterval(()=>{fetch(`${Config.api_url}account/refresh`, {
-			method: "GET",
-			mode: "cors",
-			credentials: "include"
-		})}, 60*60*1000);
+		setInterval(() => {
+			fetch(`${Config.api_url}account/refresh`, {
+				method: "GET",
+				mode: "cors",
+				credentials: "include"
+			})
+		}, 60 * 60 * 1000);
 	}
 }
 function mapStateToProps(state) {
@@ -171,7 +174,7 @@ function mapStateToProps(state) {
 	const clients = state.clients;
 	const user = state.user;
 	const error = state.Error;
-	const notifications = state.notifications; 
+	const notifications = state.notifications;
 	return { messages, clients, user, error, notifications };
 }
 App = connect(mapStateToProps)(App);

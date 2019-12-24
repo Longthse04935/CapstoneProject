@@ -42,16 +42,6 @@ class GuiderProfile extends Component {
             //this.submitForm = this.submitForm.bind(this);
       }
 
-      // componentWillMount() {
-      //       var user = JSON.parse(sessionStorage.getItem('user'));
-      //       if (user === null) {
-      //             sessionStorage.setItem('messagePay', 'Error user or tour inf');
-      //             window.location.href = '/';
-      //       } else if (user.role === 'TRAVELER') {
-      //             sessionStorage.setItem('messagePay', 'You are TRAVELER');
-      //             window.location.href = '/';
-      //       }
-      // }
 
       async componentDidMount() {
             $("head").append('<link href="/css/profile_traveller.css" rel="stylesheet"/>');
@@ -302,7 +292,7 @@ class GuiderProfile extends Component {
                               <h1 className="h1-profile">Your profile</h1>
                               <div className="content-profile">
                                     <div className="profile-image">
-                                          <h1 className="h1-introduce">Doan Anh</h1>
+                                          <h1 className="h1-introduce">{`${data.first_name} ${data.last_name}`}</h1>
                                           <img
                                                 alt="profile avatar"
                                                 height={150}

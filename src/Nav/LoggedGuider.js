@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-ro
 import Config from '../Config';
 import { connect } from 'react-redux';
 import { logOut, exit } from '../redux/actions';
-import { wsConnect, wsDisconnect, send } from '../redux/webSocket';
+import { wsConnect, wsDisconnect, loadNoti } from '../redux/webSocket';
 
 class LoggedGuider extends Component {
     constructor(props) {
@@ -64,6 +64,7 @@ class LoggedGuider extends Component {
     };
     render() {
         const { isBoxVisible } = this.state;
+        let notis = this.props.noti.map((no, index) => <li key={index}><a >{no.content}</a></li>);
         return (
             <div>
                 {/* Menubar */}
@@ -161,18 +162,16 @@ class LoggedGuider extends Component {
                                             <Link to="/chat"><i className="fa fa-comments" aria-hidden="true"></i></Link>
                                         </li>
                                         <div className="noti">
-                                            <li>
-                                                <Link to="/" onClick={this.toggleBox}><i className="fa fa-bell" aria-hidden="true"></i></Link>
+                                            <li>    
+                                                <a onClick={this.toggleBox}><i className="fa fa-bell" aria-hidden="true"></i></a>
                                             </li>
                                             <div className={`box_noti ${isBoxVisible ? "" : "hidden"}`}>
                                                 <ul className="list_noti">
-                                                    <li><a href="/"><span>Canceled </span>The order on tour "Vietnamese war" was canceled by traveler Dung Nguyen</a></li>
-                                                    <li><a href="/"><span>Accepted </span>The order on tour "Vietnamese war" was canceled by guider Duc Trinh</a></li>
-                                                    <li><a href="/"><span>Waiting </span>You have a booking reservation on tour "Vietnamese war" was canceled by traveler Dung Nguyen</a></li>
-                                                    <li><a href="/"><span>Canceled </span>The order on tour "Vietnamese war" was canceled by traveler Dung Nguyen</a></li>
-                                                    <li><a href="/"><span>Waiting </span>You have a booking reservation on tour "Vietnamese war" was canceled by traveler Dung Nguyen</a></li>
+                                                    {/* <li><a ><span>Canceled </span>The order on tour "Vietnamese war" was canceled by traveler Dung Nguyen</a></li> */}
+                                                    {notis}
                                                 </ul>
-                                                <a href="/" className="showMore">Show more</a>
+
+                                                <a className="showMore" onClick={()=>{this.props.dispatch(loadNoti(`${this.props.user.userName}/${this.props.noti.length}/${this.props.noti.length+5}`))}} >Show more</a>
                                             </div>
                                         </div>
                                         
@@ -215,8 +214,9 @@ class LoggedGuider extends Component {
 }
 
 function mapStateToProps(state) {
-	const user = state.user;
-      return {user};
+    const user = state.user;
+    const noti = state.notifications;
+      return {user, noti};
 }
 
 export default connect(mapStateToProps)(LoggedGuider);

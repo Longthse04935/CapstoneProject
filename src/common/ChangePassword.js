@@ -101,7 +101,7 @@ class ChatList extends React.Component {
                                     if (!response.ok) { throw Error(response.status + ": " + response.statusText); }
                                     //console.log("change password: " + );
                                     response = await response.text()
-                                    if (response === 'true') {
+                                    if (response == 'true') {
                                           
                                           this.statusProfile("Your password has been change successful");
                                     } else {

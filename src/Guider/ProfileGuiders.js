@@ -13,7 +13,7 @@ class ProfileGuiders extends Component {
       guider_id: 0,
       posts: [],
       guider: {
-       
+
       },
       page: 0,
       totalPage: 0,
@@ -25,7 +25,7 @@ class ProfileGuiders extends Component {
           Accept: "application/json"
         }
       },
-      about_me:[""]
+      about_me: [""]
     }
   }
   componentDidMount() {
@@ -97,7 +97,7 @@ class ProfileGuiders extends Component {
         guider.profile_video = guider.profile_video[0].replace("watch?v=", "embed/");
       }
       // console.log(guider);
-      this.setState({ guider,about_me });
+      this.setState({ guider, about_me });
     } catch (err) {
       console.log(err)
     }
@@ -211,7 +211,7 @@ class ProfileGuiders extends Component {
   };
 
   render() {
-    let { guider_id, guider, totalPage, page,about_me } = this.state;
+    let { guider_id, guider, totalPage, page, about_me } = this.state;
     let post = this.RenderPostGuider(guider_id);
     const range = this.range(0, totalPage - 1);
     let renderPageNumbers = totalPage === 1 ? '' :
@@ -236,12 +236,12 @@ class ProfileGuiders extends Component {
             {/*  Content  */}
             <div className="content">
               <div className="content-left">
-              {guider_id ? (
-									<GuiderInShort
-										guiderId={guider_id}
-										postId={this.props.match.params.post_id}
-									/>
-								) : null}
+                {guider_id ? (
+                  <GuiderInShort
+                    guiderId={guider_id}
+                    postId={this.props.match.params.post_id}
+                  />
+                ) : null}
               </div>
               <div className="content-right">
                 {/* intro content */}
@@ -258,18 +258,18 @@ class ProfileGuiders extends Component {
                       <div className="article">
                         <p>
                           {
-                            about_me.slice(0,4).map((value)=>(
+                            about_me.slice(0, 4).map((value) => (
                               <span>{value}.</span>
                             ))
                           }
                         </p>
                         <p className="moretext">
-                        {
-                            about_me.slice(4,about_me.length).map((value)=>(
+                          {
+                            about_me.slice(4, about_me.length).map((value) => (
                               <span>{value}.</span>
                             ))
                           }
-                                </p>
+                        </p>
                       </div>
                       <a className="moreless-button" onClick={e => e.preventDefault()}>
                         Read more

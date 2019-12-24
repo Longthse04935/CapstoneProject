@@ -380,7 +380,7 @@ class EditPost extends Component {
             <h2>Reasons to book this tour</h2>
             <ul>
                 {reasons.map((reason, index) =>
-                    <li key={index}><i className="fas fa-check"></i>
+                    <li key={index}><i className="fa fa-check"></i>
                         <p>{reason}</p>
                     </li>
                 )}

@@ -185,7 +185,7 @@ class Home extends Component {
 					this.state.authenticate
 				);
 				const pageCount = await fetch(
-					Config.api_url + "Guider/SearchPageCoun/" + input ,
+					Config.api_url + "Guider/SearchPageCount/" + input ,
 					this.state.authenticate
 				);
 	

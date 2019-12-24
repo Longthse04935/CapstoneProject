@@ -16,7 +16,6 @@ import { thisExpression } from "@babel/types";
 class Chatbox extends Component {
 	constructor(props) {
 		super(props);
-		console.log(props);
 		this.state = {
 			//chatbox
 			index: 1,
@@ -332,7 +331,7 @@ class Chatbox extends Component {
 		const { numberInjoy, plan, guider, avaiDate } = this.state;
 		let includeCalendates = avaiDate.map(date => { return new Date(date); });
 
-		console.log(includeCalendates);
+		//console.log(includeCalendates);
 		let languages = '';
 
 		for (var i = 0; i < guider.languages.length; i++) {

@@ -73,11 +73,11 @@ class App extends Component {
 			console.log("dm thg long");
 			return <Redirect to="/" />
 		} else if (user.role === 'GUIDER') {
-			if (user.isContractExist === false || user.isGuiderActive === false) {
-				return <GuiderContract message={'Waiting'} />;
-			} else {
-				return component;
-			}
+			// if (user.isContractExist === false || user.isGuiderActive === false) {
+			// 	return <GuiderContract message={'Waiting'} />;
+			// } else {
+			 	return component;
+			// }
 			
 		}
 

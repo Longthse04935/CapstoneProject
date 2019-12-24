@@ -267,7 +267,7 @@ class Pay extends Component {
                 2.  Fee for a child equals 50% fee of one adult.
                 3.  You can review Guider after finish their trips.
                 4.  If Your Guider accept then cancel your trip, TWL system will refund 100% fee to you.
-                5.  You will not be refunded If you cancel a trip 24 hours after beginning time of that trip.
+                5.  You will not be refunded If you cancel a trip after 24 hours before  beginning time of that trip.
                 6.  You will be refunded 100% fee If you cancel a trip 24 hours before begin time of that trip.
             </p>
 

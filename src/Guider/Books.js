@@ -26,7 +26,8 @@ class GuiderBooks extends Component {
 	}
 	async accept(eve) {
 		try {
-			const remain = this.state.orders.splice(eve.target.id, 1);
+			const remain = this.state.orders;
+			remain.splice(eve.target.id, 1);
 			let { cors } = this.state;
 			const orderResponse = await fetch(
 				Config.api_url + "Order/AcceptOrder/" + eve.target.value,
@@ -49,7 +50,8 @@ class GuiderBooks extends Component {
 		eve.preventDefault();
 		try {
 			const denied = this.state.orders[eve.target.id];
-			const remain = this.state.orders.splice(eve.target.id, 1);
+			const remain = this.state.orders;
+			remain.splice(eve.target.id, 1);
 			const orderResponse = await fetch(
 				Config.api_url + "Order/refuseTrip/" + eve.target.value,
 				{
@@ -77,7 +79,8 @@ class GuiderBooks extends Component {
 		try {
 			//console.log(this.state.orders);
 			const denied = this.state.orders[eve.target.id];
-			const remain = this.state.orders.splice(eve.target.id, 1);
+			const remain = this.state.orders;
+			remain.splice(eve.target.id, 1);
 			const orderResponse = await fetch(
 				Config.api_url +
 				"Order/CancelOrderAsGuider?trip_id=" +

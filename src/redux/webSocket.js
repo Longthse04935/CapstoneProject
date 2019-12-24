@@ -67,8 +67,11 @@ export const arrangeClients = (state = clients, action) => {
 
 export const receiveNoti = (state = [...notifications], action) => {
       switch (action.type) {
-            case 'ANNOUNCE':
+            case 'ANNOUNCES':
                   return [...state, action.noti];
+            case 'ANNOUNCE':
+                  return [ action.noti, ...state,];
+
             default:
                   return state;
       }
@@ -113,21 +116,21 @@ export const loadMsg = guest => dispatch => fetch(`${Config.api_url}messages/${g
       });
 
 
-      export const loadNoti = guest => dispatch => fetch(`${Config.api_url}notification/${guest}`, {
-            method: "POST",
-            mode: "cors",
-            credentials: "include",
+export const loadNoti = guest => dispatch => fetch(`${Config.api_url}notification/${guest}`, {
+      method: "POST",
+      mode: "cors",
+      credentials: "include",
+})
+      .then(res => res.json(), error => {
+            console.log('An error occurred.', error);
+            throw new Error(error);
       })
-            .then(res => res.json(), error => {
-                  console.log('An error occurred.', error);
-                  throw new Error(error);
-            })
-            .then((json) => {
-                  
-                  json.forEach(element => {
-                        
-                        dispatch({ type: 'ANNOUNCE', noti: element });
-                  });
-            }).catch(err => {
-                  dispatch({ type: 'ERROR', err: 'noti websocket error' });
+      .then((json) => {
+
+            json.forEach(element => {
+
+                  dispatch({ type: 'ANNOUNCES', noti: element });
             });
+      }).catch(err => {
+            dispatch({ type: 'ERROR', err: 'noti websocket error' });
+      });

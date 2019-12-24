@@ -110,12 +110,13 @@ class GuiderProfile extends Component {
                   reader.readAsDataURL(event.target.files[0]);
                   reader.onload = (event) => {
                         this.state.data.avatar = reader.result;
-                        this.setState({ avatar_link: event.target.result,
-                         });
+                        this.setState({
+                              avatar_link: event.target.result,
+                        });
                   };
-                  
+
             }
-      }     
+      }
 
       isValidate = () => {
             const { data } = this.state;
@@ -207,34 +208,39 @@ class GuiderProfile extends Component {
 
       async submitForm(e) {
             e.preventDefault();
+            $(".coverLoader").css("height", "1800px");
+            $('.coverLoader').show();
             let user = this.props.user;
+            try {
+                  // var user = JSON.parse(sessionStorage.getItem('user'));
+                  if (this.isValidate()) {
+                        return false;
+                  }
+                  var { data, avtImage } = this.state;
+                  data.date_of_birth = data.month + "/" + data.day + "/" + data.year + " 00:00";
+                  delete data.year;
+                  delete data.month;
+                  delete data.day;
+                  data.languages = this.state.language;
+                  // console.log(data);
 
-            // var user = JSON.parse(sessionStorage.getItem('user'));
-            if (this.isValidate()) {
-                  return false;
+                  let options = {
+                        method: 'POST',
+                        mode: "cors",
+                        credentials: "include",
+                        headers: {
+                              Accept: 'application/json',
+                              'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data)
+                  };
+                  let response = await fetch(Config.api_url + 'Guider/Edit', options);
+                  response = await response.text();
+                  $('.coverLoader').show();
+                  this.statusProfile('Update success!!');
+            } catch (err) {
+                  
             }
-            var { data, avtImage } = this.state;
-            data.date_of_birth = data.year + "/" + data.month + "/" + data.day + " 00:00";
-            delete data.year;
-            delete data.month;
-            delete data.day;
-            data.languages = this.state.language;
-            // console.log(data);
-
-            let options = {
-                  method: 'POST',
-                  mode: "cors",
-                  credentials: "include",
-                  headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify(data)
-            };
-            let response = await fetch(Config.api_url + 'Guider/Edit', options);
-            response = await response.text();
-            this.statusProfile('Update success!!');
-
       }
 
       render() {

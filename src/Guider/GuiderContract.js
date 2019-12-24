@@ -263,24 +263,24 @@ class GuiderContract extends Component {
                   type="radio"
                   className="gendermale"
                   name="gender"
-                  value= '0'
-                  checked={this.state.data.gender === '0'}
+                  value= '1'
+                  checked={this.state.data.gender === '1'}
                   onChange={e => this.genderOnChange(e)}
                 />{" "}
                 Male
                 <input
                   type="radio"
                   name="gender"
-                  value='1'
-                  checked={this.state.data.gender === '1'}
+                  value='2'
+                  checked={this.state.data.gender === '2'}
                   onChange={e => this.genderOnChange(e)}
                 />{" "}
                 Female
                 <input
                   type="radio"
                   name="gender"
-                  value='2'
-                  checked={this.state.data.gender === '2'}
+                  value='0'
+                  checked={this.state.data.gender === '0'}
                   onChange={e => this.genderOnChange(e)}
                 />{" "}
                 Other

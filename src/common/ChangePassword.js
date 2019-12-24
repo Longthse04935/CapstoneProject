@@ -15,49 +15,49 @@ class ChatList extends React.Component {
       }
 
       onCancel() {
-		this.setState({
-			alert: null
-		});
-	}
-	//notification khi booking failed or success
-	onNotification() {
-		this.setState({ alert: null });
-	}
+            this.setState({
+                  alert: null
+            });
+      }
+      //notification khi booking failed or success
+      onNotification() {
+            this.setState({ alert: null });
+      }
 
-	notification(notification) {
-		const getAlert = () => (
-			<SweetAlert
-				warning
-				confirmBtnText="Close"
-				confirmBtnBsStyle="danger"
-				title="Operation fails"
-				onConfirm={() => this.onNotification()}
-			>
-				{notification}
-			</SweetAlert>
-		);
+      notification(notification) {
+            const getAlert = () => (
+                  <SweetAlert
+                        warning
+                        confirmBtnText="Close"
+                        confirmBtnBsStyle="danger"
+                        title="Operation fails"
+                        onConfirm={() => this.onNotification()}
+                  >
+                        {notification}
+                  </SweetAlert>
+            );
 
-		this.setState({
-			alert: getAlert()
-		});
-	}
+            this.setState({
+                  alert: getAlert()
+            });
+      }
 
 
-	statusProfile(message) {
-		const getAlert = () => (
-			<SweetAlert
+      statusProfile(message) {
+            const getAlert = () => (
+                  <SweetAlert
                         success
                         title="Done!"
-				onConfirm={() => this.onNotification()}
-			>
-				{message}
-			</SweetAlert>
-		);
+                        onConfirm={() => this.onNotification()}
+                  >
+                        {message}
+                  </SweetAlert>
+            );
 
-		this.setState({
-			alert: getAlert()
-		});
-	}
+            this.setState({
+                  alert: getAlert()
+            });
+      }
 
       render() {
             let password = null;
@@ -66,7 +66,7 @@ class ChatList extends React.Component {
             return (
                   <div className="col-lg-7 push-lg-4 personal-info changePassword">
                         {this.state.alert}
-                        <h2 style={{paddingLeft:'10%'}}>Change Password</h2>
+                        <h2 style={{ paddingLeft: '10%' }}>Change Password</h2>
                         <form onSubmit={async (e) => {
                               e.preventDefault();
                               if (!password.value.trim()) {
@@ -99,19 +99,20 @@ class ChatList extends React.Component {
                                           }
                                     );
                                     if (!response.ok) { throw Error(response.status + ": " + response.statusText); }
-                                    //console.log("change password: " + );
-                                    response = await response.text()
-                                    if (response == 'true') {
-                                          
+
+                                    response = await response.text();
+                                    password.value = '';
+                                    repassword.value = '';
+                                    newpassword.value = '';
+
+                                    if (response === 'true') {
                                           this.statusProfile("Your password has been change successful");
                                     } else {
                                           this.notification("Something Wrong! Please try again");
                                     }
-                                    password.value = '';
-                                    repassword.value = '';
-                                    newpassword.value = '';
+
                               } catch (err) {
-                                    this.notification("Something Wrong! Please try again");
+                                    this.notification("Something Wron");
                                     console.log(err);
                               }
                         }}>

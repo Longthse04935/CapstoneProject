@@ -13,7 +13,6 @@ class ProfileGuiders extends Component {
       guider_id: 0,
       posts: [],
       guider: {
-
       },
       page: 0,
       totalPage: 0,
@@ -25,7 +24,9 @@ class ProfileGuiders extends Component {
           Accept: "application/json"
         }
       },
-      about_me: [""]
+
+      about_me:[""],
+      hide:true
     }
   }
   componentDidMount() {
@@ -34,7 +35,7 @@ class ProfileGuiders extends Component {
     $("head").append('<link href="/css/login.css" rel="stylesheet"/>');
 
 
-    //read more and read less
+    // read more and read less
     $('.moreless-button').click(function () {
       $('.moretext').slideToggle();
       if ($('.moreless-button').text() === "Read more") {
@@ -44,31 +45,32 @@ class ProfileGuiders extends Component {
       }
     });
 
-    //show and hide comment
-    var size_li = $(".listReview li").length;
-    $('#showLess').hide();
-    var x = 3;
-    $('.listReview li:lt(' + x + ')').show();
+    // //show and hide comment
+    // var size_li = $(".listReview li").length;
+    // $('#showLess').hide();
+    // var x = 3;
+    // $('.listReview li:lt(' + x + ')').show();
 
-    $('#loadMore').click(function () {
-      x = (x + 3 <= size_li) ? x + 3 : size_li;
-      $('.listReview li:lt(' + x + ')').show(500);
-      if (x > 3) {
-        $('#showLess').show();
-      }
-      if (x === size_li) {
-        $('#loadMore').hide();
-      }
-    });
-    $('#showLess').click(function () {
-      var x = (x - 3 < 3) ? 3 : x - 3;
-      $('.listReview li').not(':lt(' + x + ')').hide(500);
-      if (x <= 3) {
-        $('#showLess').hide();
-      } if (x < size_li) {
-        $('#loadMore').show();
-      }
-    });
+    // $('#loadMore').click(function () {
+    //   x = (x + 3 <= size_li) ? x + 3 : size_li;
+    //   $('.listReview li:lt(' + x + ')').show(500);
+    //   if (x > 3) {
+    //     $('#showLess').show();
+    //   }
+    //   if (x === size_li) {
+    //     $('#loadMore').hide();
+    //   }
+    // });
+    // $('#showLess').click(function () {
+    //   var x = (x - 3 < 3) ? 3 : x - 3;
+    //   $('.listReview li').not(':lt(' + x + ')').hide(500);
+    //   if (x <= 3) {
+    //     $('#showLess').hide();
+    //   } if (x < size_li) {
+    //     $('#loadMore').show();
+    //   }
+    // });
+
     //get guider id
     let guider_id = this.props.match.params.guider_id;
     this.loadInfoGuider(guider_id);
@@ -110,7 +112,7 @@ class ProfileGuiders extends Component {
         Config.api_url +
         "guiderpost/postOfOneGuider/" + guider_id +
         "/" +
-        page,
+        0,
         autheticate
       );
       const pageCount = await fetch(
@@ -121,6 +123,7 @@ class ProfileGuiders extends Component {
 
       const totalPage = await pageCount.json();
       posts = await response.json();
+      console.log('posts',posts);
       this.setState({ posts, totalPage })
     } catch (error) {
       console.log(error)
@@ -139,14 +142,11 @@ class ProfileGuiders extends Component {
               <img src={post.picture_link[0]} alt="logo" />
             </div>
             <div className="experienceCard-details">
-              <span className="enjoy">
-                Enjoy <span className="withName">{post.title}</span>
-              </span>
-              <h3>
+              <h3 style={{color:'black',textDecoration:'none'}}>
                 <span
                 //onClick={() => this.handleGotoPage(post.post_id, guider_id)}
                 >
-                  {post.description}
+                  {post.title}
                 </span>
               </h3>
               <div className="price" style={{ color: 'black' }}>
@@ -213,6 +213,7 @@ class ProfileGuiders extends Component {
   render() {
     let { guider_id, guider, totalPage, page, about_me } = this.state;
     let post = this.RenderPostGuider(guider_id);
+    console.log(post);
     const range = this.range(0, totalPage - 1);
     let renderPageNumbers = totalPage === 1 ? '' :
       range.map(i => (
@@ -263,17 +264,21 @@ class ProfileGuiders extends Component {
                             ))
                           }
                         </p>
+                       
                         <p className="moretext">
                           {
-                            about_me.slice(4, about_me.length).map((value) => (
+
+                            about_me.slice(4,about_me.length).map((value)=>(
                               <span>{value}.</span>
                             ))
                           }
                         </p>
                       </div>
-                      <a className="moreless-button" onClick={e => e.preventDefault()}>
+                      
+                       <a className="moreless-button" onClick={()=>{this.setState({hide:!this.state.hide})}}>
                         Read more
-                            </a>
+                      </a>
+                      
                     </div>
                   </div>
                 </div>

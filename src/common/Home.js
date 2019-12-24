@@ -195,7 +195,8 @@ class Home extends Component {
 				
 				const guiders = await responsePosts.json();
 				const totalPage = await pageCount.json();
-	
+				console.log(guiders);
+				console.log(totalPage);
 				
 				this.setState({ searchGuider: guiders,inputSearch:input,totalPage});
 			
@@ -442,6 +443,11 @@ class Home extends Component {
 						</div>
 					</div>
 				</div>
+				<div className="pagination">
+				<div className="paginationContent">
+					{renderPageNumbers}
+				</div>
+			</div>
 			</div>
 		);
 

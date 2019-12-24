@@ -8,7 +8,7 @@ import Config from "../Config";
 import { ar } from "date-fns/locale";
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { connect } from 'react-redux';
-
+import {Link} from 'react-router-dom';
 class PostDetail extends React.Component {
 	constructor(props) {
 		super(props);
@@ -190,9 +190,10 @@ class PostDetail extends React.Component {
 	};
 	// end slide
 
-	handleGotoPage = (post_id, guider_id) => {
+	handleGotoPage = (post_id) => {
 		this.props.history.push("/post/" + post_id);
 		window.location.reload();
+		window.scrollTo(0, 0);
 	};
 
 	including_service = () => {
@@ -321,20 +322,16 @@ class PostDetail extends React.Component {
 		));
 
 		let posts = data.map((post, index) => (
-			<li key={index}>
+	
+				<li key={index} onClick={()=>this.handleGotoPage(post.post_id)}>
 				<div className="sheet">
 					<div className="imageFigure">
 						<img src={post.picture_link[0]} alt="logo" />
 					</div>
 					<div className="experienceCard-details">
-						<span className="enjoy" style={{whiteSpace:'normal'}}>
-							Enjoy <span className="withName">{post.title}</span>
-						</span>
-						<h3>
-							<span
-								onClick={() => this.handleGotoPage(post.post_id, guider_id)}
-							>
-								{post.description}
+						<h3 classname="postTitle" style={{color:'black',textDecoration:'none'}}>
+							<span>
+								{post.title}
 							</span>
 						</h3>
 						<div className="price">

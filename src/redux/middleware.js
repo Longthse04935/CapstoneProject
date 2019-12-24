@@ -18,15 +18,16 @@ const socketMiddleware = () => {
 
       const onMessage = (store) => (msg) => {
             // console.log(msg.body);
-            // console.log(store);
+            let user = store.getState().user;
             let payload = msg.body;
+            //console.log(payload);
             if(JSON.parse(payload).type=="CHAT") {
                   store.dispatch(actions.save(JSON.parse(payload)));
-                  store.dispatch(actions.arrange(JSON.parse(payload).sender));
+                  store.dispatch(actions.arrange(user.role==="GUIDER"?JSON.parse(payload).traveler:JSON.parse(payload).guider));
             } else {
                   store.dispatch(actions.announce(JSON.parse(payload)));
             }
-           
+            
       };
 
       return store => next => (action) => {

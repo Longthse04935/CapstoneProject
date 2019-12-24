@@ -270,6 +270,8 @@ body {
 
 .chat_window .planWidthChatBox{
   width: 27% !important;
+  overflow-y: scroll;
+  height: 815px;
 }
 
 .guiderContent {
@@ -491,4 +493,20 @@ body {
 
 .messageRoom .chat_window .ChatRoom{
   width: calc(100% - 450px);
+}
+
+#showMoreChat{
+  font-size: 25px;
+  text-align: center;
+  border-style: solid;
+  border-width: 1px 0 1px 0;
+  border-color: #eaeaea;
+  background: #F4F4F4;
+  cursor: pointer;
+}
+
+#liUserChat{
+  border-bottom: 1px solid #eaeaea;
+  padding-top: 5px;
+  height: 100px;
 }

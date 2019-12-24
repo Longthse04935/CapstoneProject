@@ -1,37 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { send } from '../redux/webSocket';
+import { loadMsg, send } from '../redux/webSocket';
 
 import Config from '../Config';
 
 class ChatList extends React.Component {
       constructor(props) {
             super(props);
-            this.state = {
-                  //messages: props.messages,
-                  page: 0
-            }
       }
 
       async componentDidMount() {
-            try {
-                  //console.log(this.props);
-                  //if(this.props.receiver === '') return;
-                  // let guests = await fetch(`${Config.api_url}messages/${this.props.user.userName}/${this.props.receiver}/${this.state.page}/${this.state.page+10}`, {
-                  //       method:"GET",
-                  //       mode: "cors",
-                  //       credentials: "include",
-                  //       headers: {
-                  //             'Content-Type': 'application/json',
-                  //       },
-                  // });
-                  // let show = await guests.json();  
-                  // console.log(show);
-                  //this.setState({messages: show, page: this.state.page+10});
-                  //this.setState({messages: this.props.messages});
-            } catch (err) {
-                  console.log(err);
-            }
+            //this.props.dispatch(loadMsg(`${this.props.user.userName}/${this.props.receiver}/${this.props.messages.length}/${this.props.messages.length+10}`));
+
       }
 
 
@@ -44,6 +24,9 @@ class ChatList extends React.Component {
             return (<div className="ChatRoom" >
                   <div className="top_menu" >
                         <div className="title" style={{ color: 'Black' }}>{receiver}</div>
+                  </div>
+                  <div className={`box_noti`} style={{textAlign:'center',cursor:'pointer'}}>
+                        <a className="showMore" onClick={() => { this.props.dispatch(loadMsg(`${this.props.user.userName}/${this.props.receiver}/${this.props.messages.length}/${this.props.messages.length+10}`)); }} >Show more</a>
                   </div>
                   <ul className="messages" >
                         {this.props.messages.map((msg, index) => (

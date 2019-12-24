@@ -103,7 +103,7 @@ class GuiderInPost extends React.Component {
                 {this.state.alert}
                 <div className="pb-header header-stick">
                     <div className="header-pb">
-                        <Link to={`/guider/${guide.guider_id}`}><h1 className="TitlePb TileStickyPb">{guide.first_name + " " + guide.last_name}</h1></Link>
+                        <Link to={`/guider/${guide.guider_id}` }><h1 className="TitlePb TileStickyPb">{guide.first_name + " " + guide.last_name}</h1></Link>
                         <Rated number={guide.rated} />
                     </div>
                     <div>

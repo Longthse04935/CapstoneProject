@@ -4,7 +4,7 @@ import {wsConnect, wsDisconnect} from './webSocket';
 
 export const logIn = json => ({ type: 'LOGIN', data: json });
 export const exit = () => ({ type: 'LOGOUT' });
-export const firErr = err => ({ type: 'ERROR', err });
+export const firErr = err => ({ type: 'ERROR', err:err });
 export const visit = json => ({ type: 'VISIT', guider:json });
 
 
@@ -24,9 +24,12 @@ export const signIn = login => dispatch => fetch(`${Config.api_url}account/login
             
       })
       .then((json) => {
+            
+            
             dispatch({ type: 'LOGIN', data: json });
             dispatch(wsConnect(Config.api_url+"ws"));
-            dispatch({type: 'ERROR', err: {msg: '', flag: false}});
+            dispatch(firErr({msg: '', flag: false}));
+            
       }).catch(err => {
             dispatch({type: 'ERROR', err: {msg: 'User name or password is wrong', flag: true}});
       });
@@ -41,9 +44,12 @@ export const logOut = () => dispatch => fetch(`${Config.api_url}account/logout`,
             throw new Error(error);
       })
       .then(() => {
+            
             dispatch(exit());
+            dispatch(firErr({msg: '', flag: false}));
+            
       }).catch(err => {
-            dispatch({type: 'ERROR', err:  {msg: err, flag: true}});
+            dispatch(firErr({msg: '', flag: false}));
       });
 
 
@@ -57,7 +63,7 @@ const gameInitialState = {
 };
 
 const intialError = {
-      msg: "nothing",
+      msg: "",
       flag: false
 };
 const initGuider = {
@@ -70,12 +76,11 @@ const initGuider = {
 
 
 export const catchError = (state = { ...intialError }, action) => {
+      //console.log(action);
       switch (action.type) {
+            
             case 'ERROR':
-                  return {
-                        msg: action.err.msg,
-                        flag: !action.err.flag
-                  };
+                  return action.err;
             
             default:
                   return state;
@@ -91,7 +96,9 @@ export const gameReducer = (state = { ...gameInitialState }, action) => {
                         role: action.data.role,
                         id: action.data.id,
                         logedIn: true,
-                        avatar: ""
+                        avatar: "",
+                        isGuiderActive:action.data.isGuiderActive,
+                        isContractExist:action.data.isContractExist
                   };
             case 'LOGOUT':
                         console.log("byebye");

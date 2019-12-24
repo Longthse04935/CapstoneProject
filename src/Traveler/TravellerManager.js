@@ -48,6 +48,7 @@ class TravellerManager extends Component {
 
 	async componentDidMount() {//var user = JSON.parse(sessionStorage.getItem('user'));
 		let user = this.props.user;
+		$('.tvlTab li[value="WAITING"]').addClass('selected');
 		let {cors} = this.state;
 		try {
 			const orderResponse = await fetch(
@@ -55,7 +56,7 @@ class TravellerManager extends Component {
 				cors);
 
 			const respone = await fetch(
-				Config.api_url + "Order/GetOrderByStatus?role=" + "TRAVELER" + "&id=" + user.id + "&status=WAITING",
+				Config.api_url + "Order/GetOrderByStatusPageCount?role=" + "TRAVELER" + "&id=" + user.id + "&status=WAITING",
 				cors);
 
 			const order = await orderResponse.json();
@@ -104,7 +105,7 @@ class TravellerManager extends Component {
 	async showReview(order_id, guider_id, post_id) {
 		let {cors} = this.state;
 		let commentRespone = await fetch(
-			"http://localhost:8080/review/checkExist?trip_id=" + order_id,
+			Config.api_url+"review/checkExist?trip_id=" + order_id,
 			cors);
 		if (commentRespone.status === 404) {
 
@@ -265,7 +266,7 @@ class TravellerManager extends Component {
 		var arr = ['WAITING', 'ONGOING', 'FINISHED', 'CANCELLED'];
 
 		var tab = arr.map((value, index) =>
-			<li key={index} onClick={() => { this.tabList(value) }}>{value}</li>
+			<li key={index} onClick={() => { this.tabList(value) }} value={value}>{value}</li>
 		);
 		var { isDisable, isError, errorRate, hideAddComment, rated, status } = this.state;
 

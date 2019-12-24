@@ -235,11 +235,59 @@ class AddPost extends Component {
                 }
             );
             if (!response.ok) { throw Error(response.status + ": " + response.statusText); }
-            this.statusProfile("Thank you, your post has show up");
+            this.statusProfile("Thank you, your post has shown up");
+            this.setState({
+                activities: [{
+                    brief: "",
+                    detail: ""
+                }],
+                images: [],
+                services: [""],
+                reasons: [""],
+                plan: {
+                    meetingPoint: "",
+                    plan: []
+                },
+                "title": "",
+                "video_link": "",
+                "total_hour": 1,
+                "description": "",
+                meeting_point: "",
+                "location": "",
+                "category": "",
+                "reason": "",
+                "price": ""});
+           
         } catch (err) {
             console.log(err);
             this.notification("Sorry! Something went wrong, please try again later");
         }
+    }
+
+    resetForm = (eve) => {
+        eve.preventDefault();
+        this.setState({
+            activities: [{
+                brief: "",
+                detail: ""
+            }],
+            images: [],
+            services: [""],
+            reasons: [""],
+            plan: {
+                meetingPoint: "",
+                plan: []
+            },
+            "title": "",
+            "video_link": "",
+            total_hour: 1,
+            "description": "",
+            meeting_point: "",
+            "location": "",
+            "category": "",
+            "reason": "",
+            "price": ""
+        });
     }
 
     planToHTML = acts => {
@@ -259,10 +307,10 @@ class AddPost extends Component {
 
     reasonToHTML = reasons => {
         return (<div className="activities reason">
-            <h2>{reasons.length} reasons to book this tour</h2>
+            <h2>Reasons to book this tour</h2>
             <ul>
                 {reasons.map((reason, index) =>
-                    <li key={index}><i className="fas fa-check"></i>
+                    <li key={index}><i className="fa fa-check"></i>
                         <p>{reason}</p>
                     </li>
                 )}
@@ -404,24 +452,24 @@ class AddPost extends Component {
     }
 
     deleteImg = (index)=>{
-        //console.log(this.state.images);
-        this.state.images.splice(index,1);
-        //console.log(this.state.images);
+        let copy = Object.assign([], this.state.images);
+        copy.splice(index, 1);
+        this.setState({ images: copy });
     }
 
     render() {
-        //console.log(this.props.guiderId);
+        //  console.log(this.state.images);
         let locationOption = this.state.locations.map((location, index) =>
-            <option value={location.location_id} key={index}>{location.location}</option>
+            <option value={location.location_id} key={index} selected={(location.location === this.state.location)}>{location.location}</option>
         );
         let categoryOption = this.state.categories.map((cate, index) =>
-            <option value={cate.category_id} key={index}>{cate.category}</option>
+            <option value={cate.category_id} key={index} selected={(cate.category === this.state.category)} >{cate.category}</option>
         );
 
         let serviceInput = this.state.services.map((service, index) =>
             <div className="dropdownCoverSelect" key={index}>
 
-                <input className="dropdown-select service" type="text" required name="service" onChange={(eve) => { this.state.services[index] = eve.target.value; }} />
+                <input className="dropdown-select service" type="text" required onChange={(eve) => { this.state.services[index] = eve.target.value; }} defaultValue={this.state.services[index]} />
                 <button type="button" className="btn-add-service" onClick={this.removeService} id={index}><i className="fa fa-trash-o" aria-hidden="true"></i></button>
 
             </div>
@@ -430,162 +478,162 @@ class AddPost extends Component {
         let actInput = this.state.activities.map((act, index) =>
             <div className="activitiesInput" key={index}>
                 <div className="coverContent" key={index}>
+                    <div className="brief">Brief:<input type="text" name="brief" onChange={(eve) => { act.brief = eve.target.value; }} defaultValue={act.brief} required /></div>
+                    <div className="detail">Detail:<textarea rows={4} cols={50} type="textarea" maxLength={2500} required name="detail" onChange={(eve) => { act.detail = eve.target.value; }} defaultValue={act.detail} /></div>
 
-                    <div className="brief">Brief<input type="text" name="brief" onChange={(eve) => { act.brief = eve.target.value;}} /></div>
-                    <div className="detail">Detail<textarea rows={4} required cols={50} type="textarea" name="detail" onChange={(eve) => { act.detail = eve.target.value; }} /></div>
                     <button type="button" className="btn-add-service" onClick={this.removeActivity} id={index}><i className="fa fa-trash-o" aria-hidden="true"></i></button>
-
                 </div>
             </div>
         );
 
         let reasonInput = this.state.reasons.map((reason, index) =>
-            <div className="dropdownCoverSelect"  key={index}>
+            <div className="dropdownCoverSelect" key={index}>
 
-                <input className="dropdown-select reason" type="text" name="reason" required onChange={(eve) => { this.state.reasons[index] = eve.target.value;}} />
+                <input className="dropdown-select reason" type="text" required onChange={(eve) => { this.state.reasons[index] = eve.target.value; }} defaultValue={this.state.reasons[index]} />
                 <button type="button" className="btn-add-service" onClick={this.removeReason} id={index}><i className="fa fa-trash-o" aria-hidden="true"></i></button>
 
             </div>
         );
 
-
         return (
-            <div className="addPost">
-                {this.state.alert}
+            <div>
                 <div className="container">
+                    {this.state.alert}
                     <div className="row m-y-2">
                         {/* edit form column */}
                         <div className="col-lg-12 text-lg-center">
                             <h2>Create Post</h2>
+                            {/* {service} */}
                         </div>
                         <div className="col-lg-12 push-lg-4 personal-info">
                             <form role="form" onSubmit={this.formHandler}>
                                 <div className="form-group row">
-
-                                    <label className="col-lg-4 col-form-label form-control-label">Location</label>
+                                    <label className="col-lg-4 col-form-label form-control-label">Location:</label>
                                     <div className="col-lg-8">
-
-                                        <select className="custom-select" id="inputGroupSelect01">
+                                        <select className="custom-select" id="inputGroupSelect01" defaultValue={this.state.location} >
                                             {locationOption}
                                         </select>
                                     </div>
                                 </div>
                                 <div className="form-group row">
 
-                                    <label className="col-lg-4 col-form-label form-control-label">Category</label>
+                                    <label className="col-lg-4 col-form-label form-control-label">Category:</label>
                                     <div className="col-lg-8">
-
-                                        <select className="custom-select" id="inputGroupSelect02">
+                                        <select className="custom-select" id="inputGroupSelect02" defaultValue={this.state.category} >
                                             {categoryOption}
                                         </select>
                                     </div>
                                 </div>
                                 <div className="form-group row">
 
-                                    <label className="col-lg-4 col-form-label form-control-label">Price</label>
+                                    <label className="col-lg-4 col-form-label form-control-label">Trip Fee ($):</label>
+
                                     <div className="col-lg-8">
-                                        <input onChange={this.inputOnChange} className="form-control" type="number" min="5" max="5000" required name="price" />
+                                        <input onChange={this.inputOnChange} className="form-control" type="number" name="price"
+                                            defaultValue={this.state.price} min="5" max="5000" required />
                                     </div>
                                 </div>
                                 <div className="form-group row">
-                                    <label className="col-lg-4 col-form-label form-control-label">Title</label>
+                                    <label className="col-lg-4 col-form-label form-control-label">Post title:</label>
 
                                     <div className="col-lg-8">
-                                        <input required onChange={this.inputOnChange} className="form-control" type="text" name="title" />
+                                        <input onChange={this.inputOnChange} className="form-control" type="text" name="title"
+                                            required defaultValue={this.state.title} />
                                     </div>
                                 </div>
                                 <div className="form-group row">
 
-                                    <label className="col-lg-4 col-form-label form-control-label">Video</label>
+                                    <label onChange={this.inputOnChange} className="col-lg-4 col-form-label form-control-label">Introduce video link:</label>
 
                                     <div className="col-lg-8">
-                                        <input onChange={this.inputOnChange} className="form-control" type="url" name="video_link" required/>
+                                        <input onChange={this.inputOnChange} className="form-control" type="url" name="video_link"
+                                            required defaultValue={this.state.video_link} />
                                     </div>
                                 </div>
                                 <div className="form-group row pictures">
+                                    <label className="col-lg-4 col-form-label form-control-label">Introduce Pictures:</label>
 
-                                    <label className="col-lg-4 col-form-label form-control-label">Picture</label>
                                     <div className="col-lg-7" id="picInput">
                                         <input
 
                                             className="filePicture"
                                             type="file"
+
                                             accept="image/png, image/jpeg. image/jpg"
                                             onChange={this.showImage}
                                             multiple
-                                            // required
                                         />
-
+                                        <Image bases={this.state.images} deleteImg={this.deleteImg} />
                                     </div>
-                                    <Image bases={this.state.images} deleteImg={this.deleteImg}/>
+
                                 </div>
                                 <div className="form-group row">
-                                    <label className="col-lg-4 col-form-label form-control-label">Estimate trip duration</label>
+                                    <label className="col-lg-4 col-form-label form-control-label">Estimate trip duration (hours):</label>
 
                                     <div className="col-lg-8">
-                                        <input onChange={this.inputOnChange} name="total_hour" className="form-control
-                                         " type="number" required min="1" max="24"/>
+                                        <input onChange={this.inputOnChange} value={`${this.state.total_hour}`} name="total_hour" className="form-control "
+                                            type="number" required min="1" max="24" />
                                     </div>
                                 </div>
                                 <div className="form-group row">
 
-                                    <label className="col-lg-4 col-form-label form-control-label">Description</label>
+                                    <label className="col-lg-4 col-form-label form-control-label">Description your trip:</label>
 
                                     <div className="col-lg-8">
-                                        <textarea onChange={this.inputOnChange} name="description" className="form-control" type="text" required/>
+                                        <textarea onChange={this.inputOnChange} name="description" className="form-control" required defaultValue={this.state.description} />
                                     </div>
+                                </div>
+                                <div className="form-group row">
+
+                                    <label className="col-lg-4 col-form-label form-control-label">Including service:</label>
+                                    {/* <div className="col-lg-7" id="includeServiceCover"></div> */}
+                                    <button type="button" className="style_BtnAdd" id="includeService" onClick={this.addService}>+</button>
+
                                 </div>
 
-                                <div className="form-group row">
-                                    <div className="col-lg-4 group_IncludeSer">
-                                        <label className="col-form-label form-control-label">Including service</label>
-                                        {/* <div className="col-lg-7" id="includeServiceCover"></div> */}
-                                        <button type="button" className="style_BtnAdd" id="includeService" onClick={this.addService}>+</button>
-                                    </div>
-                                    <div className="col-lg-8 include-service" >
-                                        {serviceInput}
-                                    </div>
+
+                                <div className="include-service" >
+                                    {serviceInput}
                                 </div>
                                 <div className="form-group row">
-                                    <label className="col-lg-4 col-form-label form-control-label">Meeting point</label>
+                                    <label className="col-lg-4 col-form-label form-control-label">Meeting point:</label>
+
                                     <div className="col-lg-8">
-                                        <input onChange={this.inputOnChange} name="meeting_point" className="form-control " type="text" required/>
+                                        <input onChange={this.inputOnChange} name="meeting_point" className="form-control" required type="text" defaultValue={this.state.meeting_point} />
                                     </div>
                                 </div>
                                 <div className="form-group row">
+                                    <label className="col-lg-4 col-form-label form-control-label">Activities in trip:</label>
 
-                                    <div className="col-lg-4 group_IncludeSer">
-                                        <label className="col-form-label form-control-label">Activities</label>
-                                        <button type="button" className="style_BtnAdd" id="activitiesAdd" onClick={this.addActivity}>+</button>
-                                    </div>
-                                    <div className="col-lg-8">
-                                        {actInput}
-                                    </div>
+                                    <div className="col-lg-7"></div>
 
+                                    <button type="button" className="style_BtnAdd" id="activitiesAdd" onClick={this.addActivity}>+</button>
                                 </div>
 
-                                
+                                <div className="">
+                                    {actInput}
+                                </div>
                                 <div className="form-group row">
+                                    <label className="col-lg-4 col-form-label form-control-label">Messages to travelers:</label>
 
-                                    <div className="col-lg-4 group_IncludeSer">
-                                        <label className="col-form-label form-control-label">Why to pick you   </label>
-                                        <button type="button" className="style_BtnAdd" id="reasonAdd" onClick={this.addReason}>+</button>
-                                    </div>
-                                    <div className="col-lg-8">
-                                        {reasonInput}
-                                    </div>
+                                    <div className="col-lg-7"></div>
+                                    <button type="button" className="style_BtnAdd" id="reasonAdd" onClick={this.addReason}>+</button>
+                                </div>
 
+                                <div className="">
+                                    {reasonInput}
                                 </div>
                                 <div className="form-group row">
                                     <div className="submit_btn">
                                         <input
                                             type="reset"
-                                            className="resetBtn btnSb"
+                                            className="btn btn-primary"
                                             defaultValue="Reset Form"
+                                            onClick={this.resetForm}
                                         />
                                         <input
                                             type="submit"
-                                            className="submitBtn btnSb"
+                                            className="btn btn-primary"
                                             defaultValue="Save Changes"
                                         />
                                     </div>

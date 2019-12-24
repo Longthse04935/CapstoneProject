@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-ro
 import Config from '../Config';
 import { connect } from 'react-redux';
 import { logOut, exit } from '../redux/actions';
-import { wsConnect, wsDisconnect, send } from '../redux/webSocket';
+import { wsConnect, wsDisconnect, loadNoti } from '../redux/webSocket';
 
 class LoggedGuider extends Component {
     constructor(props) {
@@ -64,6 +64,7 @@ class LoggedGuider extends Component {
     };
     render() {
         const { isBoxVisible } = this.state;
+        let notis = this.props.noti.map((no, index) => <li key={index}><a >{no.content}</a></li>);
         return (
             <div>
                 {/* Menubar */}
@@ -78,78 +79,6 @@ class LoggedGuider extends Component {
                                         <img src="/icon/iconMain.jpg" />
                                     </a>
                                 </div>
-                                <div className="search">
-                                    <label>
-                                        <input
-                                            type="text"
-                                            placeholder="Welcome to my website"
-                                            name="search"
-                                            autoComplete="off"
-                                        />
-                                    </label>
-                                    <div className="fillter">
-                                        <div className="filter-Content">
-                                            <div className="localsOrExperience">
-                                                <h3 className="explore">Explore TravelWlocals</h3>
-                                                <div className="button-group">
-                                                    <button className="active">All</button>
-                                                    <button>Locals</button>
-                                                    <button>Experiences</button>
-                                                </div>
-                                            </div>
-                                            <div className="popularDestination">
-                                                <h3 id="popularLabel">Popular Destinations</h3>
-                                                <ul>
-                                                    <li>
-                                                        <i className="fa fa-map-marker" aria-hidden="true"></i>
-                                                        <a>Ha Noi</a>
-                                                    </li>
-                                                    <li>
-                                                        <i className="fa fa-map-marker" aria-hidden="true"></i>
-                                                        <a>Ho Chi Minh</a>
-                                                    </li>
-                                                    <li>
-                                                        <i className="fa fa-map-marker" aria-hidden="true"></i>
-                                                        <a>Da Nang</a>
-                                                    </li>
-                                                    <li>
-                                                        <i className="fa fa-map-marker" aria-hidden="true"></i>
-                                                        <a>Bac Ninh</a>
-                                                    </li>
-                                                    <li>
-                                                        <i className="fa fa-map-marker" aria-hidden="true"></i>
-                                                        <a>Da Lat</a>
-                                                    </li>
-                                                    <li>
-                                                        <i className="fa fa-map-marker" aria-hidden="true"></i>
-                                                        <a>Hue</a>
-                                                    </li>
-                                                    <li>
-                                                        <i className="fa fa-map-marker" aria-hidden="true"></i>
-                                                        <a>Vung Tau</a>
-                                                    </li>
-                                                    <li>
-                                                        <i className="fa fa-map-marker" aria-hidden="true"></i>
-                                                        <a>Hai Phong</a>
-                                                    </li>
-                                                    <li>
-                                                        <i className="fa fa-map-marker" aria-hidden="true"></i>
-                                                        <a>Phu Quoc</a>
-                                                    </li>
-                                                    <li>
-                                                        <i className="fa fa-map-marker" aria-hidden="true"></i>
-                                                        <a>Sapa</a>
-                                                    </li>
-                                                    <li>
-                                                        <i className="fa fa-map-marker" aria-hidden="true"></i>
-                                                        <a>Ca Mau</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
                             </div>
                             <div className="navRight">
                                 <div className="navbarRightContent">
@@ -161,18 +90,16 @@ class LoggedGuider extends Component {
                                             <Link to="/chat"><i className="fa fa-comments" aria-hidden="true"></i></Link>
                                         </li>
                                         <div className="noti">
-                                            <li>
-                                                <Link to="/" onClick={this.toggleBox}><i className="fa fa-bell" aria-hidden="true"></i></Link>
+                                            <li>    
+                                                <a onClick={this.toggleBox}><i className="fa fa-bell" aria-hidden="true"></i></a>
                                             </li>
                                             <div className={`box_noti ${isBoxVisible ? "" : "hidden"}`}>
                                                 <ul className="list_noti">
-                                                    <li><a href="/"><span>Canceled </span>The order on tour "Vietnamese war" was canceled by traveler Dung Nguyen</a></li>
-                                                    <li><a href="/"><span>Accepted </span>The order on tour "Vietnamese war" was canceled by guider Duc Trinh</a></li>
-                                                    <li><a href="/"><span>Waiting </span>You have a booking reservation on tour "Vietnamese war" was canceled by traveler Dung Nguyen</a></li>
-                                                    <li><a href="/"><span>Canceled </span>The order on tour "Vietnamese war" was canceled by traveler Dung Nguyen</a></li>
-                                                    <li><a href="/"><span>Waiting </span>You have a booking reservation on tour "Vietnamese war" was canceled by traveler Dung Nguyen</a></li>
+                                                    {/* <li><a ><span>Canceled </span>The order on tour "Vietnamese war" was canceled by traveler Dung Nguyen</a></li> */}
+                                                    {notis}
                                                 </ul>
-                                                <a href="/" className="showMore">Show more</a>
+
+                                                <a className="showMore" onClick={()=>{this.props.dispatch(loadNoti(`${this.props.user.userName}/${this.props.noti.length}/${this.props.noti.length+5}`))}} >Show more</a>
                                             </div>
                                         </div>
                                         
@@ -215,8 +142,9 @@ class LoggedGuider extends Component {
 }
 
 function mapStateToProps(state) {
-	const user = state.user;
-      return {user};
+    const user = state.user;
+    const noti = state.notifications;
+      return {user, noti};
 }
 
 export default connect(mapStateToProps)(LoggedGuider);

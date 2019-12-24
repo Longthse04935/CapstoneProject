@@ -7,149 +7,146 @@ import EditPost from "./EditPost";
 import Config from "../Config";
 import { connect } from "react-redux";
 class ManagePost extends Component {
-  constructor(props) {
-    super(props);
-    console.log("constructor pót");
-    console.log(props);
-    this.state = {
-      currentPage: 1,
-      todosPerPage: 8,
-      posts: [],
-      page: 0
-    };
-  }
-  // componentWillMount() {
-  //       console.log(this.props);
-  // 	var user = JSON.parse(sessionStorage.getItem('user'));
-  // 	if (user !== null) {
-  // 		console.log("session storage");
-  // 	}
-  // }
-
-  async componentDidMount() {
-    //console.log(this.props);
-    try {
-      let guider_id = this.props.user.id;
-      const responsePosts = await fetch(
-        Config.api_url +
-          "guiderpost/postOfOneGuider/" +
-          guider_id +
-          "/" +
-          this.state.page,
-        {
-          method: "GET",
-          mode: "cors",
-          credentials: "include",
-          headers: {
-            Accept: "application/json"
-          }
-        }
-      );
-
-      if (!responsePosts.ok) {
-        throw Error(responsePosts.status + ": " + responsePosts.statusText);
+      constructor(props) {
+            super(props);
+            
+            this.state = {
+                  currentPage: 1,
+                  todosPerPage: 8,
+                  posts: [],
+                  page: 0
+            };
       }
 
-      const posts = await responsePosts.json();
+      async componentDidMount() {
+            //console.log(this.props);
+            try {
+                  let guider_id = this.props.user.id;
+                  const responsePosts = await fetch(
+                        Config.api_url + "guiderpost/postOfOneGuider/" + guider_id + "/" + this.state.page,
+                        {
+                              method: "GET",
+                              mode: "cors",
+                              credentials: "include",
+                              headers: {
+                                    'Accept': 'application/json'
+                              },
+                        }
+                  );
 
-      this.setState({ posts: posts, page: ++this.state.page });
-    } catch (err) {
-      console.log(err);
-    }
-  }
+                  if (!responsePosts.ok) {
+                        throw Error(responsePosts.status + ": " + responsePosts.statusText);
+                  }
 
-  handleCurrentPage = event => {
-    this.setState({
-      currentPage: event.target.id
-    });
-  };
+                  const posts = await responsePosts.json();
 
-  render() {
-    console.log(this.props);
-    // Link to={"/update/"+this.props.guiderId+"/" + post.post_id}
-    let posts = this.state.posts.map((post, index) => (
-      <Link to={"/update/"+this.props.guiderId+"/" + post.post_id}>
-        <li key={index}>
-          <div className="sheet">
-            <div className="imageFigure">
-              <img src={post.picture_link[0]} alt="logo" />
-            </div>
-            <div className="experienceCard-details">
-              {/* <span className="enjoy">
-								Enjoy <span className="withName">{post.title}</span>
-								</span> */}
-              <h3 className="h3PostResult">
-                <span>{post.title}</span>
-              </h3>
-              <div className="price">
-                <i className="fa fa-money" aria-hidden="true"></i>
-                <span>{" " + post.price}$</span>
-                <span className="experienceCard-topDetails-bullet">
-                  {" "}
-                  &#9679;{" "}
-                </span>
-                <i className="fa fa-hourglass-half" aria-hidden="true"></i>
-                <span className="experienceCard-topDetails-duration">
-                  {" " + post.total_hour} hours
-                </span>
-                <span className="experienceCard-topDetails-bullet">
-                  {" "}
-                  &#9679;{" "}
-                </span>
-                {post.total_hour > 24 ? (
-                  <span>
-                    <i className="fa fa-moon-o" aria-hidden="true"></i>
-                    <span data-translatekey="Experience.SubcategoryOrTag.day-trip">
-                      {" "}
-                      Long trip
-                    </span>
-                  </span>
-                ) : (
-                  <span>
-                    <i className="fa fa-sun-o" aria-hidden="true"></i>
-                    <span data-translatekey="Experience.SubcategoryOrTag.day-trip">
-                      {" "}
-                      Day trip
-                    </span>
-                  </span>
-                )}
-              </div>
-              <div className="experienceCard-bottomDetails">
-                <Rated number={post.rated} />
-              </div>
-            </div>
-          </div>
-        </li>
-      </Link>
-    ));
-    // let routes = this.state.posts.map((post, index) => (
-    //       <Route path={"/update/:guider/:post"} key={index} component={EditPost} />
+                  this.setState({ posts: posts, page: ++this.state.page });
+            } catch (err) {
+                  console.log(err);
+            }
+      }
 
-    // ));
+      handleCurrentPage = (event) => {
+            this.setState({
+                  currentPage: event.target.id
+            });
+      }
 
-    //<EditPost guiderId={this.props.guiderId} postId={post.post_id} /></Route>
-    return (
-      <div>
-        {/* <Switch>
-                              {routes}
-                        </Switch> */}
-        <div>
-          <div id="reactContainer">
-            {/*  Content  */}
-            <div className="content">
-                <div className="bookOffers guiderResult" id="managePost">
-                <h2>All post of mine</h2>
-                  <ul className="postOneGuider" style={{width:'100%'}}>{posts}</ul>
-                </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+       deactive = async (eve) => {
+            eve.preventDefault();
+            let post = Object.assign([], this.state.posts);
+            try {
+                  const responsePosts = await fetch(
+                        Config.api_url + "guiderpost/activeDeactivePost?post_id=" + eve.target.value ,
+                        {
+                              method: "GET",
+                              mode: "cors",
+                              credentials: "include"
+                        }
+                  );
+                  if (!responsePosts.ok) {
+                        throw Error(responsePosts.status + ": " + responsePosts.statusText);
+                  }
+                  post[eve.target.id].active = !post[eve.target.id].active;
+                  this.setState({posts: post});
+            } catch (err) {
+                  console.log(err);
+            }
+      }
+
+      render() {
+            //console.log(this.props);
+            let order = this.state.posts.map((post, index) => (
+                  <tr className="row100 body" key={index}>
+                        <td className="cell100 column1">
+                              <Link to={`/post/${post.post_id}`}>{post.title}</Link>
+                        </td>
+
+                        <td className="cell100 column2">
+                              <div>
+                                    <Link to={"/update/" + this.props.guiderId + "/" + post.post_id}><button
+                                          className="accept btn btn-primary btn-icon-split"
+                                          value={post.post_id}
+                                          id={index}
+                                          type="button"
+                                    >
+                                          Edit
+                                    </button> </Link>
+                                    {post.active ?
+                                          <button
+                                                onClick={this.deactive}
+                                                value={post.post_id}
+                                                id={index}
+                                                className="refuse btn btn-danger btn-icon-split "
+                                                type="button"
+                                                style={{ marginLeft: '10px' }}
+                                          >De Activate</button> : <button
+                                                onClick={this.deactive}
+                                                value={post.post_id}
+                                                id={index}
+                                                className="active btn btn-danger btn-icon-split "
+                                                type="button"
+                                                style={{ marginLeft: '10px' }}
+                                          >Activate</button>}
+                              </div>
+                        </td>
+
+                  </tr>
+            ));
+
+            return (
+                  <div className="tvlManager_Container">
+
+
+                        <div className="table100 ver1">
+
+                              <div className="wrap-table100-nextcols js-pscroll ps ps--active-x">
+                                    <div className="table100-nextcols">
+                                          <table style={{margin: '0 auto', width: '100%'}}>
+                                                <thead>
+                                                      <tr className="row100 head">
+
+                                                            <th className="cell100 column1" style={{ width: '560px' }}>Post</th>
+
+                                                            <th className="cell100 column2" style={{ width: '260px' }}>Action</th>
+                                                      </tr>
+                                                </thead>
+                                                <tbody>{order}</tbody>
+                                          </table>
+                                    </div>
+
+                                    <div className="wrap-table100-nextcols js-pscroll"></div>
+                              </div>
+                        </div>
+                        <div></div>
+                  </div>
+
+            );
+      }
 }
 function mapStateToProps(state) {
-  const user = state.user;
-  return { user };
+      const user = state.user;
+      return { user };
+
 }
 export default connect(mapStateToProps)(ManagePost);

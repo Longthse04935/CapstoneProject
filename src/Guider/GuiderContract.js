@@ -3,6 +3,7 @@ import "font-awesome/css/font-awesome.min.css";
 import country from "../json/country.json";
 import Config from '../Config';
 import SweetAlert from 'react-bootstrap-sweetalert';
+import {connect} from 'react-redux';
 class GuiderContract extends Component {
   constructor(props) {
     super(props);
@@ -40,7 +41,10 @@ class GuiderContract extends Component {
 
   async componentDidMount() {
     this.setState({ country });
-  
+    let messages = this.props.message;
+     if(messages === 'Waiting'){
+       this.statusProfile("If you have sent us a contract, please wait while we processing it.If you haven't sent one then please fills in the form and sends it to us.",'Notification');
+     }
   }
 
 
@@ -134,18 +138,21 @@ class GuiderContract extends Component {
     return false;
   }
 
-  hideAlert() {
+  hideAlert(type) {
     this.setState({
       alert: null
     });
-    window.location.href = '/contract';
+    
+    if(type !== "Notification"){
+      window.location.href = '/contract';
+    }
   }
 
-  statusProfile(message){
+  statusProfile(message,type){
     const getAlert = () => (
       <SweetAlert 
         success 
-        onConfirm={() => this.hideAlert()}
+        onConfirm={() => this.hideAlert(type)}
       >
         {message}
       </SweetAlert>
@@ -162,7 +169,7 @@ class GuiderContract extends Component {
       return false;
     } 
     // data
-    let user = JSON.parse(window.sessionStorage.getItem('user'));
+    let user = this.props.user;
     let {data} = this.state;
     data.guider_id = user.id;
     data.date_of_birth = data.month+'/'+data.day+'/'+data.year+" 00:00";
@@ -195,7 +202,7 @@ class GuiderContract extends Component {
         
           }
       });
-      this.statusProfile('Create contract success');
+      this.statusProfile('Create contract success','Success');
 } catch (err) {
       console.log(err);
 }
@@ -256,24 +263,24 @@ class GuiderContract extends Component {
                   type="radio"
                   className="gendermale"
                   name="gender"
-                  value= '0'
-                  checked={this.state.data.gender === '0'}
+                  value= '1'
+                  checked={this.state.data.gender === '1'}
                   onChange={e => this.genderOnChange(e)}
                 />{" "}
                 Male
                 <input
                   type="radio"
                   name="gender"
-                  value='1'
-                  checked={this.state.data.gender === '1'}
+                  value='2'
+                  checked={this.state.data.gender === '2'}
                   onChange={e => this.genderOnChange(e)}
                 />{" "}
                 Female
                 <input
                   type="radio"
                   name="gender"
-                  value='2'
-                  checked={this.state.data.gender === '2'}
+                  value='0'
+                  checked={this.state.data.gender === '0'}
                   onChange={e => this.genderOnChange(e)}
                 />{" "}
                 Other
@@ -539,4 +546,8 @@ Nothing in this Agreement shall be construed as making either party the partner,
   }
 }
 
-export default GuiderContract;
+function mapStateToProps(state) {
+	const user = state.user;
+      return {user};
+}
+export default connect(mapStateToProps)(GuiderContract);

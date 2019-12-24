@@ -2,7 +2,7 @@
 
 footer{
     width: 100%;
-    background: rgba(0,0,0,0.7);
+    background: rgba(0,0,0);
     color: #f1e4e4;
   }
   
@@ -50,7 +50,7 @@ footer{
   .socialMedia .webLogo{
     font-size: 35px;
     font-weight: 800;
-    opacity: 0.8;
+    color:#fff;
     width: 50%;
   }
   
@@ -80,4 +80,13 @@ footer{
   
   .webInfo div ul li{
     list-style-type: none;
+  }
+
+  .reachUs li{
+    display: inline-block;
+  }
+
+  .reachUs li a i{
+    font-size: 40px;
+    margin-left: 10px;
   }

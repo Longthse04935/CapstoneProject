@@ -30,14 +30,13 @@ class EditPost extends Component {
                 brief: "",
                 detail: ""
             }],
-            total_hour: 0,
+            total_hour: 1,
             images: [],
             services: [""],
             reasons: [""],
             plan: initPlan,
             "title": "",
             "video_link": "",
-            "total_hour": 1,
             "description": "",
             meeting_point: "",
             "location": "",
@@ -57,6 +56,32 @@ class EditPost extends Component {
         this.notification = this.notification.bind(this);
         this.onNotification = this.onNotification.bind(this);
         this.statusProfile = this.statusProfile.bind(this);
+    }
+
+    resetForm = (eve) => {
+        eve.preventDefault();
+        this.setState({
+            activities: [{
+                brief: "",
+                detail: ""
+            }],
+            images: [],
+            services: [""],
+            reasons: [""],
+            plan: {
+                meetingPoint: "",
+                plan: []
+            },
+            "title": "",
+            "video_link": "",
+            total_hour: 1,
+            "description": "",
+            meeting_point: "",
+            "location": "",
+            "category": "",
+            "reason": "",
+            "price": ""
+        });
     }
 
 
@@ -128,9 +153,9 @@ class EditPost extends Component {
                         'Accept': 'application/json'
                     },
                 });
-            if (!post.ok) { 
+            if (!post.ok) {
                 window.location.href = "/page404"
-                throw Error(post.status + ": " + post.statusText); 
+                throw Error(post.status + ": " + post.statusText);
             }
             const edit = await post.json();
             //console.log(edit);
@@ -156,12 +181,21 @@ class EditPost extends Component {
             copy.reasons = this.parseReason(edit.reasons);
             const plan = await plans.json();
             //console.log(plan);
-            copy.images = await edit.picture_link.map((img) => {
-                return this.fromDataURL(img);
-            }).filter((img) => img !== undefined);
+            let imgs = [];
+            for (let i = 0; i < edit.picture_link.length; i++) {
+                imgs.push(await fetch(edit.picture_link[i])
+                    .then(response => response.blob())
+                    .then(blob => new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.readAsDataURL(blob);
+                        reader.onload = () => resolve(reader.result);
+                        reader.onerror = error => reject(error);
+                    }))
+                    );
+            }
+            copy.images = imgs;
             copy.meeting_point = plan.meeting_point;
             copy.activities = this.parsePlan(plan.detail);
-            //console.log(await copy);
             this.setState(await copy);
 
         } catch (err) {
@@ -331,7 +365,7 @@ class EditPost extends Component {
         return (
             acts.map((act, index) =>
                 <div className="detail">
-                    <i key={index} className="fas fa-circle"></i>
+                    <i key={index} className="fa fa-circle"></i>
                     <div className="detailPlan">
                         <h4>{act.brief}</h4>
                         <p>{act.detail}</p>
@@ -343,10 +377,10 @@ class EditPost extends Component {
 
     reasonToHTML = reasons => {
         return (<div className="activities reason">
-            <h2>{reasons.length} reasons to book this tour</h2>
+            <h2>Reasons to book this tour</h2>
             <ul>
                 {reasons.map((reason, index) =>
-                    <li key={index}><i className="fas fa-check"></i>
+                    <li key={index}><i className="fa fa-check"></i>
                         <p>{reason}</p>
                     </li>
                 )}
@@ -356,16 +390,17 @@ class EditPost extends Component {
         </div>);
     }
 
-    fromDataURL = url => {
-        fetch(url)
+    fromDataURL = async url => {
+        return await fetch(url)
             .then(response => response.blob())
             .then(blob => new Promise((resolve, reject) => {
-                const reader = new FileReader()
+                const reader = new FileReader();
                 reader.readAsDataURL(blob);
                 reader.onload = () => resolve(reader.result);
                 reader.onerror = error => reject(error);
+            })
 
-            }))
+            );
     }
 
     toBase64 = file => new Promise((resolve, reject) => {
@@ -507,7 +542,7 @@ class EditPost extends Component {
     }
 
     render() {
-        //console.log(this.state.images);
+        //  console.log(this.state.images);
         let locationOption = this.state.locations.map((location, index) =>
             <option value={location.location_id} key={index} selected={(location.location === this.state.location)}>{location.location}</option>
         );
@@ -527,8 +562,8 @@ class EditPost extends Component {
         let actInput = this.state.activities.map((act, index) =>
             <div className="activitiesInput" key={index}>
                 <div className="coverContent" key={index}>
-                    <div className="brief">Brief<input type="text" name="brief" onChange={(eve) => { act.brief = eve.target.value; }} defaultValue={act.brief} /></div>
-                    <div className="detail">Detail<textarea rows={4} cols={50} type="textarea" required name="detail" onChange={(eve) => { act.detail = eve.target.value; }} defaultValue={act.detail} /></div>
+                    <div className="brief">Brief:<input type="text" name="brief" onChange={(eve) => { act.brief = eve.target.value; }} defaultValue={act.brief} required /></div>
+                    <div className="detail">Detail:<textarea rows={4} cols={50} type="textarea" required name="detail" onChange={(eve) => { act.detail = eve.target.value; }} defaultValue={act.detail} /></div>
                     <button type="button" className="btn-add-service" onClick={this.removeActivity} id={index}><i className="fa fa-trash-o" aria-hidden="true"></i></button>
                 </div>
             </div>
@@ -546,7 +581,7 @@ class EditPost extends Component {
         return (
             <div>
                 <div className="container">
-                {this.state.alert}
+                    {this.state.alert}
                     <div className="row m-y-2">
                         {/* edit form column */}
                         <div className="col-lg-12 text-lg-center">
@@ -556,7 +591,7 @@ class EditPost extends Component {
                         <div className="col-lg-12 push-lg-4 personal-info">
                             <form role="form" onSubmit={this.formHandler}>
                                 <div className="form-group row">
-                                    <label className="col-lg-4 col-form-label form-control-label">Location</label>
+                                    <label className="col-lg-4 col-form-label form-control-label">Location:</label>
                                     <div className="col-lg-8">
                                         <select className="custom-select" id="inputGroupSelect01" defaultValue={this.state.location} >
                                             {locationOption}
@@ -565,7 +600,7 @@ class EditPost extends Component {
                                 </div>
                                 <div className="form-group row">
 
-                                    <label className="col-lg-4 col-form-label form-control-label">Category</label>
+                                    <label className="col-lg-4 col-form-label form-control-label">Category:</label>
                                     <div className="col-lg-8">
                                         <select className="custom-select" id="inputGroupSelect02" defaultValue={this.state.category} >
                                             {categoryOption}
@@ -574,28 +609,28 @@ class EditPost extends Component {
                                 </div>
                                 <div className="form-group row">
 
-                                    <label className="col-lg-4 col-form-label form-control-label">Trip Fee:  <b>$</b></label>
+                                    <label className="col-lg-4 col-form-label form-control-label">Trip Fee ($):</label>
 
                                     <div className="col-lg-8">
                                         <input onChange={this.inputOnChange} className="form-control" type="number" name="price"
-                                         defaultValue={this.state.price} min="5" max="5000" required  />
+                                            defaultValue={this.state.price} min="5" max="5000" required />
                                     </div>
                                 </div>
                                 <div className="form-group row">
                                     <label className="col-lg-4 col-form-label form-control-label">Post title:</label>
 
                                     <div className="col-lg-8">
-                                        <input onChange={this.inputOnChange} className="form-control" type="text" name="title" 
-                                        required defaultValue={this.state.title} />
+                                        <input onChange={this.inputOnChange} className="form-control" type="text" name="title"
+                                            required defaultValue={this.state.title} />
                                     </div>
                                 </div>
                                 <div className="form-group row">
 
-                                    <label onChange={this.inputOnChange} className="col-lg-4 col-form-label form-control-label">Introduce video link</label>
+                                    <label onChange={this.inputOnChange} className="col-lg-4 col-form-label form-control-label">Introduce video link:</label>
 
                                     <div className="col-lg-8">
                                         <input onChange={this.inputOnChange} className="form-control" type="url" name="video_link"
-                                        required defaultValue={this.state.video_link} />
+                                            required defaultValue={this.state.video_link} />
                                     </div>
                                 </div>
                                 <div className="form-group row pictures">
@@ -616,11 +651,11 @@ class EditPost extends Component {
 
                                 </div>
                                 <div className="form-group row">
-                                    <label className="col-lg-4 col-form-label form-control-label">Estimate trip duration:</label>
+                                    <label className="col-lg-4 col-form-label form-control-label">Estimate trip duration (hours):</label>
 
                                     <div className="col-lg-8">
-                                        <input onChange={this.inputOnChange} name="total_hour" className="form-control " 
-                                        type="number" required min="1" max="24" defaultValue={this.state.total_hour} />
+                                        <input onChange={this.inputOnChange} value={`${this.state.total_hour}`} name="total_hour" className="form-control "
+                                            type="number" required min="1" max="24" />
                                     </div>
                                 </div>
                                 <div className="form-group row">
@@ -628,12 +663,12 @@ class EditPost extends Component {
                                     <label className="col-lg-4 col-form-label form-control-label">Description your trip:</label>
 
                                     <div className="col-lg-8">
-                                        <textarea onChange={this.inputOnChange} name="description" className="form-control" required  defaultValue={this.state.description} />
+                                        <textarea onChange={this.inputOnChange} name="description" className="form-control" required defaultValue={this.state.description} />
                                     </div>
                                 </div>
                                 <div className="form-group row">
 
-                                    <label className="col-lg-4 col-form-label form-control-label">Including service</label>
+                                    <label className="col-lg-4 col-form-label form-control-label">Including service:</label>
                                     {/* <div className="col-lg-7" id="includeServiceCover"></div> */}
                                     <button type="button" className="style_BtnAdd" id="includeService" onClick={this.addService}>+</button>
 
@@ -644,7 +679,7 @@ class EditPost extends Component {
                                     {serviceInput}
                                 </div>
                                 <div className="form-group row">
-                                    <label className="col-lg-4 col-form-label form-control-label">Meeting point</label>
+                                    <label className="col-lg-4 col-form-label form-control-label">Meeting point:</label>
 
                                     <div className="col-lg-8">
                                         <input onChange={this.inputOnChange} name="meeting_point" className="form-control" required type="text" defaultValue={this.state.meeting_point} />
@@ -662,7 +697,7 @@ class EditPost extends Component {
                                     {actInput}
                                 </div>
                                 <div className="form-group row">
-                                    <label className="col-lg-4 col-form-label form-control-label">Why to pick you   </label>
+                                    <label className="col-lg-4 col-form-label form-control-label">Messages to travelers:</label>
 
                                     <div className="col-lg-7"></div>
                                     <button type="button" className="style_BtnAdd" id="reasonAdd" onClick={this.addReason}>+</button>
@@ -677,6 +712,7 @@ class EditPost extends Component {
                                             type="reset"
                                             className="btn btn-primary"
                                             defaultValue="Reset Form"
+                                            onClick={this.resetForm}
                                         />
                                         <input
                                             type="submit"

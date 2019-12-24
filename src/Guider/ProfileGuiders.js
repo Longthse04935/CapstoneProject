@@ -23,7 +23,10 @@ class ProfileGuiders extends Component {
         headers: {
           Accept: "application/json"
         }
-      }
+      },
+
+      about_me:[""],
+      hide:true
     }
   }
   componentDidMount() {
@@ -32,7 +35,7 @@ class ProfileGuiders extends Component {
     $("head").append('<link href="/css/login.css" rel="stylesheet"/>');
 
 
-    //read more and read less
+    // read more and read less
     $('.moreless-button').click(function () {
       $('.moretext').slideToggle();
       if ($('.moreless-button').text() === "Read more") {
@@ -42,31 +45,32 @@ class ProfileGuiders extends Component {
       }
     });
 
-    //show and hide comment
-    var size_li = $(".listReview li").length;
-    $('#showLess').hide();
-    var x = 3;
-    $('.listReview li:lt(' + x + ')').show();
+    // //show and hide comment
+    // var size_li = $(".listReview li").length;
+    // $('#showLess').hide();
+    // var x = 3;
+    // $('.listReview li:lt(' + x + ')').show();
 
-    $('#loadMore').click(function () {
-      x = (x + 3 <= size_li) ? x + 3 : size_li;
-      $('.listReview li:lt(' + x + ')').show(500);
-      if (x > 3) {
-        $('#showLess').show();
-      }
-      if (x === size_li) {
-        $('#loadMore').hide();
-      }
-    });
-    $('#showLess').click(function () {
-      var x = (x - 3 < 3) ? 3 : x - 3;
-      $('.listReview li').not(':lt(' + x + ')').hide(500);
-      if (x <= 3) {
-        $('#showLess').hide();
-      } if (x < size_li) {
-        $('#loadMore').show();
-      }
-    });
+    // $('#loadMore').click(function () {
+    //   x = (x + 3 <= size_li) ? x + 3 : size_li;
+    //   $('.listReview li:lt(' + x + ')').show(500);
+    //   if (x > 3) {
+    //     $('#showLess').show();
+    //   }
+    //   if (x === size_li) {
+    //     $('#loadMore').hide();
+    //   }
+    // });
+    // $('#showLess').click(function () {
+    //   var x = (x - 3 < 3) ? 3 : x - 3;
+    //   $('.listReview li').not(':lt(' + x + ')').hide(500);
+    //   if (x <= 3) {
+    //     $('#showLess').hide();
+    //   } if (x < size_li) {
+    //     $('#loadMore').show();
+    //   }
+    // });
+
     //get guider id
     let guider_id = this.props.match.params.guider_id;
     this.loadInfoGuider(guider_id);
@@ -87,6 +91,7 @@ class ProfileGuiders extends Component {
       }
 
       const guider = await response.json();
+      const about_me = guider.about_me.split(".");
       if (guider.profile_video.includes("youtu.be")) {
         guider.profile_video = guider.profile_video.replace("youtu.be", "youtube.com/embed");
       } else {
@@ -94,7 +99,7 @@ class ProfileGuiders extends Component {
         guider.profile_video = guider.profile_video[0].replace("watch?v=", "embed/");
       }
       // console.log(guider);
-      this.setState({ guider });
+      this.setState({ guider, about_me });
     } catch (err) {
       console.log(err)
     }
@@ -107,7 +112,7 @@ class ProfileGuiders extends Component {
         Config.api_url +
         "guiderpost/postOfOneGuider/" + guider_id +
         "/" +
-        page,
+        0,
         autheticate
       );
       const pageCount = await fetch(
@@ -118,6 +123,7 @@ class ProfileGuiders extends Component {
 
       const totalPage = await pageCount.json();
       posts = await response.json();
+      console.log('posts',posts);
       this.setState({ posts, totalPage })
     } catch (error) {
       console.log(error)
@@ -136,14 +142,11 @@ class ProfileGuiders extends Component {
               <img src={post.picture_link[0]} alt="logo" />
             </div>
             <div className="experienceCard-details">
-              <span className="enjoy">
-                Enjoy <span className="withName">{post.title}</span>
-              </span>
-              <h3>
+              <h3 style={{color:'black',textDecoration:'none'}}>
                 <span
                 //onClick={() => this.handleGotoPage(post.post_id, guider_id)}
                 >
-                  {post.description}
+                  {post.title}
                 </span>
               </h3>
               <div className="price" style={{ color: 'black' }}>
@@ -208,9 +211,9 @@ class ProfileGuiders extends Component {
   };
 
   render() {
-    let { guider_id, guider, totalPage, page } = this.state;
+    let { guider_id, guider, totalPage, page, about_me } = this.state;
     let post = this.RenderPostGuider(guider_id);
-    // console.log(totalPage);
+    console.log(post);
     const range = this.range(0, totalPage - 1);
     let renderPageNumbers = totalPage === 1 ? '' :
       range.map(i => (
@@ -234,12 +237,12 @@ class ProfileGuiders extends Component {
             {/*  Content  */}
             <div className="content">
               <div className="content-left">
-              {guider_id ? (
-									<GuiderInShort
-										guiderId={guider_id}
-										postId={this.props.match.params.post_id}
-									/>
-								) : null}
+                {guider_id ? (
+                  <GuiderInShort
+                    guiderId={guider_id}
+                    postId={this.props.match.params.post_id}
+                  />
+                ) : null}
               </div>
               <div className="content-right">
                 {/* intro content */}
@@ -255,25 +258,27 @@ class ProfileGuiders extends Component {
                     <div id="section">
                       <div className="article">
                         <p>
-                          {guider.about_me}
+                          {
+                            about_me.slice(0, 4).map((value) => (
+                              <span>{value}.</span>
+                            ))
+                          }
                         </p>
+                       
                         <p className="moretext">
-                          Known as the city of the seven hills, its name comes from
-                          Olisipo, name that the town already had before the Roman
-                          occupation, in 205 BC Located in zone of strong seismic
-                          intensity, suffered several earthquakes throughout the
-                          centuries, having the earthquake of 1755 , followed by tsunami
-                          and fire, totally destroying the riverside area of the city.
-                          The reconstruction plan of the city implemented by Marquês de
-                          Pombal is still visible today in the streets of Lisbon, mainly
-                          in downtown Lisbon. Lisbon was one of the main centers of
-                          introduction and development of Christianity in the Iberian
-                          Peninsula.
-                                </p>
+                          {
+
+                            about_me.slice(4,about_me.length).map((value)=>(
+                              <span>{value}.</span>
+                            ))
+                          }
+                        </p>
                       </div>
-                      <a className="moreless-button" onClick={e => e.preventDefault()}>
+                      
+                       <a className="moreless-button" onClick={()=>{this.setState({hide:!this.state.hide})}}>
                         Read more
-                            </a>
+                      </a>
+                      
                     </div>
                   </div>
                 </div>
@@ -321,10 +326,10 @@ class ProfileGuiders extends Component {
                   {/* End Review */}
                   {/* End Load Review button */}
                   <div className="thisIsTravel">
-                    <h2>This is Withlocals</h2>
+                    <h2>This is Viet Nam</h2>
                     <video controls>
                       <source
-                        src="/video/withlocalsvideo_e7rahz.mp4"
+                        src="/video/IMG_0601.TRIM.MOV"
                         type="video/mp4"
                       />
                     </video>

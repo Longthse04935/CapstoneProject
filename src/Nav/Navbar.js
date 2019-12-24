@@ -317,7 +317,7 @@ class Navbar extends Component {
         if (this.props.error.flag) {
 			errors['login'] = 'User name or password is wrong';
 		}
-        
+        //console.log(this.props.error.flag);
         let path = window.location.pathname;
         return (
             <div>
@@ -455,7 +455,7 @@ class Navbar extends Component {
                                     />{" "}
                                     Guider
                                 </div>
-                                {this.props.error.flag ? <p style={{ color: "red" }} className="errorInput">{errors['login']}</p> : ''}
+                                {this.props.error.flag === true ? <p style={{ color: "red" }} className="errorInput">{errors['login']}</p> : ''}
                                 <div className="firstName">
                                     <label className="InputLabel-Tch5j InputLabelConditionalHide-24VTo">
                                         Nick name *
@@ -519,77 +519,6 @@ class Navbar extends Component {
                                         <img src="/icon/iconMain.jpg" />
                                     </a>
                                 </div>
-                                
-                                <div className="search" id="searchNav">
-                                    <label>
-                                        <input
-                                            type="text"
-                                            placeholder="Where do you want to go?"
-                                            name="search"
-                                            autoComplete="off"
-                                        />
-                                    </label>
-                                    <div className="fillter" id="fillterNav">
-                                        <div className="filter-Content">
-                                            <div className="localsOrExperience">
-                                                <h3 className="explore">Explore TravelWlocals</h3>
-                                                <div className="button-group">
-                                                    <button className="active">Guider</button>
-                                                    <button>Location</button>
-                                                </div>
-                                            </div>
-                                            <div className="popularDestination">
-                                                <h3 id="popularLabel">Popular Destinations</h3>
-                                                <ul>
-                                                    <li>
-                                                        <i className="fa fa-map-marker" aria-hidden="true"></i>
-                                                        <a>Ha Noi</a>
-                                                    </li>
-                                                    <li>
-                                                        <i className="fa fa-map-marker" aria-hidden="true"></i>
-                                                        <a>Ho Chi Minh</a>
-                                                    </li>
-                                                    <li>
-                                                        <i className="fa fa-map-marker" aria-hidden="true"></i>
-                                                        <a>Da Nang</a>
-                                                    </li>
-                                                    <li>
-                                                        <i className="fa fa-map-marker" aria-hidden="true"></i>
-                                                        <a>Bac Ninh</a>
-                                                    </li>
-                                                    <li>
-                                                        <i className="fa fa-map-marker" aria-hidden="true"></i>
-                                                        <a>Da Lat</a>
-                                                    </li>
-                                                    <li>
-                                                        <i className="fa fa-map-marker" aria-hidden="true"></i>
-                                                        <a>Hue</a>
-                                                    </li>
-                                                    <li>
-                                                        <i className="fa fa-map-marker" aria-hidden="true"></i>
-                                                        <a>Vung Tau</a>
-                                                    </li>
-                                                    <li>
-                                                        <i className="fa fa-map-marker" aria-hidden="true"></i>
-                                                        <a>Hai Phong</a>
-                                                    </li>
-                                                    <li>
-                                                        <i className="fa fa-map-marker" aria-hidden="true"></i>
-                                                        <a>Phu Quoc</a>
-                                                    </li>
-                                                    <li>
-                                                        <i className="fa fa-map-marker" aria-hidden="true"></i>
-                                                        <a>Sapa</a>
-                                                    </li>
-                                                    <li>
-                                                        <i className="fa fa-map-marker" aria-hidden="true"></i>
-                                                        <a>Ca Mau</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
 
                             
@@ -621,6 +550,7 @@ class Navbar extends Component {
 }
 function mapStateToProps(state) {
     const error = state.Error;
-    return { error};
+    const user = state.user;
+    return { error, user};
 }
 export default connect(mapStateToProps)(Navbar);

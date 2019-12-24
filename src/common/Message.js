@@ -3,15 +3,19 @@ import { connect } from 'react-redux';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import ChatList from "./ChatStore";
 import Config from '../Config'
+import { loadGuest } from '../redux/webSocket'
 class Message extends React.Component {
       constructor(props) {
             super(props);
             this.state = {
-                  client: ""
+                  client: "",
+                  page: 0
             }
       }
 
       async componentDidMount() {
+            this.props.dispatch(loadGuest(`${this.props.user.userName}/${this.state.page}/${this.state.page + 10}`));
+            this.setState({ page: this.state.page + 10 });
       }
 
       load = (eve) => {
@@ -23,6 +27,7 @@ class Message extends React.Component {
       render() {
             //let messages = this.props.getState().messages;
             //console.log(this.props);
+            let countUser = this.props.clients;
             return (
                   <div className="messageRoom">
                         <div className="chat_window">
@@ -30,25 +35,37 @@ class Message extends React.Component {
                                     <div className="planContent">
                                           <h1>Chat</h1>
                                           <div style={{ marginBottom: "30px" }} />
-                                          <ul style={{listStyleType: 'none', }}>
+                                          <ul style={{ listStyleType: 'none', }}>
                                                 {
-                                                      this.props.clients.filter(client => client!==this.props.user.userName).map((value, index) => (
-                                                            <li key={index} style={{height: '64px', position: 'relative', display: 'flex'}}>
-                                                                  <a onClick={this.load}  style={{color: '#385898', cursor: 'pointer', width: '100%', paddingLeft:'8px',paddingRight:'8px', borderRadius:"8px"}}>
+                                                      this.props.clients.filter(client => client !== this.props.user.userName).map((value, index) => (
+                                                            <li key={index} id="liUserChat">
+                                                                  <a onClick={this.load} style={{ color: '#385898', cursor: 'pointer', width: '100%', paddingLeft: '8px', paddingRight: '8px', borderRadius: "8px" }}>
                                                                         <div className="detail" id={value}>
-                                                                              {value}
-                                                                        </div></a>
+                                                                              <p  style={
+                                                                                    {color:'rgb(80, 80, 80)',fontSize:'25px',marginBottom: '0'}}>
+                                                                                    {value.toUpperCase()}
+                                                                              </p>
+                                                                              <p style={{color:'rgb(196, 192, 192)'}}>Click to read full messages ...</p>
+                                                                        </div>
+                                                                       
+                                                                  </a>
                                                             </li>
                                                       ))
                                                 }
                                           </ul>
                                     </div>
+                                    {
+                                          countUser.length < 10 ? '' :
+                                          <div className={`box_noti`} id="showMoreChat">
+                                          <a className="showMore" onClick={() => { this.props.dispatch(loadGuest(`${this.props.user.userName}/${this.props.clients.length}/${this.props.clients.length + 5}`)) }} >Show more</a>
+                                    </div>
+                                    }
                               </div>
                               <ChatList name={this.props.user.userName} receiver={this.state.client}
                                     messages={this.props.messages
                                           .filter(msg => this.props.user.role === 'GUIDER'
-                                          ?( msg.guider === this.props.user.userName && msg.traveler === this.state.client)
-                                          :( msg.guider === this.state.client && msg.traveler === this.props.user.userName))
+                                                ? (msg.guider === this.props.user.userName && msg.traveler === this.state.client)
+                                                : (msg.guider === this.state.client && msg.traveler === this.props.user.userName))
                                     } />
 
                         </div>

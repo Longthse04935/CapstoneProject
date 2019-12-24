@@ -4,7 +4,7 @@ import $ from "jquery";
 // import iconMain from '../../public/icon/iconMain.jpg';
 class Footer extends Component {
   componentDidMount() {
-    $("head").append('<link href="/css/footer.css" rel="stylesheet"/>');
+    // $("head").append('<link href="/css/footer.css" rel="stylesheet"/>');
   }
   render() {
     return (

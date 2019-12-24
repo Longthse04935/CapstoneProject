@@ -127,12 +127,14 @@
   box-shadow: 0 6px 13px 0 rgba(56, 42, 42, 0.25);
   border: 1px solid #ccc;
   opacity: 1;
+  height: auto;
   transition: 0.3s;
   z-index: 10;
 }
 
 .navbarRightContent ul .noti .box_noti.hidden{
   opacity: 0;
+  height: 0;
 }
 
 .navbarRightContent ul .noti .box_noti ul{

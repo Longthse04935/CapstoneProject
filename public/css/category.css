@@ -178,8 +178,13 @@
     margin: 35px 0 65px 0;
 }
 
+.categoryTour .slick-list{
+    margin: 0 -15px;
+}
+
 .tourDetail .setImgSlide{
-    height: 100%;
+    position: relative;
+    height: 400px;
     padding: 0 15px;
 }
 
@@ -207,7 +212,7 @@
 .tourDetail .categoriesTour{
     position: absolute;
     bottom: 20px;
-    right:20px;
+    right:30px;
     border: 1px solid #fff;
     border-radius: 3rem;
     padding: 0.5em 1.5rem;
@@ -219,8 +224,7 @@
     order: 2;
     position: absolute;
     color: #fff;
-    font-size: 20px;
-    margin: 35px 0 65px 0;
+    font-size: 14px;
 }
 .tourDetail .categoriesTour:hover{
     color:#e71575;

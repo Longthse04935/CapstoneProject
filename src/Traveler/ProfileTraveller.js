@@ -107,6 +107,7 @@ class ProfileTraveller extends Component {
     
     if(name === "language"){
       data.language[0] = value;
+      console.log(data.language[0]);
     }else{
       data[name] = value;
     }

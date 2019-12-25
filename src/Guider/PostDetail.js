@@ -46,7 +46,7 @@ class PostDetail extends React.Component {
 		this.alertAccount = this.alertAccount.bind(this);
 		this.onLogin = this.onLogin.bind(this);
 	}
-
+	
 	async componentDidMount() {
 		$("html").animate({ scrollTop: 0 }, 500, "swing");
 		try {

@@ -5,8 +5,11 @@ import { Link } from "react-router-dom";
 import $ from "jquery";
 import Rated from '../Guider/Rated';
 import TopGuider from "../Guider/TopGuider";
-import ItemsCarousel from 'react-items-carousel';
+// import ItemsCarousel from 'react-items-carousel';
 import { NONAME } from "dns";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const responsive = {
 	superLargeDesktop: {
@@ -280,8 +283,46 @@ class Home extends Component {
 			>
 				{i+1}
 			</button>
-		)
-	);
+			)
+		);
+
+		var settings = {
+			dots: false,
+			arrows: true,
+			infinite: true,
+			autoplay: true,
+			speed: 500,
+			slidesToShow: 4,
+			slidesToScroll: 1,
+			responsive: [
+			{
+				breakpoint: 1025,
+				settings: {
+				slidesToShow: 3,
+				slidesToScroll: 1,
+				infinite: true,
+				dots: true
+				}
+			},
+			{
+				breakpoint: 600,
+				settings: {
+				slidesToShow: 2,
+				slidesToScroll: 2
+				}
+			},
+			{
+				breakpoint: 480,
+				settings: {
+				slidesToShow: 1,
+				slidesToScroll: 1
+				}
+			}
+			// You can unslick at a given breakpoint now by adding:
+			// settings: "unslick"
+			// instead of a settings object
+			]
+		};
 
 		let tour = this.state.category.map((tour, index) => {
 			return (
@@ -322,9 +363,9 @@ class Home extends Component {
 						<span>With the local of your choice</span>
 					</span>
 				</h2>
-				<div className="tourDetail"><ItemsCarousel>
+				<div className="tourDetail"><Slider {...settings}>
 					{tour}
-				</ItemsCarousel></div>
+				</Slider></div>
 				{this.state.alert}
 				<h1>The travel is most appreciated</h1>
 				<div className="coverTopTour">{slide}</div>

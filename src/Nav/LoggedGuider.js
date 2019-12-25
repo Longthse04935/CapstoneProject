@@ -83,7 +83,7 @@ class LoggedGuider extends Component {
                             <div className="navRight">
                                 <div className="navbarRightContent">
                                     <ul className="logged" >
-                                        <li style={{width:'145px'}}>
+                                        <li>
                                             <Link to={"/managebook"}>Bookings</Link>
                                         </li>
                                         <li>

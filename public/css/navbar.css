@@ -38,6 +38,20 @@
   display: block;
   max-height: 80px;
   line-height: 80px;
+  width:400px;
+  text-decoration: none;
+  position: relative;
+}
+
+.navbar .menubar .navLeft .logoContainer a h3{
+  display: inline;
+  text-decoration: none !important;
+  font-family: "Dancing Script";
+  font-size: 40px;
+  color:#e71575;
+  position: absolute;
+  top: 24px;
+  right: 6px;
 }
 
 .navbar .menubar .navLeft .logoContainer a img{
@@ -110,7 +124,7 @@
 }
 
 .navbarRightContent ul .noti, .navbarRightContent ul li:nth-child(1), .navbarRightContent ul li:nth-child(2), .navbarRightContent ul li:nth-child(3){
-  width: 60px;
+  width: 70px;
 }
 
 .navbarRightContent ul .noti{
@@ -313,6 +327,7 @@ input[name="search"] {
 
 .logged .avatarLogged{
   position: relative;
+  width:100px;
 }
 
 .avatarLogged .dropContent li{

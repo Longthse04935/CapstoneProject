@@ -99,7 +99,9 @@ class LoggedTvl extends Component {
                 <div className="logoContainer">
                   <a href="/">
                     <img src="/icon/iconMain.jpg" />
+                    <h3>Enjoy a city like a local</h3>
                   </a>
+                  
                 </div>
               </div>
               <div className="navRight">
@@ -159,7 +161,7 @@ class LoggedTvl extends Component {
                         <span>
                           <li className="userChoice">
                             <Link to="/profiletraveller">
-                              Profile traveller
+                              Profile
                             </Link>
                             <i
                               className="fa fa-address-card-o"
@@ -167,7 +169,7 @@ class LoggedTvl extends Component {
                             ></i>
                           </li>
                           <li className="userChoice">
-                            <Link to="/tvlManager">Traveler manage</Link>
+                            <Link to="/tvlManager">Bookings manage</Link>
                             <i
                               className="fa fa-suitcase"
                               aria-hidden="true"

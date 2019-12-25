@@ -9,7 +9,7 @@ class ReviewTraveler extends Component {
             tvl:{
                 gender: 0,
                 date_of_birth: "1970-01-01",
-                language:['Vietnamese'],
+                language:[""],
                 country: "Vietnam"
             },
             reviews:[],
@@ -143,14 +143,7 @@ class ReviewTraveler extends Component {
     }
   render() {
     let {tvl,reviews,data} = this.state;
-    let languages = '';
-        for (var i = 0; i < tvl.languages.length; i++) {
-            if (i + 1 === tvl.languages.length) {
-                languages += tvl.language[i];
-            } else {
-                languages += tvl.language[i] + ',';
-            }
-        }
+    let languages = "";
     const gender = this.gender(tvl.gender);
     let showReview = reviews.map((value,index) => (
         <li key={index}>

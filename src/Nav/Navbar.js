@@ -517,6 +517,7 @@ class Navbar extends Component {
                                 <div className="logoContainer">
                                     <a href="/">
                                         <img src="/icon/iconMain.jpg" />
+                                        <h3>Enjoy a city like a local</h3>
                                     </a>
                                 </div>
                             </div>

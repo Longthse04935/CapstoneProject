@@ -71,14 +71,13 @@ class App extends Component {
 		let user = this.props.user;
 
 		if (user.userName === '' || user.role !== 'GUIDER') {
-			console.log("dm thg long");
 			return <Redirect to="/" />
 		} else if (user.role === 'GUIDER') {
-			// if (user.isContractExist === false || user.isGuiderActive === false) {
-			// 	return <GuiderContract message={'Waiting'} />;
-			// } else {
+			if (user.isContractExist === false || user.isGuiderActive === false) {
+				return <GuiderContract message={'Waiting'} />;
+			} else {
 			 	return component;
-			// }
+			}
 			
 		}
 

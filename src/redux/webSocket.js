@@ -38,6 +38,9 @@ export const getMessages = (state = messageInitState, action) => {
             case 'SAVE':
 
                   return [...state, action.message];
+            case 'SAVES':
+
+                  return [ action.message, ...state];
             case 'GET':
 
                   return state;
@@ -70,7 +73,7 @@ export const receiveNoti = (state = [...notifications], action) => {
             case 'ANNOUNCES':
                   return [...state, action.noti];
             case 'ANNOUNCE':
-                  return [ action.noti, ...state,];
+                  return [action.noti, ...state,];
 
             default:
                   return state;
@@ -109,7 +112,7 @@ export const loadMsg = guest => dispatch => fetch(`${Config.api_url}messages/${g
       })
       .then((json) => {
             json.forEach(element => {
-                  dispatch({ type: 'SAVE', message: element });
+                  dispatch({ type: 'SAVES', message: element });
             });
       }).catch(err => {
             dispatch({ type: 'ERROR', err: 'message websocket error' });

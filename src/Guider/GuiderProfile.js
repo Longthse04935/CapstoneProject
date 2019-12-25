@@ -239,7 +239,7 @@ class GuiderProfile extends Component {
                   $('.coverLoader').show();
                   this.statusProfile('Update success!!');
             } catch (err) {
-                  
+
             }
       }
 
@@ -295,6 +295,9 @@ class GuiderProfile extends Component {
                   <div>
                         {this.state.alert}
                         <div className="containerMain">
+                              <div className="coverLoader">
+                                    <div className="loader"></div>
+                              </div>
                               <h1 className="h1-profile">Your profile</h1>
                               <div className="content-profile">
                                     <div className="profile-image">

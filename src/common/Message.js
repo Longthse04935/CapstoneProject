@@ -14,8 +14,8 @@ class Message extends React.Component {
       }
 
       async componentDidMount() {
-            this.props.dispatch(loadGuest(`${this.props.user.userName}/${this.state.page}/${this.state.page + 10}`));
-            this.setState({ page: this.state.page + 10 });
+            this.props.dispatch(loadGuest(`${this.props.user.userName}/${this.state.page}/${this.state.page + 5}`));
+            this.setState({ page: this.state.page + 5 });
       }
 
       load = (eve) => {

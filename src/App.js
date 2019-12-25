@@ -46,7 +46,7 @@ class App extends Component {
 			alert: null,
 		};
 
-		this.setTimeOut();
+		//this.setTimeOut();
 	}
 
 	checkPathWithoutLogin = (component) => (
@@ -184,15 +184,15 @@ class App extends Component {
 
 		);
 	}
-	setTimeOut() {
-		setInterval(() => {
-			fetch(`${Config.api_url}account/refresh`, {
-				method: "GET",
-				mode: "cors",
-				credentials: "include"
-			})
-		}, 60 * 60 * 1000);
-	}
+	// setTimeOut() {
+	// 	setInterval(() => {
+	// 		fetch(`${Config.api_url}account/refresh`, {
+	// 			method: "GET",
+	// 			mode: "cors",
+	// 			credentials: "include"
+	// 		})
+	// 	}, 60 * 60 * 1000);
+	// }
 }
 function mapStateToProps(state) {
 	console.log(state);

@@ -43,7 +43,7 @@ class Message extends React.Component {
                                                                         <div className="detail" id={value}>
                                                                               <p  style={
                                                                                     {color:'rgb(80, 80, 80)',fontSize:'25px',marginBottom: '0'}}>
-                                                                                    {value.toUpperCase()}
+                                                                                    {value}
                                                                               </p>
                                                                               <p style={{color:'rgb(196, 192, 192)'}}>Click to read full messages ...</p>
                                                                         </div>

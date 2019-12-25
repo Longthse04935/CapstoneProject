@@ -32,6 +32,7 @@ import Page404 from './Page404';
 import ReviewTraveler from './Guider/ReviewTraveler';
 import Config from './Config';
 import ForgotPassword from "./common/ForgotPassword";
+import $ from 'jquery';
 
 class App extends Component {
 	constructor(props) {
@@ -84,6 +85,31 @@ class App extends Component {
 	}
 
 	componentDidMount() {
+		$( document ).ready(function() {
+			if($(window).width() < 1700){
+				console.log($(window).width());
+				$('body').css('zoom','75%'); /* Webkit browsers */
+				$('body').css('zoom','0.75'); /* Other non-webkit browsers */
+				$('body').css('-moz-transform','scale(0.75, 0.75)'); /* Moz-browsers */
+			}else{
+				console.log('asdsa',$(window).width());
+				$('body').css('zoom','100%'); /* Webkit browsers */
+				$('body').css('zoom','1'); /* Other non-webkit browsers */
+				$('body').css('-moz-transform','scale(1, 1)'); /* Moz-browsers */
+			}
+		});
+		// $(window).resize(function() {
+		// 	if($(window).width() < 1700){
+		// 		console.log($(window).width());
+		// 		$('body').css('zoom','75%'); /* Webkit browsers */
+		// 		$('body').css('zoom','0.75'); /* Other non-webkit browsers */
+		// 		$('body').css('-moz-transform','scale(0.75, 0.75)'); /* Moz-browsers */
+		// 	}else{
+		// 		$('body').css('zoom','100%'); /* Webkit browsers */
+		// 		$('body').css('zoom','1'); /* Other non-webkit browsers */
+		// 		$('body').css('-moz-transform','scale(1, 1)'); /* Moz-browsers */
+		// 	}
+		//   });
 		let user = this.props.user;
 		if (user.logedIn) {
 			this.props.dispatch(wsConnect(Config.api_url + "ws"));

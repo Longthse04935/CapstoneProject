@@ -49,6 +49,8 @@ class PostDetail extends React.Component {
 	
 	async componentDidMount() {
 		$("html").animate({ scrollTop: 0 }, 500, "swing");
+		
+
 		try {
 			const post_id = this.props.match.params.post_id;
 			let { page, autheticate, pageCount } = this.state;

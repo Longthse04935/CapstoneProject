@@ -108,7 +108,7 @@ class PostTourDetail extends Component {
 						this.state.dataPostOneCategory.map((post, index) => (
 						<Link to={"/post/" + post.post_id}>
 						<li key={index}>
-							<div className="sheet" id="sheetInTour" style={{width:"370px"}}>
+							<div className="sheet" id="sheetInTour" style={{width:"400px"}}>
 							<div className="imageFigure">
 								<img src={post.picture_link[0]} alt="logo" />
 							</div>
@@ -170,8 +170,8 @@ class PostTourDetail extends Component {
 		return (
 			<div>
 				<div className='postInTour'>
-					<h2>All trips about {category_name} </h2>
-					<div className="contentTour">
+					<h2 style={{marginLeft:'3%'}}>All trips about {category_name} </h2>
+					<div className="contentTour" style={{width:'100%',margin:'0',paddingLeft:'2%'}}>
 						{
 							showTour
 						}

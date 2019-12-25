@@ -24,8 +24,7 @@ export const signIn = login => dispatch => fetch(`${Config.api_url}account/login
             
       })
       .then((json) => {
-            
-            
+                        
             dispatch({ type: 'LOGIN', data: json });
             dispatch(wsConnect(Config.api_url+"ws"));
             dispatch(firErr({msg: '', flag: false}));

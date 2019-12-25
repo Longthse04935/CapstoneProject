@@ -26,6 +26,8 @@ class GuiderBooks extends Component {
 	}
 	async accept(eve) {
 		try {
+			$(".coverLoader").css("height", "1800px");
+			$('.coverLoader').show();
 			const remain = this.state.orders;
 			remain.splice(eve.target.id, 1);
 			let { cors } = this.state;
@@ -39,7 +41,7 @@ class GuiderBooks extends Component {
 			}
 
 			const status = await orderResponse.text();
-
+			$('.coverLoader').hide();
 			this.setState({ orders: remain });
 		} catch (err) {
 			console.log(err);
@@ -48,6 +50,8 @@ class GuiderBooks extends Component {
 
 	async deny(eve) {
 		eve.preventDefault();
+		$(".coverLoader").css("height", "1800px");
+		$('.coverLoader').show();
 		try {
 			const denied = this.state.orders[eve.target.id];
 			const remain = this.state.orders;
@@ -68,6 +72,7 @@ class GuiderBooks extends Component {
 
 			const order = await orderResponse.text();
 			//console.log(order);
+			$('.coverLoader').hide();
 			this.setState({ orders: remain });
 		} catch (err) {
 			console.log(err);
@@ -76,6 +81,8 @@ class GuiderBooks extends Component {
 
 	async cancel(eve) {
 		eve.preventDefault();
+		$(".coverLoader").css("height", "1800px");
+		$('.coverLoader').show();
 		try {
 			//console.log(this.state.orders);
 			const denied = this.state.orders[eve.target.id];
@@ -99,6 +106,7 @@ class GuiderBooks extends Component {
 
 			const order = await orderResponse.text();
 			//console.log(order);
+			$('.coverLoader').hide();
 			this.setState({ orders: remain });
 		} catch (err) {
 			console.log(err);
@@ -172,7 +180,7 @@ class GuiderBooks extends Component {
 				"&status=" +
 				status,
 				cors
-			);	
+			);
 
 			if (!orderResponse.ok) {
 				throw Error(orderResponse.status + ": " + orderResponse.statusText);
@@ -232,7 +240,7 @@ class GuiderBooks extends Component {
 				</td>
 				<td className="cell100 column6">{order.adult_quantity}</td>
 				<td className="cell100 column7">{order.children_quantity}</td>
-				<td className="cell100 column8">{order.fee_paid}</td>
+				<td className="cell100 column8">{order.fee_paid}$</td>
 				{status === 'WAITING' ? (
 					<td className="cell100 column1">
 						<div>
@@ -275,7 +283,7 @@ class GuiderBooks extends Component {
 		));
 
 
-		let arr = ["WAITING", "ONGOING", "FINISHED", "CANCELED"];
+		let arr = ["WAITING", "ONGOING", "FINISHED", "CANCELLED"];
 
 		let tab = arr.map((value, index) => (
 			<li key={index} onClick={() => { this.tabList(value); }} value={value} >
@@ -285,6 +293,9 @@ class GuiderBooks extends Component {
 
 		return (
 			<div className="tvlManager_Container">
+				<div className="coverLoader">
+					<div className="loader"></div>
+				</div>
 				<div className="tvlManager_title">
 					<ul className="tvlTab" id="bookManage">{tab}</ul>
 				</div>

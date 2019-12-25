@@ -96,7 +96,7 @@ class TravellerManager extends Component {
 				};
 				let response = await fetch(Config.api_url + 'review/create', options);
 				response = await response.text();
-				this.setState({ isDisable: false, isError: false, comment: '' });
+				this.setState({ isDisable: false, isError: false, comment: '' ,rated:0.0});
 				this.statusProfile('Comment Success');
 			}
 		}

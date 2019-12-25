@@ -76,7 +76,20 @@ class ProfileGuiders extends Component {
     this.loadInfoGuider(guider_id);
     this.LoadPostGuider(guider_id, this.state.page);
     this.setState({ guider_id });
+    this.fixedDiv();
   }
+
+  //stop scrolling when go footer
+  fixedDiv = () => {
+		$(document).scroll(function() {
+			if($('.content-left .profile-box').offset().top + $('.content-left .profile-box').height() >= $('footer').offset().top - 10)
+				$('.content-left .profile-box').css({'position': 'absolute', 'bottom' : 60, 'top' : 'auto'});
+				
+			if($(document).scrollTop() + $('.content-left .profile-box').height() < $('footer').offset().top)
+				$('.content-left .profile-box').css({'position': 'fixed', 'top' : 158, 'bottom' : 'auto'}); // restore when you scroll up
+			
+		});
+	}
 
   loadInfoGuider = async (guider_id) => {
     let { autheticate } = this.state;

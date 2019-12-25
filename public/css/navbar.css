@@ -133,8 +133,7 @@
 }
 
 .navbarRightContent ul .noti .box_noti.hidden{
-  opacity: 0;
-  height: 0;
+  display:none;
 }
 
 .navbarRightContent ul .noti .box_noti ul{

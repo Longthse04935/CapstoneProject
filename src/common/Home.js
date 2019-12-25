@@ -326,9 +326,8 @@ class Home extends Component {
 
 		let tour = this.state.category.map((tour, index) => {
 			return (
-
 				<div className="setImgSlide" key={index}>
-					<img src={`${Config.api_url}images/${tour.category}.jpg`} />
+					<img src={tour.image} />
 					<Link
 						to={"/posttour/" + tour.category_id}
 						onClick={() => {

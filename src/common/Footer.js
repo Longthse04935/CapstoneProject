@@ -36,7 +36,7 @@ class Footer extends Component {
                   <a><i style={{marginRight:'10px'}} class="fa fa-map-marker" aria-hidden="true"></i>Address: Km29, Thanglong boulevard, Thachthat, Hanoi, Vietnam</a>
                 </li>
                 <li>
-                  <a><i style={{marginRight:'10px'}} class="fa fa-envelope-o" aria-hidden="true"></i>Email: finguider@gmail.com</a>
+                  <a><i style={{marginRight:'10px'}} class="fa fa-envelope-o" aria-hidden="true"></i>Email: findguider@gmail.com</a>
                 </li>
               </ul>
             </div>

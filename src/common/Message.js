@@ -14,7 +14,7 @@ class Message extends React.Component {
       }
 
       async componentDidMount() {
-            this.props.dispatch(loadGuest(`${this.props.user.userName}/${this.state.page}/${this.state.page + 5}`));
+            this.props.dispatch(loadGuest(this.props.user ,`${this.props.user.userName}/${this.state.page}/${this.state.page + 5}`));
             this.setState({ page: this.state.page + 5 });
       }
 
@@ -37,7 +37,7 @@ class Message extends React.Component {
                                           <div style={{ marginBottom: "30px" }} />
                                           <ul style={{ listStyleType: 'none', }}>
                                                 {
-                                                      this.props.clients.filter(client => client !== this.props.user.userName).map((value, index) => (
+                                                      this.props.clients.filter(client => client !== this.props.user.userName && client !== '').map((value, index) => (
                                                             <li key={index} id="liUserChat">
                                                                   <a onClick={this.load} style={{ color: '#385898', cursor: 'pointer', width: '100%', paddingLeft: '8px', paddingRight: '8px', borderRadius: "8px" }}>
                                                                         <div className="detail" >

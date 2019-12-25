@@ -80,7 +80,7 @@ export const receiveNoti = (state = [...notifications], action) => {
       }
 }
 
-export const loadGuest = guest => dispatch => fetch(`${Config.api_url}messages/${guest}`, {
+export const loadGuest = (host,guest ) => dispatch => fetch(`${Config.api_url}messages/${guest}`, {
       method: "GET",
       mode: "cors",
       credentials: "include",
@@ -95,7 +95,7 @@ export const loadGuest = guest => dispatch => fetch(`${Config.api_url}messages/$
       })
       .then((json) => {
             json.forEach(element => {
-                  dispatch({ type: 'ARRANGE', user: element.sender });
+                  dispatch({ type: 'ARRANGE', user: host.role==="GUIDER"?element.traveler:element.guider });
             });
       }).catch(err => {
             dispatch({ type: 'ERROR', err: 'guest websocket error' });

@@ -24,7 +24,7 @@ const socketMiddleware = () => {
             let json = JSON.parse(payload)
             if(JSON.parse(payload).type=="CHAT") {
                   store.dispatch(actions.save(json));
-                  store.dispatch(actions.arrange(user.role==="GUIDER"?json.traveler:json.guider));
+                  store.dispatch(actions.arrange(json.sender));
             } else {
                   store.dispatch(actions.announce(json));
             }

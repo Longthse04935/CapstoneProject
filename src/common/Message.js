@@ -40,8 +40,8 @@ class Message extends React.Component {
                                                       this.props.clients.filter(client => client !== this.props.user.userName).map((value, index) => (
                                                             <li key={index} id="liUserChat">
                                                                   <a onClick={this.load} style={{ color: '#385898', cursor: 'pointer', width: '100%', paddingLeft: '8px', paddingRight: '8px', borderRadius: "8px" }}>
-                                                                        <div className="detail" id={value}>
-                                                                              <p  style={
+                                                                        <div className="detail" >
+                                                                              <p id={value} style={
                                                                                     {color:'rgb(80, 80, 80)',fontSize:'25px',marginBottom: '0'}}>
                                                                                     {value}
                                                                               </p>

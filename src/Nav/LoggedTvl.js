@@ -213,7 +213,9 @@ class LoggedTvl extends Component {
   }
 }
 function mapStateToProps(state) {
+
   const user = state.user;
-  return { user };
+  const noti = state.notifications;
+  return { user,noti };
 }
 export default connect(mapStateToProps)(LoggedTvl);

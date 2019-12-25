@@ -32,7 +32,7 @@ class Chart extends Component {
 		from:fromMonth+'/'+fromDate+'/'+fromYear,
 		to:toMonth+'/'+toDate+'/'+toYear,
 	}
-	let response = await fetch(Config.api_url + "statistic/totalRevenue",
+	let response = await fetch(Config.api_url + "statistic/GuiderRevenue",
 				{
 					method: "POST",
 					mode: "cors",

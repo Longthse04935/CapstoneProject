@@ -27,6 +27,7 @@ class Message extends React.Component {
       render() {
             //let messages = this.props.getState().messages;
             //console.log(this.props);
+            let countUser = this.props.clients;
             return (
                   <div className="messageRoom">
                         <div className="chat_window">
@@ -37,19 +38,28 @@ class Message extends React.Component {
                                           <ul style={{ listStyleType: 'none', }}>
                                                 {
                                                       this.props.clients.filter(client => client !== this.props.user.userName).map((value, index) => (
-                                                            <li key={index} style={{ height: '64px', position: 'relative', display: 'flex' }}>
+                                                            <li key={index} id="liUserChat">
                                                                   <a onClick={this.load} style={{ color: '#385898', cursor: 'pointer', width: '100%', paddingLeft: '8px', paddingRight: '8px', borderRadius: "8px" }}>
                                                                         <div className="detail" id={value}>
-                                                                              {value}
-                                                                        </div></a>
+                                                                              <p  style={
+                                                                                    {color:'rgb(80, 80, 80)',fontSize:'25px',marginBottom: '0'}}>
+                                                                                    {value.toUpperCase()}
+                                                                              </p>
+                                                                              <p style={{color:'rgb(196, 192, 192)'}}>Click to read full messages ...</p>
+                                                                        </div>
+                                                                       
+                                                                  </a>
                                                             </li>
                                                       ))
                                                 }
                                           </ul>
                                     </div>
-                                    <div className={`box_noti`}>
+                                    {
+                                          countUser.length < 10 ? '' :
+                                          <div className={`box_noti`} id="showMoreChat">
                                           <a className="showMore" onClick={() => { this.props.dispatch(loadGuest(`${this.props.user.userName}/${this.props.clients.length}/${this.props.clients.length + 5}`)) }} >Show more</a>
                                     </div>
+                                    }
                               </div>
                               <ChatList name={this.props.user.userName} receiver={this.state.client}
                                     messages={this.props.messages

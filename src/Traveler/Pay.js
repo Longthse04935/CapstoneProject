@@ -14,7 +14,9 @@ class Pay extends Component {
     this.state = {
       tourDetail: {},
       country: [],
-      postInfo: [],
+      postInfo: {
+        picture_link:['']
+      },
       isDisabledPay: true,
       isDisabledCheckBox: true,
       link_youtube: '',
@@ -351,7 +353,7 @@ class Pay extends Component {
           {/* infoTourBook */}
           <div className="infoTourBook">
             <div className="intro_tour">
-              <img className="payImg" alt="natural" src={`${postInfo.picture_link}`} />
+              <img className="payImg" alt="natural" src={`${postInfo.picture_link[0]}`} />
               <h2 className="titleTourPay">{postInfo.title}</h2>
               <div className="tool-tipPost">
                 {/* Post */}

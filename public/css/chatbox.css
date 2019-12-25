@@ -19,8 +19,6 @@ body {
   border: 1px solid #ccc;
   border-radius: 4px;
   box-shadow: 0 3px 7px -1px;
-  margin-bottom: 3%;
-  margin-top:3%;
 }
 
 .top_menu {
@@ -417,7 +415,7 @@ body {
 
 .selectTime .timeEnd{
   position: absolute;
-  right: 0;
+  right: 80px;
 }
 
 
@@ -495,4 +493,20 @@ body {
 
 .messageRoom .chat_window .ChatRoom{
   width: calc(100% - 450px);
+}
+
+#showMoreChat{
+  font-size: 25px;
+  text-align: center;
+  border-style: solid;
+  border-width: 1px 0 1px 0;
+  border-color: #eaeaea;
+  background: #F4F4F4;
+  cursor: pointer;
+}
+
+#liUserChat{
+  border-bottom: 1px solid #eaeaea;
+  padding-top: 5px;
+  height: 100px;
 }

@@ -122,7 +122,7 @@ class ManagePost extends Component {
 
                               <div className="wrap-table100-nextcols js-pscroll ps ps--active-x">
                                     <div className="table100-nextcols">
-                                          <table>
+                                          <table style={{margin: '0 auto', width: '100%'}}>
                                                 <thead>
                                                       <tr className="row100 head">
 

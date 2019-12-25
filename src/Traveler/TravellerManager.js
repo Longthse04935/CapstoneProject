@@ -56,7 +56,7 @@ class TravellerManager extends Component {
 				cors);
 
 			const respone = await fetch(
-				Config.api_url + "Order/GetOrderByStatus?role=" + "TRAVELER" + "&id=" + user.id + "&status=WAITING",
+				Config.api_url + "Order/GetOrderByStatusPageCount?role=" + "TRAVELER" + "&id=" + user.id + "&status=WAITING",
 				cors);
 
 			const order = await orderResponse.json();

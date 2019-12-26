@@ -420,10 +420,10 @@ class GuiderContract extends Component {
                 <h2 style={{marginTop:"20px"}}>Guider Aggument</h2>
                   <p className="guider_aggument">
 
-This Agreement sets forth the terms and conditions between TravelWLocal and users who set up a tour guide profile and create tours and travel services offered for sale on the TravelWLocal website. This Agreement explains the relationship between You and TravelWLocal, how You set up your profile, create tours and travel services for sale and receive the money owed to You by TravelWLocal. This agreement specifically limits our liability.
+This Agreement sets forth the terms and conditions between TravelWLocal and users who set up a tour guide profile and create tours and travel services offered for sale on the TravelWLocal website. This Agreement explains the relationship between You and TravelWLocal, how You set up your profile, create tours and travel services for sale and receive the money owed to You by TravelWLocal. This agreement specifically limits our liability.<br/>
 
-You must read this Agreement before using the Site, creating a profile and setting up tours and travel services for sale on TravelWLocal. Use of the Site constitutes an agreement to all terms and conditions in this Agreement and You warrant that You understand, agree to and accept all terms and conditions contained here.
-1.	General
+You must read this Agreement before using the Site, creating a profile and setting up tours and travel services for sale on TravelWLocal. Use of the Site constitutes an agreement to all terms and conditions in this Agreement and You warrant that You understand, agree to and accept all terms and conditions contained here.<br/>
+1.	General<br/>
 TravelWLocal connects You with travelers who are seeking to obtain tours and travel related services. We do this through our website, TravelWLocal.com, which is a communications and payment processing system for enabling this connection. As well as maintaining the website, TravelWLocal handles customer service through telephone and email, markets the website through various means including search engine optimization, pay per click programs, public relations and advertising. Depending upon the transaction processing model You select, we may collect money on your behalf and remit it to You in a timely fashion.
 
 You agree that the travelers who we connect with You are the customers of TravelWLocal and You will use your best efforts to ensure that any sales resulting from such customers are processed through the TravelWLocal website, or such other means as we mutually agree.
@@ -434,93 +434,93 @@ You represent and warrant to TravelWLocal that You are aware of and are in compl
 
 You further acknowledge and agree that You shall be solely responsible for the supply of any equipment required for a particular tour or travel services provided by You pursuant to the terms of this Agreement, and that You shall ensure, prior to the commencement of any such tour or travel services, that such equipment is in good working order and complies with all applicable safety standards.
 
-This "Tour Guide Agreement" should be read in conjunction with the "Tour Guide Business Principles" and the "Customer Terms and Conditions", which applies to registered TravelWLocal customers.
-2.	Acceptance as a Tour Guide
+This "Tour Guide Agreement" should be read in conjunction with the "Tour Guide Business Principles" and the "Customer Terms and Conditions", which applies to registered TravelWLocal customers.<br/>
+2.	Acceptance as a Tour Guide<br/>
 Any individual or company who is able to enter into a legally binding and enforceable contract may apply to become a TravelWLocal Tour Guide. Upon application through the Site, TravelWLocal will begin the acceptance process. Details of this process may include telephone interviews, submission of documents, checking of references and completion of training and examination.
 
 TravelWLocal may make use of a third-party verification service in order to perform background checks. These services may verify information such as name, address, social security number, and criminal background.
 
 The success of the TravelWLocal concept is based on the quality of the experience that You as a Tour Guide deliver. Therefore we are highly selective in the people we choose to work with.
 
-We are committed to the success of our Tour Guides. Acceptance as a Tour Guide is at the sole discretion of TravelWLocal and we reserve the right to refuse anyone for any reason.
+We are committed to the success of our Tour Guides. Acceptance as a Tour Guide is at the sole discretion of TravelWLocal and we reserve the right to refuse anyone for any reason.<br/>
 
-3.	Acceptance of "Tour Guide Business Principles"
-You agree to abide by the TravelWLocal "Tour Guide Business Principles".
+3.	Acceptance of "Tour Guide Business Principles"<br/>
+You agree to abide by the TravelWLocal "Tour Guide Business Principles".<br/>
 
-4.	Acceptance of "Customer Terms and Conditions"
-You have read the TravelWLocal "Customer Terms and Conditions" and understand that these terms and conditions govern your relationship with our customers.
+4.	Acceptance of "Customer Terms and Conditions"<br/>
+You have read the TravelWLocal "Customer Terms and Conditions" and understand that these terms and conditions govern your relationship with our customers.<br/>
 
-5.	Use of Site and Services
+5.	Use of Site and Services<br/>
 TravelWLocal connects You with travelers who are seeking tours and travel related services. We do this through our website, which is a communications and payment processing system for enabling this connection.
 
 Upon our acceptance of You as a Tour Guide, You may use the Site to create a profile of yourself, set up web pages that describe the tours You provide and utilize the calendar to indicate your availability.
 
-Once these are complete, TravelWLocal will publish them on the TravelWLocal website. We will then begin collecting bookings and appropriate payments on your behalf.
+Once these are complete, TravelWLocal will publish them on the TravelWLocal website. We will then begin collecting bookings and appropriate payments on your behalf.<br/>
 
-6.	Information Provided by You
+6.	Information Provided by You<br/>
 
 You are responsible for providing accurate, timely and complete information to us in connection with your use of the Site. TravelWLocal is not responsible for any claims relating to any inaccurate, untimely or incomplete information provided to us by You. TravelWLocal will only use your information in accordance with our Privacy Policy.
 
-TravelWLocal will use its best efforts to ensure the privacy of all other personal information, however we expressly disclaim any liability for any damage that may result should any information be released to any third parties. You hereby agree to hold TravelWLocal harmless for any damages that may result.
+TravelWLocal will use its best efforts to ensure the privacy of all other personal information, however we expressly disclaim any liability for any damage that may result should any information be released to any third parties. You hereby agree to hold TravelWLocal harmless for any damages that may result.<br/>
 
-7.	Grant of Limited License
-By posting content to the TravelWLocal Site, You:
+7.	Grant of Limited License<br/>
+By posting content to the TravelWLocal Site, You:<br/>
 
-a) grant TravelWLocal and its affiliates and licensees the right to use, reproduce, display, perform, adapt, modify, distribute, have distributed, and promote the content in any form, anywhere and for the purpose of selling and marketing TravelWLocal or your tour offerings; and
+a) grant TravelWLocal and its affiliates and licensees the right to use, reproduce, display, perform, adapt, modify, distribute, have distributed, and promote the content in any form, anywhere and for the purpose of selling and marketing TravelWLocal or your tour offerings; and<br/>
 
-b) warrant and represent that You own or otherwise control all of the rights to the content and that use of your content by TravelWLocal does not violate the rights of any third party.
+b) warrant and represent that You own or otherwise control all of the rights to the content and that use of your content by TravelWLocal does not violate the rights of any third party.<br/>
 
-c) in the event that content you upload to your TravelWLocal website violates the rights of a third party, you agree to indemnify us against any losses and liabilities that may result from the action of such third party against TravelWLocal.
+c) in the event that content you upload to your TravelWLocal website violates the rights of a third party, you agree to indemnify us against any losses and liabilities that may result from the action of such third party against TravelWLocal.<br/>
 
-8.	Transactions
+8.	Transactions<br/>
 Travelers seek the services of Tour Guides through the use of the Site. Tour Guides may opt to have TravelWLocal collect the entire fee due for the services of the Tour Guide through our payments system.
 
 Alternately, only in cases where it is impractical to remit money to You, Tour Guides may opt to have TravelWLocal collect only a booking fee. In this case, the traveler will make payment for the Tour Guide services purchased at the time the tour is taken, in the amount and currency specified at the time of booking. Whether You can use this alternative is at the sole discretion of TravelWLocal.
 
-TravelWLocal will process refunds or credits for our errors or other extenuating circumstance.
+TravelWLocal will process refunds or credits for our errors or other extenuating circumstance.<br/>
 
-9.	Booking Fee
-In order to compensate TravelWLocal for its services, TravelWLocal charges a percentage of the cost of the tour. This percentage is set when your application is accepted. TravelWLocal may reduce this fee at any time, either permanently or for a limited period. It may be increased only upon 60 days notice to You.
+9.	Booking Fee<br/>
+In order to compensate TravelWLocal for its services, TravelWLocal charges a percentage of the cost of the tour. This percentage is set when your application is accepted. TravelWLocal may reduce this fee at any time, either permanently or for a limited period. It may be increased only upon 60 days notice to You.<br/>
 
-10.	Refunds
-Travelers may request a refund of the amount paid for a tour or tour service as set out in the " TravelWLocal Customer Terms and Conditions". In the event that a refund is made, only the amount actually received by TravelWLocal (if any), less our booking fee will be paid.
+10.	Refunds<br/>
+Travelers may request a refund of the amount paid for a tour or tour service as set out in the " TravelWLocal Customer Terms and Conditions". In the event that a refund is made, only the amount actually received by TravelWLocal (if any), less our booking fee will be paid.<br/>
 
-11.	Payments to You
+11.	Payments to You<br/>
 If TravelWLocal collects the entire amount paid for the services You provide, we will pay You, for all funds actually received by us, less our booking fee, subject to any deductions for amounts withheld pursuant to section 10 above.
 
 Any upfront costs specified by You on your tour description page will be paid on a weekly basis. The amount collected for your services, less our booking fee will be paid once the tour has been delivered, on a weekly basis.
 
 In the rare case where TravelWLocal collects only the booking fee, then no further payment is due to You.
 
-Payments are made according to a variety of methods, determined when your account is approved. At any time, You may request a change in payment method, from those currently available.
+Payments are made according to a variety of methods, determined when your account is approved. At any time, You may request a change in payment method, from those currently available.<br/>
 
-12.	Privacy
-TravelWLocal is committed to ensuring the privacy of the information You give us.
+12.	Privacy<br/>
+TravelWLocal is committed to ensuring the privacy of the information You give us.<br/>
 
-13.	Limitation of Liability and Remedies
+13.	Limitation of Liability and Remedies<br/>
 
 Under no circumstances will TravelWLocal be liable to You for any indirect, incidental, consequential, special or exemplary damages arising from any provision of this Agreement. Furthermore, the TOTAL liability of TravelWLocal arising with respect to this Agreement and the Site will not exceed the total amounts collected by us and not yet paid to You under this Agreement. Any notice or other communication to be given hereunder will be in writing and given by facsimile, postpaid registered or certified mail return receipt requested, or electronic mail.
 
-Some jurisdictions do not allow the disclaimer of implied warranties. In such jurisdictions, the foregoing disclaimers may not apply to You insofar as they relate to implied warranties.
+Some jurisdictions do not allow the disclaimer of implied warranties. In such jurisdictions, the foregoing disclaimers may not apply to You insofar as they relate to implied warranties.<br/>
 
-14.	Indemnification
-Upon a request by TravelWLocal, You agree to defend, indemnify, and hold harmless TravelWLocal and other affiliated companies, and their employees, contractors, officers, and directors from all liabilities, claims, and expenses, including attorney's fees, that arise from your use or misuse of this Site. TravelWLocal reserves the right, at its own expense, to assume the exclusive defense and control of any matter otherwise subject to indemnification by You, in which event You will cooperate with TravelWLocal asserting any available defenses.
+14.	Indemnification<br/>
+Upon a request by TravelWLocal, You agree to defend, indemnify, and hold harmless TravelWLocal and other affiliated companies, and their employees, contractors, officers, and directors from all liabilities, claims, and expenses, including attorney's fees, that arise from your use or misuse of this Site. TravelWLocal reserves the right, at its own expense, to assume the exclusive defense and control of any matter otherwise subject to indemnification by You, in which event You will cooperate with TravelWLocal asserting any available defenses.<br/>
 
-15.	Modification of the Terms of this Agreement
+15.	Modification of the Terms of this Agreement<br/>
 
-TravelWLocal reserves the right to make changes to this Agreement from time to time. TravelWLocal shall provide notice to You of any substantive and/or material changes to this Agreement or any policies posted on the Site. Such notice shall be by email and posting on the Site.
+TravelWLocal reserves the right to make changes to this Agreement from time to time. TravelWLocal shall provide notice to You of any substantive and/or material changes to this Agreement or any policies posted on the Site. Such notice shall be by email and posting on the Site.<br/>
 
-16.	Term of Agreement
+16.	Term of Agreement<br/>
 
 This Agreement will become effective immediately your use of the Site and shall remain effective unless terminated by either party as provided hereunder. Either party may terminate this Agreement by providing the other with written or email notice of such termination which shall be effective immediately upon delivery of such notice to the other party. Furthermore, TravelWLocal may terminate this Agreement immediately for any breach of this Agreement, the "Tour Guides Rules of Conduct" or any applicable policy of TravelWLocal as posted on the Site from time to time. In the event of termination or expiration, the following sections shall survive: Term of Agreement; Ownership; Disclaimer; Limitation of Liability; Notice; and General Provisions.
 
-Should You violate the terms of this Agreement, TravelWLocal reserves the right to terminate your use of this Site immediately at its sole discretion.
+Should You violate the terms of this Agreement, TravelWLocal reserves the right to terminate your use of this Site immediately at its sole discretion.<br/>
 
-17.	Legal Claims
+17.	Legal Claims<br/>
 
-For all disputes between TravelWLocal and You relating to the Site, this Agreement, transactions facilitated or conducted through the Site, tours and travel services ordered or purchased through the Site, dealings between You and TravelWLocal, or any related matters, the parties will attempt to find the least onerous solution to the Dispute. If a Dispute cannot be resolved by the parties, then the Dispute must be resolved before a court of competent jurisdiction.
+For all disputes between TravelWLocal and You relating to the Site, this Agreement, transactions facilitated or conducted through the Site, tours and travel services ordered or purchased through the Site, dealings between You and TravelWLocal, or any related matters, the parties will attempt to find the least onerous solution to the Dispute. If a Dispute cannot be resolved by the parties, then the Dispute must be resolved before a court of competent jurisdiction.<br/>
 
-18.	General Provisions
+18.	General Provisions<br/>
 
 Failure by TravelWLocal to enforce any provision(s) of this Agreement shall not be construed as a waiver of any provision or right. These Terms of Use, and all other aspects of use of the Site
 

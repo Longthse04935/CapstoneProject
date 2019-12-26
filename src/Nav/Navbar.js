@@ -54,7 +54,7 @@ class Navbar extends Component {
     }
 
     validateUser(user){
-        const pattern = /[a-zA-Z0-9]/g;
+        const pattern = /^[0-9a-zA-Z]+$/;
         const result = pattern.test(user);
         return result;
     }

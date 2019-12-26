@@ -113,7 +113,7 @@ class TopGuider extends Component {
                               <div className="content-left">{guiderByRate}</div>
                         </div>
                         <div className="topGuiderByRate">
-                              <h1>Top guider by Contribute</h1>
+                              <h1>Top guider by Booking</h1>
                               <div className="content-left">{guiderByContribute}</div>
                         </div>
                   </div>

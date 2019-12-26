@@ -281,7 +281,8 @@ class PostDetail extends React.Component {
 
 	alertAccount() {
 		const getAlert = () => (
-			<SweetAlert
+			<div className="alertLogin">
+				<SweetAlert
 				warning
 				showCancel
 				confirmBtnText="Go to login"
@@ -292,7 +293,8 @@ class PostDetail extends React.Component {
 				focusCancelBtn
 			>
 				You are not traveler. Please login as traveler to save this tour!!
-  </SweetAlert>
+  			</SweetAlert>
+			</div>
 		);
 		this.setState({
 			alert: getAlert()
@@ -333,7 +335,7 @@ class PostDetail extends React.Component {
 						<img src={post.picture_link[0]} alt="logo" />
 					</div>
 					<div className="experienceCard-details">
-						<h3 classname="postTitle" style={{color:'black',textDecoration:'none'}}>
+						<h3 className="postTitle" style={{color:'black',textDecoration:'none'}}>
 							<span>
 								{post.title}
 							</span>

@@ -164,7 +164,7 @@ class GuiderProfile extends Component {
             const getAlert = () => (
                   <SweetAlert
                         success
-                        title="Woot!"
+                        title="Thank you!"
                         onConfirm={() => this.hideAlert()}
                   >
                         {message}

@@ -1,7 +1,8 @@
-
+import { connect } from "react-redux";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Config from '../Config'
-import { loadGuest } from '../redux/webSocket'
+import React, { Component } from "react";
+import Rated from '../Guider/Rated'
 class Favorite extends React.Component {
       constructor(props) {
             super(props);
@@ -24,7 +25,7 @@ class Favorite extends React.Component {
             try {
                   //let guider_id = this.props.id;
                   const responsePosts = await fetch(
-                        Config.api_url + "Traveler/getFavList?traveler_id=" + this.props.user.id + "&page=" + page,
+                        Config.api_url + "Traveler/getFavList?traveler_id=" + this.props.user.id + "&page=" + 0,
                         this.state.authenticate
                   );
                   const pageCount = await fetch(
@@ -52,7 +53,7 @@ class Favorite extends React.Component {
             try {
                   //let guider_id = this.props.id;
                   const responsePosts = await fetch(
-                        Config.api_url + "Traveler/getFavList?traveler_id=" + this.props.user.id + "&page=" + page,
+                        Config.api_url + "Traveler/getFavList?traveler_id=" + this.props.user.id + "&page=" + (+currentPage+1),
                         this.state.authenticate
                   );
                   const pageCount = await fetch(

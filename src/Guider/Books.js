@@ -3,10 +3,12 @@ import { Link } from "react-router-dom";
 import $ from "jquery";
 import Config from "../Config";
 import { connect } from "react-redux";
+import SweetAlert from 'react-bootstrap-sweetalert';
 class GuiderBooks extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			alert: null,
 			orders: [],
 			status: "WAITING",
 			page: 0,
@@ -23,12 +25,13 @@ class GuiderBooks extends Component {
 		this.accept = this.accept.bind(this);
 		this.deny = this.deny.bind(this);
 		this.cancel = this.cancel.bind(this);
+		//this.notification = this.notification.bind(this);
 	}
 	async accept(eve) {
 		try {
 			$(".coverLoader").css("height", "1800px");
 			$('.coverLoader').show();
-			const remain = this.state.orders;
+			const remain = Object.assign([],this.state.orders);
 			remain.splice(eve.target.id, 1);
 			let { cors } = this.state;
 			const orderResponse = await fetch(
@@ -38,12 +41,16 @@ class GuiderBooks extends Component {
 
 			if (!orderResponse.ok) {
 				throw Error(orderResponse.status + ": " + orderResponse.statusText);
-			}
+			} 
+				$('.coverLoader').hide();
+				this.setState({ orders: remain });
+			
 
-			const status = await orderResponse.text();
-			$('.coverLoader').hide();
-			this.setState({ orders: remain });
+
 		} catch (err) {
+			
+			$('.coverLoader').hide();
+			this.notification("Sorry, Your time on this trip have already occupied, please check you schedule");
 			console.log(err);
 		}
 	}
@@ -54,7 +61,7 @@ class GuiderBooks extends Component {
 		$('.coverLoader').show();
 		try {
 			const denied = this.state.orders[eve.target.id];
-			const remain = this.state.orders;
+			const remain = Object.assign([],this.state.orders);
 			remain.splice(eve.target.id, 1);
 			const orderResponse = await fetch(
 				Config.api_url + "Order/refuseTrip/" + eve.target.value,
@@ -75,6 +82,8 @@ class GuiderBooks extends Component {
 			$('.coverLoader').hide();
 			this.setState({ orders: remain });
 		} catch (err) {
+			$('.coverLoader').hide();
+			this.notification("Sorry, Can not refund your client right now. Please try another time");
 			console.log(err);
 		}
 	}
@@ -86,7 +95,7 @@ class GuiderBooks extends Component {
 		try {
 			//console.log(this.state.orders);
 			const denied = this.state.orders[eve.target.id];
-			const remain = this.state.orders;
+			const remain = Object.assign([],this.state.orders);
 			remain.splice(eve.target.id, 1);
 			const orderResponse = await fetch(
 				Config.api_url +
@@ -109,8 +118,31 @@ class GuiderBooks extends Component {
 			$('.coverLoader').hide();
 			this.setState({ orders: remain });
 		} catch (err) {
+			$('.coverLoader').hide();
+			this.notification("Sorry, Can not refund your client right now. Please try another time");
 			console.log(err);
 		}
+	}
+
+	onNotification() {
+		this.setState({ alert: null });
+	}
+
+	notification(notification) {
+		const getAlert = () => (
+			<SweetAlert
+				warning
+				confirmBtnText="Close"
+				confirmBtnBsStyle="danger"
+				title="Notification"
+				onConfirm={() => this.onNotification()}
+			>
+				{notification}
+			</SweetAlert>
+		);
+		this.setState({
+			alert: getAlert()
+		});
 	}
 
 	async componentDidMount() {
@@ -192,6 +224,7 @@ class GuiderBooks extends Component {
 			console.log(err);
 		}
 	}
+
 
 	range = (start, end) => {
 		var ans = [];
@@ -293,6 +326,7 @@ class GuiderBooks extends Component {
 
 		return (
 			<div className="tvlManager_Container">
+				{this.state.alert}
 				<div className="coverLoader">
 					<div className="loader"></div>
 				</div>

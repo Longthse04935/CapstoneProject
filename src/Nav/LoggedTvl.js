@@ -176,6 +176,13 @@ class LoggedTvl extends Component {
                             ></i>
                           </li>
                           <li className="userChoice">
+                            <Link to="/favorite">Your favorite</Link>
+                            <i
+                              className="fa fa-suitcase"
+                              aria-hidden="true"
+                            ></i>
+                          </li>
+                          <li className="userChoice">
                             <Link to="/changepassword">Change password</Link>
                             <i className="fa fa-key" aria-hidden="true"></i>
                           </li>

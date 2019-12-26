@@ -20,7 +20,7 @@ const socketMiddleware = () => {
             // console.log(msg.body);
             let user = store.getState().user;
             let payload = msg.body;
-            //console.log(payload);
+            console.log(payload);
             let json = JSON.parse(payload)
             if(JSON.parse(payload).type=="CHAT") {
                   store.dispatch(actions.save(json));

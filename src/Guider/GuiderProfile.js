@@ -33,9 +33,9 @@ class GuiderProfile extends Component {
                         country: 'Vietnam',
                         city: '',
                         avatar: '',
-                        // day: '01',
-                        // month: '01',
-                        // year: '1970',
+                        day: '01',
+                        month: '01',
+                        year: '1970',
 
                   }
             }
@@ -63,12 +63,19 @@ class GuiderProfile extends Component {
             const dataTraveller = await responseTraveller.json();
             var str = dataTraveller.date_of_birth;
             var res = str.split("/");
-            dataTraveller.year = res[0];
-            dataTraveller.month = res[1];
-            dataTraveller.day = res[2].split(" ")[0];
+            dataTraveller.month = res[0];
+            dataTraveller.day = res[1];
+            dataTraveller.year = res[2].split(" ")[0];
             let link = dataTraveller.avatar;
-            dataTraveller.avatar = this.fromDataURL(dataTraveller.avatar);
-            // console.log(dataTraveller);
+            dataTraveller.avatar = await fetch(dataTraveller.avatar)
+                  .then(response => response.blob())
+                  .then(blob => new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.readAsDataURL(blob);
+                        reader.onload = () => resolve(reader.result);
+                        reader.onerror = error => reject(error);
+                  }));
+            console.log(dataTraveller);
             this.setState({ data: dataTraveller, avatar_link: link });
 
 
@@ -190,9 +197,9 @@ class GuiderProfile extends Component {
                   country: 'Vietnam',
                   city: '',
                   avatar: '',
-                  // day: '01',
-                  // month: '01',
-                  // year: '1970',
+                  day: '01',
+                  month: '01',
+                  year: '1970',
             }
             this.setState({ data });
             this.statusProfile();
@@ -214,6 +221,7 @@ class GuiderProfile extends Component {
             try {
                   // var user = JSON.parse(sessionStorage.getItem('user'));
                   if (this.isValidate()) {
+                        $('.coverLoader').hide();
                         return false;
                   }
                   var { data, avtImage } = this.state;
@@ -236,11 +244,33 @@ class GuiderProfile extends Component {
                   };
                   let response = await fetch(Config.api_url + 'Guider/Edit', options);
                   response = await response.text();
-                  $('.coverLoader').show();
+                  $('.coverLoader').hide();
                   this.statusProfile('Update success!!');
             } catch (err) {
-
+                  $('.coverLoader').hide();
+                  this.notification("Sorry system is busy right now. Please try another time");
             }
+      }
+      onNotification() {
+            this.setState({ alert: null });
+      }
+
+      notification(notification) {
+            const getAlert = () => (
+                  <SweetAlert
+                        warning
+                        confirmBtnText="Close"
+                        confirmBtnBsStyle="danger"
+                        title="Notification"
+                        onConfirm={() => this.onNotification()}
+                  >
+                        {notification}
+                  </SweetAlert>
+            );
+
+            this.setState({
+                  alert: getAlert()
+            });
       }
 
       render() {
@@ -400,7 +430,7 @@ class GuiderProfile extends Component {
                                                             className="input-something"
                                                             name="passion"
                                                             onChange={(e) => { this.handleChange(e) }}
-                                                            defaultValue={data.slogan}
+                                                            defaultValue={data.passion}
                                                       />
                                                       {errors['slogan'] ? <p style={{ color: "red" }} className="errorInput">{errors['slogan']}</p> : ''}
                                                 </div>

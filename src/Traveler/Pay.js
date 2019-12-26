@@ -269,8 +269,8 @@ class Pay extends Component {
                 2.  Fee for a child equals 50% fee of one adult.<br/>
                 3.  You can review Guider after finish their trips.<br/>
                 4.  If Your Guider accept then cancel your trip, TWL system will refund 100% fee to you.<br/>
-                5.  You will not be refunded If you cancel a trip after 24 hours before  beginning time of that trip.<br/>
-                6.  You will be refunded 100% fee If you cancel a trip 24 hours before begin time of that trip.<br/>
+                5.  You will not be refunded If you cancel a trip after 24 hours before begin time of that trip.<br/>
+                6.  You will be refunded 100% fee If you cancel a trip before 24 hours before begin time of that trip.<br/>
             </p>
 
               <input type="checkbox" onClick={this.handleCheckBox} /> <span className="policy" >I agree with agguments</span>

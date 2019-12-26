@@ -14,7 +14,7 @@ class Message extends React.Component {
       }
 
       async componentDidMount() {
-            this.props.dispatch(wsConnect(Config.api_url + "ws"));
+            //this.props.dispatch(wsConnect(Config.api_url + "ws"));
             this.props.dispatch(loadGuest(this.props.user ,`${this.props.user.userName}/${this.state.page}/${this.state.page + 5}`));
             this.setState({ page: this.state.page + 5 });
       }

@@ -51,10 +51,10 @@ class AddPost extends Component {
         this.inputOnChange = this.inputOnChange.bind(this);
         this.addReason = this.addReason.bind(this);
         this.removeReason = this.removeReason.bind(this);
-        this.onCancel = this.onCancel.bind(this);
-        this.notification = this.notification.bind(this);
-        this.onNotification = this.onNotification.bind(this);
-        this.statusProfile = this.statusProfile.bind(this);
+        // this.onCancel = this.onCancel.bind(this);
+        // this.notification = this.notification.bind(this);
+        // this.onNotification = this.onNotification.bind(this);
+        // this.statusProfile = this.statusProfile.bind(this);
     }
 
     removeReason(eve) {
@@ -266,6 +266,7 @@ class AddPost extends Component {
 
     resetForm = (eve) => {
         eve.preventDefault();
+        console.log("refresh");
         this.setState({
             activities: [{
                 brief: "",
@@ -530,7 +531,7 @@ class AddPost extends Component {
 
                                     <div className="col-lg-8">
                                         <input onChange={this.inputOnChange} className="form-control" type="number" name="price"
-                                            defaultValue={this.state.price} min="5" max="5000" required />
+                                            value={this.state.price} min="5" max="5000" required />
                                     </div>
                                 </div>
                                 <div className="form-group row">
@@ -538,7 +539,7 @@ class AddPost extends Component {
 
                                     <div className="col-lg-8">
                                         <input onChange={this.inputOnChange} className="form-control" type="text" name="title"
-                                            required defaultValue={this.state.title} />
+                                            required value={this.state.title} />
                                     </div>
                                 </div>
                                 <div className="form-group row">
@@ -547,7 +548,7 @@ class AddPost extends Component {
 
                                     <div className="col-lg-8">
                                         <input onChange={this.inputOnChange} className="form-control" type="url" name="video_link"
-                                            required defaultValue={this.state.video_link} />
+                                            required value={this.state.video_link} />
                                     </div>
                                 </div>
                                 <div className="form-group row pictures">
@@ -580,7 +581,7 @@ class AddPost extends Component {
                                     <label className="col-lg-4 col-form-label form-control-label">Description your trip:</label>
 
                                     <div className="col-lg-8">
-                                        <textarea onChange={this.inputOnChange} name="description" className="form-control" required defaultValue={this.state.description} />
+                                        <textarea onChange={this.inputOnChange} name="description" className="form-control" required value={this.state.description} />
                                     </div>
                                 </div>
                                 <div className="form-group row">

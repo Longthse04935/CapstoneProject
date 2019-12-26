@@ -150,7 +150,7 @@ class Chatbox extends Component {
 			}, function () {
 				$('.tool-tip').hide();
 			});
-			this.props.dispatch(wsConnect(Config.api_url + "ws"));
+			//this.props.dispatch(wsConnect(Config.api_url + "ws"));
 
 		} catch (err) {
 			console.log(err);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { loadMsg, send } from '../redux/webSocket';
-
+import $ from 'jquery';
 import Config from '../Config';
 
 class ChatList extends React.Component {
@@ -9,10 +9,9 @@ class ChatList extends React.Component {
             super(props);
       }
 
-      async componentDidMount() {
-            
-            //this.props.dispatch(loadMsg(`${this.props.user.userName}/${this.props.receiver}/${this.props.messages.length}/${this.props.messages.length+10}`));
 
+      componentDidMount() {
+            $('.messages').scrollTop($('.messages')[0].scrollHeight);
       }
 
 
@@ -26,8 +25,8 @@ class ChatList extends React.Component {
                   <div className="top_menu" >
                         <div className="title" style={{ color: 'Black' }}>{receiver}</div>
                   </div>
-                  <div className={`box_noti`} style={{textAlign:'center',cursor:'pointer'}}>
-                        <a className="showMore" onClick={() => { this.props.dispatch(loadMsg(`${this.props.user.userName}/${this.props.receiver}/${this.props.messages.length}/${this.props.messages.length+10}`)); }} >Show more</a>
+                  <div className={`box_noti`} style={{ textAlign: 'center', cursor: 'pointer' }}>
+                        <a className="showMore" onClick={() => { this.props.dispatch(loadMsg(`${this.props.user.userName}/${this.props.receiver}/${this.props.messages.length}/${this.props.messages.length + 10}`)); }} >Show more</a>
                   </div>
                   <ul className="messages" >
                         {this.props.messages.map((msg, index) => (
@@ -47,6 +46,9 @@ class ChatList extends React.Component {
                               </li>
                         ))}
                   </ul>
+                  <div
+                        ref={(el) => { this.messagesEnd = el; }}>
+                  </div>
                   <div className="bottom_wrapper clearfix" >
                         <form onSubmit={e => {
                               e.preventDefault();

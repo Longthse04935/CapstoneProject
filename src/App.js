@@ -56,7 +56,7 @@ class App extends Component {
 		) : (
 				component
 			)
-	)	
+	)
 
 	checkPathWithRoleTraveler = (component) => {
 		let user = this.props.user;
@@ -74,19 +74,31 @@ class App extends Component {
 		if (user.userName === '' || user.role !== 'GUIDER') {
 			return <Redirect to="/" />
 		} else if (user.role === 'GUIDER') {
-			if (user.isContractExist === false || user.isGuiderActive === false) {
-				return <GuiderContract message={'Waiting'} />;
-			} else {
-			  	return component;
-			}
-			
+			// if (user.isContractExist === false || user.isGuiderActive === false) {
+			// 	return <GuiderContract message={'Waiting'} />;
+			// } else {
+			return component;
+			// }
+
 		}
 
 	}
 
+	componentWillMount() {
+		try {
+			let user = this.props.user;
+			if (user.logedIn) {
+				this.props.dispatch(wsConnect(Config.api_url + "ws"));
+			} 
+		} catch (err) {
+
+		}
+	}
+
+
 	componentDidMount() {
 		this.setView13Inch();
-	    this.hideLogo();
+		this.hideLogo();
 		// $(window).resize(function() {
 		// 	if($(window).width() < 1700){
 		// 		console.log($(window).width());
@@ -99,43 +111,38 @@ class App extends Component {
 		// 		$('body').css('-moz-transform','scale(1, 1)'); /* Moz-browsers */
 		// 	}
 		//   });
-		// let user = this.props.user;
-		// if (user.logedIn) {
-		// 	this.props.dispatch(wsConnect(Config.api_url + "ws"));
-		// } else {
 
-		// }
 
 
 	}
 
-	setView13Inch = () =>{
-		$( document ).ready(function() {
-			if($(window).width() < 850){
+	setView13Inch = () => {
+		$(document).ready(function () {
+			if ($(window).width() < 850) {
 				$('.navbar .menubar .navLeft .logoContainer a h3').hide();
-				$('.navbarRightContent .ulRegister .userRegister').css('width','90px');
+				$('.navbarRightContent .ulRegister .userRegister').css('width', '90px');
 			}
-			if($(window).width() < 1700){
-				$('body').css('zoom','75%'); /* Webkit browsers */
-				$('body').css('zoom','0.75'); /* Other non-webkit browsers */
-				$('body').css('-moz-transform','scale(0.75, 0.75)'); /* Moz-browsers */
-			}else{
-				$('body').css('zoom','100%'); /* Webkit browsers */
-				$('body').css('zoom','1'); /* Other non-webkit browsers */
-				$('body').css('-moz-transform','scale(1, 1)'); /* Moz-browsers */
+			if ($(window).width() < 1700) {
+				$('body').css('zoom', '75%'); /* Webkit browsers */
+				$('body').css('zoom', '0.75'); /* Other non-webkit browsers */
+				$('body').css('-moz-transform', 'scale(0.75, 0.75)'); /* Moz-browsers */
+			} else {
+				$('body').css('zoom', '100%'); /* Webkit browsers */
+				$('body').css('zoom', '1'); /* Other non-webkit browsers */
+				$('body').css('-moz-transform', 'scale(1, 1)'); /* Moz-browsers */
 			}
 		});
 	}
-	
+
 	hideLogo = () => {
-		$(window).resize(function() {
-		if($(window).width() < 850){
-			$('.navbar .menubar .navLeft .logoContainer a h3').hide();
-			$('.navbarRightContent .ulRegister .userRegister').css('width','90px');
-		}else{
-			$('.navbar .menubar .navLeft .logoContainer a h3').show();
-			$('.navbarRightContent .ulRegister .userRegister').css('width','120px');
-		}
+		$(window).resize(function () {
+			if ($(window).width() < 850) {
+				$('.navbar .menubar .navLeft .logoContainer a h3').hide();
+				$('.navbarRightContent .ulRegister .userRegister').css('width', '90px');
+			} else {
+				$('.navbar .menubar .navLeft .logoContainer a h3').show();
+				$('.navbarRightContent .ulRegister .userRegister').css('width', '120px');
+			}
 		});
 	}
 

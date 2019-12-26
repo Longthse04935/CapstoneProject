@@ -120,6 +120,7 @@ class AddPost extends Component {
         } catch (err) {
             console.log(err);
         }
+       
     }
 
     onCancel() {
@@ -175,6 +176,7 @@ class AddPost extends Component {
         
         let location = 1;
         let cate = 1;
+        $('.coverLoader').show();
         if (dom instanceof HTMLElement) {
             //query location
             let lo = dom.querySelector("#inputGroupSelect01");
@@ -202,7 +204,6 @@ class AddPost extends Component {
             "reasons": ReactDOMServer.renderToString(this.reasonToHTML(copy.reasons))
         };
         let plan = ReactDOMServer.renderToString(this.planToHTML(copy.activities));
-        console.log(plan);
         try {
             let response = await fetch(Config.api_url+"guiderpost/add/post?guider_id=" + this.props.guiderId,
                 {
@@ -235,6 +236,7 @@ class AddPost extends Component {
                 }
             );
             if (!response.ok) { throw Error(response.status + ": " + response.statusText); }
+            $('.coverLoader').hide();
             this.statusProfile("Thank you, your post has shown up");
             this.setState({
                 activities: [{
@@ -260,6 +262,7 @@ class AddPost extends Component {
            
         } catch (err) {
             console.log(err);
+            $('.coverLoader').hide();
             this.notification("Sorry! Something went wrong, please try again later");
         }
     }
@@ -500,6 +503,9 @@ class AddPost extends Component {
             <div>
                 <div className="container">
                     {this.state.alert}
+                    <div className="coverLoader">
+                        <div className="loader"></div>
+                    </div>
                     <div className="row m-y-2">
                         {/* edit form column */}
                         <div className="col-lg-12 text-lg-center">

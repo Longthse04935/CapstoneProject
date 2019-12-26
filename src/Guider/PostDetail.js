@@ -404,9 +404,12 @@ class PostDetail extends React.Component {
 		const favorite = statusFavorite ? "favorite" : '';
 		return (
 			<div>
-				{this.state.alert}
+				
 				<div>
 					<div id="reactContainer">
+					<div className="alertLogin">
+						{this.state.alert}
+					</div>
 						{/*  Content  */}
 						<div className="content">
 							<div className="content-left">

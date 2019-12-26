@@ -143,7 +143,6 @@ class ReviewTraveler extends Component {
     }
   render() {
     let {tvl,reviews,data} = this.state;
-    let languages = "";
     const gender = this.gender(tvl.gender);
     let showReview = reviews.map((value,index) => (
         <li key={index}>
@@ -192,13 +191,6 @@ class ReviewTraveler extends Component {
                     <i className="fa fa-venus" aria-hidden="true"></i>
                     </span>
                     <span className="ListItemText">Gender {gender}</span>
-                  </p>
-                  <p className="ListItem">
-                    <span className="ListItemIcon">
-                     
-                      <i className="fa fa-language" aria-hidden="true"></i>
-                    </span>
-                    <span className="ListItemText">I speak {languages}</span>
                   </p>
                   <p className="ListItem">
                     <span className="ListItemIcon">

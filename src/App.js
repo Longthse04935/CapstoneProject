@@ -74,11 +74,11 @@ class App extends Component {
 		if (user.userName === '' || user.role !== 'GUIDER') {
 			return <Redirect to="/" />
 		} else if (user.role === 'GUIDER') {
-			// if (user.isContractExist === false || user.isGuiderActive === false) {
-			// 	return <GuiderContract message={'Waiting'} />;
-			// } else {
+			if (user.isContractExist === false || user.isGuiderActive === false) {
+				return <GuiderContract message={'Waiting'} />;
+			} else {
 			  	return component;
-			// }
+			}
 			
 		}
 

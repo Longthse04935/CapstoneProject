@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import ChatList from "./ChatStore";
 import Config from '../Config'
-import { loadGuest } from '../redux/webSocket'
+import { loadGuest, wsConnect } from '../redux/webSocket'
 class Message extends React.Component {
       constructor(props) {
             super(props);
@@ -14,6 +14,7 @@ class Message extends React.Component {
       }
 
       async componentDidMount() {
+            this.props.dispatch(wsConnect(Config.api_url + "ws"));
             this.props.dispatch(loadGuest(this.props.user ,`${this.props.user.userName}/${this.state.page}/${this.state.page + 5}`));
             this.setState({ page: this.state.page + 5 });
       }

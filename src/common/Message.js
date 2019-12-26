@@ -55,9 +55,9 @@ class Message extends React.Component {
                                           </ul>
                                     </div>
                                     {
-                                          countUser.length < 10 ? '' :
+                                          countUser.length < 5 ? '' :
                                           <div className={`box_noti`} id="showMoreChat">
-                                          <a className="showMore" onClick={() => { this.props.dispatch(loadGuest(`${this.props.user.userName}/${this.props.clients.length}/${this.props.clients.length + 5}`)) }} >Show more</a>
+                                          <a className="showMore" onClick={() => { this.props.dispatch(loadGuest(this.props.user,`${this.props.user.userName}/${this.props.clients.length}/${this.props.clients.length + 5}`)) }} >Show more</a>
                                     </div>
                                     }
                               </div>

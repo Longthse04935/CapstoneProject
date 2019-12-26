@@ -84,19 +84,8 @@ class App extends Component {
 	}
 
 	componentDidMount() {
-		$( document ).ready(function() {
-			if($(window).width() < 1700){
-				console.log($(window).width());
-				$('body').css('zoom','75%'); /* Webkit browsers */
-				$('body').css('zoom','0.75'); /* Other non-webkit browsers */
-				$('body').css('-moz-transform','scale(0.75, 0.75)'); /* Moz-browsers */
-			}else{
-				console.log('asdsa',$(window).width());
-				$('body').css('zoom','100%'); /* Webkit browsers */
-				$('body').css('zoom','1'); /* Other non-webkit browsers */
-				$('body').css('-moz-transform','scale(1, 1)'); /* Moz-browsers */
-			}
-		});
+		this.setView13Inch();
+	    this.hideLogo();
 		// $(window).resize(function() {
 		// 	if($(window).width() < 1700){
 		// 		console.log($(window).width());
@@ -119,7 +108,35 @@ class App extends Component {
 
 	}
 
-
+	setView13Inch = () =>{
+		$( document ).ready(function() {
+			if($(window).width() < 850){
+				$('.navbar .menubar .navLeft .logoContainer a h3').hide();
+				$('.navbarRightContent .ulRegister .userRegister').css('width','90px');
+			}
+			if($(window).width() < 1700){
+				$('body').css('zoom','75%'); /* Webkit browsers */
+				$('body').css('zoom','0.75'); /* Other non-webkit browsers */
+				$('body').css('-moz-transform','scale(0.75, 0.75)'); /* Moz-browsers */
+			}else{
+				$('body').css('zoom','100%'); /* Webkit browsers */
+				$('body').css('zoom','1'); /* Other non-webkit browsers */
+				$('body').css('-moz-transform','scale(1, 1)'); /* Moz-browsers */
+			}
+		});
+	}
+	
+	hideLogo = () => {
+		$(window).resize(function() {
+		if($(window).width() < 850){
+			$('.navbar .menubar .navLeft .logoContainer a h3').hide();
+			$('.navbarRightContent .ulRegister .userRegister').css('width','90px');
+		}else{
+			$('.navbar .menubar .navLeft .logoContainer a h3').show();
+			$('.navbarRightContent .ulRegister .userRegister').css('width','120px');
+		}
+		});
+	}
 
 	render() {
 		let present;

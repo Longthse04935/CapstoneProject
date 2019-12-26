@@ -53,6 +53,12 @@ class Navbar extends Component {
         return result;
     }
 
+    validateUser(user){
+        const pattern = /[a-zA-Z0-9]/g;
+        const result = pattern.test(user);
+        return result;
+    }
+
     handleChange = (e) => {
         const value = e.target.value;
         const name = e.target.name;
@@ -80,6 +86,10 @@ class Navbar extends Component {
         if (data.userName === '') {
             isError = true;
             errors['userName'] = 'User name is empty, Input your user name';
+        }
+        if(data.userName !== '' && this.validateUser(data.userName) === false){
+            isError = true;
+            errors['userName'] = 'Special character is not allowed!';
         }
         if (data.password.length < 8) {
             isError = true;

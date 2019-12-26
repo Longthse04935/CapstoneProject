@@ -27,6 +27,7 @@ const socketMiddleware = () => {
                   store.dispatch(actions.arrange(json.sender));
             } else {
                   store.dispatch(actions.announce(json));
+                  store.dispatch(actions.unSeenNoti());
             }
             
       };
@@ -36,7 +37,7 @@ const socketMiddleware = () => {
                   case 'WS_CONNECT':
                         console.log("connect socket");
                         if (socket !== null) {
-                              socket.close();
+                              socket.disconnect(() => { console.log("close connection"); })
                         }
 
                         // connect to the remote host

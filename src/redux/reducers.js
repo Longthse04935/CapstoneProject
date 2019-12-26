@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import { gameReducer,catchError } from './actions';
-import { websocketReducer, getMessages, arrangeClients, receiveNoti } from './webSocket'
+import { websocketReducer, getMessages, arrangeClients, receiveNoti, newNoti } from './webSocket'
 
 const appReducer = combineReducers({
       websocket: websocketReducer,
@@ -8,7 +8,8 @@ const appReducer = combineReducers({
       clients: arrangeClients,
       user: gameReducer,
       Error: catchError,
-      notifications: receiveNoti 
+      notifications: receiveNoti,
+      seen: newNoti
 });
 
 const rootReducer = (state, action) => {

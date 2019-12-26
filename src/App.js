@@ -99,12 +99,12 @@ class App extends Component {
 		// 		$('body').css('-moz-transform','scale(1, 1)'); /* Moz-browsers */
 		// 	}
 		//   });
-		let user = this.props.user;
-		if (user.logedIn) {
-			this.props.dispatch(wsConnect(Config.api_url + "ws"));
-		} else {
+		// let user = this.props.user;
+		// if (user.logedIn) {
+		// 	this.props.dispatch(wsConnect(Config.api_url + "ws"));
+		// } else {
 
-		}
+		// }
 
 
 	}

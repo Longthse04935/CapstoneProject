@@ -13,10 +13,13 @@ export const load = () => ({ type: 'LOAD' });
 export const arrange = user => ({ type: 'ARRANGE', user });
 export const clear = () => ({ type: 'CLEAR' });
 export const announce = noti => ({ type: 'ANNOUNCE', noti });
+export const seenNoti = () => ({type: 'SEEN'});
+export const unSeenNoti = () => ({type: 'UNSEEN'});
 const websocketInitialState = {};
 const messageInitState = [];
 const clients = [];
-const notifications = []
+const notifications = [];
+const notiState = { isNew : true };
 
 export const websocketReducer = (state = { ...websocketInitialState }, action) => {
       switch (action.type) {
@@ -40,7 +43,7 @@ export const getMessages = (state = messageInitState, action) => {
                   return [...state, action.message];
             case 'SAVES':
 
-                  return [ action.message, ...state];
+                  return [action.message, ...state];
             case 'GET':
 
                   return state;
@@ -48,6 +51,8 @@ export const getMessages = (state = messageInitState, action) => {
                   return state;
       }
 };
+
+
 
 export const arrangeClients = (state = clients, action) => {
       switch (action.type) {
@@ -68,6 +73,19 @@ export const arrangeClients = (state = clients, action) => {
       }
 };
 
+export const newNoti = (state = notiState, action) => {
+      switch (action.type) {
+            case 'NEW':
+                  return { isNew: true };
+
+            case 'SEEN':
+
+                  return { isNew: false };
+            default:
+                  return state;
+      }
+};
+
 export const receiveNoti = (state = [...notifications], action) => {
       switch (action.type) {
             case 'ANNOUNCES':
@@ -78,9 +96,9 @@ export const receiveNoti = (state = [...notifications], action) => {
             default:
                   return state;
       }
-}
+};
 
-export const loadGuest = (host,guest ) => dispatch => fetch(`${Config.api_url}messages/${guest}`, {
+export const loadGuest = (host, guest) => dispatch => fetch(`${Config.api_url}messages/${guest}`, {
       method: "GET",
       mode: "cors",
       credentials: "include",
@@ -95,7 +113,7 @@ export const loadGuest = (host,guest ) => dispatch => fetch(`${Config.api_url}me
       })
       .then((json) => {
             json.forEach(element => {
-                  dispatch({ type: 'ARRANGE', user: host.role==="GUIDER"?element.traveler:element.guider });
+                  dispatch({ type: 'ARRANGE', user: host.role === "GUIDER" ? element.traveler : element.guider });
             });
       }).catch(err => {
             dispatch({ type: 'ERROR', err: 'guest websocket error' });
@@ -134,6 +152,7 @@ export const loadNoti = guest => dispatch => fetch(`${Config.api_url}notificatio
 
                   dispatch({ type: 'ANNOUNCES', noti: element });
             });
+            dispatch({type:'NEW'});
       }).catch(err => {
             dispatch({ type: 'ERROR', err: 'noti websocket error' });
       });

@@ -13,6 +13,7 @@ import PlanInPost from "../Guider/PlanInPost";
 import Rated from '../Guider/Rated';
 import { Redirect } from "react-router-dom";
 import { thisExpression } from "@babel/types";
+import {wsConnect} from '../redux/webSocket'
 class Chatbox extends Component {
 	constructor(props) {
 		super(props);
@@ -148,7 +149,8 @@ class Chatbox extends Component {
 				$('.tool-tip').show();
 			}, function () {
 				$('.tool-tip').hide();
-			})
+			});
+			this.props.dispatch(wsConnect(Config.api_url + "ws"));
 
 		} catch (err) {
 			console.log(err);
@@ -344,6 +346,7 @@ class Chatbox extends Component {
 		let selectHour = this.state.timeAvailable.map((value, index) => {
 			return <option key={index} value={value}>{value}</option>;
 		});
+		console.log(this.props.user.userName+"_"+this.state.guider.name);
 		let chat = (this.state.guider.name === "") ? <div /> : <ChatList name={this.props.user.userName}
 			messages={this.props.messages
 				.filter(msg => msg.traveler === this.props.user.userName

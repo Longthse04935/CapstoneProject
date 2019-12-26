@@ -33,6 +33,7 @@ const socketMiddleware = () => {
       };
 
       return store => next => (action) => {
+            console.log(socket);
             switch (action.type) {
                   case 'WS_CONNECT':
                         console.log("connect socket");
@@ -61,7 +62,7 @@ const socketMiddleware = () => {
                         socket = null;
                         break;
                   case 'SEND':
-                  
+                        console.log(socket);
                         socket.send("/app/chat.sendMessage", {}, JSON.stringify(action.message));
                         // action.message.id = "0";
                         // store.dispatch(actions.save(action.message));

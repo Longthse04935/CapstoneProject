@@ -63,6 +63,7 @@ class ChatList extends React.Component {
                                     isSeen: false,
                                     dateReceived: Date.now()
                               };
+                              console.log(chatMessage);
                               this.props.dispatch(send(chatMessage));
                               input.value = '';
                               //this.setState({});

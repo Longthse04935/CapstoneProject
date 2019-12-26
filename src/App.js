@@ -33,6 +33,7 @@ import ReviewTraveler from './Guider/ReviewTraveler';
 import Config from './Config';
 import ForgotPassword from "./common/ForgotPassword";
 import $ from 'jquery';
+import Favorite from './Traveler/Favorite'
 
 class App extends Component {
 	constructor(props) {
@@ -73,11 +74,11 @@ class App extends Component {
 		if (user.userName === '' || user.role !== 'GUIDER') {
 			return <Redirect to="/" />
 		} else if (user.role === 'GUIDER') {
-			if (user.isContractExist === false || user.isGuiderActive === false) {
-				return <GuiderContract message={'Waiting'} />;
-			} else {
-			 	return component;
-			}
+			// if (user.isContractExist === false || user.isGuiderActive === false) {
+			// 	return <GuiderContract message={'Waiting'} />;
+			// } else {
+			  	return component;
+			// }
 			
 		}
 
@@ -179,6 +180,7 @@ class App extends Component {
 					<Route path='/profiletraveller' render={() => this.checkPathWithRoleTraveler(<ProfileTravaller />)} />
 					<Route path='/tvlManager' render={() => this.checkPathWithRoleTraveler(<TravellerManager id={this.state.id} />)}></Route>
 					<Route path='/book' render={() => this.checkPathWithRoleTraveler(<Pay />)} />
+					<Route path='/favorite' render={() => this.checkPathWithRoleTraveler(<Favorite />)} />
 
 					{/* check login */}
 					<Route exact path='/chatbox/:guiderId/:post_id/:message' render={(props) => this.checkPathWithoutLogin(<Chatbox {...props} />)} />

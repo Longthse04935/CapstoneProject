@@ -78,6 +78,7 @@ class ProfileGuiders extends Component {
     this.setState({ guider_id });
   }
 
+
   loadInfoGuider = async (guider_id) => {
     let { autheticate } = this.state;
     try {

@@ -148,6 +148,7 @@ class PostDetail extends React.Component {
 		}
 		this.setupInterval();
 	}
+	
 // slide
 	timer = () => {
 		// setState method is used to update the state

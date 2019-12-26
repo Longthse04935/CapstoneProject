@@ -33,6 +33,7 @@ body{
   width: 300px;
   border-radius: .5rem;
   padding: 2rem 1.5rem;
+  position: fixed;
 }
 .header-stick{
     margin-bottom: 1.5rem;

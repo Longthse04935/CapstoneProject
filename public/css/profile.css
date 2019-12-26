@@ -523,3 +523,11 @@ body{
   text-decoration: none !important;
   color:black;
 }
+
+.alertLogin{
+  position: absolute;
+  top:0;
+  width: 2000px;
+  height: 3000px;
+  background-color: #fff;
+}

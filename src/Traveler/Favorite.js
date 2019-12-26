@@ -103,7 +103,7 @@ class Favorite extends React.Component {
                   )
                   );
             return (
-                  <div className="postResult">
+                  <div className="postResult" style={{minHeight:'700px'}}>
                         <div className="bookOffers guiderResult" id="searchResult">
                               <div className="headerGuiderResult">
                                     <h2 className="h2SsearchResult">Your favorite posts</h2>

@@ -347,7 +347,7 @@ class Chatbox extends Component {
 		let chat = (this.state.guider.name === "") ? <div /> : <ChatList name={this.props.user.userName}
 			messages={this.props.messages
 				.filter(msg => msg.traveler === this.props.user.userName
-					|| msg.guider === this.state.guider.name)
+					&& msg.guider === this.state.guider.name)
 			}
 			receiver={this.state.guider.name} />
 

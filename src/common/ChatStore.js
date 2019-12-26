@@ -10,6 +10,7 @@ class ChatList extends React.Component {
       }
 
       async componentDidMount() {
+            
             //this.props.dispatch(loadMsg(`${this.props.user.userName}/${this.props.receiver}/${this.props.messages.length}/${this.props.messages.length+10}`));
 
       }

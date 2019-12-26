@@ -260,7 +260,11 @@ class GuiderBooks extends Component {
 				</button>
 			)
 			);
-
+		if(status === 'WAITING') {
+			orders = orders.sort((pre,next) => {
+				return pre.book_time - next.book_time;
+			});
+		}
 		let order = orders.map((order, index) => (
 			<tr className="row100 body" key={index}>
 				<td className="cell100 column2">
@@ -273,7 +277,7 @@ class GuiderBooks extends Component {
 				</td>
 				<td className="cell100 column6">{order.adult_quantity}</td>
 				<td className="cell100 column7">{order.children_quantity}</td>
-				<td className="cell100 column8">{order.fee_paid}$</td>
+				<td className="cell100 column8">{order.fee_paid}$</td> 
 				{status === 'WAITING' ? (
 					<td className="cell100 column1">
 						<div>
@@ -379,6 +383,8 @@ class GuiderBooks extends Component {
 			</div>
 		);
 	}
+
+
 }
 function mapStateToProps(state) {
 	const user = state.user;

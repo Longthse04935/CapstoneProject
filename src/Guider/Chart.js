@@ -3,6 +3,7 @@ import CanvasJSReact from "../assets/canvasjs.react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Config from "../Config";
+import { connect } from 'react-redux';
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 class Chart extends Component {
@@ -32,7 +33,7 @@ class Chart extends Component {
 		from:fromMonth+'/'+fromDate+'/'+fromYear,
 		to:toMonth+'/'+toDate+'/'+toYear,
 	}
-	let response = await fetch(Config.api_url + "statistic/GuiderRevenue",
+	let response = await fetch(Config.api_url + "statistic/GuiderRevenue/"+this.props.user.id,
 				{
 					method: "POST",
 					mode: "cors",
@@ -118,5 +119,10 @@ class Chart extends Component {
     );
   }
 }
-
-export default Chart;
+function mapStateToProps(state) {
+	
+	const user = state.user;
+	
+	return { user };
+}
+export default connect(mapStateToProps)(Chart);

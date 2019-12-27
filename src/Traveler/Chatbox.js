@@ -81,7 +81,7 @@ class Chatbox extends Component {
 		let flag = this.props.match.params.message === undefined ? '' : this.props.match.params.message;
 		if (flag === "booking_success") {
 			this.statusProfile("Booking Success");
-		} else if (flag === "booking_fail") {
+		} else if (flag === "booking_fail" || flag==="paypal_server_error") {
 			this.notification("Booking Fail")
 		}
 		// this.scrollToBottom();
